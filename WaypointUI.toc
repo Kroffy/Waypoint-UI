@@ -1,0 +1,26 @@
+## Interface: 110105
+## Title: Waypoint UI
+## Notes: This is the way.
+## Author: Adaptivex
+## IconTexture: Interface/AddOns/WaypointUI/Art/Icons/logo-colored-glow.png
+## Version: 0.0.1 Beta 1
+## SavedVariables: WaypointDB_Global, WaypointDB_Global_Persistent
+## SavedVariablesPerCharacter: WaypointDB_Local, WaypointDB_Local_Persistent
+
+# --------------------------------
+# COMMON
+# --------------------------------
+
+Code/Common/Load.xml
+
+# --------------------------------
+# Priority
+# --------------------------------
+
+Code/Priority/Load.xml
+
+# --------------------------------
+# Modules
+# --------------------------------
+
+Code/Main/Load.xml
