@@ -14,6 +14,7 @@ local NS = L.ruRU; L.ruRU = NS
 function NS:Load()
 	if GetLocale() ~= "ruRU" then
 		return
+		L["Pinpoint - Quest - Complete"] = "Готов к сдаче"
 	end
 
 	--------------------------------
