@@ -52,6 +52,38 @@ function NS.Script:Load()
 			--------------------------------
 
 			do -- CREATE
+				function Callback.Constructor:Create_Responder(parent)
+					local Frame = CreateFrame("Frame", nil, parent:GetParent())
+
+					--------------------------------
+
+					do -- LOGIC
+						Frame.onConfigUpdateCallbacks = {}
+
+						--------------------------------
+
+						do -- EVENTS
+							local function Event_ConfigUpdate()
+								do -- ON CONFIG UPDATE
+									local onConfigUpdateCallbacks = Frame.onConfigUpdateCallbacks
+
+									if #onConfigUpdateCallbacks >= 1 then
+										for callback = 1, #onConfigUpdateCallbacks do
+											onConfigUpdateCallbacks[callback](Frame)
+										end
+									end
+								end
+							end
+
+							CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate)
+						end
+					end
+
+					--------------------------------
+
+					return Frame
+				end
+
 				function Callback.Constructor:Create_Tab(name)
 					local Frame = PrefabRegistry:Create("C.Config.Main.Tab", Callback.Constructor.FRAME_CONTENT, Callback.Constructor.FRAME_CONTENT_FRAME_STRATA, Callback.Constructor.FRAME_CONTENT_FRAME_LEVEL, name)
 					Frame:SetPoint("CENTER", Callback.Constructor.FRAME_CONTENT)
@@ -100,13 +132,20 @@ function NS.Script:Load()
 					return Frame
 				end
 
-				function Callback.Constructor:Create_Setting_Container(parent, title, name)
+				function Callback.Constructor:Create_Setting_Container(parent, title, transparent, name)
 					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
 
 					--------------------------------
 
-					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Container.Title", parent, FRAME_STRATA, FRAME_LEVEL + 1, name)
-					Frame:SetTitle(title)
+					local Frame = nil
+
+					if title then
+						Frame = PrefabRegistry:Create("C.Config.Main.Setting.Container.Title", parent, FRAME_STRATA, FRAME_LEVEL + 1, { transparent = transparent }, name)
+						Frame:SetTitle(title)
+					else
+						Frame = PrefabRegistry:Create("C.Config.Main.Setting.Container", parent, FRAME_STRATA, FRAME_LEVEL + 1, { transparent = transparent }, name)
+					end
+
 					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
@@ -118,12 +157,12 @@ function NS.Script:Load()
 					return Frame
 				end
 
-				function Callback.Constructor:Create_Setting_Element_Checkbox(parent, indent, name)
+				function Callback.Constructor:Create_Setting_Element_Checkbox(parent, data, name)
 					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
 
 					--------------------------------
 
-					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Checkbox", parent, FRAME_STRATA, FRAME_LEVEL + 1, { indent = indent }, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Checkbox", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
 					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
@@ -135,12 +174,12 @@ function NS.Script:Load()
 					return Frame
 				end
 
-				function Callback.Constructor:Create_Setting_Element_Range(parent, indent, name)
+				function Callback.Constructor:Create_Setting_Element_Range(parent, data, name)
 					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
 
 					--------------------------------
 
-					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Range", parent, FRAME_STRATA, FRAME_LEVEL + 1, { indent = indent }, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Range", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
 					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
@@ -152,12 +191,12 @@ function NS.Script:Load()
 					return Frame
 				end
 
-				function Callback.Constructor:Create_Setting_Element_Button(parent, indent, name)
+				function Callback.Constructor:Create_Setting_Element_Button(parent, data, name)
 					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
 
 					--------------------------------
 
-					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Button", parent, FRAME_STRATA, FRAME_LEVEL + 1, { indent = indent }, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Button", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
 					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
@@ -169,12 +208,29 @@ function NS.Script:Load()
 					return Frame
 				end
 
-				function Callback.Constructor:Create_Setting_Element_Dropdown(parent, indent, name)
+				function Callback.Constructor:Create_Setting_Element_Dropdown(parent, data, name)
 					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
 
 					--------------------------------
 
-					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Dropdown", parent, FRAME_STRATA, FRAME_LEVEL + 1, { indent = indent }, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Dropdown", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
+					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+
+					--------------------------------
+
+					parent:AddElement(Frame)
+
+					--------------------------------
+
+					return Frame
+				end
+
+				function Callback.Constructor:Create_Setting_Element_Section(parent, data, name)
+					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
+
+					--------------------------------
+
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Section", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
 					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
@@ -222,15 +278,16 @@ function NS.Script:Load()
 						--------------------------------
 
 						if elements then
-							Callback.Constructor:ScanConstruct_Elements(newTab.REF_CONTENT_SCROLL_CONTENT_LAYOUT, elements)
+							Callback.Constructor:ScanConstruct_Elements(newTab.REF_CONTENT_SCROLL_CONTENT_LAYOUT, nil, elements)
 						end
 					end
 				end
 
-				function Callback.Constructor:ScanConstruct_Elements(parent, data)
+				function Callback.Constructor:ScanConstruct_Elements(parent, container, data)
 					for k, v in ipairs(data) do
 						local name, type, indent, descriptor, elements = v.name, v.type, v.indent, v.descriptor, v.elements
-						local var_get, var_set, var_disabled, var_hidden = v.var_get, v.var_set, v.var_disabled, v.var_hidden
+						local var_transparent, var_get, var_set, var_disabled, var_hidden = v.var_transparent, v.var_get, v.var_set, v.var_disabled, v.var_hidden
+						if container and container.VAR_TRANSPARENT then var_transparent = true end
 
 						local description = descriptor and descriptor.description or nil
 						local imageInfo = descriptor and descriptor.imageType and { imageType = descriptor.imageType, imagePath = descriptor.imagePath } or nil
@@ -253,21 +310,29 @@ function NS.Script:Load()
 							newFrame:SetInfo(var_title_imageTexture, var_title_text, var_title_subtext)
 						end
 						if type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
-							newFrame = Callback.Constructor:Create_Setting_Container(parent, name, name)
+							newFrame = Callback.Constructor:Create_Setting_Container(parent, name, var_transparent, name)
+
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
+
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
+								newFrame:SetShown(not Check_Hidden())
+							end)
 						end
 						if type == addon.C.AddonInfo.Variables.Config.TYPE_RANGE then
 							local var_range_min, var_range_max, var_range_step, var_range_text, var_range_set_lazy = v.var_range_min, v.var_range_max, v.var_range_step, v.var_range_text, v.var_range_set_lazy
 
 							--------------------------------
 
-							newFrame = Callback.Constructor:Create_Setting_Element_Range(parent, indent, name)
+							newFrame = Callback.Constructor:Create_Setting_Element_Range(parent, { indent = indent, transparent = var_transparent }, name)
 							newFrame:SetTitle(name, imageInfo, description)
 
 							local range = newFrame.REF_RANGE.REF_RANGE
 							range:SetMinMaxValues(var_range_min, var_range_max)
 							range:SetValueStep(var_range_step)
 
-							table.insert(newFrame.onConfigUpdateCallbacks, function()
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
+
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
 								range:SetEnabled(not Check_Disabled())
 								newFrame:SetShown(not Check_Hidden())
 								range:SetValue(Get())
@@ -296,7 +361,7 @@ function NS.Script:Load()
 
 							--------------------------------
 
-							newFrame = Callback.Constructor:Create_Setting_Element_Button(parent, indent, name)
+							newFrame = Callback.Constructor:Create_Setting_Element_Button(parent, { indent = indent, transparent = var_transparent }, name)
 							newFrame:SetTitle(name, imageInfo, description)
 
 							local button = newFrame.REF_BUTTON
@@ -311,18 +376,21 @@ function NS.Script:Load()
 								end
 							end)
 
-							table.insert(newFrame.onConfigUpdateCallbacks, function()
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
+
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
 								button:SetEnabled(not Check_Disabled())
 								newFrame:SetShown(not Check_Hidden())
 							end)
 						end
 						if type == addon.C.AddonInfo.Variables.Config.TYPE_CHECKBOX then
-							newFrame = Callback.Constructor:Create_Setting_Element_Checkbox(parent, indent, name)
+							newFrame = Callback.Constructor:Create_Setting_Element_Checkbox(parent, { indent = indent, transparent = var_transparent }, name)
 							newFrame:SetTitle(name, imageInfo, description)
 
 							local checkbox = newFrame.REF_CHECKBOX
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
 
-							table.insert(newFrame.onConfigUpdateCallbacks, function()
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
 								checkbox:SetChecked(Get(), false)
 								newFrame:SetShown(not Check_Hidden())
 							end)
@@ -343,20 +411,24 @@ function NS.Script:Load()
 
 							--------------------------------
 
-							newFrame = Callback.Constructor:Create_Setting_Element_Dropdown(parent, indent, name)
+							newFrame = Callback.Constructor:Create_Setting_Element_Dropdown(parent, { indent = indent, transparent = var_transparent }, name)
 							newFrame:SetTitle(name, imageInfo, description)
 
 							local dropdown = newFrame.REF_DROPDOWN
 							dropdown:SetDropdownInfo(var_dropdown_info, Get())
 
-							table.insert(newFrame.onConfigUpdateCallbacks, function()
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
+
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
 								dropdown:SetEnabled(not Check_Disabled())
 								newFrame:SetShown(not Check_Hidden())
 								dropdown:ContextMenu_SetValue(Get(), false)
 							end)
 							table.insert(dropdown.onValueChangedCallbacks, function(self, value, userInput)
 								if userInput then
-									Set(value)
+									if Set(value) then
+										addon.C.Frame.ContextMenu.Script:Main_Hide()
+									end
 
 									--------------------------------
 
@@ -366,12 +438,26 @@ function NS.Script:Load()
 								end
 							end)
 						end
+						if type == addon.C.AddonInfo.Variables.Config.TYPE_SECTION then
+							newFrame = Callback.Constructor:Create_Setting_Element_Section(parent, { indent = indent, transparent = var_transparent }, name)
+							newFrame:SetTitle(name, imageInfo, description)
+
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
+
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
+								newFrame:SetShown(not Check_Hidden())
+							end)
+						end
 
 						--------------------------------
 
 						if type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
 							if elements then
-								Callback.Constructor:ScanConstruct_Elements(newFrame.REF_CONTAINER.REF_MAIN_LAYOUT, elements)
+								if newFrame.REF_CONTAINER then
+									Callback.Constructor:ScanConstruct_Elements(newFrame.REF_CONTAINER.REF_MAIN_LAYOUT, newFrame.REF_CONTAINER, elements)
+								else
+									Callback.Constructor:ScanConstruct_Elements(newFrame.REF_MAIN_LAYOUT, newFrame, elements)
+								end
 							end
 						end
 					end
@@ -440,6 +526,10 @@ function NS.Script:Load()
 
 			Callback.Navigation:OpenTabByIndex(1, true)
 		end)
+
+		CallbackRegistry:Add("C_CONFIG_UPDATE", function()
+			Frame:UpdateLayout()
+		end, 10)
 	end
 
 	--------------------------------

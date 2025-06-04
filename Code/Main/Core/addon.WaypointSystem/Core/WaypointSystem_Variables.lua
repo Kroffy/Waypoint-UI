@@ -3,7 +3,7 @@ local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
 local L = addon.C.AddonInfo.Locales
-local NS = addon.Waypoint; addon.Waypoint = NS
+local NS = addon.WaypointSystem; addon.WaypointSystem = NS
 
 --------------------------------
 

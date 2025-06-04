@@ -2,7 +2,7 @@
 ..\FrameXML\UI.xsd">
 	<!-- Modules -->
 	<Include file="Core/addon.ContextIcon/Load.xml"/>
-    <Include file="Core/addon.Waypoint/Load.xml"/>
+    <Include file="Core/addon.WaypointSystem/Load.xml"/>
 
 	<!-- Load -->
 	<Script file="Load.lua"/>

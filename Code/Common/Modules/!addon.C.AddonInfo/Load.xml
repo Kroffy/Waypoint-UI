@@ -3,6 +3,9 @@
 	<!-- Load -->
 	<Script file="Load.lua"/>
 
+	<!-- Modules -->
+	<Include file="Modules/addon.C.AddonInfo.Locales/Load.xml"/>
+
 	<!-- Core -->
 	<Script file="Core/AddonInfo_Variables_Database.lua"/>
 	<Script file="Core/AddonInfo_Variables_General.lua"/>
@@ -12,7 +15,4 @@
 	<Script file="Core/AddonInfo_Variables_SharedVariables.lua"/>
 	<Script file="Core/AddonInfo_Variables_Sound.lua"/>
 	<Script file="Core/AddonInfo_Variables_Config.lua"/>
-
-	<!-- Modules -->
-	<Include file="Modules/addon.C.AddonInfo.Locales/Load.xml"/>
 </Ui>

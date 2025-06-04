@@ -31,8 +31,11 @@ do -- CONSTANTS
 	do -- DEFAULTS
 		NS.Variables.Database.GLOBAL_DEFAULT = {
 			profile = {
-				-- WAYPOINT
-				WAYPOINT_SCALE = 1,
+				-- WAYPOINT SYSTEM
+				WS_TYPE = 1,
+				WS_WAYPOINT_SCALE = 1,
+				WS_PINPOINT_SCALE = 1,
+				WS_PINPOINT_DETAIL = false,
 
 				-- AUDIO
 				AUDIO_GLOBAL = true,

@@ -27,8 +27,10 @@ function NS:Load()
 		NS.FrameTemplates:Load()
 
 		-- INITIALIZE
-		NS.Config:Load()
 		NS.Initializer:Load()
+
+		-- CONFIG
+		C_Timer.After(.1, NS.Config.Load)
 	end
 
 	--------------------------------

@@ -869,7 +869,7 @@ function NS.Prefabs:Load()
 							Frame:Animation_OnMouseUp(skipAnimation)
 						end
 
-						local function Event_OnValueChanged(frame, value)
+						local function Event_OnValueChanged(frame, value, userInput)
 							Frame.REF_CHECK:SetShown(value)
 						end
 

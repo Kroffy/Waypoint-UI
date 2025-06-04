@@ -1,6 +1,8 @@
 ---@class addon
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
+local PrefabRegistry = addon.C.PrefabRegistry.Script
+local L = addon.C.AddonInfo.Locales
 local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
 
 --------------------------------
@@ -24,6 +26,8 @@ do  -- CONSTANTS
 		NS.Variables.Config.TYPE_RANGE = "Range"
 		NS.Variables.Config.TYPE_BUTTON = "Button"
 		NS.Variables.Config.TYPE_CHECKBOX = "Checkbox"
+		NS.Variables.Config.TYPE_DROPDOWN = "Dropdown"
+		NS.Variables.Config.TYPE_SECTION = "Section"
 
 		NS.Variables.Config.IMAGE_TYPE_LARGE = "Large"
 		NS.Variables.Config.IMAGE_TYPE_SMALL = "Small"
@@ -53,11 +57,11 @@ do  -- CONSTANTS
 		-- 	NS.Variables.Config.TABLE = {
 		-- 		[1] = {
 		-- 			["name"] = "Placeholder",
-		--	 		["type"] = NS.Variables.Config.TYPE_TAB,
+		--  		["type"] = NS.Variables.Config.TYPE_TAB,
 		-- 			["elements"] = {
 		-- 				[1] = {
 		-- 					["name"] = "Placeholder",
-		--	 				["type"] = NS.Variables.Config.TYPE_TITLE,
+		--  				["type"] = NS.Variables.Config.TYPE_TITLE,
 		-- 					["var_title_imageTexture"] = addon.CREF:NewIcon("brush"),
 		-- 					["var_title_text"] = "Placeholder",
 		-- 					["var_title_subtext"] = "Placeholder",
@@ -65,8 +69,16 @@ do  -- CONSTANTS
 		-- 				[2] = {
 		-- 					["name"] = "Placeholder",
 		-- 					["type"] = NS.Variables.Config.TYPE_CONTAINER,
+		-- 					["var_hidden"] = function() return false end,
 		-- 					["elements"] = {
 		-- 						[1] = {
+		-- 							["name"] = "Section",
+		-- 							["type"] = NS.Variables.Config.TYPE_SECTION,
+		-- 							["descriptor"] = nil,
+		-- 							["indent"] = 0,
+		-- 							["var_hidden"] = function() return false end,
+		-- 						},
+		-- 						[2] = {
 		-- 							["name"] = "Range",
 		-- 							["type"] = NS.Variables.Config.TYPE_RANGE,
 		-- 							["descriptor"] = nil,
@@ -74,14 +86,14 @@ do  -- CONSTANTS
 		-- 							["var_range_min"] = 1,
 		-- 							["var_range_max"] = 10,
 		-- 							["var_range_step"] = 1,
-		--							["var_range_text"] = function(value) return string.format("%.0f", value) end,
-		--							["var_range_set_lazy"] = function(value) end,
+		-- 							["var_range_text"] = function(value) return string.format("%.0f", value) end,
+		-- 							["var_range_set_lazy"] = function(value) end,
 		-- 							["var_get"] = function() return rangeValue end,
 		-- 							["var_set"] = function(value) rangeValue = value end,
 		-- 							["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[2] = {
+		-- 						[3] = {
 		-- 							["name"] = "Button",
 		-- 							["type"] = NS.Variables.Config.TYPE_BUTTON,
 		-- 							["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
@@ -91,25 +103,25 @@ do  -- CONSTANTS
 		-- 							["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[3] = {
+		-- 						[4] = {
 		-- 							["name"] = "Checkbox",
 		-- 							["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 		-- 							["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
-		--	 						["indent"] = 0,
-		--	 						["var_get"] = function() return checkboxValue end,
-		--	 						["var_set"] = function(value) checkboxValue = value end,
+		--  						["indent"] = 0,
+		--  						["var_get"] = function() return checkboxValue end,
+		--  						["var_set"] = function(value) checkboxValue = value end,
 		-- 							["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[4] = {
+		-- 						[5] = {
 		-- 							["name"] = "Dropdown",
-		--	 						["type"] = NS.Variables.Config.TYPE_DROPDOWN,
-		--	 						["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
+		--  						["type"] = NS.Variables.Config.TYPE_DROPDOWN,
+		--  						["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
 		-- 							["indent"] = 0,
 		-- 							["var_dropdown_info"] = { "Option 1", "Option 2", "Option 3" },
 		-- 							["var_get"] = function() return dropdownValue end,
-		--	 						["var_set"] = function(value) dropdownValue = value end,
-		--	 						["var_disabled"] = function() return false end,
+		--  						["var_set"] = function(value) dropdownValue = value; return true end, -- Return true/false to close the context menu on option select
+		--  						["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						}
 		-- 					}
@@ -118,24 +130,51 @@ do  -- CONSTANTS
 		-- 		}
 		-- 	}
 
+		local function GetDatabase(name)
+			if addon.C.Database and addon.C.Database.Variables then
+				return addon.C.Database.Variables[name].profile
+			end
+		end
+
 		NS.Variables.Config.TABLE = {
 			[1] = {
-				["name"] = "Appearance",
+				["name"] = L["Config - Appearance"],
 				["type"] = NS.Variables.Config.TYPE_TAB,
 				["elements"] = {
 					[1] = {
-						["name"] = "Appearance",
+						["name"] = L["Config - Appearance - Title"],
 						["type"] = NS.Variables.Config.TYPE_TITLE,
 						["var_title_imageTexture"] = addon.CREF:NewIcon("brush"),
-						["var_title_text"] = "Appearance",
-						["var_title_subtext"] = "Customize the appearance of the user interface.",
+						["var_title_text"] = L["Config - Appearance - Title"],
+						["var_title_subtext"] = L["Config - Appearance - Title - Subtext"],
 					},
 					[2] = {
-						["name"] = "Waypoint",
+						["name"] = nil,
 						["type"] = NS.Variables.Config.TYPE_CONTAINER,
+						["var_transparent"] = true,
+						["var_hidden"] = function() return false end,
 						["elements"] = {
 							[1] = {
-								["name"] = "Size",
+								["name"] = L["Config - Appearance - WaypointSystem - Type"],
+								["type"] = NS.Variables.Config.TYPE_DROPDOWN,
+								["descriptor"] = nil,
+								["indent"] = 0,
+								["var_dropdown_info"] = { L["Config - Appearance - WaypointSystem - Type - Both"], L["Config - Appearance - WaypointSystem - Type - Waypoint"], L["Config - Appearance - WaypointSystem - Type - Pinpoint"] },
+								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE end,
+								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_TYPE = value; CallbackRegistry:Trigger("CONFIG_WS_TYPE"); return true end,
+								["var_disabled"] = function() return false end,
+								["var_hidden"] = function() return false end
+							},
+						}
+					},
+					[3] = {
+						["name"] = L["Config - Appearance - WaypointSystem - Waypoint"],
+						["type"] = NS.Variables.Config.TYPE_CONTAINER,
+						["var_transparent"] = false,
+						["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 2 end,
+						["elements"] = {
+							[1] = {
+								["name"] = L["Config - Appearance - WaypointSystem - WaypointScale"],
 								["type"] = NS.Variables.Config.TYPE_RANGE,
 								["descriptor"] = nil,
 								["indent"] = 0,
@@ -143,9 +182,42 @@ do  -- CONSTANTS
 								["var_range_max"] = 2,
 								["var_range_step"] = .1,
 								["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("WAYPOINT_CONFIG_SCALE") end,
-								["var_get"] = function() return addon.C.Database.Variables.DB_GLOBAL.profile.WAYPOINT_SCALE end,
-								["var_set"] = function(value) addon.C.Database.Variables.DB_GLOBAL.profile.WAYPOINT_SCALE = value end,
+								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_SCALE") end,
+								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE end,
+								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE = value end,
+								["var_disabled"] = function() return false end,
+								["var_hidden"] = function() return false end,
+							},
+						}
+					},
+					[4] = {
+						["name"] = L["Config - Appearance - WaypointSystem - Pinpoint"],
+						["type"] = NS.Variables.Config.TYPE_CONTAINER,
+						["var_transparent"] = false,
+						["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 3 end,
+						["elements"] = {
+							[1] = {
+								["name"] = L["Config - Appearance - WaypointSystem - PinpointScale"],
+								["type"] = NS.Variables.Config.TYPE_RANGE,
+								["descriptor"] = nil,
+								["indent"] = 0,
+								["var_range_min"] = .5,
+								["var_range_max"] = 2,
+								["var_range_step"] = .1,
+								["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_PINPOINT_SCALE") end,
+								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE end,
+								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE = value end,
+								["var_disabled"] = function() return false end,
+								["var_hidden"] = function() return false end,
+							},
+							[2] = {
+								["name"] = L["Config - Appearance - WaypointSystem - PinpointDetail"],
+								["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - Appearance - WaypointSystem - PinpointDetail - Description"]),
+								["indent"] = 0,
+								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL end,
+								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL = value end,
 								["var_disabled"] = function() return false end,
 								["var_hidden"] = function() return false end,
 							}

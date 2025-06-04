@@ -224,6 +224,10 @@ function NS.Prefabs:Load()
 				--------------------------------
 
 				do -- ELEMENTS
+					local PADDING_ELEMENT = NS.Variables:RATIO(9)
+
+					--------------------------------
+
 					do -- CONTENT
 						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
@@ -258,7 +262,7 @@ function NS.Prefabs:Load()
 							end
 
 							do -- LAYOUT GROUP
-								ScrollChildFrame.LayoutGroup, ScrollChildFrame.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(ScrollChildFrame, { point = "TOP", direction = "vertical", resize = true, padding = PADDING, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+								ScrollChildFrame.LayoutGroup, ScrollChildFrame.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(ScrollChildFrame, { point = "TOP", direction = "vertical", resize = true, padding = PADDING_ELEMENT, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
 								ScrollChildFrame.LayoutGroup:SetPoint("TOP", ScrollChildFrame)
 								ScrollChildFrame.LayoutGroup:SetFrameStrata(frameStrata)
 								ScrollChildFrame.LayoutGroup:SetFrameLevel(frameLevel + 3)
@@ -381,8 +385,8 @@ function NS.Prefabs:Load()
 							end
 						end
 
-						CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 10)
-						CallbackRegistry:Add("C_CONFIG_TAB_CHANGED", Event_TabChanged, 10)
+						CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 11)
+						CallbackRegistry:Add("C_CONFIG_TAB_CHANGED", Event_TabChanged, 11)
 					end
 				end
 
@@ -540,7 +544,11 @@ function NS.Prefabs:Load()
 			end
 
 			do -- CONTAINER
-				PrefabRegistry:Add("C.Config.Main.Setting.Container", function(parent, frameStrata, frameLevel, name)
+				PrefabRegistry:Add("C.Config.Main.Setting.Container", function(parent, frameStrata, frameLevel, data, name)
+					local transparent = data.transparent
+
+					--------------------------------
+
 					local Frame = CreateFrame("Frame", name, parent)
 					Frame:SetFrameStrata(frameStrata)
 					Frame:SetFrameLevel(frameLevel)
@@ -639,7 +647,8 @@ function NS.Prefabs:Load()
 					end
 
 					do -- LOGIC
-						Frame.parent = nil
+						Frame.VAR_PARENT = nil
+						Frame.VAR_TRANSPARENT = transparent
 
 						--------------------------------
 
@@ -650,8 +659,16 @@ function NS.Prefabs:Load()
 
 									--------------------------------
 
-									if Frame.parent then
-										Frame.parent.LGS_CONTENT()
+									if Frame.VAR_PARENT then
+										Frame.VAR_PARENT.LGS_CONTENT()
+									end
+								end
+
+								function Frame:UpdateTransparency()
+									if Frame.VAR_TRANSPARENT then
+										Frame.REF_BACKGROUND:SetAlpha(0)
+									else
+										Frame.REF_BACKGROUND:SetAlpha(1)
 									end
 								end
 							end
@@ -662,8 +679,12 @@ function NS.Prefabs:Load()
 								Frame:UpdateLayout()
 							end
 
-							CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate)
+							CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 10)
 						end
+					end
+
+					do -- SETUP
+						Frame:UpdateTransparency()
 					end
 
 					--------------------------------
@@ -671,7 +692,7 @@ function NS.Prefabs:Load()
 					return Frame
 				end)
 
-				PrefabRegistry:Add("C.Config.Main.Setting.Container.Title", function(parent, frameStrata, frameLevel, name)
+				PrefabRegistry:Add("C.Config.Main.Setting.Container.Title", function(parent, frameStrata, frameLevel, data, name)
 					local Frame = CreateFrame("Frame", name, parent)
 					Frame:SetFrameStrata(frameStrata)
 					Frame:SetFrameLevel(frameLevel)
@@ -740,7 +761,7 @@ function NS.Prefabs:Load()
 									end
 
 									do -- CONTAINER
-										Content_LayoutGroup.Container = PrefabRegistry:Create("C.Config.Main.Setting.Container", Content_LayoutGroup, frameStrata, frameLevel + 3, "$parent.Container")
+										Content_LayoutGroup.Container = PrefabRegistry:Create("C.Config.Main.Setting.Container", Content_LayoutGroup, frameStrata, frameLevel + 3, data, "$parent.Container")
 										Content_LayoutGroup.Container:SetFrameStrata(frameStrata)
 										Content_LayoutGroup.Container:SetFrameLevel(frameLevel + 3)
 										addon.C.API.FrameUtil:SetDynamicSize(Content_LayoutGroup.Container, Content_LayoutGroup, 0, nil)
@@ -748,7 +769,7 @@ function NS.Prefabs:Load()
 
 										--------------------------------
 
-										Content_LayoutGroup.Container.parent = Frame
+										Content_LayoutGroup.Container.VAR_PARENT = Frame
 									end
 								end
 							end
@@ -821,7 +842,7 @@ function NS.Prefabs:Load()
 
 			do -- ELEMENT
 				PrefabRegistry:Add("C.Config.Main.Setting.Element.Template", function(parent, frameStrata, frameLevel, data, name)
-					local indent = data.indent or 0
+					local indent, transparent = data.indent or 0, data.transparent
 
 					--------------------------------
 
@@ -1016,7 +1037,9 @@ function NS.Prefabs:Load()
 							end
 
 							function Frame:Animation_OnEnter(skipAnimation)
-								Frame.REF_BACKGROUND:Show()
+								if not transparent then
+									Frame.REF_BACKGROUND:Show()
+								end
 							end
 						end
 
@@ -1026,7 +1049,9 @@ function NS.Prefabs:Load()
 							end
 
 							function Frame:Animation_OnLeave(skipAnimation)
-								Frame.REF_BACKGROUND:Hide()
+								if not transparent then
+									Frame.REF_BACKGROUND:Hide()
+								end
 							end
 						end
 					end
@@ -1041,6 +1066,7 @@ function NS.Prefabs:Load()
 						Frame.mouseUpCallbacks = {}
 						Frame.onConfigUpdateCallbacks = {}
 
+						Frame.VAR_TRANSPARENT = transparent
 						Frame.VAR_ELEMENT_HEIGHT = 15
 
 						--------------------------------
@@ -1071,9 +1097,20 @@ function NS.Prefabs:Load()
 
 									Frame:UpdateLayout()
 								end
+							end
 
+							do -- LOGIC
 								function Frame:UpdateLayout()
 									Frame.LGS_INFO()
+								end
+
+								function Frame:UpdateTransparency()
+									if Frame.VAR_TRANSPARENT then
+										Frame.REF_DIVIDER:Hide()
+										Frame.REF_BACKGROUND:Hide()
+									else
+										Frame.REF_DIVIDER:Show()
+									end
 								end
 							end
 						end
@@ -1174,6 +1211,10 @@ function NS.Prefabs:Load()
 						end
 					end
 
+					do -- SETUP
+						Frame:UpdateTransparency()
+					end
+
 					--------------------------------
 
 					return Frame
@@ -1210,6 +1251,22 @@ function NS.Prefabs:Load()
 					return Frame
 				end)
 
+				-- [Work in Progress]
+				PrefabRegistry:Add("C.Config.Main.Setting.Element.Section", function(parent, frameStrata, frameLevel, data, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Template", parent, frameStrata, frameLevel, data, name)
+					Frame:SetFrameStrata(frameStrata)
+					Frame:SetFrameLevel(frameLevel)
+
+					--------------------------------
+
+					do -- SETUP
+						Frame:OnLeave(true)
+					end
+
+					--------------------------------
+
+					return Frame
+				end)
 
 				PrefabRegistry:Add("C.Config.Main.Setting.Element.Checkbox", function(parent, frameStrata, frameLevel, data, name)
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Template", parent, frameStrata, frameLevel, data, name)

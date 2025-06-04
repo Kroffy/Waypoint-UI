@@ -14,7 +14,7 @@ local NS = addon.Main; addon.Main = NS
 function NS:Load()
 	local function Modules()
 		addon.ContextIcon:Load()
-        addon.Waypoint:Load()
+        addon.WaypointSystem:Load()
 	end
 
 	--------------------------------

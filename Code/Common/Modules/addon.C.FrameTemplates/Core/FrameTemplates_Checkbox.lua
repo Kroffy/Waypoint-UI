@@ -96,14 +96,12 @@ do
 
 						--------------------------------
 
-						if userInput then
-							do -- ON VALUE CHANGED
-								local onValueChangedCallbacks = Frame.onValueChangedCallbacks
+						do -- ON VALUE CHANGED
+							local onValueChangedCallbacks = Frame.onValueChangedCallbacks
 
-								if #onValueChangedCallbacks >= 1 then
-									for i = 1, #onValueChangedCallbacks do
-										onValueChangedCallbacks[i](Frame, value, userInput)
-									end
+							if #onValueChangedCallbacks >= 1 then
+								for i = 1, #onValueChangedCallbacks do
+									onValueChangedCallbacks[i](Frame, value, userInput)
 								end
 							end
 						end

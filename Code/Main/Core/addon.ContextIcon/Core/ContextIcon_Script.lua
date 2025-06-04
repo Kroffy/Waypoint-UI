@@ -387,8 +387,6 @@ function NS.Script:Load()
 							if resultPath and not resultTexture then
 								resultString = Callback:ConvertToInlineIcon(resultPath)
 								resultTexture = NS.Variables.PATH .. resultPath .. ".png"
-							else
-								-- print("Invalid Texture")
 							end
 						end
 
@@ -400,8 +398,6 @@ function NS.Script:Load()
 							if resultPath then
 								resultString = Callback:ConvertToInlineIcon(resultPath)
 								resultTexture = NS.Variables.PATH .. resultPath .. ".png"
-							else
-								-- print("Invalid Texture")
 							end
 						end
 					end
@@ -461,8 +457,6 @@ function NS.Script:Load()
 							if resultPath and not resultTexture then
 								resultString = Callback:ConvertToInlineIcon(resultPath)
 								resultTexture = NS.Variables.PATH .. resultPath .. ".png"
-							else
-								-- print("Invalid Texture")
 							end
 						end
 
@@ -474,8 +468,6 @@ function NS.Script:Load()
 							if resultPath then
 								resultString = Callback:ConvertToInlineIcon(resultPath)
 								resultTexture = NS.Variables.PATH .. resultPath .. ".png"
-							else
-								-- print("Invalid Texture")
 							end
 						end
 					end
@@ -535,8 +527,6 @@ function NS.Script:Load()
 							if resultPath and not resultTexture then
 								resultString = Callback:ConvertToInlineIcon(resultPath)
 								resultTexture = NS.Variables.PATH .. resultPath .. ".png"
-							else
-								-- print("Invalid Texture")
 							end
 						end
 
@@ -548,8 +538,6 @@ function NS.Script:Load()
 							if resultPath then
 								resultString = Callback:ConvertToInlineIcon(resultPath)
 								resultTexture = NS.Variables.PATH .. resultPath .. ".png"
-							else
-								-- print("Invalid Texture")
 							end
 						end
 					end

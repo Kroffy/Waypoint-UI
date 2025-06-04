@@ -6,8 +6,8 @@ local L = addon.C.AddonInfo.Locales
 
 --------------------------------
 
-addon.Waypoint = {}
-local NS = addon.Waypoint; addon.Waypoint = NS
+addon.WaypointSystem = {}
+local NS = addon.WaypointSystem; addon.WaypointSystem = NS
 
 --------------------------------
 

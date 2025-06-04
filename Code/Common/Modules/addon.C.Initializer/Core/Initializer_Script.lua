@@ -35,15 +35,17 @@ function NS.Script:Load()
 			end
 
 			do -- MAIN
-				if addon.Main then
-					addon.Main:Load()
-				else
-					print("|cffFF0000" .. addon.C.AddonInfo.Variables.General.IDENTIFIER .. " - Missing reference to 'addon.Main'|r")
-				end
+				C_Timer.After(.1, function()
+					if addon.Main then
+						addon.Main:Load()
+					else
+						print("|cffFF0000" .. addon.C.AddonInfo.Variables.General.IDENTIFIER .. " - Missing reference to 'addon.Main'|r")
+					end
 
-				--------------------------------
+					--------------------------------
 
-				CallbackRegistry:Trigger("ADDON_LOADED_CODE")
+					CallbackRegistry:Trigger("ADDON_LOADED_CODE")
+				end)
 			end
 
 			--------------------------------

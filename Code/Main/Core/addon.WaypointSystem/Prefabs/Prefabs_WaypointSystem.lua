@@ -3,7 +3,7 @@ local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
 local L = addon.C.AddonInfo.Locales
-local NS = addon.Waypoint; addon.Waypoint = NS
+local NS = addon.WaypointSystem; addon.WaypointSystem = NS
 
 --------------------------------
 
@@ -20,7 +20,7 @@ function NS.Prefabs:Load()
 
 			--------------------------------
 
-			PrefabRegistry:Add("Waypoint.General.ContextFrame", function(parent, frameStrata, frameLevel, name)
+			PrefabRegistry:Add("WaypointSystem.General.ContextFrame", function(parent, frameStrata, frameLevel, name)
 				local Frame = CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
@@ -28,62 +28,74 @@ function NS.Prefabs:Load()
 				--------------------------------
 
 				do -- ELEMENTS
-					do -- BACKGROUND
-						Frame.Background = CreateFrame("Frame", "$parent.Background", Frame)
-						Frame.Background:SetPoint("CENTER", Frame)
-						Frame.Background:SetFrameStrata(frameStrata)
-						Frame.Background:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Background, Frame, 0, 0)
-
-						local Background = Frame.Background
-
-						--------------------------------
-
-						do -- FOREGROUND
-							Background.Foreground, Background.ForegroundTexture = addon.C.FrameTemplates:CreateTexture(Frame, frameStrata, NS.Variables.PATH .. "waypoint-context.png", "$parent.Foreground")
-							Background.Foreground:SetPoint("CENTER", Frame)
-							Background.Foreground:SetFrameStrata(frameStrata)
-							Background.Foreground:SetFrameLevel(frameLevel + 3)
-							addon.C.API.FrameUtil:SetDynamicSize(Background.Foreground, Background, 0, 0)
-						end
-
-						do -- BACKGROUND
-							Background.Background, Background.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Frame, frameStrata, NS.Variables.PATH .. "waypoint-context-background.png", "$parent.Background")
-							Background.Background:SetPoint("CENTER", Frame)
-							Background.Background:SetFrameStrata(frameStrata)
-							Background.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Background.Background, Background, -12.5, -12.5)
-						end
-					end
-
 					do -- CONTENT
 						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
-						Frame.Content:SetFrameLevel(frameLevel + 4)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, function(relativeWidth, relativeHeight) return relativeHeight * .5 end, function(relativeWidth, relativeHeight) return relativeHeight * .5 end)
+						Frame.Content:SetFrameLevel(frameLevel + 1)
+						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
-						do -- IMAGE FRAME
-							Content.ImageFrame = CreateFrame("Frame", "$parent.ImageFrame", Content)
-							Content.ImageFrame:SetPoint("CENTER", Content)
-							Content.ImageFrame:SetFrameStrata(frameStrata)
-							Content.ImageFrame:SetFrameLevel(frameLevel + 5)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.ImageFrame, Content, 0, 0)
+						do -- BACKGROUND
+							Content.Background = CreateFrame("Frame", "$parent.Background", Content)
+							Content.Background:SetPoint("CENTER", Content)
+							Content.Background:SetFrameStrata(frameStrata)
+							Content.Background:SetFrameLevel(frameLevel + 2)
+							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
 
-							local ImageFrame = Content.ImageFrame
+							local Background = Content.Background
 
 							--------------------------------
 
+							do -- FOREGROUND
+								Background.Foreground, Background.ForegroundTexture = addon.C.FrameTemplates:CreateTexture(Frame, frameStrata, NS.Variables.PATH .. "waypoint-context.png", "$parent.Foreground")
+								Background.Foreground:SetPoint("CENTER", Frame)
+								Background.Foreground:SetFrameStrata(frameStrata)
+								Background.Foreground:SetFrameLevel(frameLevel + 4)
+								addon.C.API.FrameUtil:SetDynamicSize(Background.Foreground, Background, 0, 0)
+							end
+
 							do -- BACKGROUND
-								ImageFrame.Background, ImageFrame.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, nil, "$parent.Background")
-								ImageFrame.Background:SetPoint("CENTER", ImageFrame)
-								ImageFrame.Background:SetFrameStrata(frameStrata)
-								ImageFrame.Background:SetFrameLevel(frameLevel + 6)
-								addon.C.API.FrameUtil:SetDynamicSize(ImageFrame.Background, ImageFrame, 0, 0)
+								Background.Background, Background.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Frame, frameStrata, NS.Variables.PATH .. "waypoint-context-background.png", "$parent.Background")
+								Background.Background:SetPoint("CENTER", Frame)
+								Background.Background:SetFrameStrata(frameStrata)
+								Background.Background:SetFrameLevel(frameLevel + 3)
+								addon.C.API.FrameUtil:SetDynamicSize(Background.Background, Background, -12.5, -12.5)
+							end
+						end
+
+						do -- MAIN
+							Content.Main = CreateFrame("Frame", "$parent.Main", Content)
+							Content.Main:SetPoint("CENTER", Content)
+							Content.Main:SetFrameStrata(frameStrata)
+							Content.Main:SetFrameLevel(frameLevel + 10)
+							addon.C.API.FrameUtil:SetDynamicSize(Content.Main, Content, function(relativeWidth, relativeHeight) return relativeHeight * .5 end, function(relativeWidth, relativeHeight) return relativeHeight * .5 end)
+
+							local Main = Content.Main
+
+							--------------------------------
+
+							do -- IMAGE FRAME
+								Main.ImageFrame = CreateFrame("Frame", "$parent.ImageFrame", Main)
+								Main.ImageFrame:SetPoint("CENTER", Main)
+								Main.ImageFrame:SetFrameStrata(frameStrata)
+								Main.ImageFrame:SetFrameLevel(frameLevel + 11)
+								addon.C.API.FrameUtil:SetDynamicSize(Main.ImageFrame, Main, 0, 0)
+
+								local ImageFrame = Main.ImageFrame
+
+								--------------------------------
+
+								do -- BACKGROUND
+									ImageFrame.Background, ImageFrame.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, nil, "$parent.Background")
+									ImageFrame.Background:SetPoint("CENTER", ImageFrame)
+									ImageFrame.Background:SetFrameStrata(frameStrata)
+									ImageFrame.Background:SetFrameLevel(frameLevel + 12)
+									addon.C.API.FrameUtil:SetDynamicSize(ImageFrame.Background, ImageFrame, 0, 0)
+								end
 							end
 						end
 					end
@@ -91,8 +103,9 @@ function NS.Prefabs:Load()
 
 				do -- REFERENCES
 					-- CORE
-					Frame.REF_BACKGROUND = Frame.Background
 					Frame.REF_CONTENT = Frame.Content
+					Frame.REF_BACKGROUND = Frame.Content.Background
+					Frame.REF_MAIN = Frame.Content.Main
 
 					-- BACKGROUND
 					Frame.REF_BACKGROUND_FOREGROUND = Frame.REF_BACKGROUND.Foreground
@@ -101,9 +114,9 @@ function NS.Prefabs:Load()
 					Frame.REF_BACKGROUND_BACKGROUND_TEXTURE = Frame.REF_BACKGROUND.BackgroundTexture
 
 					-- CONTENT
-					Frame.REF_CONTENT_IMAGE = Frame.REF_CONTENT.ImageFrame
-					Frame.REF_CONTENT_IMAGE_BACKGROUND = Frame.REF_CONTENT_IMAGE.Background
-					Frame.REF_CONTENT_IMAGE_BACKGROUND_TEXTURE = Frame.REF_CONTENT_IMAGE.BackgroundTexture
+					Frame.REF_MAIN_IMAGE = Frame.REF_MAIN.ImageFrame
+					Frame.REF_MAIN_IMAGE_BACKGROUND = Frame.REF_MAIN_IMAGE.Background
+					Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE = Frame.REF_MAIN_IMAGE.BackgroundTexture
 				end
 
 				do -- ANIMATIONS
@@ -131,8 +144,22 @@ function NS.Prefabs:Load()
 				do -- LOGIC
 					do -- FUNCTIONS
 						do -- SET
-							function Frame:SetImage(texture)
-								Frame.REF_CONTENT_IMAGE_BACKGROUND_TEXTURE:SetTexture(texture)
+							function Frame:SetImage(texture, recolor)
+								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetTexture(texture)
+							end
+
+							function Frame:SetAtlas(atlas, recolor)
+								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetAtlas(atlas)
+							end
+
+							function Frame:Recolor(color)
+								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetDesaturated(true)
+								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetVertexColor(color.r, color.g, color.b, color.a)
+							end
+
+							function Frame:Decolor()
+								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetDesaturated(false)
+								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetVertexColor(1, 1, 1, 1)
 							end
 
 							function Frame:SetTint(color)
@@ -140,9 +167,18 @@ function NS.Prefabs:Load()
 								Frame.REF_BACKGROUND_BACKGROUND_TEXTURE:SetVertexColor(color.r, color.g, color.b, color.a)
 							end
 
-							function Frame:SetInfo(image, tintColor)
-								Frame:SetImage(image)
+							function Frame:SetInfo(image, tintColor, opacity)
+								if image.type == "ATLAS" then
+									Frame:SetAtlas(image.path)
+								else
+									Frame:SetImage(image.path)
+								end
+
+								--------------------------------
+
 								Frame:SetTint(tintColor)
+								if image.recolor then Frame:Recolor(tintColor) else Frame:Decolor() end
+								if opacity then Frame.REF_CONTENT:SetAlpha(opacity) else Frame.REF_CONTENT:SetAlpha(1) end
 							end
 						end
 
@@ -169,7 +205,7 @@ function NS.Prefabs:Load()
 
 	do -- PINPOINT
 		do -- ARROW
-			PrefabRegistry:Add("Waypoint.Pinpoint.ArrowFrame", function(parent, frameStrata, frameLevel, data, name)
+			PrefabRegistry:Add("WaypointSystem.Pinpoint.ArrowFrame", function(parent, frameStrata, frameLevel, data, name)
 				local size, offset = data.size, data.offset
 
 				--------------------------------
@@ -206,7 +242,7 @@ function NS.Prefabs:Load()
 
 							do -- ELEMENTS
 								local function CreateArrow(name)
-									local Arrow = PrefabRegistry:Create("Waypoint.Pinpoint.ArrowFrame.Element", Content, frameStrata, frameLevel + 3, name)
+									local Arrow = PrefabRegistry:Create("WaypointSystem.Pinpoint.ArrowFrame.Element", Content, frameStrata, frameLevel + 3, name)
 									Arrow:SetSize(size, size)
 									Arrow:SetFrameStrata(frameStrata)
 									Arrow:SetFrameLevel(frameLevel + 3)
@@ -305,7 +341,7 @@ function NS.Prefabs:Load()
 				return Frame
 			end)
 
-			PrefabRegistry:Add("Waypoint.Pinpoint.ArrowFrame.Element", function(parent, frameStrata, frameLevel, name)
+			PrefabRegistry:Add("WaypointSystem.Pinpoint.ArrowFrame.Element", function(parent, frameStrata, frameLevel, name)
 				local Frame = CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
@@ -342,14 +378,14 @@ function NS.Prefabs:Load()
 
 						function Frame:Animation_Playback()
 							do -- START
-								addon.C.Animation:Alpha( { ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent } )
-								addon.C.Animation:Translate( { ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent } )
+								addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+								addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 							end
 
 							do -- END
 								addon.C.Libraries.AceTimer:ScheduleTimer(function()
 									if not Frame:Animation_Playback_StopEvent() then
-										addon.C.Animation:Alpha( { ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = Frame.Content:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent } )
+										addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = Frame.Content:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 									end
 								end, .25)
 							end
