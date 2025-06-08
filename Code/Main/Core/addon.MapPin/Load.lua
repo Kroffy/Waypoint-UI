@@ -6,19 +6,22 @@ local L = addon.C.AddonInfo.Locales
 
 --------------------------------
 
-addon.Main = {}
-local NS = addon.Main; addon.Main = NS
+addon.MapPin = {}
+local NS = addon.MapPin; addon.MapPin = NS
 
 --------------------------------
 
 function NS:Load()
+	local function Variables()
+		NS.Variables:Load()
+	end
+
 	local function Modules()
-		addon.ContextIcon:Load()
-		addon.MapPin:Load()
-        addon.WaypointSystem:Load()
+		NS.Script:Load()
 	end
 
 	--------------------------------
 
+	Variables()
 	Modules()
 end

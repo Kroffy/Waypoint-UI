@@ -27,6 +27,7 @@ do -- CONSTANTS
 		NS.Variables.General.REGISTRY_NAME = "WaypointUI"
 		NS.Variables.General.ADDON_FRAME_NAME = "WaypointFrame"
 		NS.Variables.General.ADDON_ICON = "Interface/AddOns/" .. NS.Variables.General.REGISTRY_NAME .. "/Art/Icons/logo-flat-light.png"
+		NS.Variables.General.ADDON_ICON_ALT = "Interface/AddOns/" .. NS.Variables.General.REGISTRY_NAME .. "/Art/Icons/logo-flat-light.png"
 
 		NS.Variables.General.ADDON_PATH = "Interface/AddOns/" .. NS.Variables.General.REGISTRY_NAME .. "/"
 		NS.Variables.General.ADDON_PATH_FONT = "Interface/AddOns/" .. NS.Variables.General.REGISTRY_NAME .. "/Art/Fonts/"

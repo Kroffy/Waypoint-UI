@@ -53,6 +53,8 @@ function NS.Elements:Load()
 
 						--------------------------------
 
+						local MARKER_HEIGHT = 1000
+
 						do -- CONTEXT FRAME
 							Content.ContextFrame = PrefabRegistry:Create("WaypointSystem.General.ContextFrame", Content, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL + 3, "$parent.ContextFrame")
 							Content.ContextFrame:SetPoint("CENTER", Content)
@@ -121,7 +123,8 @@ function NS.Elements:Load()
 
 						do -- MARKER
 							Content.Marker = CreateFrame("Frame", "$parent.Marker", Content)
-							Content.Marker:SetWidth(25)
+							Content.Marker:SetWidth(17.5)
+							Content.Marker:SetHeight(MARKER_HEIGHT)
 							Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Content.Marker:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
 
@@ -130,8 +133,8 @@ function NS.Elements:Load()
 							--------------------------------
 
 							do -- BACKGROUND
-								Marker.Background, Marker.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Marker, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line.png", "$parent.Background")
-								Marker.Background:SetPoint("CENTER", Marker)
+								Marker.Background, Marker.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Marker, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line-half.png", "$parent.Background")
+								Marker.Background:SetPoint("CENTER", Marker, 0, -MARKER_HEIGHT / 2)
 								Marker.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 								Marker.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
 								addon.C.API.FrameUtil:SetDynamicSize(Marker.Background, Marker, 0, 0)

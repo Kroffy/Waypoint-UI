@@ -904,6 +904,7 @@ function NS.Prefabs:Load()
 
 									do -- ELEMENTS
 										local INFO_WIDTH_MODIFIER = .61
+										local INFO_TEXT_WIDTH_MAX = 200
 										local ACTION_WIDTH_MODIFIER = 1 - INFO_WIDTH_MODIFIER
 
 										--------------------------------
@@ -931,13 +932,17 @@ function NS.Prefabs:Load()
 												--------------------------------
 
 												do -- LAYOUT GROUP
-													Info_Content.LayoutGroup, Info_Content.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Info_Content, { point = "TOPLEFT", direction = "vertical", resize = true, padding = PADDING * .5, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+													Info_Content.LayoutGroup, Info_Content.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Info_Content, { point = "TOPLEFT", direction = "vertical", resize = true, padding = PADDING * .25, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
 													Info_Content.LayoutGroup:SetPoint("CENTER", Info_Content)
 													Info_Content.LayoutGroup:SetFrameStrata(frameStrata)
 													Info_Content.LayoutGroup:SetFrameLevel(frameLevel + 5)
 													addon.C.API.FrameUtil:SetDynamicSize(Info_Content.LayoutGroup, Info_Content, 0, nil)
 													addon.C.API.FrameUtil:SetDynamicSize(Frame, Info_Content.LayoutGroup, nil, function(relativeWidth, relativeHeight)
-														local new = relativeHeight + PADDING_CONTENT + 5; return math.max(new, MIN_HEIGHT)
+														local new = relativeHeight + PADDING_CONTENT + 5
+
+														--------------------------------
+
+														return math.max(new, MIN_HEIGHT)
 													end)
 													Frame.LGS_INFO = Info_Content.LayoutGroup_Sort
 
@@ -947,8 +952,8 @@ function NS.Prefabs:Load()
 
 													do -- ELEMENTS
 														do -- TITLE
-															Info_LayoutGroup.Title = addon.C.FrameTemplates:CreateText(Info_LayoutGroup, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Title", nil, "GameFontNormal")
-															addon.C.API.FrameUtil:SetDynamicTextSize(Info_LayoutGroup.Title, Info_LayoutGroup, nil, 10000)
+															Info_LayoutGroup.Title = addon.C.FrameTemplates:CreateText(Info_LayoutGroup, addon.CREF:GetSharedColor().RGB_WHITE, 12, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Title", nil, "GameFontNormal")
+															addon.C.API.FrameUtil:SetDynamicTextSize(Info_LayoutGroup.Title, Info_LayoutGroup, INFO_TEXT_WIDTH_MAX, 10000)
 															Info_LayoutGroup:AddElement(Info_LayoutGroup.Title)
 														end
 
@@ -973,7 +978,7 @@ function NS.Prefabs:Load()
 
 														do -- SUBTITLE
 															Info_LayoutGroup.Subtitle = addon.C.FrameTemplates:CreateText(Info_LayoutGroup, addon.CREF:GetSharedColor().RGB_WHITE, 11, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Subtitle", nil, "GameFontNormal")
-															addon.C.API.FrameUtil:SetDynamicTextSize(Info_LayoutGroup.Subtitle, Info_LayoutGroup, nil, 10000)
+															addon.C.API.FrameUtil:SetDynamicTextSize(Info_LayoutGroup.Subtitle, Info_LayoutGroup, INFO_TEXT_WIDTH_MAX, 10000)
 															Info_LayoutGroup.Subtitle:SetAlpha(.5)
 															Info_LayoutGroup:AddElement(Info_LayoutGroup.Subtitle)
 														end
@@ -1405,6 +1410,43 @@ function NS.Prefabs:Load()
 
 					do -- REFERENCES
 						Frame.REF_DROPDOWN = Frame.REF_MAIN_ACTION_CONTENT.Dropdown
+					end
+
+					do -- SETUP
+						Frame:OnLeave(true)
+					end
+
+					--------------------------------
+
+					return Frame
+				end)
+
+				PrefabRegistry:Add("C.Config.Main.Setting.Element.Color", function(parent, frameStrata, frameLevel, data, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Template", parent, frameStrata, frameLevel, data, name)
+					Frame:SetFrameStrata(frameStrata)
+					Frame:SetFrameLevel(frameLevel)
+
+					--------------------------------
+
+					do -- ELEMENTS
+						do -- ACTION CONTENT
+							local Action_Content = Frame.REF_MAIN_ACTION_CONTENT
+							local Action_Content_FrameLevel = Action_Content:GetFrameLevel()
+
+							--------------------------------
+
+							do -- COLOR
+								Action_Content.Color = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Color", Action_Content, frameStrata, Action_Content_FrameLevel + 1, { }, "$parent.Color")
+								Action_Content.Color:SetSize(125, Frame.VAR_ELEMENT_HEIGHT * 1.5)
+								Action_Content.Color:SetPoint("RIGHT", Action_Content)
+								Action_Content.Color:SetFrameStrata(frameStrata)
+								Action_Content.Color:SetFrameLevel(Action_Content_FrameLevel + 1)
+							end
+						end
+					end
+
+					do -- REFERENCES
+						Frame.REF_COLOR = Frame.REF_MAIN_ACTION_CONTENT.Color
 					end
 
 					do -- SETUP

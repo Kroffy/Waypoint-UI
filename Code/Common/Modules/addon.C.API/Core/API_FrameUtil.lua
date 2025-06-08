@@ -270,8 +270,8 @@ do
 
 			local stringWidth, stringHeight = NS.Util:GetStringSize(frame, width, height)
 
-			frame:SetWidth((setMaxWidth and width or stringWidth) + 5)
-			frame:SetHeight((setMaxHeight and height or stringHeight) + 5)
+			frame:SetWidth((setMaxWidth and width or stringWidth) + 1)
+			frame:SetHeight((setMaxHeight and height or stringHeight) + 1)
 		end
 
 		--------------------------------

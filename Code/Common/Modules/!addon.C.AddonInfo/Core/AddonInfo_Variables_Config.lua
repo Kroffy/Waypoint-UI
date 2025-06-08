@@ -23,11 +23,12 @@ do  -- CONSTANTS
 		NS.Variables.Config.TYPE_TAB = "Tab"
 		NS.Variables.Config.TYPE_TITLE = "Title"
 		NS.Variables.Config.TYPE_CONTAINER = "Container"
+		NS.Variables.Config.TYPE_SECTION = "Section"
 		NS.Variables.Config.TYPE_RANGE = "Range"
 		NS.Variables.Config.TYPE_BUTTON = "Button"
 		NS.Variables.Config.TYPE_CHECKBOX = "Checkbox"
 		NS.Variables.Config.TYPE_DROPDOWN = "Dropdown"
-		NS.Variables.Config.TYPE_SECTION = "Section"
+		NS.Variables.Config.TYPE_COLOR = "Color"
 
 		NS.Variables.Config.IMAGE_TYPE_LARGE = "Large"
 		NS.Variables.Config.IMAGE_TYPE_SMALL = "Small"
@@ -53,6 +54,7 @@ do  -- CONSTANTS
 		-- 	local rangeValue = 0
 		-- 	local checkboxValue = false
 		-- 	local dropdownValue = 1
+		-- 	local colorValue = { r = 1, g = 1, b = 1, a = 1 }
 
 		-- 	NS.Variables.Config.TABLE = {
 		-- 		[1] = {
@@ -123,7 +125,17 @@ do  -- CONSTANTS
 		--  						["var_set"] = function(value) dropdownValue = value; return true end, -- Return true/false to close the context menu on option select
 		--  						["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
-		-- 						}
+		-- 						},
+		-- 						[6] = {
+		-- 							["name"] = "Color",
+		-- 							["type"] = NS.Variables.Config.TYPE_COLOR,
+		-- 							["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
+		-- 							["indent"] = 0,
+		-- 							["var_get"] = function() return colorValue end,
+		-- 							["var_set"] = function(value) colorValue = value end,
+		-- 							["var_disabled"] = function() return false end,
+		-- 							["var_hidden"] = function() return false end,
+		-- 						},
 		-- 					}
 		-- 				}
 		-- 			}
@@ -168,6 +180,44 @@ do  -- CONSTANTS
 						}
 					},
 					[3] = {
+						["name"] = L["Config - Appearance - WaypointSystem - General"],
+						["type"] = NS.Variables.Config.TYPE_CONTAINER,
+						["var_transparent"] = false,
+						["var_hidden"] = function() return false end,
+						["elements"] = {
+							[1] = {
+								["name"] = L["Config - Appearance - WaypointSystem - General - Transition Distance"],
+								["type"] = NS.Variables.Config.TYPE_RANGE,
+								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - Appearance - WaypointSystem - General - Transition Distance - Description"]),
+								["indent"] = 0,
+								["var_range_min"] = 50,
+								["var_range_max"] = 500,
+								["var_range_step"] = 25,
+								["var_range_text"] = function(value) return L["Distance - Prefix"] .. string.format("%.0f", value) .. L["Distance - Suffix"] end,
+								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WS_DISTANCE_TRANSITION") end,
+								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TRANSITION end,
+								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_TRANSITION = value end,
+								["var_disabled"] = function() return false end,
+								["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 end,
+							},
+							[2] = {
+								["name"] = L["Config - Appearance - WaypointSystem - General - Hide Distance"],
+								["type"] = NS.Variables.Config.TYPE_RANGE,
+								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - Appearance - WaypointSystem - General - Hide Distance - Description"]),
+								["indent"] = 0,
+								["var_range_min"] = 1,
+								["var_range_max"] = 100,
+								["var_range_step"] = 1,
+								["var_range_text"] = function(value) return L["Distance - Prefix"] .. string.format("%.0f", value) .. L["Distance - Suffix"] end,
+								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WS_DISTANCE_HIDE") end,
+								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_HIDE end,
+								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_HIDE = value end,
+								["var_disabled"] = function() return false end,
+								["var_hidden"] = function() return false end,
+							}
+						}
+					},
+					[4] = {
 						["name"] = L["Config - Appearance - WaypointSystem - Waypoint"],
 						["type"] = NS.Variables.Config.TYPE_CONTAINER,
 						["var_transparent"] = false,
@@ -190,7 +240,7 @@ do  -- CONSTANTS
 							},
 						}
 					},
-					[4] = {
+					[5] = {
 						["name"] = L["Config - Appearance - WaypointSystem - Pinpoint"],
 						["type"] = NS.Variables.Config.TYPE_CONTAINER,
 						["var_transparent"] = false,

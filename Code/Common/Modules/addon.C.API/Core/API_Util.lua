@@ -1268,6 +1268,57 @@ do
 end
 
 --------------------------------
+-- BLIZZARD
+--------------------------------
+
+do
+	-- Blizzard FrameXML — https://wowpedia.fandom.com/wiki/Using_the_ColorPickerFrame
+
+	-- Shows Blizzard's Color Picker frame.
+	---@param initialColor table
+	---@param callback function
+	---@param opacityCallback function
+	---@param confirmCallback function
+	---@param cancelCallback function
+	function NS.Util:Blizzard_ShowColorPicker(initialColor, callback, opacityCallback, confirmCallback, cancelCallback)
+		local info = { r = initialColor.r, g = initialColor.g, b = initialColor.b, }
+		ColorPickerFrame:SetupColorPickerAndShow(info)
+		ColorPickerFrame.opacity = initialColor.a
+
+		ColorPickerFrame.func = callback
+		ColorPickerFrame.opacityFunc = opacityCallback
+		ColorPickerFrame.swatchFunc = confirmCallback
+		ColorPickerFrame.cancelFunc = cancelCallback
+
+		ColorPickerFrame:Hide()
+		ColorPickerFrame:Show()
+	end
+
+	-- Hides Blizzard's Color Picker frame.
+	----
+	function NS.Util:Blizzard_HideColorPicker()
+		ColorPickerFrame:Hide()
+	end
+
+	function NS.Util:Blizzard_AddConfirmPopup(id, text, button1Text, button2Text, acceptCallback, cancelCallback, hideOnEscape)
+		StaticPopupDialogs[id] = {
+			text = text,
+			button1 = button1Text,
+			button2 = button2Text,
+			onAccept = acceptCallback,
+			onCancel = cancelCallback,
+			hideOnEscape = hideOnEscape,
+			timeout = 0,
+			preferredIndex = 3,
+		}
+	end
+
+	function NS.Util:Blizzard_ShowPopup(id, ...)
+		StaticPopup_Show(id, ...)
+	end
+end
+
+--------------------------------
 -- NPC
 --------------------------------
 

@@ -1416,5 +1416,265 @@ function NS.Prefabs:Load()
 				return Frame
 			end)
 		end
+
+		do -- COLOR INPUT
+			PrefabRegistry:Add("C.FrameTemplates.Blizzard.Color", function(parent, frameStrata, frameLevel, data, name)
+				local DEFAULT_BACKGROUND_TEXTURE = data.DEFAULT_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-background.png"
+				local DEFAULT_IMAGE_TEXTURE = data.DEFAULT_IMAGE_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-input-background.png"
+				local HIGHLIGHTED_BACKGROUND_TEXTURE = data.HIGHLIGHTED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-background-highlighted.png"
+				local HIGHLIGHTED_IMAGE_TEXTURE = data.HIGHLIGHTED_IMAGE_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-input-background-highlighted.png"
+				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-background-clicked.png"
+				local CLICKED_IMAGE_TEXTURE = data.CLICKED_IMAGE_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-input-background-clicked.png"
+
+				--------------------------------
+
+				local Frame = addon.C.FrameTemplates:CreateButton(parent, name)
+				Frame:SetFrameStrata(frameStrata)
+				Frame:SetFrameLevel(frameLevel)
+
+				--------------------------------
+
+				do -- ELEMENTS
+					do -- CONTENT
+						local Content = Frame.REF_CONTENT
+
+						--------------------------------
+
+						do -- BACKGROUND
+							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .075, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background:SetPoint("CENTER", Content)
+							Content.Background:SetFrameStrata(frameStrata)
+							Content.Background:SetFrameLevel(frameLevel + 2)
+							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
+						end
+
+						do -- COLOR
+							Content.Color = CreateFrame("Frame", "$parent.Color", Content)
+							Content.Color:SetPoint("CENTER", Content)
+							Content.Color:SetFrameStrata(frameStrata)
+							Content.Color:SetFrameLevel(frameLevel + 3)
+							addon.C.API.FrameUtil:SetDynamicSize(Content.Color, Content, 5, 5)
+
+							local Color = Content.Color
+
+							--------------------------------
+
+							do -- BACKGROUND
+								Color.Background, Color.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Color, frameStrata, DEFAULT_IMAGE_TEXTURE, 125, .0325, "$parent.Background")
+								Color.Background:SetPoint("CENTER", Color)
+								Color.Background:SetFrameStrata(frameStrata)
+								Color.Background:SetFrameLevel(frameLevel + 4)
+								addon.C.API.FrameUtil:SetDynamicSize(Color.Background, Color, 0, 0)
+							end
+						end
+					end
+				end
+
+				do -- REFERENCES
+					-- CORE
+					Frame.REF_BACKGROUND = Frame.REF_CONTENT.Background
+					Frame.REF_COLOR = Frame.REF_CONTENT.Color
+
+					-- BACKGROUND
+					Frame.REF_BACKGROUND_TEXTURE = Frame.REF_CONTENT.BackgroundTexture
+
+					-- COLOR
+					Frame.REF_COLOR_BACKGROUND = Frame.REF_COLOR.Background
+					Frame.REF_COLOR_BACKGROUND_TEXTURE = Frame.REF_COLOR.BackgroundTexture
+				end
+
+				do -- ANIMATIONS
+					local function SetStyle(backgroundTexture, colorTexture)
+						Frame.REF_BACKGROUND_TEXTURE:SetTexture(backgroundTexture)
+						Frame.REF_COLOR_BACKGROUND_TEXTURE:SetTexture(colorTexture)
+					end
+
+					--------------------------------
+
+					do -- ON ENTER
+						function Frame:Animation_OnEnter_StopEvent()
+							return not Frame.isMouseOver
+						end
+
+						function Frame:Animation_OnEnter(skipAnimation)
+							SetStyle(HIGHLIGHTED_BACKGROUND_TEXTURE, HIGHLIGHTED_IMAGE_TEXTURE)
+						end
+					end
+
+					do -- ON LEAVE
+						function Frame:Animation_OnLeave_StopEvent()
+							return Frame.isMouseOver
+						end
+
+						function Frame:Animation_OnLeave(skipAnimation)
+							SetStyle(DEFAULT_BACKGROUND_TEXTURE, DEFAULT_IMAGE_TEXTURE)
+						end
+					end
+
+					do -- ON MOUSE DOWN
+						function Frame:Animation_OnMouseDown_StopEvent()
+							return not Frame.isMouseDown
+						end
+
+						function Frame:Animation_OnMouseDown(skipAnimation)
+							SetStyle(CLICKED_BACKGROUND_TEXTURE, CLICKED_IMAGE_TEXTURE)
+						end
+					end
+
+					do -- ON MOUSE UP
+						function Frame:Animation_OnMouseUp_StopEvent()
+							return Frame.isMouseDown
+						end
+
+						function Frame:Animation_OnMouseUp(skipAnimation)
+							if Frame.isMouseOver then
+								Frame:Animation_OnEnter()
+							else
+								Frame:Animation_Onleave()
+							end
+						end
+					end
+				end
+
+				do -- LOGIC
+					Frame.color = { r = nil, g = nil, b = nil, a = nil }
+
+					Frame.onValueChangedCallbacks = {}
+					Frame.onConfirmCallbacks = {}
+					Frame.onCloseCallbacks = {}
+
+					--------------------------------
+
+					do -- FUNCTIONS
+						do -- SET
+							function Frame:SetColor(color)
+								Frame.color.r = color.r
+								Frame.color.g = color.g
+								Frame.color.b = color.b
+								Frame.color.a = color.a
+
+								--------------------------------
+
+								Frame.REF_COLOR_BACKGROUND_TEXTURE:SetVertexColor(color.r, color.g, color.b, color.a)
+							end
+						end
+
+						do -- GET
+							function Frame:GetColor()
+								return Frame.color
+							end
+						end
+
+						do -- LOGIC
+							function Frame:UpdateColor(userInput)
+								local r, g, b = ColorPickerFrame:GetColorRGB()
+								local a = ColorPickerFrame:GetColorAlpha()
+								local newColor = { r = r, g = g, b = b, a = a }
+
+								Frame:SetColor(newColor)
+
+								--------------------------------
+
+								do -- ON VALUE CHANGED
+									local onValueChangedCallbacks = Frame.onValueChangedCallbacks
+
+									if #onValueChangedCallbacks >= 1 then
+										for callback = 1, #onValueChangedCallbacks do
+											onValueChangedCallbacks[callback](Frame, newColor, userInput)
+										end
+									end
+								end
+							end
+
+							function Frame:ColorPicker_OnColorChanged()
+								Frame:UpdateColor(true)
+							end
+
+							function Frame:ColorPicker_OnOpacityChanged()
+								Frame:UpdateColor()
+							end
+
+							function Frame:ColorPicker_OnConfirm()
+								Frame:UpdateColor()
+
+								--------------------------------
+
+								do -- ON CONFIRM
+									local onConfirmCallbacks = Frame.onConfirmCallbacks
+
+									if #onConfirmCallbacks >= 1 then
+										for callback = 1, #onConfirmCallbacks do
+											onConfirmCallbacks[callback](Frame)
+										end
+									end
+								end
+							end
+
+							function Frame:ColorPicker_OnCancel(restore)
+								if restore then
+									Frame:SetColor(restore)
+								end
+
+								--------------------------------
+
+								do -- ON CLOSE
+									local onCloseCallbacks = Frame.onCloseCallbacks
+
+									if #onCloseCallbacks >= 1 then
+										for callback = 1, #onCloseCallbacks do
+											onCloseCallbacks[callback](Frame)
+										end
+									end
+								end
+							end
+
+							function Frame:OpenColorPicker()
+								addon.C.API.Util:Blizzard_ShowColorPicker(Frame.color, Frame.ColorPicker_OnColorChanged, Frame.ColorPicker_OnOpacityChanged, Frame.ColorPicker_OnConfirm, Frame.ColorPicker_OnCancel)
+							end
+
+							function Frame:ToggleColorPicker()
+								if ColorPickerFrame:IsShown() then
+									addon.C.API.Util:Blizzard_HideColorPicker()
+								else
+									Frame:OpenColorPicker()
+								end
+							end
+						end
+					end
+
+					do -- EVENTS
+						local function Event_OnEnter(frame, skipAnimation)
+							Frame:Animation_OnEnter(skipAnimation)
+						end
+
+						local function Event_OnLeave(frame, skipAnimation)
+							Frame:Animation_OnLeave(skipAnimation)
+						end
+
+						local function Event_OnMouseDown(frame, skipAnimation)
+							Frame:Animation_OnMouseDown(skipAnimation)
+						end
+
+						local function Event_OnMouseUp(frame, skipAnimation)
+							Frame:Animation_OnMouseUp(skipAnimation)
+						end
+
+						table.insert(Frame.enterCallbacks, Event_OnEnter)
+						table.insert(Frame.leaveCallbacks, Event_OnLeave)
+						table.insert(Frame.mouseDownCallbacks, Event_OnMouseDown)
+						table.insert(Frame.mouseUpCallbacks, Event_OnMouseUp)
+						Frame:SetClick(Frame.ToggleColorPicker)
+					end
+				end
+
+				do -- SETUP
+					Frame:OnLeave(true)
+				end
+
+				--------------------------------
+
+				return Frame
+			end)
+		end
 	end
 end

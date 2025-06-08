@@ -36,6 +36,8 @@ do -- CONSTANTS
 				WS_WAYPOINT_SCALE = 1,
 				WS_PINPOINT_SCALE = 1,
 				WS_PINPOINT_DETAIL = false,
+				WS_DISTANCE_TRANSITION = 225,
+				WS_DISTANCE_HIDE = 25,
 
 				-- AUDIO
 				AUDIO_GLOBAL = true,
@@ -56,7 +58,7 @@ do -- CONSTANTS
 
 		NS.Variables.Database.LOCAL_PERSISTENT_DEFAULT = {
 			profile = {
-
+				SAVED_WAY = nil
 			}
 		}
 	end

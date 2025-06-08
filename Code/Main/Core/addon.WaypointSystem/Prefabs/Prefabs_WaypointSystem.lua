@@ -178,7 +178,7 @@ function NS.Prefabs:Load()
 
 								Frame:SetTint(tintColor)
 								if image.recolor then Frame:Recolor(tintColor) else Frame:Decolor() end
-								if opacity then Frame.REF_CONTENT:SetAlpha(opacity) else Frame.REF_CONTENT:SetAlpha(1) end
+								if opacity then Frame:SetAlpha(opacity) else Frame:SetAlpha(1) end
 							end
 						end
 
@@ -285,8 +285,11 @@ function NS.Prefabs:Load()
 								PlaybackSession.loopTimer:Cancel()
 							end
 
-							Frame:Animation_Playback_Cycle()
+							for i = 1, #Frame.Elements do
+								Frame.Elements[i]:Animation_Playback_Pre()
+							end
 
+							Frame:Animation_Playback_Cycle()
 							PlaybackSession.loopTimer = C_Timer.NewTicker(1.25, function()
 								Frame:Animation_Playback_Cycle()
 							end, nil)
@@ -302,7 +305,7 @@ function NS.Prefabs:Load()
 
 						function Frame:Animation_Playback_Cycle()
 							for i = 1, #Frame.Elements do
-								addon.C.Libraries.AceTimer:ScheduleTimer(function() Frame.Elements[i].Animation_Playback(PlaybackSession.playbackID) end, i * .075)
+								addon.C.Libraries.AceTimer:ScheduleTimer(function() Frame.Elements[i]:Animation_Playback(PlaybackSession.playbackID) end, i * .075)
 							end
 						end
 					end
@@ -373,7 +376,7 @@ function NS.Prefabs:Load()
 				do -- ANIMATIONS
 					do -- PLAYBACK
 						function Frame:Animation_Playback_StopEvent()
-							return not Frame:IsVisible()
+							return not Frame:IsShown()
 						end
 
 						function Frame:Animation_Playback()
@@ -389,6 +392,15 @@ function NS.Prefabs:Load()
 									end
 								end, .25)
 							end
+						end
+
+						function Frame:Animation_Playback_Pre()
+							addon.C.Animation:CancelAll(Frame.Content)
+
+							--------------------------------
+
+							Frame.Content:SetAlpha(0)
+							Frame.Content:SetPoint("CENTER", Frame, "CENTER", 0, 15)
 						end
 					end
 				end

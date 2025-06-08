@@ -241,6 +241,23 @@ function NS.Script:Load()
 
 					return Frame
 				end
+
+				function Callback.Constructor:Create_Setting_Element_Color(parent, data, name)
+					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
+
+					--------------------------------
+
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Color", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
+					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+
+					--------------------------------
+
+					parent:AddElement(Frame)
+
+					--------------------------------
+
+					return Frame
+				end
 			end
 
 			do -- FUNCTIONS (MAIN)
@@ -446,6 +463,30 @@ function NS.Script:Load()
 
 							table.insert(eventResponder.onConfigUpdateCallbacks, function()
 								newFrame:SetShown(not Check_Hidden())
+							end)
+						end
+						if type == addon.C.AddonInfo.Variables.Config.TYPE_COLOR then
+							newFrame = Callback.Constructor:Create_Setting_Element_Color(parent, { indent = indent, transparent = var_transparent }, name)
+							newFrame:SetTitle(name, imageInfo, description)
+
+							local color = newFrame.REF_COLOR
+							color:SetColor(Get())
+
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
+
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
+								newFrame:SetShown(not Check_Hidden())
+								color:SetColor(Get())
+							end)
+							table.insert(color.onValueChangedCallbacks, function(self, value, userInput)
+								if userInput then
+									Set(value)
+								end
+							end)
+							table.insert(color.onCloseCallbacks, function()
+								if NS.Variables.ConfigReady then
+									CallbackRegistry:Trigger("C_CONFIG_UPDATE")
+								end
 							end)
 						end
 

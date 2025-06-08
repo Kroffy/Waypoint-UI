@@ -15,4 +15,5 @@
 	<Script file="Core/AddonInfo_Variables_SharedVariables.lua"/>
 	<Script file="Core/AddonInfo_Variables_Sound.lua"/>
 	<Script file="Core/AddonInfo_Variables_Config.lua"/>
+	<Script file="Core/AddonInfo_Variables_SlashCommand.lua"/>
 </Ui>

@@ -31,6 +31,9 @@ function NS:Load()
 
 		-- CONFIG
 		C_Timer.After(.1, NS.Config.Load)
+
+		-- ADDITIONAL
+		NS.SlashCommand:Load()
 	end
 
 	--------------------------------

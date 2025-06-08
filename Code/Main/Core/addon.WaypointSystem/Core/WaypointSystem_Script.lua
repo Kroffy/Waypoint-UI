@@ -82,6 +82,118 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
+		do -- 3D
+			---@param framePosX number
+			---@param framePosY number
+			---@param screenWidth number
+			---@param screenHeight number
+			---@param horizontalDistance number
+			---@param elevationDiff number
+			---@param fov number
+			function Callback:GetPerspectiveRotation(framePosX, framePosY, screenWidth, screenHeight, horizontalDistance, elevationDiff, fov)
+				local fovRad       = math.rad(fov)
+				local f            = (screenWidth * 0.5) / math.tan(fovRad * 0.5)
+
+				local ratio        = elevationDiff / horizontalDistance
+				local centerX      = screenWidth * 0.5
+				local centerY      = screenHeight * 0.5
+				local dx           = framePosX - centerX
+				local dy           = framePosY - centerY
+
+				local yawFromPixel = math.atan(dx / f)
+				local scaledYaw    = yawFromPixel * (horizontalDistance / (horizontalDistance + f)) * (ratio / 1 * 1.625)
+
+				return -scaledYaw
+			end
+
+			---@param distance number Distance from camera to object.
+			---@param referenceDistance number Reference distance for referenceScale.
+			---@param referenceScale number Desired scale at referenceDistance.
+			---@param minScale number Absolute minimum scale.
+			---@param maxScale number Absolute maximum scale.
+			---@param exponent number Controls falloff curve (default = 1).
+			function Callback:GetDistanceScale(distance, referenceDistance, referenceScale, minScale, maxScale, exponent)
+				local distance = distance
+				local referenceDistance = referenceDistance
+				local baselineScale = referenceScale
+				local minScale = minScale
+				local maxScale = maxScale
+				local exponent = exponent or 1
+
+				--------------------------------
+
+				if distance <= 0 then
+					return maxScale
+				end
+
+				local rawScale = baselineScale * (referenceDistance / distance) ^ exponent
+
+				if rawScale < minScale then
+					return minScale
+				elseif rawScale > maxScale then
+					return maxScale
+				else
+					return rawScale
+				end
+			end
+
+			function Callback:GetSuperTrackedMapElement()
+				for i = 1, WorldMapFrame.ScrollContainer.Child:GetNumChildren() do
+					local element = select(i, WorldMapFrame.ScrollContainer.Child:GetChildren())
+
+					--------------------------------
+
+					if element.selected == true or element.superTracked == true or element.isSuperTracked == true then
+						return element
+					end
+				end
+			end
+
+			function Callback:GetSuperTrackedPosition()
+				local result = {
+					mapID = nil,
+					normalizedX = nil,
+					normalizedY = nil,
+					continentID = nil,
+					worldPos = nil,
+				}
+
+				--------------------------------
+
+				local superTrackedMapElement = Callback:GetSuperTrackedMapElement()
+				local mapID = C_Map.GetBestMapForUnit("player")
+
+				if superTrackedMapElement then
+					result.normalizedX, result.normalizedY = superTrackedMapElement.normalizedX, superTrackedMapElement.normalizedY
+					result.continentID, result.worldPos = C_Map.GetWorldPosFromMapPos(mapID, CreateVector2D(result.normalizedX, result.normalizedY))
+				end
+
+				--------------------------------
+
+				return result
+			end
+
+			function Callback:GetDistance2D()
+				local mapID = C_Map.GetBestMapForUnit("player")
+				local pinInfo = Callback:GetSuperTrackedPosition()
+				local _, playerWorldPos = C_Map.GetWorldPosFromMapPos(mapID, CreateVector2D(C_Map.GetPlayerMapPosition(mapID, "player").x, C_Map.GetPlayerMapPosition(mapID, "player").y))
+
+				local dx = pinInfo.worldPos.x - playerWorldPos.x
+				local dy = pinInfo.worldPos.y - playerWorldPos.y
+				local distance = math.sqrt(dx * dx + dy * dy)
+
+				return distance
+			end
+
+			function Callback:GetElevation()
+				local d3 = C_Navigation.GetDistance()
+				local d2 = Callback:GetDistance2D()
+				local elevation = math.sqrt(d3 * d3 - d2 * d2)
+
+				return elevation
+			end
+		end
+
 		do -- GET
 			function Callback:GetSuperTrackingInfo()
 				local superTrackingInfo = {
@@ -117,12 +229,17 @@ function NS.Script:Load()
 				--------------------------------
 
 				local pinInfo = Callback:GetPinInfo()
+				local isWay = WaypointUI_IsWay()
 
 				if pinInfo.pinType then
 					if pinInfo.poiInfo and pinInfo.poiInfo.atlasName then
 						texture.type = "ATLAS"
 						texture.recolor = true
 						texture.path = pinInfo.poiInfo.atlasName
+					elseif isWay then
+						texture.type = "TEXTURE"
+						texture.recolor = false
+						texture.path = addon.CREF:GetAddonPath() .. "Art/ContextIcons/map-pin-way.png"
 					elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
 						texture.type = "TEXTURE"
 						texture.recolor = false
@@ -276,8 +393,10 @@ function NS.Script:Load()
 
 				local poiInfo = poiID and C_AreaPoiInfo.GetAreaPOIInfo(nil, poiID)
 				local pinName, pinDescription = C_SuperTrack.GetSuperTrackedItemName() -- Name of super tracked (e.g. The Stockades)
+				local isWay = WaypointUI_IsWay()
 
 				pinInfo = {
+					["isWay"] = isWay,
 					["pinType"] = pinType,
 					["poiType"] = poiType,
 					["poiID"] = poiID,
@@ -294,6 +413,11 @@ function NS.Script:Load()
 			end
 
 			function Callback:GetCurrentState()
+				local CONFIG_WS_DISTANCE_TRANSITION = addon.C.Database.Variables.DB_GLOBAL.profile.WS_DISTANCE_TRANSITION
+				local CONFIG_WS_DISTANCE_HIDE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_DISTANCE_HIDE
+
+				--------------------------------
+
 				local SUPER_TRACK_INFO = Callback:GetSuperTrackingInfo()
 				local QUEST_INFO = Callback:GetQuestInfo()
 
@@ -307,8 +431,8 @@ function NS.Script:Load()
 				local isValid = (SUPER_TRACK_INFO.valid)
 				local isDefault = (SUPER_TRACK_INFO.texture == "3308452")
 				local isPin = (SUPER_TRACK_INFO.texture == "3500068")
-				local isRangeProximity = (distance < 375)
-				local isRangeValid = (distance > 25)
+				local isRangeProximity = (distance < CONFIG_WS_DISTANCE_TRANSITION)
+				local isRangeValid = (distance > CONFIG_WS_DISTANCE_HIDE)
 
 				if (isInInstance) or (not isRangeValid) or (not isValid) then
 					if not isRangeValid then
@@ -337,39 +461,6 @@ function NS.Script:Load()
 
 			function Callback:GetIsClamped()
 				return Frame_BlizzardWaypoint.isClamped
-			end
-
-			--------------------------------
-
-			---@param distance number Distance from camera to object.
-			---@param referenceDistance number Reference distance for referenceScale.
-			---@param referenceScale number Desired scale at referenceDistance.
-			---@param minScale number Absolute minimum scale.
-			---@param maxScale number Absolute maximum scale.
-			---@param exponent number Controls falloff curve (default = 1).
-			function Callback:GetDistanceScale(distance, referenceDistance, referenceScale, minScale, maxScale, exponent)
-				local distance = distance
-				local referenceDistance = referenceDistance
-				local baselineScale = referenceScale
-				local minScale = minScale
-				local maxScale = maxScale
-				local exponent = exponent or 1
-
-				--------------------------------
-
-				if distance <= 0 then
-					return maxScale
-				end
-
-				local rawScale = baselineScale * (referenceDistance / distance) ^ exponent
-
-				if rawScale < minScale then
-					return minScale
-				elseif rawScale > maxScale then
-					return maxScale
-				else
-					return rawScale
-				end
 			end
 		end
 
@@ -517,7 +608,7 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					addon.C.Sound.Script:PlaySound(SOUNDKIT.TRADING_POST_UI_SHOW_ARMOR)
+					addon.C.Sound.Script:PlaySound(SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
 				else
 					Frame_Waypoint:ShowWithAnimation(id, false)
 				end
@@ -547,7 +638,7 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					addon.C.Sound.Script:PlaySound(SOUNDKIT.TRADING_POST_UI_SHOW_ARMOR)
+					addon.C.Sound.Script:PlaySound(SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
 				end
 			end
 
@@ -575,45 +666,68 @@ function NS.Script:Load()
 			function Callback:Update(isNewWaypoint)
 				if isNewWaypoint then
 					Callback:Waypoint_Reset()
+
+					--------------------------------
+
+					addon.C.Sound.Script:PlaySound(31583)
 				end
 
 				--------------------------------
+				-- REFERENCES
+				--------------------------------
 
-				local CONFIG_WS_TYPE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_TYPE == 1 and "BOTH" or addon.C.Database.Variables.DB_GLOBAL.profile.WS_TYPE == 2 and "WAYPOINT" or addon.C.Database.Variables.DB_GLOBAL.profile.WS_TYPE == 3 and "PINPOINT"
+				local CONFIG_WS_TYPE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_TYPE
 				local CONFIG_WS_PINPOINT_DETAIL = addon.C.Database.Variables.DB_GLOBAL.profile.WS_PINPOINT_DETAIL
+				local CVAR_FOV = GetCVar("cameraFov")
 
-				local superTrackingInfo = Callback:GetSuperTrackingInfo()
-				local questInfo = Callback:GetQuestInfo()
+				--------------------------------
+				-- VARIABLES
+				--------------------------------
 
-				local state = Callback:GetCurrentState()
-				local id, isNewState = Callback:UpdateStateSession(state)
-				local isQuest = (questInfo ~= nil)
-				local isClamped = Callback:GetIsClamped()
-				local tintColor = Callback:GetTint(questInfo and questInfo.questID)
+				local SUPER_TRACKING_INFO = Callback:GetSuperTrackingInfo()
+				local QUEST_INFO = Callback:GetQuestInfo()
 
-				local distance = C_Navigation.GetDistance()
-				local distanceScaleModifier_Waypoint = Callback:GetDistanceScale(distance, 2000, .25, .25, 1.5, 1)
+				local STATE = Callback:GetCurrentState()
+				local ID, IS_NEW_STATE = Callback:UpdateStateSession(STATE)
+				local IS_QUEST = (QUEST_INFO ~= nil)
+				local IS_CLAMPED = Callback:GetIsClamped()
+				local TINT_COLOR = Callback:GetTint(QUEST_INFO and QUEST_INFO.questID)
+
+				--------------------------------
+				-- 3D
+				--------------------------------
+
+				local DISTANCE = C_Navigation.GetDistance()
+				local WAYPOINT_3D_MODIFIER_SCALE = Callback:GetDistanceScale(DISTANCE, 2000, .25, .25, 1.5, 1)
+				Frame.REF_WAYPOINT_CONTENT:SetScale(WAYPOINT_3D_MODIFIER_SCALE)
+
+				-- local DISTANCE_2D = Callback:GetDistance2D()
+				-- local ELEVATION = Callback:GetElevation()
+				-- local WAYPOINT_3D_MODIFIER_ROTATION = Callback:GetPerspectiveRotation(SuperTrackedFrame:GetLeft() or 0, SuperTrackedFrame:GetTop() or 0, GetScreenWidth(), GetScreenHeight(), DISTANCE_2D, ELEVATION, CVAR_FOV)
+				-- Frame.REF_WAYPOINT_MARKER_BACKGROUND_TEXTURE:SetRotation(WAYPOINT_3D_MODIFIER_ROTATION)
+
+				--------------------------------
+				-- SET
+				--------------------------------
 
 				NS.Variables.Session = {
 					["lastInInstance"] = IsInInstance(),
-					["state"] = state,
+					["state"] = STATE,
 					["lastState"] = NS.Variables.Session.lastState,
-					["id"] = id,
-					["questInfo"] = questInfo,
+					["id"] = ID,
+					["questInfo"] = QUEST_INFO,
 				}
 
-				NS.Variables.Session.lastState = state
+				NS.Variables.Session.lastState = STATE
 
-				--------------------------------
-
-				if state == "INVALID" or state == "INVALID_RANGE" then
-					if isNewState and state == "INVALID_RANGE" then
+				if STATE == "INVALID" or STATE == "INVALID_RANGE" then
+					if IS_NEW_STATE and STATE == "INVALID_RANGE" then
 						if not Frame_Waypoint.hidden then
-							Frame_Waypoint:HideWithAnimation(id, false)
+							Frame_Waypoint:HideWithAnimation(ID, false)
 						end
 
 						if not Frame_Pinpoint.hidden then
-							Frame_Pinpoint:HideWithAnimation(id, false)
+							Frame_Pinpoint:HideWithAnimation(ID, false)
 						end
 					end
 
@@ -625,7 +739,7 @@ function NS.Script:Load()
 
 					return
 				else
-					if isClamped then
+					if IS_CLAMPED then
 						Callback:Waypoint_Hide()
 						Callback:Blizzard_Hide()
 					else
@@ -635,60 +749,60 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					if state == "QUEST_PROXIMITY" then
-						if isNewState then
-							if CONFIG_WS_TYPE == "BOTH" then
-								Transition_Pinpoint(id)
+					if STATE == "QUEST_PROXIMITY" then
+						if IS_NEW_STATE then
+							if CONFIG_WS_TYPE == 1 then -- Both
+								Transition_Pinpoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "WAYPOINT" then
-								Transition_OnlyWaypoint(id)
+							if CONFIG_WS_TYPE == 2 then -- Waypoint
+								Transition_OnlyWaypoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "PINPOINT" then
-								Transition_OnlyPinpoint(id)
+							if CONFIG_WS_TYPE == 3 then -- Pinpoint
+								Transition_OnlyPinpoint(ID)
 							end
 						end
-					elseif state == "PROXIMITY" then
-						if isNewState then
-							if CONFIG_WS_TYPE == "BOTH" then
-								Transition_Pinpoint(id)
+					elseif STATE == "PROXIMITY" then
+						if IS_NEW_STATE then
+							if CONFIG_WS_TYPE == 1 then -- Both
+								Transition_Pinpoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "WAYPOINT" then
-								Transition_OnlyWaypoint(id)
+							if CONFIG_WS_TYPE == 2 then -- Waypoint
+								Transition_OnlyWaypoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "PINPOINT" then
-								Transition_OnlyPinpoint(id)
+							if CONFIG_WS_TYPE == 3 then -- Pinpoint
+								Transition_OnlyPinpoint(ID)
 							end
 						end
-					elseif state == "QUEST_AREA" then
-						if isNewState then
-							if CONFIG_WS_TYPE == "BOTH" then
-								Transition_Waypoint(id)
+					elseif STATE == "QUEST_AREA" then
+						if IS_NEW_STATE then
+							if CONFIG_WS_TYPE == 1 then -- Both
+								Transition_Waypoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "WAYPOINT" then
-								Transition_OnlyWaypoint(id)
+							if CONFIG_WS_TYPE == 2 then -- Waypoint
+								Transition_OnlyWaypoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "PINPOINT" then
-								Transition_OnlyPinpoint(id)
+							if CONFIG_WS_TYPE == 3 then -- Pinpoint
+								Transition_OnlyPinpoint(ID)
 							end
 						end
-					elseif state == "AREA" then
-						if isNewState then
-							if CONFIG_WS_TYPE == "BOTH" then
-								Transition_Waypoint(id)
+					elseif STATE == "AREA" then
+						if IS_NEW_STATE then
+							if CONFIG_WS_TYPE == 1 then -- Both
+								Transition_Waypoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "WAYPOINT" then
-								Transition_OnlyWaypoint(id)
+							if CONFIG_WS_TYPE == 2 then -- Waypoint
+								Transition_OnlyWaypoint(ID)
 							end
 
-							if CONFIG_WS_TYPE == "PINPOINT" then
-								Transition_OnlyPinpoint(id)
+							if CONFIG_WS_TYPE == 3 then -- Pinpoint
+								Transition_OnlyPinpoint(ID)
 							end
 						end
 					end
@@ -696,19 +810,19 @@ function NS.Script:Load()
 					--------------------------------
 
 					if not Frame_Waypoint.hidden then
-						if questInfo then
-							local contextIcon = { type = "TEXTURE", recolor = false, path = questInfo.contextIcon.texture }
-							local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(questInfo.questID))
+						if QUEST_INFO then
+							local contextIcon = { type = "TEXTURE", recolor = false, path = QUEST_INFO.contextIcon.texture }
+							local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(QUEST_INFO.questID))
 
 							if currentWaypointObjective then
-								contextIcon = { type = "TEXTURE", recolor = false, path = Callback:GetContextIcon_Redirect(questInfo.questID) }
+								contextIcon = { type = "TEXTURE", recolor = false, path = Callback:GetContextIcon_Redirect(QUEST_INFO.questID) }
 							end
 
 							--------------------------------
 
-							Callback:Waypoint_SetTint(tintColor)
-							Callback:Waypoint_SetContext(contextIcon, tintColor, 1)
-							Callback:Waypoint_SetContextVFX(questInfo.completed and "QuestCompletion" or "")
+							Callback:Waypoint_SetTint(TINT_COLOR)
+							Callback:Waypoint_SetContext(contextIcon, TINT_COLOR, 1)
+							Callback:Waypoint_SetContextVFX(QUEST_INFO.completed and "QuestCompletion" or "")
 							Callback:Waypoint_SetType("CONTEXT")
 						else
 							local pinInfo = (Callback:GetPinInfo())
@@ -716,32 +830,32 @@ function NS.Script:Load()
 
 							--------------------------------
 
-							Callback:Waypoint_SetTint(tintColor)
-							Callback:Waypoint_SetContext(contextIcon, tintColor, 1)
+							Callback:Waypoint_SetTint(TINT_COLOR)
+							Callback:Waypoint_SetContext(contextIcon, TINT_COLOR, 1)
 							Callback:Waypoint_SetContextVFX(nil)
 							Callback:Waypoint_SetType("CONTEXT")
 						end
 
 						--------------------------------
 
-						Callback:Waypoint_SetDistanceText(L["WaypointSystem - Waypoint - Distance - Prefix"] .. addon.C.API.Util:FormatNumber(string.format("%.0f", distance)) .. L["WaypointSystem - Waypoint - Distance - Suffix"])
+						Callback:Waypoint_SetDistanceText(L["Distance - Prefix"] .. addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE)) .. L["Distance - Suffix"])
 					end
 
 					if not Frame_Pinpoint.hidden then
-						if questInfo then
+						if QUEST_INFO then
 							local text = nil
-							local contextIcon = { type = "TEXTURE", recolor = false, path = questInfo.contextIcon.texture }
+							local contextIcon = { type = "TEXTURE", recolor = false, path = QUEST_INFO.contextIcon.texture }
 
-							local isComplete = (questInfo.completed)
-							local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(questInfo.questID))
-							local currentQuestObjective = ((questInfo.objectiveInfo.objectives and #questInfo.objectiveInfo.objectives >= questInfo.objectiveInfo.objectiveIndex and questInfo.objectiveInfo.objectives[questInfo.objectiveInfo.objectiveIndex].text) or "")
-							local questName = (C_QuestLog.GetTitleForQuestID(questInfo.questID))
+							local isComplete = (QUEST_INFO.completed)
+							local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(QUEST_INFO.questID))
+							local currentQuestObjective = ((QUEST_INFO.objectiveInfo.objectives and #QUEST_INFO.objectiveInfo.objectives >= QUEST_INFO.objectiveInfo.objectiveIndex and QUEST_INFO.objectiveInfo.objectives[QUEST_INFO.objectiveInfo.objectiveIndex].text) or "")
+							local questName = (C_QuestLog.GetTitleForQuestID(QUEST_INFO.questID))
 
 							--------------------------------
 
 							if currentWaypointObjective then
 								text = currentWaypointObjective
-								contextIcon = { type = "TEXTURE", recolor = false, path = Callback:GetContextIcon_Redirect(questInfo.questID) }
+								contextIcon = { type = "TEXTURE", recolor = false, path = Callback:GetContextIcon_Redirect(QUEST_INFO.questID) }
 							else
 								if isComplete then
 									if CONFIG_WS_PINPOINT_DETAIL then
@@ -754,9 +868,9 @@ function NS.Script:Load()
 								end
 							end
 
-							Callback:Pinpoint_SetTint(tintColor)
+							Callback:Pinpoint_SetTint(TINT_COLOR)
 							Callback:Pinpoint_SetText(text)
-							Callback:Pinpoint_SetContext(contextIcon, tintColor, .25)
+							Callback:Pinpoint_SetContext(contextIcon, TINT_COLOR, .25)
 						else
 							local text = nil
 							local contextIcon = (Callback:GetContextIcon_Pin())
@@ -765,11 +879,21 @@ function NS.Script:Load()
 
 							--------------------------------
 
-							if pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
+							if pinInfo.isWay then
+								local wayInfo = WaypointUI_GetWay()
+
+								--------------------------------
+
+								if #wayInfo.name >= 1 then
+									text = wayInfo.name
+								else
+									text = nil
+								end
+							elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
 								text = nil
 							else
 								if CONFIG_WS_PINPOINT_DETAIL then
-									if pinInfo.poiInfo and pinInfo.poiInfo.description then
+									if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
 										text = pinInfo.pinName .. " — " .. pinInfo.poiInfo.description
 									else
 										text = pinInfo.pinName
@@ -779,14 +903,12 @@ function NS.Script:Load()
 								end
 							end
 
-							Callback:Pinpoint_SetTint(tintColor)
+							Callback:Pinpoint_SetTint(TINT_COLOR)
 							Callback:Pinpoint_SetText(text)
-							Callback:Pinpoint_SetContext(contextIcon, tintColor, text and .25 or 1)
+							Callback:Pinpoint_SetContext(contextIcon, TINT_COLOR, text and .25 or 1)
 						end
 					end
 				end
-
-				Frame.REF_WAYPOINT_CONTENT:SetScale(distanceScaleModifier_Waypoint)
 			end
 		end
 	end
@@ -814,7 +936,6 @@ function NS.Script:Load()
 						Frame.REF_WAYPOINT_CONTEXT_VFX:SetAlpha(1)
 						Frame.REF_WAYPOINT_FOOTER_TEXT:SetPoint("CENTER", Frame.REF_WAYPOINT_FOOTER.TextFrame, 0, 0)
 						Frame.REF_WAYPOINT_FOOTER_TEXT:SetAlpha(1)
-						Frame.REF_WAYPOINT_MARKER:SetHeight(500)
 						Frame.REF_WAYPOINT_MARKER:SetAlpha(1)
 					else
 						addon.C.Animation:Scale({ ["frame"] = Frame.REF_WAYPOINT_CONTEXT, ["duration"] = .5, ["from"] = 2, ["to"] = 1, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:ShowWithAnimation_StopEvent(id) end })
@@ -822,8 +943,7 @@ function NS.Script:Load()
 						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_CONTEXT_VFX, ["duration"] = 2, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_Waypoint:ShowWithAnimation_StopEvent(id) end })
 						addon.C.Animation:Translate({ ["frame"] = Frame.REF_WAYPOINT_FOOTER_TEXT, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:ShowWithAnimation_StopEvent(id) end })
 						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_FOOTER_TEXT, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:ShowWithAnimation_StopEvent(id) end })
-						addon.C.Animation:Height({ ["frame"] = Frame.REF_WAYPOINT_MARKER, ["duration"] = 1, ["from"] = 0, ["to"] = 500, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:ShowWithAnimation_StopEvent(id) end })
-						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_MARKER, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:ShowWithAnimation_StopEvent(id) end })
+						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_MARKER, ["duration"] = 1, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:ShowWithAnimation_StopEvent(id) end })
 					end
 
 					Frame.REF_WAYPOINT_CONTEXT:ShowWithAnimation(skipAnimation)
@@ -850,7 +970,6 @@ function NS.Script:Load()
 						Frame.REF_WAYPOINT_CONTEXT_VFX:SetAlpha(0)
 						Frame.REF_WAYPOINT_FOOTER_TEXT:SetPoint("CENTER", Frame.REF_WAYPOINT_FOOTER_TEXT:GetParent(), 0, 7.5)
 						Frame.REF_WAYPOINT_FOOTER_TEXT:SetAlpha(0)
-						Frame.REF_WAYPOINT_MARKER:SetHeight(0)
 						Frame.REF_WAYPOINT_MARKER:SetAlpha(0)
 					else
 						addon.C.Animation:Scale({ ["frame"] = Frame.REF_WAYPOINT_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WAYPOINT_CONTEXT:GetScale(), ["to"] = 1.5, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:HideWithAnimation_StopEvent(id) end })
@@ -858,8 +977,7 @@ function NS.Script:Load()
 						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_CONTEXT_VFX, ["duration"] = .25, ["from"] = Frame.REF_WAYPOINT_CONTEXT_VFX:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:HideWithAnimation_StopEvent(id) end })
 						addon.C.Animation:Translate({ ["frame"] = Frame.REF_WAYPOINT_FOOTER_TEXT, ["duration"] = .25, ["from"] = 0, ["to"] = 5, ["axis"] = "y", ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:HideWithAnimation_StopEvent(id) end })
 						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_FOOTER_TEXT, ["duration"] = .25, ["from"] = Frame.REF_WAYPOINT_FOOTER_TEXT:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:HideWithAnimation_StopEvent(id) end })
-						addon.C.Animation:Height({ ["frame"] = Frame.REF_WAYPOINT_MARKER, ["duration"] = .25, ["from"] = Frame.REF_WAYPOINT_MARKER:GetHeight(), ["to"] = 0, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:HideWithAnimation_StopEvent(id) end })
-						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_MARKER, ["duration"] = .25, ["from"] = Frame.REF_WAYPOINT_MARKER:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:HideWithAnimation_StopEvent(id) end })
+						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WAYPOINT_MARKER, ["duration"] = .125, ["from"] = Frame.REF_WAYPOINT_MARKER:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo", ["stopEvent"] = function() return Frame_Waypoint:HideWithAnimation_StopEvent(id) end })
 					end
 
 					--------------------------------
