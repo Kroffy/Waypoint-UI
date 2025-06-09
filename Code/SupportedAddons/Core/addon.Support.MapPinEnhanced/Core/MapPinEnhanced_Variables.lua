@@ -3,23 +3,24 @@ local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
 local L = addon.C.AddonInfo.Locales
+local NS = addon.Support.MapPinEnhanced; addon.Support.MapPinEnhanced = NS
 
 --------------------------------
 
-addon.Main = {}
-local NS = addon.Main; addon.Main = NS
+NS.Variables = {}
 
 --------------------------------
 
-function NS:Load()
-	local function Modules()
-		addon.ContextIcon:Load()
-		addon.MapPin:Load()
-		addon.Query:Load()
-        addon.WaypointSystem:Load()
-	end
-
+function NS.Variables:Load()
+	--------------------------------
+	-- VARIABLES
 	--------------------------------
 
-	Modules()
+	do -- MAIN
+
+	end
+
+	do -- CONSTANTS
+
+	end
 end

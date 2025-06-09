@@ -267,6 +267,79 @@ function NS.Script:Load()
 				return results
 			end
 
+			function Callback:GetQuestIconFromInfo(data)
+				local isCompleted, isOnQuest, isDefault, isImportant, isCampaign, isLegendary, isArtifact, isCalling, isMeta, isRecurring, isRepeatable = data.isCompleted, data.isOnQuest, data.isDefault, data.isImportant, data.isCampaign, data.isLegendary, data.isArtifact, data.isCalling, data.isMeta, data.isRecurring, data.isRepeatable
+				local result = nil
+
+				--------------------------------
+
+				if isCompleted then
+					if isDefault then
+						result = "quest-complete"
+					elseif isImportant then
+						result = "quest-important-complete"
+					elseif isCampaign then
+						result = "quest-campaign-complete"
+					elseif isLegendary then
+						result = "quest-legendary-complete"
+					elseif isArtifact then
+						result = "quest-artifact-complete"
+					elseif isCalling then
+						result = "quest-campaign-recurring-complete"
+					elseif isMeta then
+						result = "quest-meta-complete"
+					elseif isRecurring then
+						result = "quest-recurring-complete"
+					elseif isRepeatable then
+						result = "quest-repeatable-complete"
+					end
+				elseif isOnQuest then
+					if isDefault then
+						result = "quest-active"
+					elseif isImportant then
+						result = "quest-important-active"
+					elseif isCampaign then
+						result = "quest-campaign-active"
+					elseif isLegendary then
+						result = "quest-legendary-active"
+					elseif isArtifact then
+						result = "quest-artifact-active"
+					elseif isCalling then
+						result = "quest-campaign-recurring-active"
+					elseif isMeta then
+						result = "quest-meta-active"
+					elseif isRecurring then
+						result = "quest-recurring-active"
+					elseif isRepeatable then
+						result = "quest-repeatable-active"
+					end
+				else
+					if isDefault then
+						result = "quest-available"
+					elseif isImportant then
+						result = "quest-important-available"
+					elseif isCampaign then
+						result = "quest-campaign-available"
+					elseif isLegendary then
+						result = "quest-legendary-available"
+					elseif isArtifact then
+						result = "quest-artifact-available"
+					elseif isCalling then
+						result = "quest-campaign-recurring-available"
+					elseif isMeta then
+						result = "quest-meta-available"
+					elseif isRecurring then
+						result = "quest-recurring-available"
+					elseif isRepeatable then
+						result = "quest-repeatable-available"
+					end
+				end
+
+				--------------------------------
+
+				return result
+			end
+
 			function Callback:GetContextIcon(gossipButtonInfo, gossipButtonOptionTexture, customQuestID)
 				local isGossip = (GossipFrame:IsVisible() or QuestFrameGreetingPanel:IsVisible())
 				local isQuest = ((QuestFrame:IsVisible() and not QuestFrameGreetingPanel:IsVisible()) or (customQuestID ~= nil))
@@ -313,67 +386,19 @@ function NS.Script:Load()
 
 								--------------------------------
 
-								if isCompleted then
-									if isDefault then
-										resultPath = "quest-complete"
-									elseif isImportant then
-										resultPath = "quest-important-complete"
-									elseif isCampaign then
-										resultPath = "quest-campaign-complete"
-									elseif isLegendary then
-										resultPath = "quest-legendary-complete"
-									elseif isArtifact then
-										resultPath = "quest-artifact-complete"
-									elseif isCalling then
-										resultPath = "quest-campaign-recurring-complete"
-									elseif isMeta then
-										resultPath = "quest-meta-complete"
-									elseif isRecurring then
-										resultPath = "quest-recurring-complete"
-									elseif isRepeatable then
-										resultPath = "quest-repeatable-complete"
-									end
-								elseif isOnQuest then
-									if isDefault then
-										resultPath = "quest-active"
-									elseif isImportant then
-										resultPath = "quest-important-active"
-									elseif isCampaign then
-										resultPath = "quest-campaign-active"
-									elseif isLegendary then
-										resultPath = "quest-legendary-active"
-									elseif isArtifact then
-										resultPath = "quest-artifact-active"
-									elseif isCalling then
-										resultPath = "quest-campaign-recurring-active"
-									elseif isMeta then
-										resultPath = "quest-meta-active"
-									elseif isRecurring then
-										resultPath = "quest-recurring-active"
-									elseif isRepeatable then
-										resultPath = "quest-repeatable-active"
-									end
-								else
-									if isDefault then
-										resultPath = "quest-available"
-									elseif isImportant then
-										resultPath = "quest-important-available"
-									elseif isCampaign then
-										resultPath = "quest-campaign-available"
-									elseif isLegendary then
-										resultPath = "quest-legendary-available"
-									elseif isArtifact then
-										resultPath = "quest-artifact-available"
-									elseif isCalling then
-										resultPath = "quest-campaign-recurring-available"
-									elseif isMeta then
-										resultPath = "quest-meta-available"
-									elseif isRecurring then
-										resultPath = "quest-recurring-available"
-									elseif isRepeatable then
-										resultPath = "quest-repeatable-available"
-									end
-								end
+								resultPath = Callback:GetQuestIconFromInfo({
+									isCompleted = isCompleted,
+									isOnQuest = isOnQuest,
+									isDefault = isDefault,
+									isImportant = isImportant,
+									isCampaign = isCampaign,
+									isLegendary = isLegendary,
+									isArtifact = isArtifact,
+									isCalling = isCalling,
+									isMeta = isMeta,
+									isRecurring = isRecurring,
+									isRepeatable = isRepeatable,
+								})
 							else
 								if gossipButtonOptionTexture then
 									local new = Callback:ReplaceIcon(gossipButtonOptionTexture)
@@ -425,25 +450,12 @@ function NS.Script:Load()
 
 								--------------------------------
 
-								if isCompleted then
-									if isDefault then
-										resultPath = "quest-complete"
-									elseif isRecurring then
-										resultPath = "quest-repeatable-complete"
-									end
-								elseif isOnQuest then
-									if isDefault then
-										resultPath = "quest-active"
-									elseif isRecurring then
-										resultPath = "quest-repeatable-active"
-									end
-								else
-									if isDefault then
-										resultPath = "quest-available"
-									elseif isRecurring then
-										resultPath = "quest-repeatable-available"
-									end
-								end
+								resultPath = Callback:GetQuestIconFromInfo({
+									isCompleted = isCompleted,
+									isOnQuest = isOnQuest,
+									isDefault = isDefault,
+									isRecurring = isRecurring,
+								})
 							else
 								if gossipButtonOptionTexture then
 									local new = Callback:ReplaceIcon(gossipButtonOptionTexture)
@@ -495,25 +507,12 @@ function NS.Script:Load()
 
 								--------------------------------
 
-								if isCompleted then
-									if isDefault then
-										resultPath = "quest-complete"
-									elseif isRecurring then
-										resultPath = "quest-recurring-complete"
-									end
-								elseif isOnQuest then
-									if isDefault then
-										resultPath = "quest-active"
-									elseif isRecurring then
-										resultPath = "quest-recurring-active"
-									end
-								else
-									if isDefault then
-										resultPath = "quest-available"
-									elseif isRecurring then
-										resultPath = "quest-recurring-available"
-									end
-								end
+								resultPath = Callback:GetQuestIconFromInfo({
+									isCompleted = isCompleted,
+									isOnQuest = isOnQuest,
+									isDefault = isDefault,
+									isRecurring = isRecurring,
+								})
 							else
 								if gossipButtonOptionTexture then
 									local new = Callback:ReplaceIcon(gossipButtonOptionTexture)

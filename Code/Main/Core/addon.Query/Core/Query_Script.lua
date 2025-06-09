@@ -3,7 +3,7 @@ local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
 local L = addon.C.AddonInfo.Locales
-local NS = addon.C.WoWClient; addon.C.WoWClient = NS
+local NS = addon.Query; addon.Query = NS
 
 --------------------------------
 
@@ -23,27 +23,24 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		do -- ADD-ONS
-			function Callback:GetLoadedAddons()
-				local numAddons = C_AddOns.GetNumAddOns()
+		function Callback:GetSuperTrackedMapElement()
+			for i = 1, WorldMapFrame.ScrollContainer.Child:GetNumChildren() do
+				local element = select(i, WorldMapFrame.ScrollContainer.Child:GetChildren())
 
-				for i = 1, numAddons do
-					local name, title, notes, loadable, reason, security, updateAvailable = C_AddOns.GetAddOnInfo(i)
-					table.insert(NS.Variables.LOADED_ADDONS, name)
+				--------------------------------
+
+				if element.selected == true or element.superTracked == true or element.isSuperTracked == true then
+					return element
 				end
-			end
-
-			function Callback:IsAddOnLoaded(name)
-				return C_AddOns.IsAddOnLoaded(name)
 			end
 		end
 	end
 
 	--------------------------------
-	-- SETUP
+	-- EVENTS
 	--------------------------------
 
-	do
-		Callback:GetLoadedAddons()
-	end
+	--------------------------------
+	-- SETUP
+	--------------------------------
 end

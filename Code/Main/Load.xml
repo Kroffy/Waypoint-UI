@@ -3,6 +3,7 @@
 	<!-- Modules -->
 	<Include file="Core/addon.ContextIcon/Load.xml"/>
     <Include file="Core/addon.MapPin/Load.xml"/>
+	<Include file="Core/addon.Query/Load.xml"/>
     <Include file="Core/addon.WaypointSystem/Load.xml"/>
 
 	<!-- Load -->

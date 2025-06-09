@@ -25,6 +25,7 @@
 	<Include file="Modules/addon.C.DevTools/Load.xml"/>
 	<Include file="Modules/addon.C.FrameTemplates/Load.xml"/>
 	<Include file="Modules/addon.C.SharedVariables/Load.xml"/>
+	<Include file="Modules/addon.C.WoWClient/Load.xml"/>
 	<Include file="Modules/addon.C.SlashCommand/Load.xml"/>
 
 	<Include file="Modules/addon.C.Config/Load.xml"/>

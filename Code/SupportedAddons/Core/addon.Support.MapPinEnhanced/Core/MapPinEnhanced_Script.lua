@@ -3,7 +3,7 @@ local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
 local L = addon.C.AddonInfo.Locales
-local NS = addon.C.WoWClient; addon.C.WoWClient = NS
+local NS = addon.Support.MapPinEnhanced; addon.Support.MapPinEnhanced = NS
 
 --------------------------------
 
@@ -16,6 +16,8 @@ function NS.Script:Load()
 	-- REFERENCES
 	--------------------------------
 
+	local Frame = MapPinEnhancedSuperTrackedPin
+	local Database = MapPinEnhancedDB
 	local Callback = NS.Script; NS.Script = Callback
 
 	--------------------------------
@@ -23,27 +25,40 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		do -- ADD-ONS
-			function Callback:GetLoadedAddons()
-				local numAddons = C_AddOns.GetNumAddOns()
-
-				for i = 1, numAddons do
-					local name, title, notes, loadable, reason, security, updateAvailable = C_AddOns.GetAddOnInfo(i)
-					table.insert(NS.Variables.LOADED_ADDONS, name)
+		do -- OVERRIDE
+			function Callback:HideElements()
+				if Frame then
+					Frame:HookScript("OnShow", function()
+						Frame:Hide()
+					end)
 				end
 			end
+		end
 
-			function Callback:IsAddOnLoaded(name)
-				return C_AddOns.IsAddOnLoaded(name)
+		do -- GET
+			function Callback:GetSets()
+				for set, setContent in pairs(Database.sets) do
+					for pin, pinContent in pairs(setContent.pins) do
+						-- Pin content
+					end
+				end
 			end
 		end
+
+		do -- SET
+
+		end
 	end
+
+	--------------------------------
+	-- EVENTS
+	--------------------------------
 
 	--------------------------------
 	-- SETUP
 	--------------------------------
 
 	do
-		Callback:GetLoadedAddons()
+		Callback:HideElements()
 	end
 end

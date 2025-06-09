@@ -137,18 +137,6 @@ function NS.Script:Load()
 				end
 			end
 
-			function Callback:GetSuperTrackedMapElement()
-				for i = 1, WorldMapFrame.ScrollContainer.Child:GetNumChildren() do
-					local element = select(i, WorldMapFrame.ScrollContainer.Child:GetChildren())
-
-					--------------------------------
-
-					if element.selected == true or element.superTracked == true or element.isSuperTracked == true then
-						return element
-					end
-				end
-			end
-
 			function Callback:GetSuperTrackedPosition()
 				local result = {
 					mapID = nil,
@@ -160,9 +148,11 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				local superTrackedMapElement = Callback:GetSuperTrackedMapElement()
+				-- Get super track map pin info
+				local superTrackedMapElement = addon.Query.Script:GetSuperTrackedMapElement()
 				local mapID = C_Map.GetBestMapForUnit("player")
 
+				-- Fill result
 				if superTrackedMapElement then
 					result.normalizedX, result.normalizedY = superTrackedMapElement.normalizedX, superTrackedMapElement.normalizedY
 					result.continentID, result.worldPos = C_Map.GetWorldPosFromMapPos(mapID, CreateVector2D(result.normalizedX, result.normalizedY))
@@ -253,6 +243,31 @@ function NS.Script:Load()
 						texture.recolor = true
 						texture.path = "ArchBlob"
 					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.QuestOffer then
+						-- local mapID = C_Map.GetBestMapForUnit("player")
+						-- local quests = C_QuestLog.GetQuestsOnMap(mapID)
+
+						-- local currentMapElement = addon.Query.Script:GetSuperTrackedMapElement()
+						-- local isProgress, isAccountCompleted, isAnchored, isCampaign, isCombatAllyQuest, isDaily, isHidden, isImportant, isLegendary, isLocalStory, isMapIndicatorQuest, isMeta, isQuestStart = currentMapElement.isProgress, currentMapElement.isAccountCompleted, currentMapElement.isAnchored, currentMapElement.isCampaign, currentMapElement.isCombatAllyQuest, currentMapElement.isDaily, currentMapElement.isHidden, currentMapElement.isImportant, currentMapElement.isLegendary, currentMapElement.isLocalStory, currentMapElement.isMapIndicatorQuest, currentMapElement.isMeta, currentMapElement.isQuestStart
+						-- local contextIcon = addon.ContextIcon.Script:GetQuestIconFromInfo({
+						-- 	isCompleted = false,
+						-- 	isOnQuest = isProgress,
+						-- 	isDefault = isLocalStory,
+						-- 	isImportant = isImportant,
+						-- 	isCampaign = isCampaign,
+						-- 	isLegendary = isLegendary,
+						-- 	isArtifact = false,
+						-- 	isCalling = false,
+						-- 	isMeta = isMeta,
+						-- 	isRecurring = isDaily,
+						-- 	isRepeatable = false,
+						-- })
+
+						-- texture.type = "TEXTURE"
+						-- texture.recolor = false
+						-- texture.path = contextIcon and addon.CREF:GetAddonPath() .. "Art/ContextIcons/" .. contextIcon .. ".png" or addon.CREF:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
+
+						-- --------------------------------
+
 						texture.type = "TEXTURE"
 						texture.recolor = true
 						texture.path = addon.CREF:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
@@ -430,7 +445,6 @@ function NS.Script:Load()
 				local isQuest = (QUEST_INFO ~= nil)
 				local isValid = (SUPER_TRACK_INFO.valid)
 				local isDefault = (SUPER_TRACK_INFO.texture == "3308452")
-				local isPin = (SUPER_TRACK_INFO.texture == "3500068")
 				local isRangeProximity = (distance < CONFIG_WS_DISTANCE_TRANSITION)
 				local isRangeValid = (distance > CONFIG_WS_DISTANCE_HIDE)
 
@@ -461,6 +475,12 @@ function NS.Script:Load()
 
 			function Callback:GetIsClamped()
 				return Frame_BlizzardWaypoint.isClamped
+			end
+
+			--------------------------------
+
+			function Callback:CalculateArrivalTime()
+
 			end
 		end
 
@@ -678,6 +698,8 @@ function NS.Script:Load()
 
 				local CONFIG_WS_TYPE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_TYPE
 				local CONFIG_WS_PINPOINT_DETAIL = addon.C.Database.Variables.DB_GLOBAL.profile.WS_PINPOINT_DETAIL
+				local CONFIG_WS_WAYPOINT_MIN_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_WAYPOINT_MIN_SCALE
+				local CONFIG_WS_WAYPOINT_MAX_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_WAYPOINT_MAX_SCALE
 				local CVAR_FOV = GetCVar("cameraFov")
 
 				--------------------------------
@@ -698,7 +720,7 @@ function NS.Script:Load()
 				--------------------------------
 
 				local DISTANCE = C_Navigation.GetDistance()
-				local WAYPOINT_3D_MODIFIER_SCALE = Callback:GetDistanceScale(DISTANCE, 2000, .25, .25, 1.5, 1)
+				local WAYPOINT_3D_MODIFIER_SCALE = Callback:GetDistanceScale(DISTANCE, 2000, .25, CONFIG_WS_WAYPOINT_MIN_SCALE, CONFIG_WS_WAYPOINT_MAX_SCALE, 1)
 				Frame.REF_WAYPOINT_CONTENT:SetScale(WAYPOINT_3D_MODIFIER_SCALE)
 
 				-- local DISTANCE_2D = Callback:GetDistance2D()

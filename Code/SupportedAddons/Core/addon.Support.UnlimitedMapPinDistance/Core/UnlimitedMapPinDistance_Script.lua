@@ -3,7 +3,7 @@ local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
 local L = addon.C.AddonInfo.Locales
-local NS = addon.C.WoWClient; addon.C.WoWClient = NS
+local NS = addon.Support.UnlimitedMapPinDistance; addon.Support.UnlimitedMapPinDistance = NS
 
 --------------------------------
 
@@ -16,6 +16,7 @@ function NS.Script:Load()
 	-- REFERENCES
 	--------------------------------
 
+	local Frame = SuperTrackedFrame
 	local Callback = NS.Script; NS.Script = Callback
 
 	--------------------------------
@@ -23,27 +24,23 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		do -- ADD-ONS
-			function Callback:GetLoadedAddons()
-				local numAddons = C_AddOns.GetNumAddOns()
-
-				for i = 1, numAddons do
-					local name, title, notes, loadable, reason, security, updateAvailable = C_AddOns.GetAddOnInfo(i)
-					table.insert(NS.Variables.LOADED_ADDONS, name)
-				end
-			end
-
-			function Callback:IsAddOnLoaded(name)
-				return C_AddOns.IsAddOnLoaded(name)
+		function Callback:HideElements()
+			if Frame.Time then
+				Frame.Time:SetParent(nil)
+				Frame.Time:ClearAllPoints()
 			end
 		end
 	end
+
+	--------------------------------
+	-- EVENTS
+	--------------------------------
 
 	--------------------------------
 	-- SETUP
 	--------------------------------
 
 	do
-		Callback:GetLoadedAddons()
+		Callback:HideElements()
 	end
 end

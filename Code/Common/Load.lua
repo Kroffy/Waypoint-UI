@@ -21,6 +21,7 @@ function NS:Load()
 		NS.Database:Load()
 		NS.Fonts:Load()
 		NS.EventListener:Load()
+		NS.WoWClient:Load()
 
 		-- CORE
 		NS.API:Load()

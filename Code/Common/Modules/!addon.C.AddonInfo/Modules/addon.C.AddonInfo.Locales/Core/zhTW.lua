@@ -71,6 +71,11 @@ function NS:Load()
 
 		L["Config - Appearance - WaypointSystem - Waypoint"] = "路徑點"
 		L["Config - Appearance - WaypointSystem - WaypointScale"] = "路徑點大小"
+		L["Config - Appearance - WaypointSystem - WaypointScale - Description"] = "Waypoint size changes based on distance. This option sets the overall size."
+		L["Config - Appearance - WaypointSystem - WaypointMinScale"] = "Minimum %"
+		L["Config - Appearance - WaypointSystem - WaypointMinScale - Description"] = "Minimum % size that can reduce to."
+		L["Config - Appearance - WaypointSystem - WaypointMaxScale"] = "Maximum %"
+		L["Config - Appearance - WaypointSystem - WaypointMaxScale - Description"] = "Maximum % size that can enlarge to."
 
 		L["Config - Appearance - WaypointSystem - Pinpoint"] = "標記點"
 		L["Config - Appearance - WaypointSystem - PinpointScale"] = "標記點大小"

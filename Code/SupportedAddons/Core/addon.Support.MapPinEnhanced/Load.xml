@@ -3,7 +3,7 @@
 	<!-- Load -->
 	<Script file="Load.lua"/>
 
-	<!-- Modules -->
-	<Include file="Core/addon.Support.MapPinEnhanced/Load.xml"/>
-	<Include file="Core/addon.Support.UnlimitedMapPinDistance/Load.xml"/>
+	<!-- Core -->
+	<Script file="Core/MapPinEnhanced_Script.lua"/>
+	<Script file="Core/MapPinEnhanced_Variables.lua"/>
 </Ui>

@@ -6,20 +6,22 @@ local L = addon.C.AddonInfo.Locales
 
 --------------------------------
 
-addon.Main = {}
-local NS = addon.Main; addon.Main = NS
+addon.Query = {}
+local NS = addon.Query; addon.Query = NS
 
 --------------------------------
 
 function NS:Load()
+	local function Variables()
+		NS.Variables:Load()
+	end
+
 	local function Modules()
-		addon.ContextIcon:Load()
-		addon.MapPin:Load()
-		addon.Query:Load()
-        addon.WaypointSystem:Load()
+		NS.Script:Load()
 	end
 
 	--------------------------------
 
+	Variables()
 	Modules()
 end
