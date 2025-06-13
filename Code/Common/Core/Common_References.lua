@@ -11,6 +11,9 @@ local NS = addon.CREF; addon.CREF = NS
 --------------------------------
 
 do
+	-- Returns add-on name.
+	function NS:GetAddonName() return addon.C.AddonInfo.Variables.General.NAME end
+
 	-- Returns add-on version string.
 	function NS:GetAddonVersionString() return addon.C.AddonInfo.Variables.General.VERSION_STRING end
 

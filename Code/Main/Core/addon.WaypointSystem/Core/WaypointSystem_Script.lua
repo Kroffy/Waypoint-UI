@@ -477,6 +477,10 @@ function NS.Script:Load()
 				return Frame_BlizzardWaypoint.isClamped
 			end
 
+			function Callback:GetIsInAreaPOI()
+
+			end
+
 			--------------------------------
 
 			function Callback:CalculateArrivalTime()
@@ -557,6 +561,12 @@ function NS.Script:Load()
 						Frame.REF_WAYPOINT_CONTEXT_VFX_QUEST_COMPLETION:Show()
 					else
 						Frame.REF_WAYPOINT_CONTEXT_VFX_QUEST_COMPLETION:Hide()
+					end
+
+					if type == "NeutralPin" then
+						Frame.REF_WAYPOINT_CONTEXT_VFX_NEUTRAL_PIN:Show()
+					else
+						Frame.REF_WAYPOINT_CONTEXT_VFX_NEUTRAL_PIN:Hide()
 					end
 				end
 
@@ -700,6 +710,7 @@ function NS.Script:Load()
 				local CONFIG_WS_PINPOINT_DETAIL = addon.C.Database.Variables.DB_GLOBAL.profile.WS_PINPOINT_DETAIL
 				local CONFIG_WS_WAYPOINT_MIN_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_WAYPOINT_MIN_SCALE
 				local CONFIG_WS_WAYPOINT_MAX_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_WAYPOINT_MAX_SCALE
+				local CONFIG_PREF_METRIC = addon.C.Database.Variables.DB_GLOBAL.profile.PREF_METRIC
 				local CVAR_FOV = GetCVar("cameraFov")
 
 				--------------------------------
@@ -835,6 +846,7 @@ function NS.Script:Load()
 						if QUEST_INFO then
 							local contextIcon = { type = "TEXTURE", recolor = false, path = QUEST_INFO.contextIcon.texture }
 							local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(QUEST_INFO.questID))
+							local questClassification = C_QuestInfoSystem.GetQuestClassification(QUEST_INFO.questID)
 
 							if currentWaypointObjective then
 								contextIcon = { type = "TEXTURE", recolor = false, path = Callback:GetContextIcon_Redirect(QUEST_INFO.questID) }
@@ -844,7 +856,7 @@ function NS.Script:Load()
 
 							Callback:Waypoint_SetTint(TINT_COLOR)
 							Callback:Waypoint_SetContext(contextIcon, TINT_COLOR, 1)
-							Callback:Waypoint_SetContextVFX(QUEST_INFO.completed and "QuestCompletion" or "")
+							Callback:Waypoint_SetContextVFX(QUEST_INFO.completed and questClassification == Enum.QuestClassification.Normal and "QuestCompletion" or "")
 							Callback:Waypoint_SetType("CONTEXT")
 						else
 							local pinInfo = (Callback:GetPinInfo())
@@ -854,13 +866,13 @@ function NS.Script:Load()
 
 							Callback:Waypoint_SetTint(TINT_COLOR)
 							Callback:Waypoint_SetContext(contextIcon, TINT_COLOR, 1)
-							Callback:Waypoint_SetContextVFX(nil)
+							Callback:Waypoint_SetContextVFX("NeutralPin")
 							Callback:Waypoint_SetType("CONTEXT")
 						end
 
 						--------------------------------
 
-						Callback:Waypoint_SetDistanceText(L["Distance - Prefix"] .. addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE)) .. L["Distance - Suffix"])
+						Callback:Waypoint_SetDistanceText(addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE)) .. (CONFIG_PREF_METRIC and "m" or " yds"))
 					end
 
 					if not Frame_Pinpoint.hidden then

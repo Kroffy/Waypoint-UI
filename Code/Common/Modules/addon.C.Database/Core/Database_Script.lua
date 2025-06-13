@@ -24,37 +24,18 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		function Callback:CopyTable(original)
-			if type(original) ~= "table" then
-				return original
-			end
-
-			local copy = {}
-			for k, v in pairs(original) do
-				copy[copy(k)] = copy(v)
-			end
-
-			return copy
-		end
-
 		function Callback:ResetCache()
-			NS.DB_GLOBAL = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.GLOBAL_DEFAULT)
-			NS.DB_LOCAL = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.LOCAL_DEFAULT)
-
-			addon.C.AddonInfo.Variables.Database.GLOBAL_REFERENCE = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.GLOBAL_DEFAULT)
-			addon.C.AddonInfo.Variables.Database.LOCAL_REFERENCE = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.LOCAL_DEFAULT)
+			_G[addon.C.AddonInfo.Variables.Database.GLOBAL_NAME] = nil
+			_G[addon.C.AddonInfo.Variables.Database.LOCAL_NAME] = nil
 		end
 
 		function Callback:ResetAll()
-			NS.DB_GLOBAL = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.GLOBAL_DEFAULT)
-			NS.DB_LOCAL = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.LOCAL_DEFAULT)
-			NS.DB_GLOBAL_PERSISTENT = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_DEFAULT)
-			NS.DB_LOCAL_PERSISTENT = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_DEFAULT)
+			Callback:ResetCache()
 
-			addon.C.AddonInfo.Variables.Database.GLOBAL_REFERENCE = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.GLOBAL_DEFAULT)
-			addon.C.AddonInfo.Variables.Database.LOCAL_REFERENCE = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.LOCAL_DEFAULT)
-			addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_REFERENCE = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_DEFAULT)
-			addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_REFERENCE = Callback:CopyTable(addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_DEFAULT)
+			--------------------------------
+
+			_G[addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_NAME] = nil
+			_G[addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_NAME] = nil
 		end
 	end
 

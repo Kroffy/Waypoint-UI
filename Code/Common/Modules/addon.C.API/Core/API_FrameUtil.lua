@@ -158,7 +158,6 @@ do
 			elementTop < scrollFrameTop + element:GetHeight()
 		)
 	end
-
 end
 
 --------------------------------

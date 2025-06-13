@@ -1305,8 +1305,8 @@ do
 			text = text,
 			button1 = button1Text,
 			button2 = button2Text,
-			onAccept = acceptCallback,
-			onCancel = cancelCallback,
+			OnAccept = acceptCallback,
+			OnCancel = cancelCallback,
 			hideOnEscape = hideOnEscape,
 			timeout = 0,
 			preferredIndex = 3,
@@ -1315,6 +1315,10 @@ do
 
 	function NS.Util:Blizzard_ShowPopup(id, ...)
 		StaticPopup_Show(id, ...)
+	end
+
+	function NS.Util:Blizzard_HidePopup(id)
+		StaticPopup_Hide(id)
 	end
 end
 

@@ -83,6 +83,15 @@ function NS.Elements:Load()
 									VFX.QuestCompletion:SetPoint("CENTER", VFX)
 									VFX.QuestCompletion:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									VFX.QuestCompletion:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+									VFX.QuestCompletion:SetScale(.875)
+								end
+
+								do -- NEUTRAL PIN
+									VFX.NeutralPin = addon.C.FrameTemplates:CreateModelFrame_VisualEffect(VFX, { spellID = 5874796, defaultInfo = { position = { x = 0, y = 0, z = 0 }, rotation = 0 } }, "$parent.NeutralPin")
+									VFX.NeutralPin:SetSize(32.5, 32.5)
+									VFX.NeutralPin:SetPoint("CENTER", VFX)
+									VFX.NeutralPin:SetFrameStrata(NS.Variables.FRAME_STRATA)
+									VFX.NeutralPin:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
 								end
 							end
 						end
@@ -294,6 +303,7 @@ function NS.Elements:Load()
 			Frame.REF_WAYPOINT_CONTEXT = Frame.REF_WAYPOINT_CONTENT.ContextFrame
 			Frame.REF_WAYPOINT_CONTEXT_VFX = Frame.REF_WAYPOINT_CONTEXT.VFX
 			Frame.REF_WAYPOINT_CONTEXT_VFX_QUEST_COMPLETION = Frame.REF_WAYPOINT_CONTEXT_VFX.QuestCompletion
+			Frame.REF_WAYPOINT_CONTEXT_VFX_NEUTRAL_PIN = Frame.REF_WAYPOINT_CONTEXT_VFX.NeutralPin
 
 			Frame.REF_WAYPOINT_FOOTER = Frame.REF_WAYPOINT_CONTENT.Footer
 			Frame.REF_WAYPOINT_FOOTER_TEXT_FRAME = Frame.REF_WAYPOINT_FOOTER.TextFrame

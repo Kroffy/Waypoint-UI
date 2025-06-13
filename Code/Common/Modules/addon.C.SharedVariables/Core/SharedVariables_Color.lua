@@ -46,7 +46,7 @@ function NS.Color:Load()
 			NS.Color.RGB_PING_NEUTRAL = { r = 255 / 255, g = 241 / 255, b = 180 / 255 }
 			NS.Color.RGB_PING_QUEST_NORMAL = { r = 255 / 255, g = 255 / 255, b = 156 / 255 }
 			NS.Color.RGB_PING_QUEST_REPEATABLE = { r = 158 / 255, g = 207 / 255, b = 245 / 255 }
-			NS.Color.RGB_PING_QUEST_IMPORTANT = { r = 208 / 255, g = 109 / 255, b = 220 / 255 }
+			NS.Color.RGB_PING_QUEST_IMPORTANT = { r = 249 / 255, g = 196 / 255, b = 255 / 255 }
 			NS.Color.RGB_PING_QUEST_NEUTRAL = { r = 175 / 255, g = 175 / 255, b = 175 / 255 }
 		end
 
@@ -75,7 +75,7 @@ function NS.Color:Load()
 			NS.Color.RGB_PING_NEUTRAL_HEXCODE = "|cffFFF1B4"
 			NS.Color.RGB_PING_QUEST_NORMAL_HEXCODE = "|cffFFEC9C"
 			NS.Color.RGB_PING_QUEST_REPEATABLE_HEXCODE = "|cff9ECFF5"
-			NS.Color.RGB_PING_QUEST_IMPORTANT_HEXCODE = "|cffD06DDC"
+			NS.Color.RGB_PING_QUEST_IMPORTANT_HEXCODE = "|cffF9C4FF"
 			NS.Color.RGB_PING_QUEST_NEUTRAL_HEXCODE = "|cffAFAFAF"
 		end
 	end

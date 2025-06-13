@@ -43,6 +43,9 @@ do -- CONSTANTS
 
 				-- AUDIO
 				AUDIO_GLOBAL = true,
+
+				-- PREFERENCES
+				PREF_METRIC = false,
 			},
 		}
 

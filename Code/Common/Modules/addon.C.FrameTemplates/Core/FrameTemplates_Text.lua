@@ -36,6 +36,11 @@ do
 			return
 		end
 
+		if fontFile and fontFile.size then
+			textSize = math.ceil(textSize * fontFile.size)
+			fontFile = fontFile.font
+		end
+
 		--------------------------------
 
 		local Frame = CreateFrame("Frame", name or nil, parent)

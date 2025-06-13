@@ -45,6 +45,9 @@ function NS.Script:Load()
 			Callback.Constructor.FRAME_NAVIGATION = Frame.REF_SIDEBAR_MAIN_CONTENT
 			Callback.Constructor.FRAME_NAVIGATION_FRAME_STRATA = Frame.REF_SIDEBAR_MAIN_CONTENT:GetFrameStrata()
 			Callback.Constructor.FRAME_NAVIGATION_FRAME_LEVEL = Frame.REF_SIDEBAR_MAIN_CONTENT:GetFrameLevel()
+			Callback.Constructor.FRAME_NAVIGATION_FOOTER = Frame.REF_SIDEBAR_FOOTER_CONTENT
+			Callback.Constructor.FRAME_NAVIGATION_FOOTER_FRAME_STRATA = Frame.REF_SIDEBAR_FOOTER_CONTENT:GetFrameStrata()
+			Callback.Constructor.FRAME_NAVIGATION_FOOTER_FRAME_LEVEL = Frame.REF_SIDEBAR_FOOTER_CONTENT:GetFrameLevel()
 			Callback.Constructor.FRAME_CONTENT = Frame.REF_MAIN_CONTENT
 			Callback.Constructor.FRAME_CONTENT_FRAME_STRATA = Frame.REF_MAIN_CONTENT:GetFrameStrata()
 			Callback.Constructor.FRAME_CONTENT_FRAME_LEVEL = Frame.REF_MAIN_CONTENT:GetFrameLevel()
@@ -98,20 +101,36 @@ function NS.Script:Load()
 					return Frame
 				end
 
-				function Callback.Constructor:Create_TabButton(text, name)
-					local Frame = PrefabRegistry:Create("C.Config.Sidebar.Navigation.Button", Callback.Constructor.FRAME_NAVIGATION, Callback.Constructor.FRAME_NAVIGATION_FRAME_STRATA, Callback.Constructor.FRAME_NAVIGATION_FRAME_LEVEL, name)
-					Frame:SetHeight(NS.Variables.NAVIGATION_BUTTON_HEIGHT)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_NAVIGATION, 0, nil)
-					Frame:SetText(text)
+				function Callback.Constructor:Create_TabButton(footerTab, text, name)
+					if footerTab then
+						local Frame = PrefabRegistry:Create("C.Config.Sidebar.Navigation.Button", Callback.Constructor.FRAME_NAVIGATION_FOOTER, Callback.Constructor.FRAME_NAVIGATION_FOOTER_FRAME_STRATA, Callback.Constructor.FRAME_NAVIGATION_FOOTER_FRAME_LEVEL, name)
+						Frame:SetHeight(NS.Variables.NAVIGATION_BUTTON_HEIGHT)
+						addon.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_NAVIGATION_FOOTER, 0, nil)
+						Frame:SetText(text)
 
-					--------------------------------
+						--------------------------------
 
-					Callback.Constructor.FRAME_NAVIGATION:AddElement(Frame)
-					table.insert(NS.Variables.TabButtons, Frame)
+						Callback.Constructor.FRAME_NAVIGATION_FOOTER:AddElement(Frame)
+						table.insert(NS.Variables.TabButtons, Frame)
 
-					--------------------------------
+						--------------------------------
 
-					return Frame
+						return Frame
+					else
+						local Frame = PrefabRegistry:Create("C.Config.Sidebar.Navigation.Button", Callback.Constructor.FRAME_NAVIGATION, Callback.Constructor.FRAME_NAVIGATION_FRAME_STRATA, Callback.Constructor.FRAME_NAVIGATION_FRAME_LEVEL, name)
+						Frame:SetHeight(NS.Variables.NAVIGATION_BUTTON_HEIGHT)
+						addon.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_NAVIGATION, 0, nil)
+						Frame:SetText(text)
+
+						--------------------------------
+
+						Callback.Constructor.FRAME_NAVIGATION:AddElement(Frame)
+						table.insert(NS.Variables.TabButtons, Frame)
+
+						--------------------------------
+
+						return Frame
+					end
 				end
 
 				function Callback.Constructor:Create_Setting_Title(parent, name)
@@ -225,12 +244,12 @@ function NS.Script:Load()
 					return Frame
 				end
 
-				function Callback.Constructor:Create_Setting_Element_Section(parent, data, name)
+				function Callback.Constructor:Create_Setting_Element_Text(parent, data, name)
 					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
 
 					--------------------------------
 
-					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Section", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Text", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
 					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
@@ -262,6 +281,10 @@ function NS.Script:Load()
 
 			do -- FUNCTIONS (MAIN)
 				function Callback.Constructor:StartConstruction(data)
+					addon.C.AddonInfo.Variables.Config.PRELOAD()
+
+					--------------------------------
+
 					Callback.Constructor:ScanConstruct_Tabs(data)
 
 					--------------------------------
@@ -276,7 +299,7 @@ function NS.Script:Load()
 				end
 
 				function Callback.Constructor:ScanConstruct_Tabs(data)
-					for k, v in pairs(data) do
+					for k, v in ipairs(data) do
 						local name, type, elements = v.name, v.type, v.elements
 
 						--------------------------------
@@ -285,8 +308,12 @@ function NS.Script:Load()
 						local newTabButton = nil
 
 						if type == addon.C.AddonInfo.Variables.Config.TYPE_TAB then
+							local var_tab_footer = v.var_tab_footer
+
+							--------------------------------
+
 							newTab = Callback.Constructor:Create_Tab(name)
-							newTabButton = Callback.Constructor:Create_TabButton(name, name)
+							newTabButton = Callback.Constructor:Create_TabButton(var_tab_footer, name, name)
 							newTabButton:SetClick(function()
 								Callback.Navigation:OpenTabByIndex(k)
 							end)
@@ -455,8 +482,8 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_SECTION then
-							newFrame = Callback.Constructor:Create_Setting_Element_Section(parent, { indent = indent, transparent = var_transparent }, name)
+						if type == addon.C.AddonInfo.Variables.Config.TYPE_TEXT then
+							newFrame = Callback.Constructor:Create_Setting_Element_Text(parent, { indent = indent, transparent = var_transparent }, name)
 							newFrame:SetTitle(name, imageInfo, description)
 
 							local eventResponder = Callback.Constructor:Create_Responder(newFrame)

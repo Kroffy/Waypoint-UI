@@ -18,10 +18,7 @@ function NS:Load()
 	--------------------------------
 
 	do
-		L["Distance - Prefix"] = ""
-		L["Distance - Prefix - Singular"] = ""
-		L["Distance - Suffix"] = " yds"
-		L["Distance - Suffix - Singular"] = " yd"
+
 	end
 
 	--------------------------------
@@ -51,33 +48,71 @@ function NS:Load()
 	--------------------------------
 
 	do
+		L["Config - General"] = "General"
+		L["Config - General - Title"] = "General"
+		L["Config - General - Title - Subtext"] = "Customize overall settings."
+		L["Config - General - Preferences"] = "Preferences"
+		L["Config - General - Preferences - Meter"] = "Use Meters instead of Yards"
+		L["Config - General - Preferences - Meter - Description"] = "Changes the unit of measurement to Metric."
+		L["Config - General - Reset"] = "Reset"
+		L["Config - General - Reset - Button"] = "Reset to Default"
+		L["Config - General - Reset - Confirm"] = "Are you sure you want to reset all settings?"
+		L["Config - General - Reset - Confirm - Yes"] = "Confirm"
+		L["Config - General - Reset - Confirm - No"] = "Cancel"
+
+		L["Config - WaypointSystem"] = "Waypoint"
+		L["Config - WaypointSystem - Title"] = "Waypoint"
+		L["Config - WaypointSystem - Title - Subtext"] = "Manage behavior of in-world marker and in-world objective pin."
+		L["Config - WaypointSystem - Type"] = "Enable"
+		L["Config - WaypointSystem - Type - Both"] = "All"
+		L["Config - WaypointSystem - Type - Waypoint"] = "Waypoint"
+		L["Config - WaypointSystem - Type - Pinpoint"] = "Pinpoint"
+		L["Config - WaypointSystem - General"] = "General"
+		L["Config - WaypointSystem - General - Transition Distance"] = "Pinpoint Distance"
+		L["Config - WaypointSystem - General - Transition Distance - Description"] = "Distance before Pinpoint is shown."
+		L["Config - WaypointSystem - General - Hide Distance"] = "Minimum Distance"
+		L["Config - WaypointSystem - General - Hide Distance - Description"] = "Distance before hidden."
+		L["Config - WaypointSystem - Waypoint"] = "Waypoint"
+		L["Config - WaypointSystem - WaypointScale"] = "Waypoint Size"
+		L["Config - WaypointSystem - WaypointScale - Description"] = "Size changes based on distance. This option sets the overall size."
+		L["Config - WaypointSystem - WaypointMinScale"] = "Minimum %"
+		L["Config - WaypointSystem - WaypointMinScale - Description"] = "Size can reduce to."
+		L["Config - WaypointSystem - WaypointMaxScale"] = "Maximum %"
+		L["Config - WaypointSystem - WaypointMaxScale - Description"] = "Size can enlarge to."
+		L["Config - WaypointSystem - Pinpoint"] = "Pinpoint"
+		L["Config - WaypointSystem - PinpointScale"] = "Pinpoint Size"
+		L["Config - WaypointSystem - PinpointDetail"] = "Show Extended Info"
+		L["Config - WaypointSystem - PinpointDetail - Description"] = "Such as name and description."
+
 		L["Config - Appearance"] = "Appearance"
 		L["Config - Appearance - Title"] = "Appearance"
 		L["Config - Appearance - Title - Subtext"] = "Customize the appearance of the user interface."
 
-		L["Config - Appearance - WaypointSystem - Type"] = "Enable"
-		L["Config - Appearance - WaypointSystem - Type - Both"] = "All"
-		L["Config - Appearance - WaypointSystem - Type - Waypoint"] = "Waypoint"
-		L["Config - Appearance - WaypointSystem - Type - Pinpoint"] = "Pinpoint"
+		L["Config - Audio"] = "Audio"
+		L["Config - Audio - Title"] = "Audio"
+		L["Config - Audio - Title - Subtext"] = "Configuration for Waypoint UI audio effects."
+		L["Config - Audio - General"] = "General"
+		L["Config - Audio - General - EnableGlobalAudio"] = "Enable Audio"
 
-		L["Config - Appearance - WaypointSystem - General"] = "General"
-		L["Config - Appearance - WaypointSystem - General - Transition Distance"] = "Pinpoint Distance"
-		L["Config - Appearance - WaypointSystem - General - Transition Distance - Description"] = "Maximum distance before Pinpoint is shown."
-		L["Config - Appearance - WaypointSystem - General - Hide Distance"] = "Minimum Distance"
-		L["Config - Appearance - WaypointSystem - General - Hide Distance - Description"] = "Distance before Waypoint / Pinpoint is hidden."
+		L["Config - About"] = "About"
+		L["Config - About - Contributors"] = "Contributors"
+		L["Config - About - Developer"] = "Developer"
+		L["Config - About - Developer - AdaptiveX"] = "AdaptiveX"
+	end
 
-		L["Config - Appearance - WaypointSystem - Waypoint"] = "Waypoint"
-		L["Config - Appearance - WaypointSystem - WaypointScale"] = "Waypoint Size"
-		L["Config - Appearance - WaypointSystem - WaypointScale - Description"] = "Waypoint size changes based on distance. This option sets the overall size."
-		L["Config - Appearance - WaypointSystem - WaypointMinScale"] = "Minimum %"
-		L["Config - Appearance - WaypointSystem - WaypointMinScale - Description"] = "Minimum % size that can reduce to."
-		L["Config - Appearance - WaypointSystem - WaypointMaxScale"] = "Maximum %"
-		L["Config - Appearance - WaypointSystem - WaypointMaxScale - Description"] = "Maximum % size that can enlarge to."
+	--------------------------------
+	-- CONTRIBUTORS
+	--------------------------------
 
-		L["Config - Appearance - WaypointSystem - Pinpoint"] = "Pinpoint"
-		L["Config - Appearance - WaypointSystem - PinpointScale"] = "Pinpoint Size"
-		L["Config - Appearance - WaypointSystem - PinpointDetail"] = "Show Extended Info"
-		L["Config - Appearance - WaypointSystem - PinpointDetail - Description"] = "Include additional info, such as name / description."
+	do
+		L["Contributors - ZamestoTV"] = "ZamestoTV"
+		L["Contributors - ZamestoTV - Description"] = "Translator — Russian"
+		L["Contributors - huchang47"] = "huchang47"
+		L["Contributors - huchang47 - Description"] = "Translator — Chinese (Simplified)"
+		L["Contributors - BlueNightSky"] = "BlueNightSky"
+		L["Contributors - BlueNightSky - Description"] = "Translator — Chinese (Traditional)"
+		L["Contributors - y45853160"] = "y45853160"
+		L["Contributors - y45853160 - Description"] = "Code — Beta Bug Fix"
 	end
 end
 
