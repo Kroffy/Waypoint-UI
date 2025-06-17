@@ -1374,6 +1374,23 @@ do
 end
 
 --------------------------------
+-- CONVERSION
+--------------------------------
+
+do
+	function NS.Util:ConvertYardsToMetric(yds)
+		local km = 0
+		local m = 0
+
+		local meters = yds * 0.9144
+		km = meters / 1000
+		m = meters % 1000
+
+		return km, m
+	end
+end
+
+--------------------------------
 -- MISCELLANEOUS
 --------------------------------
 

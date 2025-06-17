@@ -69,7 +69,7 @@ function NS.Prefabs:Load()
 							--------------------------------
 
 							do -- TEXT
-								Subcontent.Text = addon.C.FrameTemplates:CreateText(Subcontent, DEFAULT_CONTENT_COLOR, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", nil, "GameFontNormal")
+								Subcontent.Text = addon.C.FrameTemplates:CreateText(Subcontent, DEFAULT_CONTENT_COLOR, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 								Subcontent.Text:SetPoint("CENTER", Subcontent)
 								addon.C.API.FrameUtil:SetDynamicSize(Subcontent.Text, Subcontent, 0, 0)
 							end
@@ -465,14 +465,16 @@ function NS.Prefabs:Load()
 										do -- TITLE
 											Info.Title = addon.C.FrameTemplates:CreateText(Info, addon.CREF:GetSharedColor().RGB_WHITE, 14, "LEFT", "TOP", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Title")
 											Info.Title:SetPoint("TOPLEFT", Info)
-											addon.C.API.FrameUtil:SetDynamicTextSize(Info.Title, Info, MAX_WIDTH - IMAGE_SIZE, 10000)
+											Info.Title:SetAutoFit(true, true)
+											Info.Title:SetAutoFit_MaxWidth(MAX_WIDTH - IMAGE_SIZE)
 										end
 
 										do -- SUBTITLE
 											Info.Subtitle = addon.C.FrameTemplates:CreateText(Info, addon.CREF:GetSharedColor().RGB_WHITE, 12, "LEFT", "TOP", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Subtitle")
 											Info.Subtitle:SetPoint("TOPLEFT", Info.Title, "BOTTOMLEFT", 0, -5)
+											Info.Subtitle:SetAutoFit(true, true)
+											Info.Subtitle:SetAutoFit_MaxWidth(MAX_WIDTH - IMAGE_SIZE)
 											Info.Subtitle:SetAlpha(.5)
-											addon.C.API.FrameUtil:SetDynamicTextSize(Info.Subtitle, Info, MAX_WIDTH - IMAGE_SIZE, 10000)
 										end
 									end
 								end
@@ -938,8 +940,9 @@ function NS.Prefabs:Load()
 
 													do -- ELEMENTS
 														do -- TITLE
-															Info_LayoutGroup.Title = addon.C.FrameTemplates:CreateText(Info_LayoutGroup, addon.CREF:GetSharedColor().RGB_WHITE, 12, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Title", nil, "GameFontNormal")
-															addon.C.API.FrameUtil:SetDynamicTextSize(Info_LayoutGroup.Title, Info_LayoutGroup, INFO_TEXT_WIDTH_MAX, 10000)
+															Info_LayoutGroup.Title = addon.C.FrameTemplates:CreateText(Info_LayoutGroup, addon.CREF:GetSharedColor().RGB_WHITE, 12, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Title", "GameFontNormal")
+															Info_LayoutGroup.Title:SetAutoFit(true, true)
+															Info_LayoutGroup.Title:SetAutoFit_MaxWidth(INFO_TEXT_WIDTH_MAX)
 															Info_LayoutGroup:AddElement(Info_LayoutGroup.Title)
 														end
 
@@ -963,8 +966,9 @@ function NS.Prefabs:Load()
 														end
 
 														do -- SUBTITLE
-															Info_LayoutGroup.Subtitle = addon.C.FrameTemplates:CreateText(Info_LayoutGroup, addon.CREF:GetSharedColor().RGB_WHITE, 11, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Subtitle", nil, "GameFontNormal")
-															addon.C.API.FrameUtil:SetDynamicTextSize(Info_LayoutGroup.Subtitle, Info_LayoutGroup, INFO_TEXT_WIDTH_MAX, 10000)
+															Info_LayoutGroup.Subtitle = addon.C.FrameTemplates:CreateText(Info_LayoutGroup, addon.CREF:GetSharedColor().RGB_WHITE, 11, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Subtitle", "GameFontNormal")
+															Info_LayoutGroup.Subtitle:SetAutoFit(true, true)
+															Info_LayoutGroup.Subtitle:SetAutoFit_MaxWidth(INFO_TEXT_WIDTH_MAX)
 															Info_LayoutGroup.Subtitle:SetAlpha(.5)
 															Info_LayoutGroup:AddElement(Info_LayoutGroup.Subtitle)
 														end

@@ -179,11 +179,13 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- TEXT
-							Main.Text = addon.C.FrameTemplates:CreateText(Main, DEFAULT_CONTENT_COLOR, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", nil, "GameFontNormal")
+							Main.Text = addon.C.FrameTemplates:CreateText(Main, DEFAULT_CONTENT_COLOR, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 							Main.Text:SetPoint("CENTER", Main)
 
 							if resize then
-								addon.C.API.FrameUtil:SetDynamicTextSize(Main.Text, Main, 10000, 10000)
+								Main.Text:SetAutoFit(true)
+								Main.Text:SetAutoFit_MaxWidth(10000)
+
 								addon.C.API.FrameUtil:SetDynamicSize(Frame, Main.Text, -PADDING, -PADDING)
 							else
 								addon.C.API.FrameUtil:SetDynamicSize(Main.Text, Main, 0, 0)
@@ -1189,11 +1191,12 @@ function NS.Prefabs:Load()
 										--------------------------------
 
 										do -- TEXT
-											Info_Content.Text = addon.C.FrameTemplates:CreateText(Info_Content, addon.CREF:GetSharedColor().RGB_YELLOW, 12.5, direction == "LEFT" and "RIGHT" or "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", nil, "GameFontNormal")
+											Info_Content.Text = addon.C.FrameTemplates:CreateText(Info_Content, addon.CREF:GetSharedColor().RGB_YELLOW, 12.5, direction == "LEFT" and "RIGHT" or "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 											Info_Content.Text:SetPoint("CENTER", Info_Content)
 
 											if resize then
-												addon.C.API.FrameUtil:SetDynamicTextSize(Info_Content.Text, Info_Content, 10000, 10000)
+												Info_Content.Text:SetAutoFit(true)
+												Info_Content.Text:SetAutoFit_MaxWidth(10000)
 												addon.C.API.FrameUtil:SetDynamicSize(Info, Info_Content.Text, 0, nil)
 											else
 												addon.C.API.FrameUtil:SetDynamicSize(Info_Content.Text, Info_Content, 0, 0)

@@ -678,7 +678,7 @@ function NS.Script:Load()
 				function Callback:Pinpoint_SetTint(tintColor)
 					Frame.REF_PINPOINT_BACKGROUND_ARROW:SetTint(tintColor)
 					Frame.REF_PINPOINT_FOREGROUND_BACKGROUND_BORDER_TEXTURE:SetVertexColor(tintColor.r, tintColor.g, tintColor.b, tintColor.a)
-					Frame.REF_PINPOINT_FOREGROUND_TEXT:SetVertexColor(tintColor.r, tintColor.g, tintColor.b, tintColor.a)
+					Frame.REF_PINPOINT_FOREGROUND_TEXT:SetTextColor(tintColor.r, tintColor.g, tintColor.b, tintColor.a)
 				end
 
 				function Callback:Pinpoint_SetContext(image, tintColor, opacity)
@@ -797,7 +797,7 @@ function NS.Script:Load()
 						end
 
 						if not Frame_Pinpoint.hidden then
-							Frame_Pinpoint:HideWithAnimation(ID, false)
+							Frame_Pinpoint:HideWithAnimation(id, false)
 						end
 					end
 
@@ -894,76 +894,6 @@ function NS.Script:Load()
 							Callback:Waypoint_SetType("CONTEXT")
 						end
 					end
-
-					if IS_PINPOINT then
-						if QUEST_INFO then
-							local text = nil
-							local contextIcon = { type = "TEXTURE", recolor = false, path = QUEST_INFO.contextIcon.texture }
-
-							local isComplete = (QUEST_INFO.completed)
-							local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(QUEST_INFO.questID))
-							local currentQuestObjective = ((QUEST_INFO.objectiveInfo.objectives and #QUEST_INFO.objectiveInfo.objectives >= QUEST_INFO.objectiveInfo.objectiveIndex and QUEST_INFO.objectiveInfo.objectives[QUEST_INFO.objectiveInfo.objectiveIndex].text) or "")
-							local questName = (C_QuestLog.GetTitleForQuestID(QUEST_INFO.questID))
-
-							--------------------------------
-
-							if currentWaypointObjective then
-								text = currentWaypointObjective
-								contextIcon = { type = "TEXTURE", recolor = false, path = Callback:GetContextIcon_Redirect(QUEST_INFO.questID) }
-							else
-								if isComplete then
-									if CONFIG_WS_PINPOINT_DETAIL then
-										text = questName .. " — " .. L["WaypointSystem - Pinpoint - Quest - Complete"]
-									else
-										text = L["WaypointSystem - Pinpoint - Quest - Complete"]
-									end
-								elseif currentQuestObjective then
-									text = currentQuestObjective
-								end
-							end
-
-							Callback:Pinpoint_SetTint(TINT_COLOR)
-							Callback:Pinpoint_SetText(text)
-							Callback:Pinpoint_SetContext(contextIcon, TINT_COLOR, .25)
-						else
-							local text = nil
-							local contextIcon = (Callback:GetContextIcon_Pin())
-
-							local pinInfo = (Callback:GetPinInfo())
-
-							--------------------------------
-
-							if pinInfo.isWay then
-								local wayInfo = WaypointUI_GetWay()
-
-								--------------------------------
-
-								if #wayInfo.name >= 1 then
-									text = wayInfo.name
-								else
-									text = nil
-								end
-							elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
-								text = nil
-							elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
-								text = nil
-							else
-								if CONFIG_WS_PINPOINT_DETAIL then
-									if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
-										text = pinInfo.pinName .. " — " .. pinInfo.poiInfo.description
-									else
-										text = pinInfo.pinName
-									end
-								else
-									text = pinInfo.pinName
-								end
-							end
-
-							Callback:Pinpoint_SetTint(TINT_COLOR)
-							Callback:Pinpoint_SetText(text)
-							Callback:Pinpoint_SetContext(contextIcon, TINT_COLOR, text and .25 or 1)
-						end
-					end
 				end
 			end
 
@@ -978,6 +908,11 @@ function NS.Script:Load()
 			end
 
 			local function Event_OnUpdate()
+				local QUEST_INFO = Callback:GetQuestInfo()
+				local TINT_COLOR = Callback:GetTint(QUEST_INFO and QUEST_INFO.questID)
+
+				--------------------------------
+
 				if IS_WAYPOINT then
 					local DISTANCE = C_Navigation.GetDistance()
 
@@ -987,8 +922,10 @@ function NS.Script:Load()
 					local _, _, _, strHr, strMin, strSec = addon.C.API.Util:FormatTime(NS.Variables.ArrivalTime or 0)
 					local arrivalTime = strHr .. strMin .. strSec
 					-- Distance (yd/m)
-					local distanceModifier = CONFIG_PREF_METRIC and .9144 or 1
-					local distance = addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE * distanceModifier)) .. (CONFIG_PREF_METRIC and "m" or " yds")
+					local yds = addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE))
+					local km, m = addon.C.API.Util:ConvertYardsToMetric(DISTANCE)
+					local formattedKm, formattedM = string.format("%.2f", km), string.format("%.0f", m)
+					local distance = CONFIG_PREF_METRIC and (km >= 1 and formattedKm .. "km" or formattedM .. "m") or (yds .. " yds")
 
 					-- Gemerate text to display based on user setting
 					local text = nil
@@ -1009,6 +946,76 @@ function NS.Script:Load()
 
 					-- Set text
 					Callback:Waypoint_SetDistanceText(text, subtext, CONFIG_WS_DISTANCE_TEXT_ALPHA)
+				end
+
+				if IS_PINPOINT then
+					if QUEST_INFO then
+						local text = nil
+						local contextIcon = { type = "TEXTURE", recolor = false, path = QUEST_INFO.contextIcon.texture }
+
+						local isComplete = (QUEST_INFO.completed)
+						local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(QUEST_INFO.questID))
+						local currentQuestObjective = ((QUEST_INFO.objectiveInfo.objectives and #QUEST_INFO.objectiveInfo.objectives >= QUEST_INFO.objectiveInfo.objectiveIndex and QUEST_INFO.objectiveInfo.objectives[QUEST_INFO.objectiveInfo.objectiveIndex].text) or "")
+						local questName = (C_QuestLog.GetTitleForQuestID(QUEST_INFO.questID))
+
+						--------------------------------
+
+						if currentWaypointObjective then
+							text = currentWaypointObjective
+							contextIcon = { type = "TEXTURE", recolor = false, path = Callback:GetContextIcon_Redirect(QUEST_INFO.questID) }
+						else
+							if isComplete then
+								if CONFIG_WS_PINPOINT_DETAIL then
+									text = questName .. " — " .. L["WaypointSystem - Pinpoint - Quest - Complete"]
+								else
+									text = L["WaypointSystem - Pinpoint - Quest - Complete"]
+								end
+							elseif currentQuestObjective then
+								text = currentQuestObjective
+							end
+						end
+
+						Callback:Pinpoint_SetTint(TINT_COLOR)
+						Callback:Pinpoint_SetText(text)
+						Callback:Pinpoint_SetContext(contextIcon, TINT_COLOR, .25)
+					else
+						local text = nil
+						local contextIcon = (Callback:GetContextIcon_Pin())
+
+						local pinInfo = (Callback:GetPinInfo())
+
+						--------------------------------
+
+						if pinInfo.isWay then
+							local wayInfo = WaypointUI_GetWay()
+
+							--------------------------------
+
+							if #wayInfo.name >= 1 then
+								text = wayInfo.name
+							else
+								text = nil
+							end
+						elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
+							text = nil
+						elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
+							text = nil
+						else
+							if CONFIG_WS_PINPOINT_DETAIL then
+								if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
+									text = pinInfo.pinName .. " — " .. pinInfo.poiInfo.description
+								else
+									text = pinInfo.pinName
+								end
+							else
+								text = pinInfo.pinName
+							end
+						end
+
+						Callback:Pinpoint_SetTint(TINT_COLOR)
+						Callback:Pinpoint_SetText(text)
+						Callback:Pinpoint_SetContext(contextIcon, TINT_COLOR, text and .25 or 1)
+					end
 				end
 			end
 
@@ -1322,8 +1329,8 @@ function NS.Script:Load()
 
 							--------------------------------
 
-							addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .5, ["from"] = SubtextFrame:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
-							addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = .75, ["from"] = 0, ["to"] = 15, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
+							addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .25, ["from"] = SubtextFrame:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
+							addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = .75, ["from"] = 0, ["to"] = 7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
 						end
 					end
 				end

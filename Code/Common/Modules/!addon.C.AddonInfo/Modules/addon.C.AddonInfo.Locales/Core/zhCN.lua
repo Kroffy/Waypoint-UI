@@ -106,7 +106,6 @@ function NS:Load()
 		L["Config - About"] = "关于"
 		L["Config - About - Contributors"] = "贡献者"
 		L["Config - About - Developer"] = "开发者"
-		L["Config - About - Developer - AdaptiveX"] = "AdaptiveX"
 	end
 
 	--------------------------------
@@ -114,15 +113,10 @@ function NS:Load()
 	--------------------------------
 
 	do
-		L["Contributors - ZamestoTV"] = "ZamestoTV"
 		L["Contributors - ZamestoTV - Description"] = "翻译者 — 俄语"
-		L["Contributors - huchang47"] = "huchang47"
 		L["Contributors - huchang47 - Description"] = "翻译者 — 简体中文"
-		L["Contributors - BlueNightSky"] = "BlueNightSky"
 		L["Contributors - BlueNightSky - Description"] = "翻译者 — 繁体中文"
-		L["Contributors - Crazyyoungs"] = "Crazyyoungs"
 		L["Contributors - Crazyyoungs - Description"] = "翻译者 — 韩语"
-		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "编码者 — 修复Bug"
 	end
 end

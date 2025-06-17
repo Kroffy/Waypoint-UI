@@ -152,7 +152,8 @@ function NS.Elements:Load()
 											do -- TEXT
 												TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
 												TextFrame.Text:SetPoint("CENTER", TextFrame)
-												addon.C.API.FrameUtil:SetDynamicTextSize(TextFrame.Text, TextFrame, 10000, 10000)
+												TextFrame.Text:SetAutoFit(true)
+												TextFrame.Text:SetAutoFit_MaxWidth(10000)
 												addon.C.API.FrameUtil:SetDynamicSize(TextFrame, TextFrame.Text, nil, 0)
 											end
 										end
@@ -171,164 +172,166 @@ function NS.Elements:Load()
 											do -- TEXT
 												SubtextFrame.Text = addon.C.FrameTemplates:CreateText(SubtextFrame, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
 												SubtextFrame.Text:SetPoint("CENTER", SubtextFrame)
-												addon.C.API.FrameUtil:SetDynamicTextSize(SubtextFrame.Text, SubtextFrame, 10000, 10000)
+												SubtextFrame.Text:SetAutoFit(true)
+												SubtextFrame.Text:SetAutoFit_MaxWidth(10000)
 												addon.C.API.FrameUtil:SetDynamicSize(SubtextFrame, SubtextFrame.Text, nil, 0)
 											end
 										end
 									end
 								end
-							end
 
-							do -- MARKER
-								Content.Marker = CreateFrame("Frame", "$parent.Marker", Content)
-								Content.Marker:SetWidth(17.5)
-								Content.Marker:SetHeight(MARKER_HEIGHT)
-								Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
-								Content.Marker:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
+								do -- MARKER
+									Content.Marker = CreateFrame("Frame", "$parent.Marker", Content)
+									Content.Marker:SetWidth(17.5)
+									Content.Marker:SetHeight(MARKER_HEIGHT)
+									Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
+									Content.Marker:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
 
-								local Marker = Content.Marker
+									local Marker = Content.Marker
 
-								--------------------------------
+									--------------------------------
 
-								do -- BACKGROUND
-									Marker.Background, Marker.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Marker, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line-half.png", "$parent.Background")
-									Marker.Background:SetPoint("CENTER", Marker, 0, -MARKER_HEIGHT / 2)
-									Marker.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									Marker.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-									addon.C.API.FrameUtil:SetDynamicSize(Marker.Background, Marker, 0, 0)
+									do -- BACKGROUND
+										Marker.Background, Marker.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Marker, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line-half.png", "$parent.Background")
+										Marker.Background:SetPoint("CENTER", Marker, 0, -MARKER_HEIGHT / 2)
+										Marker.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
+										Marker.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+										addon.C.API.FrameUtil:SetDynamicSize(Marker.Background, Marker, 0, 0)
+									end
 								end
 							end
 						end
 					end
-				end
 
-				do -- PINPOINT
-					Frame.Pinpoint = CreateFrame("Frame", "$parent.Pinpoint", Frame)
-					Frame.Pinpoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
-					Frame.Pinpoint:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
+					do -- PINPOINT
+						Frame.Pinpoint = CreateFrame("Frame", "$parent.Pinpoint", Frame)
+						Frame.Pinpoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
+						Frame.Pinpoint:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
 
-					local Pinpoint = Frame.Pinpoint
-
-					--------------------------------
-
-					do -- CONTENT
-						Pinpoint.Content = CreateFrame("Frame", "$parent.Content", Pinpoint)
-						Pinpoint.Content:SetPoint("CENTER", Pinpoint)
-						Pinpoint.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
-						Pinpoint.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
-						addon.C.API.FrameUtil:SetDynamicSize(Pinpoint.Content, Pinpoint, 0, 0)
-						Pinpoint.Content:SetScale(.75)
-
-						local Content = Pinpoint.Content
+						local Pinpoint = Frame.Pinpoint
 
 						--------------------------------
 
-						do -- ELEMENTS
-							local PADDING_FRAME = NS.Variables:RATIO(2.5)
-							local TEXT_WIDTH_MAX = 300
+						do -- CONTENT
+							Pinpoint.Content = CreateFrame("Frame", "$parent.Content", Pinpoint)
+							Pinpoint.Content:SetPoint("CENTER", Pinpoint)
+							Pinpoint.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
+							Pinpoint.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
+							addon.C.API.FrameUtil:SetDynamicSize(Pinpoint.Content, Pinpoint, 0, 0)
+							Pinpoint.Content:SetScale(.75)
+
+							local Content = Pinpoint.Content
 
 							--------------------------------
 
-							do -- BACKGROUND
-								Content.Background = CreateFrame("Frame", "$parent.Background", Content)
-								Content.Background:SetPoint("CENTER", Content)
-								Content.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
-								Content.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL)
-								addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
-
-								local Background = Content.Background
-
-								--------------------------------
-
-								do -- CONTEXT FRAME
-									Background.ContextFrame = PrefabRegistry:Create("WaypointSystem.General.ContextFrame", Background, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL, "$parent.ContextFrame")
-									Background.ContextFrame:SetSize(75, 75)
-									Background.ContextFrame:SetPoint("CENTER", Background)
-									Background.ContextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									Background.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
-									Background.ContextFrame:SetAlpha(.25)
-								end
-
-								do -- ARROW FRAME
-									Background.ArrowFrame = PrefabRegistry:Create("WaypointSystem.Pinpoint.ArrowFrame", Background, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL + 1, {
-										["size"] = 25,
-										["offset"] = -7.5,
-									}, "$parent.ArrowFrame")
-									Background.ArrowFrame:SetSize(75, 75)
-									Background.ArrowFrame:SetPoint("TOP", Background, "BOTTOM", 0, -12.5)
-									Background.ArrowFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									Background.ArrowFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
-								end
-							end
-
-							do -- FOREGROUND
-								Content.Foreground = CreateFrame("Frame", "$parent.Foreground", Content)
-								Content.Foreground:SetPoint("CENTER", Content)
-								Content.Foreground:SetFrameStrata(NS.Variables.FRAME_STRATA)
-								Content.Foreground:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
-								addon.C.API.FrameUtil:SetDynamicSize(Content.Foreground, Content, 0, 0)
-
-								local Foreground = Content.Foreground
+							do -- ELEMENTS
+								local PADDING_FRAME = NS.Variables:RATIO(2.5)
+								local TEXT_WIDTH_MAX = 300
 
 								--------------------------------
 
 								do -- BACKGROUND
-									Foreground.Background = CreateFrame("Frame", "$parent.Background", Foreground)
-									Foreground.Background:SetPoint("CENTER", Foreground)
-									Foreground.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									Foreground.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 1)
-									addon.C.API.FrameUtil:SetDynamicSize(Foreground.Background, Foreground, -25, -25)
+									Content.Background = CreateFrame("Frame", "$parent.Background", Content)
+									Content.Background:SetPoint("CENTER", Content)
+									Content.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
+									Content.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL)
+									addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
 
-									local Background = Foreground.Background
+									local Background = Content.Background
 
 									--------------------------------
 
-									do -- CENTER
-										Background.Center, Background.CenterTexture = addon.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-center.png", 37, .125, "$parent.Center", Enum.UITextureSliceMode.Stretched)
-										Background.Center:SetPoint("CENTER", Background)
-										Background.Center:SetFrameStrata(NS.Variables.FRAME_STRATA)
-										Background.Center:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 2)
-										addon.C.API.FrameUtil:SetDynamicSize(Background.Center, Background, 0, 0)
-
-										Background.CenterTexture:SetVertexColor(0, 0, 0, .375)
+									do -- CONTEXT FRAME
+										Background.ContextFrame = PrefabRegistry:Create("WaypointSystem.General.ContextFrame", Background, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL, "$parent.ContextFrame")
+										Background.ContextFrame:SetSize(75, 75)
+										Background.ContextFrame:SetPoint("CENTER", Background)
+										Background.ContextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
+										Background.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
+										Background.ContextFrame:SetAlpha(.25)
 									end
 
-									do -- BORDER
-										Background.Border, Background.BorderTexture = addon.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-border.png", 37, .125, "$parent.Border", Enum.UITextureSliceMode.Stretched)
-										Background.Border:SetPoint("CENTER", Background)
-										Background.Border:SetFrameStrata(NS.Variables.FRAME_STRATA)
-										Background.Border:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 3)
-										addon.C.API.FrameUtil:SetDynamicSize(Background.Border, Background, 0, 0)
+									do -- ARROW FRAME
+										Background.ArrowFrame = PrefabRegistry:Create("WaypointSystem.Pinpoint.ArrowFrame", Background, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL + 1, {
+											["size"] = 25,
+											["offset"] = -7.5,
+										}, "$parent.ArrowFrame")
+										Background.ArrowFrame:SetSize(75, 75)
+										Background.ArrowFrame:SetPoint("TOP", Background, "BOTTOM", 0, -12.5)
+										Background.ArrowFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
+										Background.ArrowFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
 									end
 								end
 
-								do -- CONTENT
-									Foreground.Content = CreateFrame("Frame", "$parent.Content", Foreground)
-									Foreground.Content:SetPoint("CENTER", Foreground)
-									Foreground.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									Foreground.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 5)
-									addon.C.API.FrameUtil:SetDynamicSize(Foreground.Content, Foreground, 0, 0)
+								do -- FOREGROUND
+									Content.Foreground = CreateFrame("Frame", "$parent.Foreground", Content)
+									Content.Foreground:SetPoint("CENTER", Content)
+									Content.Foreground:SetFrameStrata(NS.Variables.FRAME_STRATA)
+									Content.Foreground:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
+									addon.C.API.FrameUtil:SetDynamicSize(Content.Foreground, Content, 0, 0)
 
-									local Content = Foreground.Content
+									local Foreground = Content.Foreground
 
 									--------------------------------
 
-									do -- TEXT FRAME
-										Content.TextFrame = CreateFrame("Frame", "$parent.TextFrame", Content)
-										Content.TextFrame:SetPoint("CENTER", Content)
-										Content.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
-										Content.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 6)
-										addon.C.API.FrameUtil:SetDynamicSize(Content.TextFrame, Content, 0, 0)
+									do -- BACKGROUND
+										Foreground.Background = CreateFrame("Frame", "$parent.Background", Foreground)
+										Foreground.Background:SetPoint("CENTER", Foreground)
+										Foreground.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
+										Foreground.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 1)
+										addon.C.API.FrameUtil:SetDynamicSize(Foreground.Background, Foreground, -25, -25)
 
-										local TextFrame = Content.TextFrame
+										local Background = Foreground.Background
 
 										--------------------------------
 
-										do -- TEXT
-											TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, addon.CREF:GetSharedColor().RGB_WHITE, 14, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
-											TextFrame.Text:SetPoint("CENTER", TextFrame)
-											addon.C.API.FrameUtil:SetDynamicTextSize(TextFrame.Text, TextFrame, TEXT_WIDTH_MAX, 10000)
-											addon.C.API.FrameUtil:SetDynamicSize(Pinpoint, TextFrame.Text, 0, 0)
+										do -- CENTER
+											Background.Center, Background.CenterTexture = addon.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-center.png", 37, .125, "$parent.Center", Enum.UITextureSliceMode.Stretched)
+											Background.Center:SetPoint("CENTER", Background)
+											Background.Center:SetFrameStrata(NS.Variables.FRAME_STRATA)
+											Background.Center:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 2)
+											addon.C.API.FrameUtil:SetDynamicSize(Background.Center, Background, 0, 0)
+
+											Background.CenterTexture:SetVertexColor(0, 0, 0, .375)
+										end
+
+										do -- BORDER
+											Background.Border, Background.BorderTexture = addon.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-border.png", 37, .125, "$parent.Border", Enum.UITextureSliceMode.Stretched)
+											Background.Border:SetPoint("CENTER", Background)
+											Background.Border:SetFrameStrata(NS.Variables.FRAME_STRATA)
+											Background.Border:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 3)
+											addon.C.API.FrameUtil:SetDynamicSize(Background.Border, Background, 0, 0)
+										end
+									end
+
+									do -- CONTENT
+										Foreground.Content = CreateFrame("Frame", "$parent.Content", Foreground)
+										Foreground.Content:SetPoint("CENTER", Foreground)
+										Foreground.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
+										Foreground.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 5)
+										addon.C.API.FrameUtil:SetDynamicSize(Foreground.Content, Foreground, 0, 0)
+
+										local Content = Foreground.Content
+
+										--------------------------------
+
+										do -- TEXT FRAME
+											Content.TextFrame = CreateFrame("Frame", "$parent.TextFrame", Content)
+											Content.TextFrame:SetPoint("CENTER", Content)
+											Content.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
+											Content.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 6)
+											addon.C.API.FrameUtil:SetDynamicSize(Content.TextFrame, Content, 0, 0)
+
+											local TextFrame = Content.TextFrame
+
+											--------------------------------
+
+											do -- TEXT
+												TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, addon.CREF:GetSharedColor().RGB_WHITE, 14, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
+												TextFrame.Text:SetPoint("CENTER", TextFrame)
+												TextFrame.Text:SetAutoFit(true)
+												TextFrame.Text:SetAutoFit_MaxWidth(TEXT_WIDTH_MAX)
+												addon.C.API.FrameUtil:SetDynamicSize(Pinpoint, TextFrame.Text, 0, 0)
+											end
 										end
 									end
 								end

@@ -293,7 +293,7 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- TEXT
-							Content.Text = addon.C.FrameTemplates:CreateText(Content, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", nil, "GameFontNormal")
+							Content.Text = addon.C.FrameTemplates:CreateText(Content, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 							Content.Text:SetPoint("CENTER", Content)
 							addon.C.API.FrameUtil:SetDynamicSize(Content.Text, Content, 0, 0)
 						end
@@ -387,9 +387,10 @@ function NS.Prefabs:Load()
 							--------------------------------
 
 							do -- TEXT
-								Subcontent.Text = addon.C.FrameTemplates:CreateText(Subcontent, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", nil, "GameFontNormal")
+								Subcontent.Text = addon.C.FrameTemplates:CreateText(Subcontent, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 								Subcontent.Text:SetPoint("LEFT", Subcontent)
-								addon.C.API.FrameUtil:SetDynamicTextSize(Subcontent.Text, Subcontent, nil, 10000)
+								Subcontent.Text:SetAutoFit(true)
+								Subcontent.Text:SetAutoFit_MaxWidth(INFO_TEXT_WIDTH_MAX)
 								addon.C.API.FrameUtil:SetDynamicSize(Frame, Subcontent.Text, nil, -PADDING)
 							end
 						end

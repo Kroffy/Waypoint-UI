@@ -601,6 +601,10 @@ function NS.Script:Load()
 			--------------------------------
 
 			Callback.Navigation:OpenTabByIndex(1, true)
+
+			--------------------------------
+
+			CallbackRegistry:Trigger("C_TEXT_AUTOFIT")
 		end)
 
 		CallbackRegistry:Add("C_CONFIG_UPDATE", function()

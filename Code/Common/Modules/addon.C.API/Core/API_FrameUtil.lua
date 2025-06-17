@@ -232,56 +232,6 @@ do
 
 		return UpdateSize
 	end
-
-	-- Automatically sets a text to fit the string. Set maxWidth/maxHeight to a function(relativeWidth, relativeHeight) to apply custom sizing calculations.
-	---@param frame any
-	---@param relativeTo any
-	---@param maxWidth? number|function
-	---@param maxHeight? number|function
-	---@param setMaxWidth? boolean
-	---@param setMaxHeight? boolean
-	function NS.FrameUtil:SetDynamicTextSize(frame, relativeTo, maxWidth, maxHeight, setMaxWidth, setMaxHeight)
-		local function UpdateSize()
-			local width = 0
-			local height = 0
-
-			if maxWidth then
-				if type(maxWidth) == "function" then
-					width = maxWidth(relativeTo:GetWidth(), relativeTo:GetHeight())
-				else
-					width = maxWidth
-				end
-			else
-				width = relativeTo:GetWidth()
-			end
-
-			if maxHeight then
-				if type(maxHeight) == "function" then
-					height = maxHeight(relativeTo:GetWidth(), relativeTo:GetHeight())
-				else
-					height = maxHeight
-				end
-			else
-				height = 10000
-			end
-
-			--------------------------------
-
-			local stringWidth, stringHeight = NS.Util:GetStringSize(frame, width, height)
-
-			frame:SetWidth((setMaxWidth and width or stringWidth) + 1)
-			frame:SetHeight((setMaxHeight and height or stringHeight) + 1)
-		end
-
-		--------------------------------
-
-		UpdateSize()
-		hooksecurefunc(frame, "SetText", UpdateSize)
-
-		--------------------------------
-
-		return UpdateSize
-	end
 end
 
 --------------------------------
