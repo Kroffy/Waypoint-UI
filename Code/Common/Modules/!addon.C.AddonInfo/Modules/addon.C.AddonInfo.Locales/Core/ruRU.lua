@@ -77,6 +77,12 @@ function NS:Load()
 		L["Config - WaypointSystem - General - Hide Distance"] = "Минимальное расстояние"
 		L["Config - WaypointSystem - General - Hide Distance - Description"] = "Расстояние до точки маршрута/точке привязки скрыто."
 		L["Config - WaypointSystem - Waypoint"] = "Точка маршрута"
+		L["Config - WaypointSystem - WaypointFooterType"] = "Additional Info"
+		L["Config - WaypointSystem - WaypointFooterType - Both"] = "All"
+		L["Config - WaypointSystem - WaypointFooterType - Distance"] = "Distance"
+		L["Config - WaypointSystem - WaypointFooterType - ETA"] = "Arrival Time"
+		L["Config - WaypointSystem - WaypointFooterType - None"] = "None"
+		L["Config - WaypointSystem - WaypointFooterOpacity"] = "Transparency"
 		L["Config - WaypointSystem - WaypointScale"] = "Размер точки маршрута"
 		L["Config - WaypointSystem - WaypointScale - Description"] = "Размер точки маршрута меняется в зависимости от расстояния. Эта опция задает общий размер."
 		L["Config - WaypointSystem - WaypointMinScale"] = "Минимум %"
@@ -111,6 +117,7 @@ function NS:Load()
 		L["Contributors - ZamestoTV - Description"] = "Переводчик — на русский язык"
 		L["Contributors - huchang47 - Description"] = "Переводчик — на китайский (упрощенный) язык"
 		L["Contributors - BlueNightSky - Description"] = "Переводчик — на китайский (традиционный) язык"
+		L["Contributors - Crazyyoungs - Description"] = "Translator — Korean"
 		L["Contributors - y45853160 - Description"] = "Код — Исправление ошибок в бета-версии"
 	end
 end

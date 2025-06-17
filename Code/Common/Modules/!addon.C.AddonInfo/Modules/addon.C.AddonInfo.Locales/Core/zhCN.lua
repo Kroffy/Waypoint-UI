@@ -76,6 +76,12 @@ function NS:Load()
 		L["Config - WaypointSystem - General - Hide Distance"] = "最小距离"
 		L["Config - WaypointSystem - General - Hide Distance - Description"] = "超出距离后隐藏路径点和标记点。"
 		L["Config - WaypointSystem - Waypoint"] = "路径点"
+		L["Config - WaypointSystem - WaypointFooterType"] = "Additional Info"
+		L["Config - WaypointSystem - WaypointFooterType - Both"] = "All"
+		L["Config - WaypointSystem - WaypointFooterType - Distance"] = "Distance"
+		L["Config - WaypointSystem - WaypointFooterType - ETA"] = "Arrival Time"
+		L["Config - WaypointSystem - WaypointFooterType - None"] = "None"
+		L["Config - WaypointSystem - WaypointFooterOpacity"] = "Transparency"
 		L["Config - WaypointSystem - WaypointScale"] = "路径点大小"
 		L["Config - WaypointSystem - WaypointScale - Description"] = "路径点的大小会跟随距离变化。此选项用于调整整体大小。"
 		L["Config - WaypointSystem - WaypointMinScale"] = "最小%"
@@ -110,6 +116,7 @@ function NS:Load()
 		L["Contributors - ZamestoTV - Description"] = "Translator — Russian"
 		L["Contributors - huchang47 - Description"] = "Translator — Chinese (Simplified)"
 		L["Contributors - BlueNightSky - Description"] = "Translator — Chinese (Traditional)"
+		L["Contributors - Crazyyoungs — Description"] = "Translator — Korean"
 		L["Contributors - y45853160 - Description"] = "Code — Beta Bug Fix"
 	end
 end

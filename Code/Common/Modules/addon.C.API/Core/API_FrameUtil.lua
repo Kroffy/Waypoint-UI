@@ -276,7 +276,6 @@ do
 		--------------------------------
 
 		UpdateSize()
-
 		hooksecurefunc(frame, "SetText", UpdateSize)
 
 		--------------------------------

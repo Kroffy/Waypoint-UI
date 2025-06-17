@@ -47,8 +47,9 @@ do
 
 				--------------------------------
 
-				MeasurementText:SetFont(font or GameFontNormal:GetFont(), size > 0 and size or 12.5, flags or "")
+				MeasurementText:SetFont(font or GameFontNormal:GetFont(), size > 0 and size or 12, flags or "")
 				MeasurementText:SetText(text)
+				MeasurementText:SetScale(frame:GetEffectiveScale())
 
 				if justifyH then
 					MeasurementText:SetJustifyH(justifyH)
@@ -429,6 +430,27 @@ do
 			--------------------------------
 
 			return gold, silver, copperAmount
+		end
+
+		-- Returns hr, min, sec from seconds.
+		---@param seconds number
+		---@return number rawHr
+		---@return number rawMin
+		---@return number rawSec
+		---@return string strHr
+		---@return string strMin
+		---@return string strSec
+		function NS.Util:FormatTime(seconds)
+			local rawHr = math.floor(seconds / 3600)
+			local rawMin = math.floor((seconds % 3600) / 60)
+			local rawSec = seconds % 60
+			local strHr = rawHr > 0 and rawHr .. "h " or ""
+			local strMin = rawMin > 0 and rawMin .. "m " or ""
+			local strSec = rawSec > 0 and rawSec .. "s" or ""
+
+			--------------------------------
+
+			return rawHr, rawMin, rawSec, strHr, strMin, strSec
 		end
 	end
 

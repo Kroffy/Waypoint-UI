@@ -329,12 +329,12 @@ function NS.Script:Load()
 
 				function Callback.Constructor:ScanConstruct_Elements(parent, container, data)
 					for k, v in ipairs(data) do
-						local name, type, indent, descriptor, elements = v.name, v.type, v.indent, v.descriptor, v.elements
+						local v_name, v_type, v_indent, v_descriptor, v_elements = v.name, v.type, v.indent, v.descriptor, v.elements
 						local var_transparent, var_get, var_set, var_disabled, var_hidden = v.var_transparent, v.var_get, v.var_set, v.var_disabled, v.var_hidden
 						if container and container.VAR_TRANSPARENT then var_transparent = true end
 
-						local description = descriptor and descriptor.description or nil
-						local imageInfo = descriptor and descriptor.imageType and { imageType = descriptor.imageType, imagePath = descriptor.imagePath } or nil
+						local v_description = v_descriptor and v_descriptor.description or nil
+						local v_imageInfo = v_descriptor and v_descriptor.imageType and { imageType = v_descriptor.imageType, imagePath = v_descriptor.imagePath } or nil
 
 						--------------------------------
 
@@ -345,16 +345,16 @@ function NS.Script:Load()
 						local function Set(...) return var_set(...) end
 						local function Get() return var_get() end
 
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_TITLE then
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_TITLE then
 							local var_title_imageTexture, var_title_text, var_title_subtext = v.var_title_imageTexture, v.var_title_text, v.var_title_subtext
 
 							--------------------------------
 
-							newFrame = Callback.Constructor:Create_Setting_Title(parent, name)
+							newFrame = Callback.Constructor:Create_Setting_Title(parent, v_name)
 							newFrame:SetInfo(var_title_imageTexture, var_title_text, var_title_subtext)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
-							newFrame = Callback.Constructor:Create_Setting_Container(parent, name, var_transparent, name)
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
+							newFrame = Callback.Constructor:Create_Setting_Container(parent, v_name, var_transparent, v_name)
 
 							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
 
@@ -362,26 +362,34 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 							end)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_RANGE then
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_RANGE then
 							local var_range_min, var_range_max, var_range_step, var_range_text, var_range_set_lazy = v.var_range_min, v.var_range_max, v.var_range_step, v.var_range_text, v.var_range_set_lazy
 
 							--------------------------------
 
-							newFrame = Callback.Constructor:Create_Setting_Element_Range(parent, { indent = indent, transparent = var_transparent }, name)
-							newFrame:SetTitle(name, imageInfo, description)
+							newFrame = Callback.Constructor:Create_Setting_Element_Range(parent, { indent = v_indent, transparent = var_transparent }, v_name)
+							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
 							local range = newFrame.REF_RANGE.REF_RANGE
-							range:SetMinMaxValues(var_range_min, var_range_max)
-							range:SetValueStep(var_range_step)
-
 							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
 
 							table.insert(eventResponder.onConfigUpdateCallbacks, function()
 								range:SetEnabled(not Check_Disabled())
 								newFrame:SetShown(not Check_Hidden())
-								range:SetValue(Get())
+
+								-- Value
+								local min, max = type(var_range_min) == "function" and var_range_min() or var_range_min, type(var_range_max) == "function" and var_range_max() or var_range_max
+								local step = type(var_range_step) == "function" and var_range_step() or var_range_step
+								local new = Get(); new = math.max(new, min); new = math.min(new, max)
+
+								range:SetMinMaxValues(min, max)
+								range:SetValueStep(step)
+								range:SetValue(new)
+
+								-- Range text
+								range:OnValueChanged(new, false)
 							end)
-							table.insert(range.onValueChangedCallbacks, function(self, value, userInput)
+							table.insert(range.onValueChangedCallbacks, function(_, value, userInput)
 								if userInput then
 									Set(value)
 								end
@@ -400,13 +408,13 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_BUTTON then
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_BUTTON then
 							local var_button_text = v.var_button_text
 
 							--------------------------------
 
-							newFrame = Callback.Constructor:Create_Setting_Element_Button(parent, { indent = indent, transparent = var_transparent }, name)
-							newFrame:SetTitle(name, imageInfo, description)
+							newFrame = Callback.Constructor:Create_Setting_Element_Button(parent, { indent = v_indent, transparent = var_transparent }, v_name)
+							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
 							local button = newFrame.REF_BUTTON
 							button:SetText(var_button_text)
@@ -427,9 +435,9 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 							end)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_CHECKBOX then
-							newFrame = Callback.Constructor:Create_Setting_Element_Checkbox(parent, { indent = indent, transparent = var_transparent }, name)
-							newFrame:SetTitle(name, imageInfo, description)
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_CHECKBOX then
+							newFrame = Callback.Constructor:Create_Setting_Element_Checkbox(parent, { indent = v_indent, transparent = var_transparent }, v_name)
+							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
 							local checkbox = newFrame.REF_CHECKBOX
 							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
@@ -438,7 +446,7 @@ function NS.Script:Load()
 								checkbox:SetChecked(Get(), false)
 								newFrame:SetShown(not Check_Hidden())
 							end)
-							table.insert(checkbox.onValueChangedCallbacks, function(self, value, userInput)
+							table.insert(checkbox.onValueChangedCallbacks, function(_, value, userInput)
 								if userInput then
 									Set(value)
 
@@ -450,13 +458,13 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_DROPDOWN then
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_DROPDOWN then
 							local var_dropdown_info = v.var_dropdown_info
 
 							--------------------------------
 
-							newFrame = Callback.Constructor:Create_Setting_Element_Dropdown(parent, { indent = indent, transparent = var_transparent }, name)
-							newFrame:SetTitle(name, imageInfo, description)
+							newFrame = Callback.Constructor:Create_Setting_Element_Dropdown(parent, { indent = v_indent, transparent = var_transparent }, v_name)
+							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
 							local dropdown = newFrame.REF_DROPDOWN
 							dropdown:SetDropdownInfo(var_dropdown_info, Get())
@@ -468,7 +476,7 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 								dropdown:ContextMenu_SetValue(Get(), false)
 							end)
-							table.insert(dropdown.onValueChangedCallbacks, function(self, value, userInput)
+							table.insert(dropdown.onValueChangedCallbacks, function(_, value, userInput)
 								if userInput then
 									if Set(value) then
 										addon.C.Frame.ContextMenu.Script:Main_Hide()
@@ -482,9 +490,9 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_TEXT then
-							newFrame = Callback.Constructor:Create_Setting_Element_Text(parent, { indent = indent, transparent = var_transparent }, name)
-							newFrame:SetTitle(name, imageInfo, description)
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_TEXT then
+							newFrame = Callback.Constructor:Create_Setting_Element_Text(parent, { indent = v_indent, transparent = var_transparent }, v_name)
+							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
 							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
 
@@ -492,9 +500,9 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 							end)
 						end
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_COLOR then
-							newFrame = Callback.Constructor:Create_Setting_Element_Color(parent, { indent = indent, transparent = var_transparent }, name)
-							newFrame:SetTitle(name, imageInfo, description)
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_COLOR then
+							newFrame = Callback.Constructor:Create_Setting_Element_Color(parent, { indent = v_indent, transparent = var_transparent }, v_name)
+							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
 							local color = newFrame.REF_COLOR
 							color:SetColor(Get())
@@ -505,7 +513,7 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 								color:SetColor(Get())
 							end)
-							table.insert(color.onValueChangedCallbacks, function(self, value, userInput)
+							table.insert(color.onValueChangedCallbacks, function(_, value, userInput)
 								if userInput then
 									Set(value)
 								end
@@ -519,12 +527,12 @@ function NS.Script:Load()
 
 						--------------------------------
 
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
-							if elements then
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
+							if v_elements then
 								if newFrame.REF_CONTAINER then
-									Callback.Constructor:ScanConstruct_Elements(newFrame.REF_CONTAINER.REF_MAIN_LAYOUT, newFrame.REF_CONTAINER, elements)
+									Callback.Constructor:ScanConstruct_Elements(newFrame.REF_CONTAINER.REF_MAIN_LAYOUT, newFrame.REF_CONTAINER, v_elements)
 								else
-									Callback.Constructor:ScanConstruct_Elements(newFrame.REF_MAIN_LAYOUT, newFrame, elements)
+									Callback.Constructor:ScanConstruct_Elements(newFrame.REF_MAIN_LAYOUT, newFrame, v_elements)
 								end
 							end
 						end

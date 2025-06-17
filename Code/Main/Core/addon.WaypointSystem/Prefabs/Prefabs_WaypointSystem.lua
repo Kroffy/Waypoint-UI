@@ -16,10 +16,6 @@ NS.Prefabs = {}
 function NS.Prefabs:Load()
 	do -- GENERAL
 		do -- CONTEXT FRAME
-			local PADDING = NS.Variables.PADDING
-
-			--------------------------------
-
 			PrefabRegistry:Add("WaypointSystem.General.ContextFrame", function(parent, frameStrata, frameLevel, name)
 				local Frame = CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
@@ -51,16 +47,16 @@ function NS.Prefabs:Load()
 							--------------------------------
 
 							do -- FOREGROUND
-								Background.Foreground, Background.ForegroundTexture = addon.C.FrameTemplates:CreateTexture(Frame, frameStrata, NS.Variables.PATH .. "waypoint-context.png", "$parent.Foreground")
-								Background.Foreground:SetPoint("CENTER", Frame)
+								Background.Foreground, Background.ForegroundTexture = addon.C.FrameTemplates:CreateTexture(Background, frameStrata, NS.Variables.PATH .. "waypoint-context.png", "$parent.Foreground")
+								Background.Foreground:SetPoint("CENTER", Background)
 								Background.Foreground:SetFrameStrata(frameStrata)
 								Background.Foreground:SetFrameLevel(frameLevel + 4)
 								addon.C.API.FrameUtil:SetDynamicSize(Background.Foreground, Background, 0, 0)
 							end
 
 							do -- BACKGROUND
-								Background.Background, Background.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Frame, frameStrata, NS.Variables.PATH .. "waypoint-context-background.png", "$parent.Background")
-								Background.Background:SetPoint("CENTER", Frame)
+								Background.Background, Background.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Background, frameStrata, NS.Variables.PATH .. "waypoint-context-background.png", "$parent.Background")
+								Background.Background:SetPoint("CENTER", Background)
 								Background.Background:SetFrameStrata(frameStrata)
 								Background.Background:SetFrameLevel(frameLevel + 3)
 								addon.C.API.FrameUtil:SetDynamicSize(Background.Background, Background, -12.5, -12.5)
@@ -144,11 +140,11 @@ function NS.Prefabs:Load()
 				do -- LOGIC
 					do -- FUNCTIONS
 						do -- SET
-							function Frame:SetImage(texture, recolor)
+							function Frame:SetImage(texture)
 								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetTexture(texture)
 							end
 
-							function Frame:SetAtlas(atlas, recolor)
+							function Frame:SetAtlas(atlas)
 								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetAtlas(atlas)
 							end
 
@@ -178,7 +174,7 @@ function NS.Prefabs:Load()
 
 								Frame:SetTint(tintColor)
 								if image.recolor then Frame:Recolor(tintColor) else Frame:Decolor() end
-								if opacity then Frame:SetAlpha(opacity) else Frame:SetAlpha(1) end
+								if opacity then Frame.Content:SetAlpha(opacity) else Frame.Content:SetAlpha(1) end
 							end
 						end
 
@@ -290,7 +286,7 @@ function NS.Prefabs:Load()
 							end
 
 							Frame:Animation_Playback_Cycle()
-							PlaybackSession.loopTimer = C_Timer.NewTicker(1.25, function()
+							PlaybackSession.loopTimer = C_Timer.NewTicker(1.5, function()
 								Frame:Animation_Playback_Cycle()
 							end, nil)
 						end
@@ -305,7 +301,7 @@ function NS.Prefabs:Load()
 
 						function Frame:Animation_Playback_Cycle()
 							for i = 1, #Frame.Elements do
-								addon.C.Libraries.AceTimer:ScheduleTimer(function() Frame.Elements[i]:Animation_Playback(PlaybackSession.playbackID) end, i * .075)
+								addon.C.Libraries.AceTimer:ScheduleTimer(function() Frame.Elements[i]:Animation_Playback(PlaybackSession.playbackID) end, i * .125)
 							end
 						end
 					end
@@ -381,16 +377,16 @@ function NS.Prefabs:Load()
 
 						function Frame:Animation_Playback()
 							do -- START
-								addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
-								addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+								addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+								addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 2, ["from"] = 7.5, ["to"] = -7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 							end
 
 							do -- END
 								addon.C.Libraries.AceTimer:ScheduleTimer(function()
 									if not Frame:Animation_Playback_StopEvent() then
-										addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = .25, ["from"] = Frame.Content:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = Frame.Content:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 									end
-								end, .25)
+								end, .375)
 							end
 						end
 

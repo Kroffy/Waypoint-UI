@@ -618,7 +618,7 @@ function NS.Prefabs:Load()
 									Frame.REF_CONTENT:SetPoint("CENTER", Frame.REF_CONTENT:GetParent(), 0, 0)
 								else
 									addon.C.Animation:Alpha({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.ShowWithAnimation_StopEvent })
-									addon.C.Animation:Translate({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = -15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo", ["stopEvent"] = Frame.ShowWithAnimation_StopEvent })
+									addon.C.Animation:Translate({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = -15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.ShowWithAnimation_StopEvent })
 								end
 							end
 

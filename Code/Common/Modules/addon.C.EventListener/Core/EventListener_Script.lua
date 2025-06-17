@@ -28,6 +28,7 @@ function NS.Script:Load()
 
 	do
 		local _ = CreateFrame("Frame")
+		_:RegisterEvent("UI_SCALE_CHANGED")
 		_:RegisterEvent("GLOBAL_MOUSE_DOWN")
 		_:RegisterEvent("GLOBAL_MOUSE_UP")
 		_:SetScript("OnEvent", function(self, event, ...)
@@ -35,6 +36,10 @@ function NS.Script:Load()
 				CallbackRegistry:Trigger("EVENT_MOUSE_DOWN", ...)
 			elseif event == "GLOBAL_MOUSE_UP" then
 				CallbackRegistry:Trigger("EVENT_MOUSE_UP", ...)
+			end
+
+			if event == "UI_SCALE_CHANGED" then
+				CallbackRegistry:Trigger("UI_SCALE_CHANGED", ...)
 			end
 		end)
 	end

@@ -41,7 +41,7 @@ do
 				local currentTime = GetTime()
 				local endTime = startTime + duration
 				local progress = (currentTime - startTime) / duration
-				local easedProgress = NS[easeName](progress, 0, 1, 1)
+				local easedProgress = NS[easeName](progress)
 				local currentValue = startValue + (endValue - startValue) * easedProgress
 
 				if currentTime >= endTime then
@@ -88,7 +88,7 @@ do
 				local currentTime = GetTime()
 				local endTime = startTime + duration
 				local progress = (currentTime - startTime) / duration
-				local easedProgress = NS[easeName](progress, 0, 1, 1)
+				local easedProgress = NS[easeName](progress)
 				local currentValue = startValue + (endValue - startValue) * easedProgress
 
 				local point, relativeTo, relativePoint, offsetX, offsetY = frame:GetPoint()
@@ -125,7 +125,7 @@ do
 				local currentTime = GetTime()
 				local endTime = startTime + duration
 				local progress = (currentTime - startTime) / duration
-				local easedProgress = NS[easeName](progress, 0, 1, 1)
+				local easedProgress = NS[easeName](progress)
 				local newX = startX + (toX - startX) * easedProgress
 				local newY = startY + (toY - startY) * easedProgress
 
@@ -162,7 +162,7 @@ do
 				local currentTime = GetTime() - startTime
 				updater.progress = updater.progress + (elapsed * speed)
 
-				local easedProgress = NS[easeName](currentTime, 0, 1, 1)
+				local easedProgress = NS[easeName](currentTime)
 				local new = updater.progress * easedProgress
 
 				if not frame:SetAlphaGradient(new, width) then
@@ -191,7 +191,7 @@ do
 				local currentTime = GetTime()
 				local progress = (currentTime - startTime) / duration
 				local endTime = startTime + duration
-				local easedProgress = NS[easeName](progress, 0, 1, 1)
+				local easedProgress = NS[easeName](progress)
 				local currentRotation = startRotation + (endRotation - startRotation) * easedProgress
 
 				currentRotation = currentRotation % 360
@@ -238,7 +238,7 @@ do
 				local currentTime = GetTime()
 				local endTime = startTime + duration
 				local progress = (currentTime - startTime) / duration
-				local easedProgress = NS[easeName](progress, 0, 1, 1)
+				local easedProgress = NS[easeName](progress)
 				local newValue = updater.initialValue + updater.delta * easedProgress
 
 				frame:SetValue(newValue)
@@ -269,7 +269,7 @@ do
 				local currentTime = GetTime()
 				local endTime = startTime + duration
 				local progress = (currentTime - startTime) / duration
-				local easedProgress = NS[easeName](progress, 0, 1, 1)
+				local easedProgress = NS[easeName](progress)
 				local newPos = updater.initialPosition + (value - updater.initialPosition) * easedProgress
 
 				if direction == "VERTICAL" then frame:SetVerticalScroll(newPos) else frame:SetHorizontalScroll(newPos) end
@@ -810,7 +810,7 @@ do
 
 				--------------------------------
 
-				NS.Animation:MoveTo(frame, (.5 / (frame.API_Animation_Parallax_Weight or 1)), "CENTER", parent, nil, nil, 0, 0, NS.Animation.EaseExpo, function() return frame.EnterMouseX ~= nil or frame.EnterMouseY ~= nil end)
+				NS.Animation:MoveTo(frame, (.5 / (frame.API_Animation_Parallax_Weight or 1)), "CENTER", parent, nil, nil, 0, 0, NS.Animation.EaseExpo_Out, function() return frame.EnterMouseX ~= nil or frame.EnterMouseY ~= nil end)
 			end
 
 			--------------------------------

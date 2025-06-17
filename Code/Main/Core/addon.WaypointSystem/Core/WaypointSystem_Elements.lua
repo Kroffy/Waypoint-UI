@@ -53,100 +53,150 @@ function NS.Elements:Load()
 
 						--------------------------------
 
-						local MARKER_HEIGHT = 1000
-
-						do -- CONTEXT FRAME
-							Content.ContextFrame = PrefabRegistry:Create("WaypointSystem.General.ContextFrame", Content, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL + 3, "$parent.ContextFrame")
-							Content.ContextFrame:SetPoint("CENTER", Content)
-							Content.ContextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
-							Content.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.ContextFrame, Content, 0, 0)
-
-							local ContextFrame = Content.ContextFrame
+						do -- ELEMENTS
+							local MARKER_HEIGHT = 1000
 
 							--------------------------------
 
-							do -- VFX
-								ContextFrame.VFX = CreateFrame("Frame", "$parent.VFX", ContextFrame)
-								ContextFrame.VFX:SetSize(125, 125)
-								ContextFrame.VFX:SetPoint("CENTER", ContextFrame)
-								ContextFrame.VFX:SetFrameStrata(NS.Variables.FRAME_STRATA)
-								ContextFrame.VFX:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+							do -- CONTEXT FRAME
+								Content.ContextFrame = PrefabRegistry:Create("WaypointSystem.General.ContextFrame", Content, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL + 3, "$parent.ContextFrame")
+								Content.ContextFrame:SetPoint("CENTER", Content)
+								Content.ContextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
+								Content.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
+								addon.C.API.FrameUtil:SetDynamicSize(Content.ContextFrame, Content, 0, 0)
 
-								local VFX = ContextFrame.VFX
+								local ContextFrame = Content.ContextFrame
 
 								--------------------------------
 
-								do -- QUEST COMPLETION
-									VFX.QuestCompletion = addon.C.FrameTemplates:CreateModelFrame_VisualEffect(VFX, { dynamicEffectInfo = { effectID = 179, offsetX = 3, offsetY = 0 } }, "$parent.QuestCompletion")
-									VFX.QuestCompletion:SetSize(125, 125)
-									VFX.QuestCompletion:SetPoint("CENTER", VFX)
-									VFX.QuestCompletion:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									VFX.QuestCompletion:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-									VFX.QuestCompletion:SetScale(.875)
-								end
+								do -- VFX
+									ContextFrame.VFX = CreateFrame("Frame", "$parent.VFX", ContextFrame)
+									ContextFrame.VFX:SetSize(125, 125)
+									ContextFrame.VFX:SetPoint("CENTER", ContextFrame)
+									ContextFrame.VFX:SetFrameStrata(NS.Variables.FRAME_STRATA)
+									ContextFrame.VFX:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
 
-								do -- NEUTRAL PIN
-									VFX.NeutralPin = addon.C.FrameTemplates:CreateModelFrame_VisualEffect(VFX, { spellID = 5874796, defaultInfo = { position = { x = 0, y = 0, z = 0 }, rotation = 0 } }, "$parent.NeutralPin")
-									VFX.NeutralPin:SetSize(32.5, 32.5)
-									VFX.NeutralPin:SetPoint("CENTER", VFX)
-									VFX.NeutralPin:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									VFX.NeutralPin:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+									local VFX = ContextFrame.VFX
+
+									--------------------------------
+
+									do -- QUEST COMPLETION
+										VFX.QuestCompletion = addon.C.FrameTemplates:CreateModelFrame_VisualEffect(VFX, { dynamicEffectInfo = { effectID = 179, offsetX = 3, offsetY = 0 } }, "$parent.QuestCompletion")
+										VFX.QuestCompletion:SetSize(125, 125)
+										VFX.QuestCompletion:SetPoint("CENTER", VFX)
+										VFX.QuestCompletion:SetFrameStrata(NS.Variables.FRAME_STRATA)
+										VFX.QuestCompletion:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+										VFX.QuestCompletion:SetScale(.875)
+									end
+
+									do -- WAVE
+										VFX.Wave = CreateFrame("Frame", "$parent.Wave", VFX)
+										VFX.Wave:SetSize(75, 75)
+										VFX.Wave:SetPoint("CENTER", VFX)
+										VFX.Wave:SetFrameStrata(NS.Variables.FRAME_STRATA)
+										VFX.Wave:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+
+										local Wave = VFX.Wave
+
+										--------------------------------
+
+										do -- BACKGROUND
+											Wave.Background, Wave.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Wave, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-wave.png", "$parent.Background")
+											Wave.Background:SetPoint("CENTER", Wave)
+											Wave.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
+											Wave.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 5)
+											addon.C.API.FrameUtil:SetDynamicSize(Wave.Background, Wave, 0, 0)
+										end
+									end
 								end
 							end
-						end
 
-						do -- FOOTER
-							Content.Footer = CreateFrame("Frame", "$parent.Footer", Content)
-							Content.Footer:SetSize(200, 37.5)
-							Content.Footer:SetPoint("TOP", Content, "BOTTOM", 0, 0)
-							Content.Footer:SetFrameStrata(NS.Variables.FRAME_STRATA)
-							Content.Footer:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
-							Content.Footer:SetAlpha(.5)
-							Content.Footer:SetScale(.75)
-							Content.Footer:SetIgnoreParentScale(true)
+							do -- FOOTER
+								Content.Footer = CreateFrame("Frame", "$parent.Footer", Content)
+								Content.Footer:SetSize(200, 37.5)
+								Content.Footer:SetPoint("TOP", Content, "BOTTOM", 0, -7.5)
+								Content.Footer:SetFrameStrata(NS.Variables.FRAME_STRATA)
+								Content.Footer:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
+								Content.Footer:SetAlpha(.5)
+								Content.Footer:SetScale(.75)
+								Content.Footer:SetIgnoreParentScale(true)
 
-							local Footer = Content.Footer
-
-							--------------------------------
-
-							do -- TEXT FRAME
-								Footer.TextFrame = CreateFrame("Frame", "$parent.TextFrame", Footer)
-								Footer.TextFrame:SetPoint("CENTER", Footer)
-								Footer.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
-								Footer.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-								addon.C.API.FrameUtil:SetDynamicSize(Footer.TextFrame, Footer, 0, 0)
-
-								local TextFrame = Footer.TextFrame
+								local Footer = Content.Footer
 
 								--------------------------------
 
-								do -- TEXT
-									TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
-									TextFrame.Text:SetPoint("CENTER", TextFrame)
-									addon.C.API.FrameUtil:SetDynamicSize(TextFrame.Text, TextFrame, 0, 0)
-									TextFrame.Text:SetText("Placeholder")
+								do -- LAYOUT GROUP
+									Footer.LayoutGroup, Footer.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Footer, { point = "TOP", direction = "vertical", resize = false, padding = 2.5, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+									Footer.LayoutGroup:SetPoint("CENTER", Footer)
+									Footer.LayoutGroup:SetFrameStrata(NS.Variables.FRAME_STRATA)
+									Footer.LayoutGroup:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+									addon.C.API.FrameUtil:SetDynamicSize(Footer.LayoutGroup, Footer, 0, 0)
+									Frame.LGS_FOOTER = Footer.LayoutGroup_Sort
+
+									local LayoutGroup = Footer.LayoutGroup
+
+									--------------------------------
+
+									do -- ELEMENTS
+										do -- TEXT FRAME
+											LayoutGroup.TextFrame = CreateFrame("Frame", "$parent.TextFrame", LayoutGroup)
+											LayoutGroup.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
+											LayoutGroup.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+											addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.TextFrame, LayoutGroup, 0, nil)
+											LayoutGroup:AddElement(LayoutGroup.TextFrame)
+
+											local TextFrame = LayoutGroup.TextFrame
+
+											--------------------------------
+
+											do -- TEXT
+												TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
+												TextFrame.Text:SetPoint("CENTER", TextFrame)
+												addon.C.API.FrameUtil:SetDynamicTextSize(TextFrame.Text, TextFrame, 10000, 10000)
+												addon.C.API.FrameUtil:SetDynamicSize(TextFrame, TextFrame.Text, nil, 0)
+											end
+										end
+
+										do -- SUBTEXT FRAME
+											LayoutGroup.SubtextFrame = CreateFrame("Frame", "$parent.SubtextFrame", LayoutGroup)
+											LayoutGroup.SubtextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
+											LayoutGroup.SubtextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+											addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.SubtextFrame, LayoutGroup.TextFrame, 0, nil)
+											LayoutGroup:AddElement(LayoutGroup.SubtextFrame)
+
+											local SubtextFrame = LayoutGroup.SubtextFrame
+
+											--------------------------------
+
+											do -- TEXT
+												SubtextFrame.Text = addon.C.FrameTemplates:CreateText(SubtextFrame, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
+												SubtextFrame.Text:SetPoint("CENTER", SubtextFrame)
+												addon.C.API.FrameUtil:SetDynamicTextSize(SubtextFrame.Text, SubtextFrame, 10000, 10000)
+												addon.C.API.FrameUtil:SetDynamicSize(SubtextFrame, SubtextFrame.Text, nil, 0)
+											end
+										end
+									end
 								end
 							end
-						end
 
-						do -- MARKER
-							Content.Marker = CreateFrame("Frame", "$parent.Marker", Content)
-							Content.Marker:SetWidth(17.5)
-							Content.Marker:SetHeight(MARKER_HEIGHT)
-							Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
-							Content.Marker:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
+							do -- MARKER
+								Content.Marker = CreateFrame("Frame", "$parent.Marker", Content)
+								Content.Marker:SetWidth(17.5)
+								Content.Marker:SetHeight(MARKER_HEIGHT)
+								Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
+								Content.Marker:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
 
-							local Marker = Content.Marker
+								local Marker = Content.Marker
 
-							--------------------------------
+								--------------------------------
 
-							do -- BACKGROUND
-								Marker.Background, Marker.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Marker, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line-half.png", "$parent.Background")
-								Marker.Background:SetPoint("CENTER", Marker, 0, -MARKER_HEIGHT / 2)
-								Marker.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
-								Marker.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-								addon.C.API.FrameUtil:SetDynamicSize(Marker.Background, Marker, 0, 0)
+								do -- BACKGROUND
+									Marker.Background, Marker.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Marker, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line-half.png", "$parent.Background")
+									Marker.Background:SetPoint("CENTER", Marker, 0, -MARKER_HEIGHT / 2)
+									Marker.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
+									Marker.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+									addon.C.API.FrameUtil:SetDynamicSize(Marker.Background, Marker, 0, 0)
+								end
 							end
 						end
 					end
@@ -303,11 +353,16 @@ function NS.Elements:Load()
 			Frame.REF_WAYPOINT_CONTEXT = Frame.REF_WAYPOINT_CONTENT.ContextFrame
 			Frame.REF_WAYPOINT_CONTEXT_VFX = Frame.REF_WAYPOINT_CONTEXT.VFX
 			Frame.REF_WAYPOINT_CONTEXT_VFX_QUEST_COMPLETION = Frame.REF_WAYPOINT_CONTEXT_VFX.QuestCompletion
-			Frame.REF_WAYPOINT_CONTEXT_VFX_NEUTRAL_PIN = Frame.REF_WAYPOINT_CONTEXT_VFX.NeutralPin
+			Frame.REF_WAYPOINT_CONTEXT_VFX_WAVE = Frame.REF_WAYPOINT_CONTEXT_VFX.Wave
+			Frame.REF_WAYPOINT_CONTEXT_VFX_WAVE_BACKGROUND = Frame.REF_WAYPOINT_CONTEXT_VFX_WAVE.Background
+			Frame.REF_WAYPOINT_CONTEXT_VFX_WAVE_BACKGROUND_TEXTURE = Frame.REF_WAYPOINT_CONTEXT_VFX_WAVE.BackgroundTexture
 
 			Frame.REF_WAYPOINT_FOOTER = Frame.REF_WAYPOINT_CONTENT.Footer
-			Frame.REF_WAYPOINT_FOOTER_TEXT_FRAME = Frame.REF_WAYPOINT_FOOTER.TextFrame
-			Frame.REF_WAYPOINT_FOOTER_TEXT = Frame.REF_WAYPOINT_FOOTER_TEXT_FRAME.Text
+			Frame.REF_WAYPOINT_FOOTER_LAYOUT = Frame.REF_WAYPOINT_FOOTER.LayoutGroup
+			Frame.REF_WAYPOINT_FOOTER_LAYOUT_TEXT_FRAME = Frame.REF_WAYPOINT_FOOTER_LAYOUT.TextFrame
+			Frame.REF_WAYPOINT_FOOTER_LAYOUT_TEXT = Frame.REF_WAYPOINT_FOOTER_LAYOUT_TEXT_FRAME.Text
+			Frame.REF_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME = Frame.REF_WAYPOINT_FOOTER_LAYOUT.SubtextFrame
+			Frame.REF_WAYPOINT_FOOTER_LAYOUT_SUBTEXT = Frame.REF_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME.Text
 			Frame.REF_WAYPOINT_MARKER = Frame.REF_WAYPOINT_CONTENT.Marker
 			Frame.REF_WAYPOINT_MARKER_BACKGROUND = Frame.REF_WAYPOINT_MARKER.Background
 			Frame.REF_WAYPOINT_MARKER_BACKGROUND_TEXTURE = Frame.REF_WAYPOINT_MARKER.BackgroundTexture
@@ -344,6 +399,10 @@ function NS.Elements:Load()
 	do
 		Frame_Waypoint.hidden = true
 		Frame_Waypoint:Hide()
+
+		Frame.REF_WAYPOINT_CONTEXT_VFX_WAVE:Hide()
+		Frame.REF_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME.hidden = true
+		Frame.REF_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME:Hide()
 
 		Frame_Pinpoint.hidden = true
 		Frame_Pinpoint:Hide()
