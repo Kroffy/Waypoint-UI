@@ -353,6 +353,7 @@ do
 
 			--------------------------------
 
+			NS.AnimationEngine:Process_Alpha(frame, startTime, duration, from, to, ease, stopEvent)
 			updater:SetScript("OnUpdate", nil)
 			updater:SetScript("OnUpdate", function()
 				NS.AnimationEngine:Process_Alpha(frame, startTime, duration, from, to, ease, stopEvent)
@@ -376,6 +377,7 @@ do
 
 			--------------------------------
 
+			NS.AnimationEngine:Process_Scale(frame, startTime, duration, from, to, ease, stopEvent)
 			updater:SetScript("OnUpdate", nil)
 			updater:SetScript("OnUpdate", function()
 				NS.AnimationEngine:Process_Scale(frame, startTime, duration, from, to, ease, stopEvent)
@@ -399,6 +401,7 @@ do
 
 			--------------------------------
 
+			NS.AnimationEngine:Process_Width(frame, startTime, duration, from, to, ease, stopEvent)
 			updater:SetScript("OnUpdate", nil)
 			updater:SetScript("OnUpdate", function()
 				NS.AnimationEngine:Process_Width(frame, startTime, duration, from, to, ease, stopEvent)
@@ -422,6 +425,7 @@ do
 
 			--------------------------------
 
+			NS.AnimationEngine:Process_Height(frame, startTime, duration, from, to, ease, stopEvent)
 			updater:SetScript("OnUpdate", nil)
 			updater:SetScript("OnUpdate", function()
 				NS.AnimationEngine:Process_Height(frame, startTime, duration, from, to, ease, stopEvent)
@@ -445,6 +449,7 @@ do
 
 			--------------------------------
 
+			NS.AnimationEngine:Process_Translate(frame, startTime, duration, from, to, axis, ease, stopEvent)
 			updater:SetScript("OnUpdate", nil)
 			updater:SetScript("OnUpdate", function()
 				NS.AnimationEngine:Process_Translate(frame, startTime, duration, from, to, axis, ease, stopEvent)
@@ -470,6 +475,7 @@ do
 
 			local _, _, _, startX, startY = frame:GetPoint()
 
+			NS.AnimationEngine:Process_TranslateTo(frame, startTime, duration, startX, startY, toX, toY, ease, stopEvent)
 			updater:SetScript("OnUpdate", nil)
 			updater:SetScript("OnUpdate", function()
 				NS.AnimationEngine:Process_TranslateTo(frame, startTime, duration, startX, startY, toX, toY, ease, stopEvent)

@@ -143,377 +143,383 @@ do  -- CONSTANTS
 		-- 		}
 		-- 	}
 
-		local function GetDatabase(name)
-			if addon.C.Database and addon.C.Database.Variables then
-				return addon.C.Database.Variables[name].profile
+		C_Timer.After(0, function()
+			local NEW_PREFIX = addon.CREF:GetInlineIcon("star", 16) .. " "
+
+			local function GetDatabase(name)
+				if addon.C.Database and addon.C.Database.Variables then
+					return addon.C.Database.Variables[name].profile
+				end
 			end
-		end
 
-		NS.Variables.Config.PRELOAD = function()
-			addon.C.API.Util:Blizzard_AddConfirmPopup(
-				"WAYPOINTUI_RESET_SETTING",
-				L["Config - General - Reset - Confirm"],
-				L["Config - General - Reset - Confirm - Yes"],
-				L["Config - General - Reset - Confirm - No"],
-				function()
-					addon.C.Database.Script:ResetCache()
-					ReloadUI()
-				end,
-				function()
-					addon.C.API.Util:Blizzard_HidePopup("WAYPOINTUI_RESET_SETTING")
-				end,
-				true
-			)
-		end
+			--------------------------------
 
-		NS.Variables.Config.TABLE = {
-			[1] = {
-				["name"] = L["Config - General"],
-				["type"] = NS.Variables.Config.TYPE_TAB,
-				["var_tab_footer"] = false,
-				["elements"] = {
-					[1] = {
-						["name"] = L["Config - General - Title"],
-						["type"] = NS.Variables.Config.TYPE_TITLE,
-						["var_title_imageTexture"] = addon.CREF:NewIcon("cog"),
-						["var_title_text"] = L["Config - General - Title"],
-						["var_title_subtext"] = L["Config - General - Title - Subtext"],
-					},
-					[2] = {
-						["name"] = L["Config - General - Preferences"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = false,
-						["var_hidden"] = function() return false end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Config - General - Preferences - Meter"],
-								["type"] = NS.Variables.Config.TYPE_CHECKBOX,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - General - Preferences - Meter - Description"]),
-								["indent"] = 0,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").PREF_METRIC = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
+			NS.Variables.Config.PRELOAD = function()
+				addon.C.API.Util:Blizzard_AddConfirmPopup(
+					"WAYPOINTUI_RESET_SETTING",
+					L["Config - General - Reset - Confirm"],
+					L["Config - General - Reset - Confirm - Yes"],
+					L["Config - General - Reset - Confirm - No"],
+					function()
+						addon.C.Database.Script:ResetCache()
+						ReloadUI()
+					end,
+					function()
+						addon.C.API.Util:Blizzard_HidePopup("WAYPOINTUI_RESET_SETTING")
+					end,
+					true
+				)
+			end
+
+			NS.Variables.Config.TABLE = {
+				[1] = {
+					["name"] = L["Config - General"],
+					["type"] = NS.Variables.Config.TYPE_TAB,
+					["var_tab_footer"] = false,
+					["elements"] = {
+						[1] = {
+							["name"] = L["Config - General - Title"],
+							["type"] = NS.Variables.Config.TYPE_TITLE,
+							["var_title_imageTexture"] = addon.CREF:NewIcon("cog"),
+							["var_title_text"] = L["Config - General - Title"],
+							["var_title_subtext"] = L["Config - General - Title - Subtext"],
+						},
+						[2] = {
+							["name"] = L["Config - General - Preferences"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Config - General - Preferences - Meter"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - General - Preferences - Meter - Description"]),
+									["indent"] = 0,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").PREF_METRIC = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								}
 							}
-						}
-					},
-					[3] = {
-						["name"] = L["Config - General - Reset"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = false,
-						["var_hidden"] = function() return false end,
-						["elements"] = {
-							[1] = {
-								["name"] = "",
-								["type"] = NS.Variables.Config.TYPE_BUTTON,
-								["descriptor"] = nil,
-								["indent"] = 0,
-								["var_button_text"] = L["Config - General - Reset - Button"],
-								["var_set"] = function() addon.C.API.Util:Blizzard_ShowPopup("WAYPOINTUI_RESET_SETTING") end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
-							}
-						}
-					}
-				}
-			},
-			[2] = {
-				["name"] = L["Config - WaypointSystem"],
-				["type"] = NS.Variables.Config.TYPE_TAB,
-				["var_tab_footer"] = false,
-				["elements"] = {
-					[1] = {
-						["name"] = L["Config - WaypointSystem - Title"],
-						["type"] = NS.Variables.Config.TYPE_TITLE,
-						["var_title_imageTexture"] = addon.CREF:NewIcon("waypoint"),
-						["var_title_text"] = L["Config - WaypointSystem - Title"],
-						["var_title_subtext"] = L["Config - WaypointSystem - Title - Subtext"],
-					},
-					[2] = {
-						["name"] = nil,
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = true,
-						["var_hidden"] = function() return false end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Config - WaypointSystem - Type"],
-								["type"] = NS.Variables.Config.TYPE_DROPDOWN,
-								["descriptor"] = nil,
-								["indent"] = 0,
-								["var_dropdown_info"] = { L["Config - WaypointSystem - Type - Both"], L["Config - WaypointSystem - Type - Waypoint"], L["Config - WaypointSystem - Type - Pinpoint"] },
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE end,
-								["var_set"] = function(value)
-									GetDatabase("DB_GLOBAL").WS_TYPE = value; CallbackRegistry:Trigger("CONFIG_WS_TYPE"); return true
-								end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end
-							},
-						}
-					},
-					[3] = {
-						["name"] = L["Config - WaypointSystem - General"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = false,
-						["var_hidden"] = function() return false end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Config - WaypointSystem - General - Transition Distance"],
-								["type"] = NS.Variables.Config.TYPE_RANGE,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - Transition Distance - Description"]),
-								["indent"] = 0,
-								["var_range_min"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 55 or 50 end,
-								["var_range_max"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 547 or 500 end,
-								["var_range_step"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 5.47 or 5 end,
-								["var_range_text"] = function(value) return string.format("%.0f", value * (GetDatabase("DB_GLOBAL").PREF_METRIC and .9144 or 1)) .. (GetDatabase("DB_GLOBAL").PREF_METRIC and "m" or " yds") end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WS_DISTANCE_TRANSITION") end,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TRANSITION end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_TRANSITION = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 end,
-							},
-							[2] = {
-								["name"] = L["Config - WaypointSystem - General - Hide Distance"],
-								["type"] = NS.Variables.Config.TYPE_RANGE,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - Hide Distance - Description"]),
-								["indent"] = 0,
-								["var_range_min"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 1 or 1 end,
-								["var_range_max"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 109 or 100 end,
-								["var_range_step"] = 1,
-								["var_range_text"] = function(value) return string.format("%.0f", value * (GetDatabase("DB_GLOBAL").PREF_METRIC and .9144 or 1)) .. (GetDatabase("DB_GLOBAL").PREF_METRIC and "m" or " yds") end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WS_DISTANCE_HIDE") end,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_HIDE end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_HIDE = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
-							}
-						}
-					},
-					[4] = {
-						["name"] = L["Config - WaypointSystem - Waypoint"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = false,
-						["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 2 end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Config - WaypointSystem - WaypointFooterType"],
-								["type"] = NS.Variables.Config.TYPE_DROPDOWN,
-								["descriptor"] = nil,
-								["indent"] = 0,
-								["var_dropdown_info"] = { L["Config - WaypointSystem - WaypointFooterType - Both"], L["Config - WaypointSystem - WaypointFooterType - Distance"], L["Config - WaypointSystem - WaypointFooterType - ETA"], L["Config - WaypointSystem - WaypointFooterType - None"] },
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE end,
-								["var_set"] = function(value)
-									GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE = value; return true
-								end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
-							},
-							[2] = {
-								["name"] = L["Config - WaypointSystem - WaypointFooterOpacity"],
-								["type"] = NS.Variables.Config.TYPE_RANGE,
-								["descriptor"] = nil,
-								["indent"] = 1,
-								["var_range_min"] = .1,
-								["var_range_max"] = 1,
-								["var_range_step"] = .1,
-								["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_FOOTER_OPACITY") end,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_ALPHA end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_ALPHA = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE == 4 end,
-							},
-							[3] = {
-								["name"] = L["Config - WaypointSystem - WaypointScale"],
-								["type"] = NS.Variables.Config.TYPE_RANGE,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - WaypointScale - Description"]),
-								["indent"] = 0,
-								["var_range_min"] = .5,
-								["var_range_max"] = 5,
-								["var_range_step"] = .1,
-								["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_SCALE") end,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
-							},
-							[4] = {
-								["name"] = L["Config - WaypointSystem - WaypointMinScale"],
-								["type"] = NS.Variables.Config.TYPE_RANGE,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - WaypointMinScale - Description"]),
-								["indent"] = 1,
-								["var_range_min"] = .125,
-								["var_range_max"] = 1,
-								["var_range_step"] = .125,
-								["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_MIN_SCALE") end,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_MIN_SCALE end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_MIN_SCALE = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
-							},
-							[5] = {
-								["name"] = L["Config - WaypointSystem - WaypointMaxScale"],
-								["type"] = NS.Variables.Config.TYPE_RANGE,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - WaypointMaxScale - Description"]),
-								["indent"] = 1,
-								["var_range_min"] = 1,
-								["var_range_max"] = 2,
-								["var_range_step"] = .125,
-								["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_MAX_SCALE") end,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_MAX_SCALE end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_MAX_SCALE = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
-							}
-						}
-					},
-					[5] = {
-						["name"] = L["Config - WaypointSystem - Pinpoint"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = false,
-						["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 3 end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Config - WaypointSystem - PinpointScale"],
-								["type"] = NS.Variables.Config.TYPE_RANGE,
-								["descriptor"] = nil,
-								["indent"] = 0,
-								["var_range_min"] = .5,
-								["var_range_max"] = 2,
-								["var_range_step"] = .1,
-								["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
-								["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_PINPOINT_SCALE") end,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
-							},
-							[2] = {
-								["name"] = L["Config - WaypointSystem - PinpointDetail"],
-								["type"] = NS.Variables.Config.TYPE_CHECKBOX,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - PinpointDetail - Description"]),
-								["indent"] = 0,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
+						},
+						[3] = {
+							["name"] = L["Config - General - Reset"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								[1] = {
+									["name"] = "",
+									["type"] = NS.Variables.Config.TYPE_BUTTON,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_button_text"] = L["Config - General - Reset - Button"],
+									["var_set"] = function() addon.C.API.Util:Blizzard_ShowPopup("WAYPOINTUI_RESET_SETTING") end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								}
 							}
 						}
 					}
-				}
-			},
-			[3] = {
-				["name"] = L["Config - Audio"],
-				["type"] = NS.Variables.Config.TYPE_TAB,
-				["var_tab_footer"] = false,
-				["elements"] = {
-					[1] = {
-						["name"] = L["Config - Audio - Title"],
-						["type"] = NS.Variables.Config.TYPE_TITLE,
-						["var_title_imageTexture"] = addon.CREF:NewIcon("speaker-on"),
-						["var_title_text"] = L["Config - Audio - Title"],
-						["var_title_subtext"] = L["Config - Audio - Title - Subtext"],
-					},
-					[2] = {
-						["name"] = L["Config - Audio - General"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = false,
-						["var_hidden"] = function() return false end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Config - Audio - General - EnableGlobalAudio"],
-								["type"] = NS.Variables.Config.TYPE_CHECKBOX,
-								["descriptor"] = nil,
-								["indent"] = 0,
-								["var_get"] = function() return GetDatabase("DB_GLOBAL").AUDIO_GLOBAL end,
-								["var_set"] = function(value) GetDatabase("DB_GLOBAL").AUDIO_GLOBAL = value end,
-								["var_disabled"] = function() return false end,
-								["var_hidden"] = function() return false end,
+				},
+				[2] = {
+					["name"] = L["Config - WaypointSystem"],
+					["type"] = NS.Variables.Config.TYPE_TAB,
+					["var_tab_footer"] = false,
+					["elements"] = {
+						[1] = {
+							["name"] = L["Config - WaypointSystem - Title"],
+							["type"] = NS.Variables.Config.TYPE_TITLE,
+							["var_title_imageTexture"] = addon.CREF:NewIcon("waypoint"),
+							["var_title_text"] = L["Config - WaypointSystem - Title"],
+							["var_title_subtext"] = L["Config - WaypointSystem - Title - Subtext"],
+						},
+						[2] = {
+							["name"] = nil,
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = true,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Config - WaypointSystem - Type"],
+									["type"] = NS.Variables.Config.TYPE_DROPDOWN,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_dropdown_info"] = { L["Config - WaypointSystem - Type - Both"], L["Config - WaypointSystem - Type - Waypoint"], L["Config - WaypointSystem - Type - Pinpoint"] },
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE end,
+									["var_set"] = function(value)
+										GetDatabase("DB_GLOBAL").WS_TYPE = value; CallbackRegistry:Trigger("CONFIG_WS_TYPE"); return true
+									end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end
+								},
+							}
+						},
+						[3] = {
+							["name"] = L["Config - WaypointSystem - General"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Config - WaypointSystem - General - Transition Distance"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - Transition Distance - Description"]),
+									["indent"] = 0,
+									["var_range_min"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 55 or 50 end,
+									["var_range_max"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 547 or 500 end,
+									["var_range_step"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 5.47 or 5 end,
+									["var_range_text"] = function(value) return string.format("%.0f", value * (GetDatabase("DB_GLOBAL").PREF_METRIC and .9144 or 1)) .. (GetDatabase("DB_GLOBAL").PREF_METRIC and "m" or " yds") end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WS_DISTANCE_TRANSITION") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TRANSITION end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_TRANSITION = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 end,
+								},
+								[2] = {
+									["name"] = L["Config - WaypointSystem - General - Hide Distance"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - Hide Distance - Description"]),
+									["indent"] = 0,
+									["var_range_min"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 1 or 1 end,
+									["var_range_max"] = function() return GetDatabase("DB_GLOBAL").PREF_METRIC and 109 or 100 end,
+									["var_range_step"] = 1,
+									["var_range_text"] = function(value) return string.format("%.0f", value * (GetDatabase("DB_GLOBAL").PREF_METRIC and .9144 or 1)) .. (GetDatabase("DB_GLOBAL").PREF_METRIC and "m" or " yds") end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WS_DISTANCE_HIDE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_HIDE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_HIDE = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								}
+							}
+						},
+						[4] = {
+							["name"] = L["Config - WaypointSystem - Waypoint"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 2 end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Config - WaypointSystem - WaypointFooterType"],
+									["type"] = NS.Variables.Config.TYPE_DROPDOWN,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_dropdown_info"] = { L["Config - WaypointSystem - WaypointFooterType - Both"], L["Config - WaypointSystem - WaypointFooterType - Distance"], L["Config - WaypointSystem - WaypointFooterType - ETA"], L["Config - WaypointSystem - WaypointFooterType - None"] },
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE end,
+									["var_set"] = function(value)
+										GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE = value; return true
+									end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								},
+								[2] = {
+									["name"] = L["Config - WaypointSystem - WaypointFooterOpacity"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = nil,
+									["indent"] = 1,
+									["var_range_min"] = .1,
+									["var_range_max"] = 1,
+									["var_range_step"] = .1,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_FOOTER_OPACITY") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_ALPHA end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_ALPHA = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE == 4 end,
+								},
+								[3] = {
+									["name"] = L["Config - WaypointSystem - WaypointScale"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - WaypointScale - Description"]),
+									["indent"] = 0,
+									["var_range_min"] = .5,
+									["var_range_max"] = 5,
+									["var_range_step"] = .1,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_SCALE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								},
+								[4] = {
+									["name"] = L["Config - WaypointSystem - WaypointMinScale"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - WaypointMinScale - Description"]),
+									["indent"] = 1,
+									["var_range_min"] = .125,
+									["var_range_max"] = 1,
+									["var_range_step"] = .125,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_MIN_SCALE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_MIN_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_MIN_SCALE = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								},
+								[5] = {
+									["name"] = L["Config - WaypointSystem - WaypointMaxScale"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - WaypointMaxScale - Description"]),
+									["indent"] = 1,
+									["var_range_min"] = 1,
+									["var_range_max"] = 2,
+									["var_range_step"] = .125,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_WAYPOINT_MAX_SCALE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_MAX_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_MAX_SCALE = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								}
+							}
+						},
+						[5] = {
+							["name"] = L["Config - WaypointSystem - Pinpoint"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 3 end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Config - WaypointSystem - PinpointScale"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_range_min"] = .5,
+									["var_range_max"] = 2,
+									["var_range_step"] = .1,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("CONFIG_PINPOINT_SCALE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								},
+								[2] = {
+									["name"] = L["Config - WaypointSystem - PinpointDetail"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - PinpointDetail - Description"]),
+									["indent"] = 0,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								}
 							}
 						}
 					}
-				}
-			},
-			[4] = {
-				["name"] = L["Config - About"],
-				["type"] = NS.Variables.Config.TYPE_TAB,
-				["var_tab_footer"] = true,
-				["elements"] = {
-					[1] = {
-						["name"] = L["Config - About"],
-						["type"] = NS.Variables.Config.TYPE_TITLE,
-						["var_title_imageTexture"] = addon.C.AddonInfo.Variables.General.ADDON_ICON_ALT,
-						["var_title_text"] = addon.CREF:GetAddonName(),
-						["var_title_subtext"] = addon.CREF:GetAddonVersionString(),
-					},
-					[2] = {
-						["name"] = L["Config - About - Contributors"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = true,
-						["var_hidden"] = function() return false end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Contributors - ZamestoTV"],
-								["type"] = NS.Variables.Config.TYPE_TEXT,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - ZamestoTV - Description"]),
-								["indent"] = 0,
-								["var_transparent"] = true,
-								["var_hidden"] = function() return false end,
-							},
-							[2] = {
-								["name"] = L["Contributors - huchang47"],
-								["type"] = NS.Variables.Config.TYPE_TEXT,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - huchang47 - Description"]),
-								["indent"] = 0,
-								["var_transparent"] = true,
-								["var_hidden"] = function() return false end,
-							},
-							[3] = {
-								["name"] = L["Contributors - BlueNightSky"],
-								["type"] = NS.Variables.Config.TYPE_TEXT,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - BlueNightSky - Description"]),
-								["indent"] = 0,
-								["var_transparent"] = true,
-								["var_hidden"] = function() return false end,
-							},
-							[4] = {
-								["name"] = L["Contributors - Crazyyoungs"],
-								["type"] = NS.Variables.Config.TYPE_TEXT,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Crazyyoungs - Description"]),
-								["indent"] = 0,
-								["var_transparent"] = true,
-								["var_hidden"] = function() return false end,
-							},
-							[5] = {
-								["name"] = L["Contributors - y45853160"],
-								["type"] = NS.Variables.Config.TYPE_TEXT,
-								["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - y45853160 - Description"]),
-								["indent"] = 0,
-								["var_transparent"] = true,
-								["var_hidden"] = function() return false end,
+				},
+				[3] = {
+					["name"] = L["Config - Audio"],
+					["type"] = NS.Variables.Config.TYPE_TAB,
+					["var_tab_footer"] = false,
+					["elements"] = {
+						[1] = {
+							["name"] = L["Config - Audio - Title"],
+							["type"] = NS.Variables.Config.TYPE_TITLE,
+							["var_title_imageTexture"] = addon.CREF:NewIcon("speaker-on"),
+							["var_title_text"] = L["Config - Audio - Title"],
+							["var_title_subtext"] = L["Config - Audio - Title - Subtext"],
+						},
+						[2] = {
+							["name"] = L["Config - Audio - General"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Config - Audio - General - EnableGlobalAudio"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").AUDIO_GLOBAL end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").AUDIO_GLOBAL = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								}
 							}
 						}
-					},
-					[3] = {
-						["name"] = L["Config - About - Developer"],
-						["type"] = NS.Variables.Config.TYPE_CONTAINER,
-						["var_transparent"] = true,
-						["var_hidden"] = function() return false end,
-						["elements"] = {
-							[1] = {
-								["name"] = L["Config - About - Developer - AdaptiveX"],
-								["type"] = NS.Variables.Config.TYPE_TEXT,
-								["descriptor"] = nil,
-								["indent"] = 0,
-								["var_transparent"] = true,
-								["var_hidden"] = function() return false end,
+					}
+				},
+				[4] = {
+					["name"] = L["Config - About"],
+					["type"] = NS.Variables.Config.TYPE_TAB,
+					["var_tab_footer"] = true,
+					["elements"] = {
+						[1] = {
+							["name"] = L["Config - About"],
+							["type"] = NS.Variables.Config.TYPE_TITLE,
+							["var_title_imageTexture"] = addon.C.AddonInfo.Variables.General.ADDON_ICON_ALT,
+							["var_title_text"] = addon.CREF:GetAddonName(),
+							["var_title_subtext"] = addon.CREF:GetAddonVersionString(),
+						},
+						[2] = {
+							["name"] = L["Config - About - Contributors"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = true,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Contributors - ZamestoTV"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - ZamestoTV - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								[2] = {
+									["name"] = L["Contributors - huchang47"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - huchang47 - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								[3] = {
+									["name"] = L["Contributors - BlueNightSky"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - BlueNightSky - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								[4] = {
+									["name"] = L["Contributors - Crazyyoungs"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Crazyyoungs - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								[5] = {
+									["name"] = L["Contributors - y45853160"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - y45853160 - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								}
+							}
+						},
+						[3] = {
+							["name"] = L["Config - About - Developer"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_transparent"] = true,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								[1] = {
+									["name"] = L["Config - About - Developer - AdaptiveX"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								}
 							}
 						}
 					}
 				}
 			}
-		}
+		end)
 	end
 end

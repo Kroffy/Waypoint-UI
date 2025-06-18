@@ -31,6 +31,10 @@ function NS.Script:Load()
 		_:RegisterEvent("UI_SCALE_CHANGED")
 		_:RegisterEvent("GLOBAL_MOUSE_DOWN")
 		_:RegisterEvent("GLOBAL_MOUSE_UP")
+		_:RegisterEvent("CINEMATIC_START")
+		_:RegisterEvent("CINEMATIC_STOP")
+		_:RegisterEvent("PLAY_MOVIE")
+		_:RegisterEvent("STOP_MOVIE")
 		_:SetScript("OnEvent", function(self, event, ...)
 			if event == "GLOBAL_MOUSE_DOWN" then
 				CallbackRegistry:Trigger("EVENT_MOUSE_DOWN", ...)
@@ -40,6 +44,12 @@ function NS.Script:Load()
 
 			if event == "UI_SCALE_CHANGED" then
 				CallbackRegistry:Trigger("UI_SCALE_CHANGED", ...)
+			end
+
+			if event == "CINEMATIC_START" or event == "PLAY_MOVIE" then
+				CallbackRegistry:Trigger("EVENT_CINEMATIC_START", ...)
+			elseif event == "CINEMATIC_STOP" or event == "STOP_MOVIE" then
+				CallbackRegistry:Trigger("EVENT_CINEMATIC_STOP", ...)
 			end
 		end)
 	end

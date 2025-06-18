@@ -61,6 +61,12 @@ do
 	---@return string iconPath
 	function NS:NewIcon(iconName) return addon.C.AddonInfo.Variables.General.COMMON_PATH_ART .. "Icons/" .. iconName .. ".png" end
 
+	-- Returns inline icon using the specified name. File name only - exclude file extension.
+	---@param iconName string
+	---@param size number
+	---@return string inlineIconString
+	function NS:GetInlineIcon(iconName, size) return addon.C.API.Util:InlineIcon(addon.CREF:GetCommonPathArt() .. "Icons/" .. iconName .. ".png", size, size, 0, 0, "Texture") end
+
 	-- Returns chat icon using the specified name. File name only - exclude file extension.
 	---@param iconName string
 	---@param size number

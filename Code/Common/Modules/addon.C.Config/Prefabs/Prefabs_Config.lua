@@ -185,6 +185,10 @@ function NS.Prefabs:Load()
 
 						local function Event_OnMouseDown(frame, skipAnimation)
 							Frame:Animation_OnMouseDown(skipAnimation)
+
+							--------------------------------
+
+							PlaySound(856)
 						end
 
 						local function Event_OnMouseUp(frame, skipAnimation)

@@ -11,9 +11,9 @@ local NS = addon.C; addon.C = NS
 function NS:Load()
 	local function Modules()
 		-- PRIORITY
-		NS.Frame:Load()
 		NS.CallbackRegistry:Load()
 		NS.PrefabRegistry:Load()
+		NS.Frame:Load()
 		NS.Sound:Load()
 		NS.SharedVariables:Load()
 		NS.DevTools:Load()

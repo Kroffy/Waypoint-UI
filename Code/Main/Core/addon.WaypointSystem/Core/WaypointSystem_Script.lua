@@ -272,7 +272,11 @@ function NS.Script:Load()
 				local isWay = WaypointUI_IsWay()
 
 				if pinInfo.pinType then
-					if pinInfo.poiInfo and pinInfo.poiInfo.atlasName then
+					if pinInfo.pinType == Enum.SuperTrackingType.Corpse then
+						texture.type = "ATLAS"
+						texture.recolor = false
+						texture.path = "poi-torghast"
+					elseif pinInfo.poiInfo and pinInfo.poiInfo.atlasName then
 						texture.type = "ATLAS"
 						texture.recolor = true
 						texture.path = pinInfo.poiInfo.atlasName
@@ -284,10 +288,6 @@ function NS.Script:Load()
 						texture.type = "TEXTURE"
 						texture.recolor = false
 						texture.path = addon.CREF:GetAddonPath() .. "Art/ContextIcons/map-pin-default.png"
-					elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
-						texture.type = "ATLAS"
-						texture.recolor = false
-						texture.path = "poi-torghast"
 					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.TaxiNode then
 						texture.type = "ATLAS"
 						texture.recolor = true
@@ -1041,7 +1041,7 @@ function NS.Script:Load()
 			end
 
 			function Callback:Update(isNewWaypoint)
-				if not C_SuperTrack.IsSuperTrackingAnything() then
+				if not C_SuperTrack.IsSuperTrackingAnything() or IsInCinematicScene() then
 					Callback:Waypoint_Hide()
 					Callback:Blizzard_Hide()
 
@@ -1054,10 +1054,6 @@ function NS.Script:Load()
 
 				if isNewWaypoint then
 					Callback:Waypoint_Reset()
-
-					--------------------------------
-
-					addon.C.Sound.Script:PlaySound(31583)
 				end
 
 				--------------------------------
