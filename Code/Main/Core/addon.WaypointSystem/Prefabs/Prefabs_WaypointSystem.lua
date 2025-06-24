@@ -152,6 +152,19 @@ function NS.Prefabs:Load()
 								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetAtlas(atlas)
 							end
 
+							function Frame:SetTint(color)
+								Frame.REF_BACKGROUND_FOREGROUND_TEXTURE:SetVertexColor(color.r, color.g, color.b, color.a)
+								Frame.REF_BACKGROUND_BACKGROUND_TEXTURE:SetVertexColor(color.r, color.g, color.b, color.a)
+
+								--------------------------------
+
+								Frame.tintColor = { r = color.r, g = color.g, b = color.b, a = color.a }
+							end
+
+							function Frame:SetOpacity(opacity)
+								Frame.Content:SetAlpha(opacity)
+							end
+
 							function Frame:Recolor()
 								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetDesaturated(true)
 								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetVertexColor(Frame.tintColor.r, Frame.tintColor.g, Frame.tintColor.b, Frame.tintColor.a)
@@ -162,25 +175,12 @@ function NS.Prefabs:Load()
 								Frame.REF_MAIN_IMAGE_BACKGROUND_TEXTURE:SetVertexColor(1, 1, 1, 1)
 							end
 
-							function Frame:SetTint(color)
-								Frame.REF_BACKGROUND_FOREGROUND_TEXTURE:SetVertexColor(color.r, color.g, color.b, color.a)
-								Frame.REF_BACKGROUND_BACKGROUND_TEXTURE:SetVertexColor(color.r, color.g, color.b, color.a)
-
-								--------------------------------
-
-								Frame.tintColor = { r = color.r, g = color.g, b = color.b, a = color.a }
-							end
-
-							function Frame:SetInfo(image, opacity)
+							function Frame:SetInfo(image)
 								if image.type == "ATLAS" then
 									Frame:SetAtlas(image.path)
 								else
 									Frame:SetImage(image.path)
 								end
-
-								--------------------------------
-
-								if opacity then Frame.Content:SetAlpha(opacity) else Frame.Content:SetAlpha(1) end
 							end
 						end
 

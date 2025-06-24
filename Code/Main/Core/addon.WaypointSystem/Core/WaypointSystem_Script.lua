@@ -47,6 +47,10 @@ function NS.Script:Load()
 					Frame.LGS_FOOTER()
 				end
 
+				function Frame_Waypoint:Context_SetOpacity(opacity)
+					Frame.REF_WAYPOINT_CONTEXT:SetOpacity(opacity)
+				end
+
 				function Frame_Waypoint:Context_SetImage(image, opacity)
 					Frame.REF_WAYPOINT_CONTEXT:SetInfo(image, opacity)
 				end
@@ -106,6 +110,10 @@ function NS.Script:Load()
 					--------------------------------
 
 					Frame.REF_PINPOINT_FOREGROUND:SetShown(text ~= nil)
+				end
+
+				function Frame_Pinpoint:Context_SetOpacity(opacity)
+					Frame.REF_PINPOINT_BACKGROUND_CONTEXT:SetOpacity(opacity)
 				end
 
 				function Frame_Pinpoint:Context_SetImage(image, opacity)
@@ -903,6 +911,7 @@ function NS.Script:Load()
 
 					--------------------------------
 
+					Frame_Waypoint:Context_SetOpacity(1)
 					Frame_Waypoint:Context_SetImage(contextIcon)
 					Frame_Waypoint:Context_SetVFX("Wave", appearanceInfo.color)
 				else
@@ -910,6 +919,7 @@ function NS.Script:Load()
 
 					--------------------------------
 
+					Frame_Waypoint:Context_SetOpacity(1)
 					Frame_Waypoint:Context_SetImage(contextIcon)
 					Frame_Waypoint:Context_SetVFX("Wave", appearanceInfo.color)
 				end
@@ -987,7 +997,8 @@ function NS.Script:Load()
 					end
 
 					Frame_Pinpoint:SetText(text)
-					Frame_Pinpoint:Context_SetImage(contextIcon, .25)
+					Frame_Pinpoint:Context_SetOpacity(.25)
+					Frame_Pinpoint:Context_SetImage(contextIcon)
 				else
 					local text = nil
 					local contextIcon = (Callback:GetContextIcon_Pin())
@@ -1023,7 +1034,8 @@ function NS.Script:Load()
 					end
 
 					Frame_Pinpoint:SetText(text)
-					Frame_Pinpoint:Context_SetImage(contextIcon, text and 1 or .25)
+					Frame_Pinpoint:Context_SetOpacity(text and .25 or 1)
+					Frame_Pinpoint:Context_SetImage(contextIcon)
 				end
 
 				--------------------------------
