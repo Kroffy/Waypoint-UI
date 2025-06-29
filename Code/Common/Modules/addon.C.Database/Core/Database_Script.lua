@@ -49,12 +49,12 @@ function NS.Script:Load()
 end
 
 function NS.Script:OnInitialize()
-	C_Timer.After(0, function()
+	addon.C.Libraries.AceTimer:ScheduleTimer(function()
 		NS.Variables.DB_GLOBAL = AceDB:New(addon.C.AddonInfo.Variables.Database.GLOBAL_NAME, addon.C.AddonInfo.Variables.Database.GLOBAL_DEFAULT, true)
 		NS.Variables.DB_LOCAL = AceDB:New(addon.C.AddonInfo.Variables.Database.LOCAL_NAME, addon.C.AddonInfo.Variables.Database.LOCAL_DEFAULT, true)
 		NS.Variables.DB_GLOBAL_PERSISTENT = AceDB:New(addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_NAME, addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_DEFAULT, true)
 		NS.Variables.DB_LOCAL_PERSISTENT = AceDB:New(addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_NAME, addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_DEFAULT, true)
-	end)
+	end, .1)
 end
 
 LibStub("AceAddon-3.0"):NewAddon(NS.Script, addon.C.AddonInfo.Variables.General.IDENTIFIER)
