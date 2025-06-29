@@ -348,9 +348,9 @@ function NS.Prefabs:Load()
 						end
 
 						function Frame:HideWithAnimation(skipAnimation)
-							addon.C.Libraries.AceTimer:ScheduleTimer(function()
+							C_Timer.After(.1, function()
 								Frame:Hide()
-							end, 1)
+							end)
 
 							if skipAnimation then
 								Frame.REF_CONTENT:SetAlpha(0)

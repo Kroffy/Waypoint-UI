@@ -27,5 +27,5 @@ function NS:Load()
 
 	Variables()
 	Modules()
-	addon.C.Libraries.AceTimer:ScheduleTimer(Submodules, .1)
+	C_Timer.After(.1, Submodules)
 end

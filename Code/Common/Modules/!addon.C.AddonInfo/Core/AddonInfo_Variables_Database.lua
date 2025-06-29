@@ -85,4 +85,31 @@ do -- CONSTANTS
 			}
 		}
 	end
+
+	do -- MIGRATION
+		--------------------------------
+		-- EXAMPLE
+		--------------------------------
+
+		-- 	[1] = {
+		-- 		from = "KEY_1",
+		-- 		to = "KEY_2"
+		-- 	}
+
+		NS.Variables.Database.MIGRATION_GLOBAL = {
+
+		}
+
+		NS.Variables.Database.MIGRATION_LOCAL = {
+
+		}
+
+		NS.Variables.Database.MIGRATION_GLOBAL_PERSISTENT = {
+
+		}
+
+		NS.Variables.Database.MIGRATION_LOCAL_PERSISTENT = {
+
+		}
+	end
 end

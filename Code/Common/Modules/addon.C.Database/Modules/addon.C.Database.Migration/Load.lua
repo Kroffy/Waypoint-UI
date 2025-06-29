@@ -6,8 +6,8 @@ local L = addon.C.AddonInfo.Locales
 
 --------------------------------
 
-addon.C.Database = {}
-local NS = addon.C.Database; addon.C.Database = NS
+addon.C.Database.Migration = {}
+local NS = addon.C.Database.Migration; addon.C.Database.Migration = NS
 
 --------------------------------
 
@@ -20,13 +20,8 @@ function NS:Load()
 		NS.Script:Load()
 	end
 
-	local function Submodules()
-		NS.Migration:Load()
-	end
-
 	--------------------------------
 
 	Variables()
 	Modules()
-	C_Timer.After(.1, Submodules)
 end

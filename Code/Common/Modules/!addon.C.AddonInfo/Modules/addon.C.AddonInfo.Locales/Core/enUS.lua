@@ -133,6 +133,8 @@ function NS:Load()
 		L["Contributors - BlueNightSky - Description"] = "Translator — Chinese (Traditional)"
 		L["Contributors - Crazyyoungs"] = "Crazyyoungs"
 		L["Contributors - Crazyyoungs - Description"] = "Translator — Korean"
+		L["Contributors - Klep"] = "Klep"
+		L["Contributors - Klep - Description"] = "Translator — French"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "Code — Beta Bug Fix"
 	end

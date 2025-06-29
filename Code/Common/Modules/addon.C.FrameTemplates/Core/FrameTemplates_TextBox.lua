@@ -363,7 +363,7 @@ do
 
 					--------------------------------
 
-					addon.C.Libraries.AceTimer:ScheduleTimer(function()
+					C_Timer.After(.1, function()
 						if Frame.autoSelect then
 							Frame:GetTextBox():HighlightText(0, #Frame:GetTextBox():GetText())
 							Frame:GetTextBox():SetFocus()

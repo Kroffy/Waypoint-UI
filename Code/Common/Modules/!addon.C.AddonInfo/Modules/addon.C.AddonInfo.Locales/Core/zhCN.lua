@@ -136,6 +136,8 @@ function NS:Load()
 		L["Contributors - BlueNightSky - Description"] = "翻译者 — 繁体中文"
 		L["Contributors - Crazyyoungs"] = "Crazyyoungs"
 		L["Contributors - Crazyyoungs - Description"] = "翻译者 — 韩语"
+		L["Contributors - Klep"] = "Klep"
+		L["Contributors - Klep - Description"] = "Translator — French"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "编码者 — 修复Bug"
 	end

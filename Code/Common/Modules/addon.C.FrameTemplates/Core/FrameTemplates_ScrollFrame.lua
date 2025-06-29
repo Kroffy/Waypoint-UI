@@ -221,7 +221,7 @@ do
 
 					do -- ON SMOOTH SCROLL START
 						if smoothScrollingRatio then
-							addon.C.Libraries.AceTimer:ScheduleTimer(function()
+							C_Timer.After(.1, function()
 								local onSmoothScrollStartCallbacks = Frame.onSmoothScrollStartCallbacks
 
 								for callback = 1, #onSmoothScrollStartCallbacks do
@@ -515,7 +515,7 @@ do
 
 					do -- ON SMOOTH SCROLL START
 						if smoothScrollingRatio then
-							addon.C.Libraries.AceTimer:ScheduleTimer(function()
+							C_Timer.After(.1, function()
 								local onSmoothScrollStartCallbacks = Frame.onSmoothScrollStartCallbacks
 
 								for callback = 1, #onSmoothScrollStartCallbacks do

@@ -96,7 +96,7 @@ function NS:Load()
 		L["Config - Appearance - Waypoint - Scale - Min - Description"] = "Минимальный % размер, до которого можно уменьшить."
 		L["Config - Appearance - Waypoint - Scale - Max"] = "Максимум %"
 		L["Config - Appearance - Waypoint - Scale - Max - Description"] = "Максимальный % размер, до которого можно увеличить."
-		L["Config - Appearance - Waypoint - Beam"] = "Показать Луч"
+		L["Config - Appearance - Waypoint - Beam"] = "Show Beam"
 		L["Config - Appearance - Waypoint - Beam - Alpha"] = "Прозрачность"
 		L["Config - Appearance - Waypoint - Footer - Alpha"] = "Прозрачность текста информации"
 		L["Config - Appearance - Pinpoint"] = "Точка привязки"
@@ -128,10 +128,17 @@ function NS:Load()
 	--------------------------------
 
 	do
+		L["Contributors - ZamestoTV"] = "ZamestoTV"
 		L["Contributors - ZamestoTV - Description"] = "Переводчик — на русский язык"
+		L["Contributors - huchang47"] = "huchang47"
 		L["Contributors - huchang47 - Description"] = "Переводчик — на китайский (упрощенный) язык"
+		L["Contributors - BlueNightSky"] = "BlueNightSky"
 		L["Contributors - BlueNightSky - Description"] = "Переводчик — на китайский (традиционный) язык"
+		L["Contributors - Crazyyoungs"] = "Crazyyoungs"
 		L["Contributors - Crazyyoungs - Description"] = "Translator — Korean"
+		L["Contributors - Klep"] = "Klep"
+		L["Contributors - Klep - Description"] = "Translator — French"
+		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "Код — Исправление ошибок в бета-версии"
 	end
 end

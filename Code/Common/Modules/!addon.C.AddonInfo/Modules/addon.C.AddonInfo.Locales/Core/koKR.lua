@@ -127,10 +127,17 @@ function NS:Load()
 	--------------------------------
 
 	do
+		L["Contributors - ZamestoTV"] = "ZamestoTV"
 		L["Contributors - ZamestoTV - Description"] = "번역가: 러시아어"
+		L["Contributors - huchang47"] = "huchang47"
 		L["Contributors - huchang47 - Description"] = "번역가: 중국어(간체)"
+		L["Contributors - BlueNightSky"] = "BlueNightSky"
 		L["Contributors - BlueNightSky - Description"] = "번역가: 중국어(번체)"
+		L["Contributors - Crazyyoungs"] = "Crazyyoungs"
 		L["Contributors - Crazyyoungs - Description"] = "번역가: 한국어"
+		L["Contributors - Klep"] = "Klep"
+		L["Contributors - Klep - Description"] = "Translator - French"
+		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "코드: 베타 버그 수정"
 	end
 end

@@ -783,6 +783,14 @@ do  -- CONSTANTS
 									["var_hidden"] = function() return false end,
 								},
 								[5] = {
+									["name"] = L["Contributors - Klep"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Klep - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								[6] = {
 									["name"] = L["Contributors - y45853160"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - y45853160 - Description"]),

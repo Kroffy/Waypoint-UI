@@ -389,6 +389,68 @@ do
 
 			return loop
 		end
+
+		function NS.Sequencer:CreateAnimation(data)
+			local loop = {}
+			loop.timers = {}
+
+			--------------------------------
+
+			do -- LOGIC
+				do -- FUNCTIONS
+					do -- LOGIC
+						-- ["stopEvent"] = ...
+						-- ["sequences"]
+						--      -> ["Animation 1"]
+						--           -> [1]
+						--                -> ["wait"] = ...
+						--                -> ["animation"] = function() ... end
+
+						function loop:Play(id)
+							local stopEvent = data.stopEvent
+							local sequence = data.sequences[id]
+
+							--------------------------------
+
+							for i = 1, #sequence do
+								local entry = sequence[i]
+								local animation, wait = entry.animation, entry.wait
+
+								--------------------------------
+
+								if not wait then
+									animation()
+								else
+									local timer = C_Timer.After(wait, function()
+										if stopEvent and stopEvent() then
+											return
+										end
+
+										--------------------------------
+
+										animation()
+									end)
+
+									table.insert(loop.timers, timer)
+								end
+							end
+						end
+
+						function loop:Cancel()
+							if #loop.timers >= 1 then
+								for i = 1, #loop.timers do
+									loop.timers[i]:Cancel()
+								end
+							end
+						end
+					end
+				end
+			end
+
+			--------------------------------
+
+			return loop
+		end
 	end
 end
 

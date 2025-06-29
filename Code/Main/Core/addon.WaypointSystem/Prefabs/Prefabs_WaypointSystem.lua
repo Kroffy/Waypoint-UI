@@ -226,38 +226,22 @@ function NS.Prefabs:Load()
 
 						--------------------------------
 
-						do -- LAYOUT GROUP
-							Content.LayoutGroup, Content.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Content, { point = "BOTTOM", direction = "vertical", resize = false, padding = 0, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
-							Content.LayoutGroup:SetPoint("CENTER", Content)
-							Content.LayoutGroup:SetFrameStrata(frameStrata)
-							Content.LayoutGroup:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.LayoutGroup, Content, 0, 0)
-							Frame.LGS_CONTENT = Content.LayoutGroup_Sort
+						do -- ELEMENTS
+							local function CreatePulse(name)
+								local Pulse = PrefabRegistry:Create("WaypointSystem.Waypoint.Marker.PulseFrame.Element", Content, frameStrata, frameLevel + 3, name)
+								Pulse:SetSize(5, 100)
+								Pulse:SetPoint("BOTTOM", Content, 0, 0)
+								Pulse:SetFrameStrata(frameStrata)
+								Pulse:SetFrameLevel(frameLevel + 2)
 
-							local LayoutGroup = Content.LayoutGroup
+								--------------------------------
 
-							--------------------------------
+								return Pulse
+							end
 
-							do -- ELEMENTS
-								local function CreatePulse(name)
-									local Pulse = PrefabRegistry:Create("WaypointSystem.Waypoint.Marker.PulseFrame.Element", Content.LayoutGroup, frameStrata, frameLevel + 3, name)
-									Pulse:SetSize(5, 100)
-									Pulse:SetFrameStrata(frameStrata)
-									Pulse:SetFrameLevel(frameLevel + 3)
-
-									--------------------------------
-
-									return Pulse
-								end
-
-								for i = 1, 3 do
-									local Pulse = CreatePulse("$parent.Pulse" .. i)
-									LayoutGroup["Pulse" .. i] = Pulse
-
-									--------------------------------
-
-									LayoutGroup:AddElement(Pulse)
-								end
+							for i = 1, 3 do
+								local Pulse = CreatePulse("$parent.Pulse" .. i)
+								Content["Pulse" .. i] = Pulse
 							end
 						end
 					end
@@ -267,24 +251,40 @@ function NS.Prefabs:Load()
 					do -- PLAYBACK
 						function Frame:Animation_Playback_Cycle()
 							for i = 1, #Frame.Elements do
-								addon.C.Libraries.AceTimer:ScheduleTimer(function()
-									Frame.Elements[i].Animation_Playback_Pre()
-									Frame.Elements[i]:Animation_Playback()
-								end, i * .75)
+								Frame.Elements[i].Animation_Playback_Timer = C_Timer.After((i - 1) * 2.5, function()
+									Frame.Elements[i].Animation_Playback:Play("pre")
+									Frame.Elements[i].Animation_Playback:Play("playback")
+								end)
 							end
 						end
 
 						Frame.Animation_Playback_Loop = addon.C.Animation.Sequencer:CreateLoop()
-						Frame.Animation_Playback_Loop:SetInterval(3)
+						Frame.Animation_Playback_Loop:SetInterval(7.5)
 						Frame.Animation_Playback_Loop:SetAnimation(Frame.Animation_Playback_Cycle)
+						Frame.Animation_Playback_Loop:SetOnStart(function()
+							for i = 1, #Frame.Elements do
+								if Frame.Elements[i].Animation_Playback_Timer then
+									Frame.Elements[i].Animation_Playback_Timer:Cancel()
+								end
+
+								Frame.Elements[i].Animation_Playback:Play("pre")
+							end
+						end)
+						Frame.Animation_Playback_Loop:SetOnStop(function()
+							for i = 1, #Frame.Elements do
+								if Frame.Elements[i].Animation_Playback_Timer then
+									Frame.Elements[i].Animation_Playback_Timer:Cancel()
+								end
+							end
+						end)
 					end
 				end
 
 				do -- LOGIC
 					Frame.Elements = {
-						[1] = Frame.Content.LayoutGroup.Pulse3,
-						[2] = Frame.Content.LayoutGroup.Pulse2,
-						[3] = Frame.Content.LayoutGroup.Pulse1,
+						[1] = Frame.Content.Pulse3,
+						[2] = Frame.Content.Pulse2,
+						[3] = Frame.Content.Pulse1,
 					}
 
 					---------------------------------
@@ -344,29 +344,45 @@ function NS.Prefabs:Load()
 							return not Frame:IsShown()
 						end
 
-						function Frame:Animation_Playback()
-							do -- START
-								addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
-								addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 3, ["from"] = -75, ["to"] = 125, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
-							end
+						Frame.Animation_Playback = addon.C.Animation.Sequencer:CreateAnimation({
+							["stopEvent"] = Frame.Animation_Playback_StopEvent,
+							["sequences"] = {
+								["pre"] = {
+									[1] = {
+										["wait"] = nil,
+										["animation"] = function()
+											addon.C.Animation:CancelAll(Frame.Content)
 
-							do -- END
-								C_Timer.After(1.5, function()
-									if not Frame:Animation_Playback_StopEvent() then
-										addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
-									end
-								end)
-							end
-						end
+											--------------------------------
 
-						function Frame:Animation_Playback_Pre()
-							addon.C.Animation:CancelAll(Frame.Content)
+											Frame.Content:Hide()
+											Frame.Content:SetAlpha(0)
+											Frame.Content:SetPoint("CENTER", Frame, "CENTER", 0, -75)
+										end
+									}
+								},
+								["playback"] = {
+									[1] = {
+										["wait"] = nil,
+										["animation"] = function()
+											addon.C.Animation:CancelAll(Frame.Content)
 
-							--------------------------------
+											--------------------------------
 
-							Frame.Content:SetAlpha(0)
-							Frame.Content:SetPoint("CENTER", Frame, "CENTER", 0, -75)
-						end
+											Frame.Content:Show()
+											addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+											addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 5, ["from"] = -75, ["to"] = 350, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+										end
+									},
+									[2] = {
+										["wait"] = 3.5,
+										["animation"] = function()
+											addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+										end
+									}
+								}
+							}
+						})
 					end
 				end
 
@@ -466,7 +482,7 @@ function NS.Prefabs:Load()
 						function Frame:Animation_Playback_Cycle()
 							for i = 1, #Frame.Elements do
 								Frame.Elements[i].Animation_Playback_Pre()
-								addon.C.Libraries.AceTimer:ScheduleTimer(function() Frame.Elements[i]:Animation_Playback() end, i * .125)
+								C_Timer.After(i * .125, function() Frame.Elements[i]:Animation_Playback() end)
 							end
 						end
 
@@ -551,11 +567,11 @@ function NS.Prefabs:Load()
 							end
 
 							do -- END
-								addon.C.Libraries.AceTimer:ScheduleTimer(function()
+								C_Timer.After(.375, function()
 									if not Frame:Animation_Playback_StopEvent() then
 										addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = Frame.Content:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 									end
-								end, .375)
+								end)
 							end
 						end
 

@@ -35,6 +35,7 @@ function NS.Script:Load()
 		Event_General:RegisterEvent("CINEMATIC_STOP")
 		Event_General:RegisterEvent("PLAY_MOVIE")
 		Event_General:RegisterEvent("STOP_MOVIE")
+		Event_General:RegisterEvent("CVAR_UPDATE")
 		Event_General:SetScript("OnEvent", function(self, event, ...)
 			if event == "GLOBAL_MOUSE_DOWN" then
 				CallbackRegistry:Trigger("EVENT_MOUSE_DOWN", ...)
@@ -50,6 +51,10 @@ function NS.Script:Load()
 				CallbackRegistry:Trigger("EVENT_CINEMATIC_START", ...)
 			elseif event == "CINEMATIC_STOP" or event == "STOP_MOVIE" then
 				CallbackRegistry:Trigger("EVENT_CINEMATIC_STOP", ...)
+			end
+
+			if event == "CVAR_UPDATE" then
+				CallbackRegistry:Trigger("EVENT_CVAR_UPDATE", ...)
 			end
 		end)
 

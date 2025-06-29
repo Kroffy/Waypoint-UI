@@ -18,7 +18,7 @@ function NS.Elements:Load()
 			local Frame = CreateFrame("Frame", addon.C.AddonInfo.Variables.General.ADDON_FRAME_NAME, nil)
 			Frame:SetSize(WorldFrame:GetSize())
 			Frame:SetPoint("CENTER", nil)
-			addon.C.Libraries.AceTimer:ScheduleTimer(function() Frame:SetScale(addon.C.AddonInfo.Variables.General.UI_SCALE) end, .1)
+			C_Timer.After(.1, function() Frame:SetScale(addon.C.AddonInfo.Variables.General.UI_SCALE) end)
 
 			addon.C.AddonInfo.Variables.General.ADDON_FRAME = Frame
 			_G[addon.C.AddonInfo.Variables.General.ADDON_FRAME_NAME] = Frame

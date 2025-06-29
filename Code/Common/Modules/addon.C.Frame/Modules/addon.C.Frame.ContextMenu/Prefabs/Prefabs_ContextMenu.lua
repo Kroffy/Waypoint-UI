@@ -119,9 +119,9 @@ function NS.Prefabs:Load()
 						end
 
 						function Frame:HideWithAnimation()
-							addon.C.Libraries.AceTimer:ScheduleTimer(function()
+							C_Timer.After(.125, function()
 								Frame:Hide()
-							end, .125)
+							end)
 
 							--------------------------------
 

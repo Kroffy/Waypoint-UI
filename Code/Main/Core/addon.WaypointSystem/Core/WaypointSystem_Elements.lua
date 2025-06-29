@@ -62,7 +62,7 @@ function NS.Elements:Load()
 								Content.ContextFrame = PrefabRegistry:Create("WaypointSystem.General.ContextFrame", Content, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL + 3, "$parent.ContextFrame")
 								Content.ContextFrame:SetPoint("CENTER", Content)
 								Content.ContextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
-								Content.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
+								Content.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 1)
 								addon.C.API.FrameUtil:SetDynamicSize(Content.ContextFrame, Content, 0, 0)
 
 								local ContextFrame = Content.ContextFrame
@@ -74,7 +74,7 @@ function NS.Elements:Load()
 									ContextFrame.VFX:SetSize(125, 125)
 									ContextFrame.VFX:SetPoint("CENTER", ContextFrame)
 									ContextFrame.VFX:SetFrameStrata(NS.Variables.FRAME_STRATA)
-									ContextFrame.VFX:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+									ContextFrame.VFX:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
 
 									local VFX = ContextFrame.VFX
 
@@ -85,7 +85,7 @@ function NS.Elements:Load()
 										VFX.Wave:SetSize(75, 75)
 										VFX.Wave:SetPoint("CENTER", VFX)
 										VFX.Wave:SetFrameStrata(NS.Variables.FRAME_STRATA)
-										VFX.Wave:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
+										VFX.Wave:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
 
 										local Wave = VFX.Wave
 
@@ -95,7 +95,7 @@ function NS.Elements:Load()
 											Wave.Background, Wave.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Wave, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-wave.png", "$parent.Background")
 											Wave.Background:SetPoint("CENTER", Wave)
 											Wave.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
-											Wave.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 5)
+											Wave.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
 											addon.C.API.FrameUtil:SetDynamicSize(Wave.Background, Wave, 0, 0)
 										end
 									end
@@ -175,7 +175,7 @@ function NS.Elements:Load()
 							do -- MARKER
 								Content.Marker = CreateFrame("Frame", "$parent.Marker", Content)
 								Content.Marker:SetSize(35, MARKER_HEIGHT)
-								Content.Marker:SetPoint("BOTTOM", Content, 0, 15)
+								Content.Marker:SetPoint("BOTTOM", Content, 0, 25)
 								Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
 								Content.Marker:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
 
@@ -207,7 +207,7 @@ function NS.Elements:Load()
 
 									do -- PULSE
 										Marker_Content.Pulse = PrefabRegistry:Create("WaypointSystem.Waypoint.Marker.PulseFrame", Marker_Content, NS.Variables.FRAME_STRATA, NS.Variables.FRAME_LEVEL + 5, "$parent.Pulse")
-										Marker_Content.Pulse:SetPoint("CENTER", Marker_Content)
+										Marker_Content.Pulse:SetPoint("BOTTOM", Marker_Content)
 										Marker_Content.Pulse:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Marker_Content.Pulse:SetFrameLevel(NS.Variables.FRAME_LEVEL + 5)
 										addon.C.API.FrameUtil:SetDynamicSize(Marker_Content.Pulse, Marker_Content, 0, function(relativeWidth, relativeHeight) return relativeHeight / 2 end)
@@ -424,7 +424,11 @@ function NS.Elements:Load()
 		Frame.REF_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME.hidden = true
 		Frame.REF_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME:Hide()
 
+		--------------------------------
+
 		Frame_Pinpoint.hidden = true
 		Frame_Pinpoint:Hide()
+
+		Frame.REF_PINPOINT_FOREGROUND_TEXT:SetText("Placeholder") -- pre calculate sizing
 	end
 end

@@ -4,9 +4,6 @@
 	<Script file="Load.lua"/>
 
 	<!-- Core -->
-	<Script file="Core/Database_Script.lua"/>
-	<Script file="Core/Database_Variables.lua"/>
-
-	<!-- Modules -->
-	<Include file="Modules/addon.C.Database.Migration/Load.xml"/>
+	<Script file="Core/Migration_Script.lua"/>
+	<Script file="Core/Migration_Variables.lua"/>
 </Ui>
