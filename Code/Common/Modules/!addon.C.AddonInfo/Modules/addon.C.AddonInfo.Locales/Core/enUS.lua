@@ -81,6 +81,9 @@ function NS:Load()
 		L["Config - WaypointSystem - Pinpoint"] = "Pinpoint"
 		L["Config - WaypointSystem - Pinpoint - Detail"] = "Show Extended Info"
 		L["Config - WaypointSystem - Pinpoint - Detail - Description"] = "Such as name and description."
+		L["Config - WaypointSystem - Navigator"] = "Navigator"
+		L["Config - WaypointSystem - Navigator - Enable"] = "Show"
+		L["Config - WaypointSystem - Navigator - Enable - Description"] = "When the Waypoint or Pinpoint is off-screen, the navigator will point at the direction."
 
 		L["Config - Appearance"] = "Appearance"
 		L["Config - Appearance - Title"] = "Appearance"
@@ -97,6 +100,9 @@ function NS:Load()
 		L["Config - Appearance - Waypoint - Footer - Alpha"] = "Info Text Transparency"
 		L["Config - Appearance - Pinpoint"] = "Pinpoint"
 		L["Config - Appearance - Pinpoint - Scale"] = "Size"
+		L["Config - Appearance - Navigator"] = "Navigator"
+		L["Config - Appearance - Navigator - Scale"] = "Size"
+		L["Config - Appearance - Navigator - Alpha"] = "Transparency"
 		L["Config - Appearance - Visual"] = "Visual"
 		L["Config - Appearance - Visual - UseCustomColor"] = "Use Custom Color"
 		L["Config - Appearance - Visual - UseCustomColor - Color"] = "Color"
@@ -137,6 +143,8 @@ function NS:Load()
 		L["Contributors - Klep - Description"] = "Translator — French"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "Code — Beta Bug Fix"
+		L["Contributors - lemieszek"] = "lemieszek"
+		L["Contributors - lemieszek - Description"] = "Code — Beta Bug Fix"
 	end
 end
 

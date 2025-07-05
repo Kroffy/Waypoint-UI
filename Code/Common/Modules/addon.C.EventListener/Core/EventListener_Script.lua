@@ -28,7 +28,7 @@ function NS.Script:Load()
 
 	do
 		local Event_Key = CreateFrame("Frame")
-		local function EventKeyInit() 
+		local function EventKeyInit()
 			if InCombatLockdown() then return end
 			Event_Key:SetPropagateKeyboardInput(true)
 			Event_Key:SetScript("OnKeyDown", function(_, key)

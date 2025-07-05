@@ -84,6 +84,9 @@ function NS:Load()
 		L["Config - WaypointSystem - Pinpoint"] = "标记点"
 		L["Config - WaypointSystem - Pinpoint - Detail"] = "显示扩展信息"
 		L["Config - WaypointSystem - Pinpoint - Detail - Description"] = "包含扩展的信息，例如名称和描述。"
+		L["Config - WaypointSystem - Navigator"] = "Navigator"
+		L["Config - WaypointSystem - Navigator - Enable"] = "Show"
+		L["Config - WaypointSystem - Navigator - Enable - Description"] = "When the Waypoint or Pinpoint is off-screen, the navigator will point at the direction."
 
 		L["Config - Appearance"] = "外观"
 		L["Config - Appearance - Title"] = "外观"
@@ -100,6 +103,9 @@ function NS:Load()
 		L["Config - Appearance - Waypoint - Footer - Alpha"] = "信息文本透明度"
 		L["Config - Appearance - Pinpoint"] = "标记点"
 		L["Config - Appearance - Pinpoint - Scale"] = "标记点大小"
+		L["Config - Appearance - Navigator"] = "Navigator"
+		L["Config - Appearance - Navigator - Scale"] = "Size"
+		L["Config - Appearance - Navigator - Alpha"] = "Transparency"
 		L["Config - Appearance - Visual"] = "视觉"
 		L["Config - Appearance - Visual - UseCustomColor"] = "使用自定义颜色"
 		L["Config - Appearance - Visual - UseCustomColor - Color"] = "颜色"
@@ -140,6 +146,8 @@ function NS:Load()
 		L["Contributors - Klep - Description"] = "翻译者 — 法语"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "编码者 — 修复Bug"
+		L["Contributors - lemieszek"] = "lemieszek"
+		L["Contributors - lemieszek - Description"] = "Code — Beta Bug Fix"
 	end
 end
 

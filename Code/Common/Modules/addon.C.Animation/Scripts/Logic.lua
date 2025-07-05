@@ -436,7 +436,7 @@ do
 							end
 						end
 
-						function loop:Cancel()
+						function loop:Stop()
 							if #loop.timers >= 1 then
 								for i = 1, #loop.timers do
 									loop.timers[i]:Cancel()

@@ -36,17 +36,19 @@ do -- CONSTANTS
 				WS_DISTANCE_TRANSITION = 225,
 				WS_DISTANCE_HIDE = 25,
 				WS_DISTANCE_TEXT_TYPE = 2,
-				WS_DISTANCE_TEXT_ALPHA = .5,
-
-				WS_WAYPOINT_SCALE = 1,
-				WS_WAYPOINT_MIN_SCALE = .25,
-				WS_WAYPOINT_MAX_SCALE = 1.5,
-				WS_PINPOINT_SCALE = 1,
 				WS_PINPOINT_DETAIL = false,
+				WS_NAVIGATOR = true,
 
 				-- APPEARANCE
+				APP_WAYPOINT_SCALE = 1,
+				APP_WAYPOINT_SCALE_MIN = .25,
+				APP_WAYPOINT_SCALE_MAX = 1.5,
 				APP_WAYPOINT_BEAM = true,
 				APP_WAYPOINT_BEAM_ALPHA = 1,
+				APP_WAYPOINT_DISTANCE_TEXT_ALPHA = .5,
+				APP_PINPOINT_SCALE = 1,
+				APP_NAVIGATOR_SCALE = 1,
+				APP_NAVIGATOR_ALPHA = 1,
 				APP_COLOR = false,
 				APP_COLOR_QUEST_INCOMPLETE_TINT = false,
 				APP_COLOR_QUEST_INCOMPLETE = { r = addon.CREF:GetSharedColor().RGB_PING_QUEST_NEUTRAL.r, g = addon.CREF:GetSharedColor().RGB_PING_QUEST_NEUTRAL.g, b = addon.CREF:GetSharedColor().RGB_PING_QUEST_NEUTRAL.b, a = 1 },
@@ -97,7 +99,27 @@ do -- CONSTANTS
 		-- 	}
 
 		NS.Variables.Database.MIGRATION_GLOBAL = {
-
+			-- < 0.0.1 (Beta 8)
+			[1] = {
+				from = "WS_WAYPOINT_SCALE",
+				to = "APP_WAYPOINT_SCALE"
+			},
+			[2] = {
+				from = "WS_WAYPOINT_MIN_SCALE",
+				to = "APP_WAYPOINT_SCALE_MIN"
+			},
+			[3] = {
+				from = "WS_WAYPOINT_MAX_SCALE",
+				to = "APP_WAYPOINT_SCALE_MAX"
+			},
+			[4] = {
+				from = "WS_WAYPOINT_DISTANCE_TEXT_ALPHA",
+				to = "APP_WAYPOINT_DISTANCE_TEXT_ALPHA"
+			},
+			[5] = {
+				from = "WS_PINPOINT_SCALE",
+				to = "APP_PINPOINT_SCALE"
+			}
 		}
 
 		NS.Variables.Database.MIGRATION_LOCAL = {

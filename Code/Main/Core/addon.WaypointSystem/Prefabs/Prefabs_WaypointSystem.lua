@@ -60,6 +60,8 @@ function NS.Prefabs:Load()
 								Background.Background:SetFrameStrata(frameStrata)
 								Background.Background:SetFrameLevel(frameLevel + 3)
 								addon.C.API.FrameUtil:SetDynamicSize(Background.Background, Background, -12.5, -12.5)
+
+								Background.Background:SetAlpha(.75)
 							end
 						end
 
@@ -252,6 +254,7 @@ function NS.Prefabs:Load()
 						function Frame:Animation_Playback_Cycle()
 							for i = 1, #Frame.Elements do
 								Frame.Elements[i].Animation_Playback_Timer = C_Timer.After((i - 1) * 2.5, function()
+									Frame.Elements[i].Animation_Playback:Stop()
 									Frame.Elements[i].Animation_Playback:Play("pre")
 									Frame.Elements[i].Animation_Playback:Play("playback")
 								end)
@@ -267,6 +270,7 @@ function NS.Prefabs:Load()
 									Frame.Elements[i].Animation_Playback_Timer:Cancel()
 								end
 
+								Frame.Elements[i].Animation_Playback:Stop()
 								Frame.Elements[i].Animation_Playback:Play("pre")
 							end
 						end)
@@ -357,7 +361,7 @@ function NS.Prefabs:Load()
 
 											Frame.Content:Hide()
 											Frame.Content:SetAlpha(0)
-											Frame.Content:SetPoint("CENTER", Frame, "CENTER", 0, -75)
+											Frame.Content:SetPoint("CENTER", Frame, "CENTER", 0, 0)
 										end
 									}
 								},
@@ -371,7 +375,7 @@ function NS.Prefabs:Load()
 
 											Frame.Content:Show()
 											addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
-											addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 5, ["from"] = -75, ["to"] = 350, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+											addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 5, ["from"] = 0, ["to"] = 350, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 										end
 									},
 									[2] = {
@@ -562,7 +566,7 @@ function NS.Prefabs:Load()
 
 						function Frame:Animation_Playback()
 							do -- START
-								addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+								addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = 0, ["to"] = .75, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 								addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 2, ["from"] = 7.5, ["to"] = -7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 							end
 

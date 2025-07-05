@@ -7,4 +7,5 @@
 -- https://www.curseforge.com/members/adaptivex/projects
 ---------------------------------------------------------------
 -- Developer: @AdaptiveX
+-- ♡ Contributor: @lemieszek
 ---------------------------------------------------------------

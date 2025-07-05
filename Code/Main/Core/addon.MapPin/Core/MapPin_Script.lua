@@ -110,7 +110,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				addon.WaypointSystem.Script:Update(true)
+				CallbackRegistry:Trigger("MapPin.NewWay")
 
 				--------------------------------
 

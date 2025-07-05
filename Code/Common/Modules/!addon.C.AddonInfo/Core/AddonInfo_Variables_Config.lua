@@ -57,31 +57,31 @@ do  -- CONSTANTS
 		-- 	local colorValue = { r = 1, g = 1, b = 1, a = 1 }
 
 		-- 	NS.Variables.Config.TABLE = {
-		-- 		[1] = {
+		-- 		{
 		-- 			["name"] = "Placeholder",
 		--  		["type"] = NS.Variables.Config.TYPE_TAB,
 		-- 			["var_tab_footer"] = false,
 		-- 			["elements"] = {
-		-- 				[1] = {
+		-- 				{
 		-- 					["name"] = "Placeholder",
 		--  				["type"] = NS.Variables.Config.TYPE_TITLE,
 		-- 					["var_title_imageTexture"] = addon.CREF:NewIcon("brush"),
 		-- 					["var_title_text"] = "Placeholder",
 		-- 					["var_title_subtext"] = "Placeholder",
 		-- 				},
-		-- 				[2] = {
+		-- 				{
 		-- 					["name"] = "Placeholder",
 		-- 					["type"] = NS.Variables.Config.TYPE_CONTAINER,
 		-- 					["var_hidden"] = function() return false end,
 		-- 					["elements"] = {
-		-- 						[1] = {
+		-- 						{
 		-- 							["name"] = "Text",
 		-- 							["type"] = NS.Variables.Config.TYPE_TEXT,
 		-- 							["descriptor"] = nil,
 		-- 							["indent"] = 0,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[2] = {
+		-- 						{
 		-- 							["name"] = "Range",
 		-- 							["type"] = NS.Variables.Config.TYPE_RANGE,
 		-- 							["descriptor"] = nil,
@@ -96,7 +96,7 @@ do  -- CONSTANTS
 		-- 							["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[3] = {
+		-- 						{
 		-- 							["name"] = "Button",
 		-- 							["type"] = NS.Variables.Config.TYPE_BUTTON,
 		-- 							["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
@@ -106,7 +106,7 @@ do  -- CONSTANTS
 		-- 							["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[4] = {
+		-- 						{
 		-- 							["name"] = "Checkbox",
 		-- 							["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 		-- 							["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
@@ -116,7 +116,7 @@ do  -- CONSTANTS
 		-- 							["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[5] = {
+		-- 						{
 		-- 							["name"] = "Dropdown",
 		--  						["type"] = NS.Variables.Config.TYPE_DROPDOWN,
 		--  						["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
@@ -127,7 +127,7 @@ do  -- CONSTANTS
 		--  						["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
-		-- 						[6] = {
+		-- 						{
 		-- 							["name"] = "Color",
 		-- 							["type"] = NS.Variables.Config.TYPE_COLOR,
 		-- 							["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
@@ -184,26 +184,26 @@ do  -- CONSTANTS
 			end
 
 			NS.Variables.Config.TABLE = {
-				[1] = {
+				{
 					["name"] = L["Config - General"],
 					["type"] = NS.Variables.Config.TYPE_TAB,
 					["var_tab_footer"] = false,
 					["elements"] = {
-						[1] = {
+						{
 							["name"] = L["Config - General - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
 							["var_title_imageTexture"] = addon.CREF:NewIcon("cog"),
 							["var_title_text"] = L["Config - General - Title"],
 							["var_title_subtext"] = L["Config - General - Title - Subtext"],
 						},
-						[2] = {
+						{
 							["name"] = L["Config - General - Preferences"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - General - Preferences - Meter"],
 									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - General - Preferences - Meter - Description"]),
@@ -215,14 +215,14 @@ do  -- CONSTANTS
 								}
 							}
 						},
-						[3] = {
+						{
 							["name"] = L["Config - General - Reset"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 
 							["var_transparent"] = false,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = "",
 									["type"] = NS.Variables.Config.TYPE_BUTTON,
 									["descriptor"] = nil,
@@ -236,26 +236,26 @@ do  -- CONSTANTS
 						}
 					}
 				},
-				[2] = {
+				{
 					["name"] = L["Config - WaypointSystem"],
 					["type"] = NS.Variables.Config.TYPE_TAB,
 					["var_tab_footer"] = false,
 					["elements"] = {
-						[1] = {
+						{
 							["name"] = L["Config - WaypointSystem - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
 							["var_title_imageTexture"] = addon.CREF:NewIcon("waypoint"),
 							["var_title_text"] = L["Config - WaypointSystem - Title"],
 							["var_title_subtext"] = L["Config - WaypointSystem - Title - Subtext"],
 						},
-						[2] = {
+						{
 							["name"] = nil,
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = true,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - WaypointSystem - Type"],
 									["type"] = NS.Variables.Config.TYPE_DROPDOWN,
 									["descriptor"] = nil,
@@ -270,14 +270,14 @@ do  -- CONSTANTS
 								},
 							}
 						},
-						[3] = {
+						{
 							["name"] = L["Config - WaypointSystem - General"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - WaypointSystem - General - Transition Distance"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - Transition Distance - Description"]),
@@ -292,7 +292,7 @@ do  -- CONSTANTS
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 end,
 								},
-								[2] = {
+								{
 									["name"] = L["Config - WaypointSystem - General - Hide Distance"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - Hide Distance - Description"]),
@@ -309,14 +309,14 @@ do  -- CONSTANTS
 								}
 							}
 						},
-						[4] = {
+						{
 							["name"] = L["Config - WaypointSystem - Waypoint"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 2 end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - WaypointSystem - Waypoint - Footer - Type"],
 									["type"] = NS.Variables.Config.TYPE_DROPDOWN,
 									["descriptor"] = nil,
@@ -331,14 +331,14 @@ do  -- CONSTANTS
 								}
 							}
 						},
-						[5] = {
+						{
 							["name"] = L["Config - WaypointSystem - Pinpoint"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 3 end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - WaypointSystem - Pinpoint - Detail"],
 									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - Pinpoint - Detail - Description"]),
@@ -349,29 +349,48 @@ do  -- CONSTANTS
 									["var_hidden"] = function() return false end,
 								}
 							}
+						},
+						{
+							["name"] = L["Config - WaypointSystem - Navigator"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_subcontainer"] = false,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								{
+									["name"] = L["Config - WaypointSystem - Navigator - Enable"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - Navigator - Enable - Description"]),
+									["indent"] = 0,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_NAVIGATOR end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_NAVIGATOR = value; CallbackRegistry:Trigger("C_CONFIG_WS_NAVIGATOR") end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								}
+							}
 						}
 					}
 				},
-				[3] = {
+				{
 					["name"] = L["Config - Appearance"],
 					["type"] = NS.Variables.Config.TYPE_TAB,
 					["var_tab_footer"] = false,
 					["elements"] = {
-						[1] = {
+						{
 							["name"] = L["Config - Appearance - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
 							["var_title_imageTexture"] = addon.CREF:NewIcon("brush"),
 							["var_title_text"] = L["Config - Appearance - Title"],
 							["var_title_subtext"] = L["Config - Appearance - Title - Subtext"],
 						},
-						[2] = {
+						{
 							["name"] = L["Config - Appearance - Waypoint"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - Appearance - Waypoint - Scale"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - Appearance - Waypoint - Scale - Description"]),
@@ -381,12 +400,12 @@ do  -- CONSTANTS
 									["var_range_step"] = .1,
 									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
 									["var_range_set_lazy"] = function(value) end,
-									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE end,
-									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_WAYPOINT_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_WAYPOINT_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
 								},
-								[2] = {
+								{
 									["name"] = L["Config - Appearance - Waypoint - Scale - Min"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - Appearance - Waypoint - Scale - Min - Description"]),
@@ -396,12 +415,12 @@ do  -- CONSTANTS
 									["var_range_step"] = .125,
 									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
 									["var_range_set_lazy"] = function(value) end,
-									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_MIN_SCALE end,
-									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_MIN_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_WAYPOINT_SCALE_MIN end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_WAYPOINT_SCALE_MIN = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
 								},
-								[3] = {
+								{
 									["name"] = L["Config - Appearance - Waypoint - Scale - Max"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - Appearance - Waypoint - Scale - Max - Description"]),
@@ -411,12 +430,12 @@ do  -- CONSTANTS
 									["var_range_step"] = .1,
 									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
 									["var_range_set_lazy"] = function(value) end,
-									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_WAYPOINT_MAX_SCALE end,
-									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_WAYPOINT_MAX_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_WAYPOINT_SCALE_MAX end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_WAYPOINT_SCALE_MAX = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
 								},
-								[4] = {
+								{
 									["name"] = L["Config - Appearance - Waypoint - Beam"],
 									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 									["descriptor"] = nil,
@@ -426,7 +445,7 @@ do  -- CONSTANTS
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
 								},
-								[5] = {
+								{
 									["name"] = L["Config - Appearance - Waypoint - Beam - Alpha"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = nil,
@@ -441,7 +460,7 @@ do  -- CONSTANTS
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_WAYPOINT_BEAM end,
 								},
-								[6] = {
+								{
 									["name"] = L["Config - Appearance - Waypoint - Footer - Alpha"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = nil,
@@ -451,21 +470,21 @@ do  -- CONSTANTS
 									["var_range_step"] = .1,
 									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
 									["var_range_set_lazy"] = function(value) end,
-									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_ALPHA end,
-									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_ALPHA = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT_ALPHA end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT_ALPHA = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE == 4 end,
 								}
 							}
 						},
-						[3] = {
+						{
 							["name"] = L["Config - Appearance - Pinpoint"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - Appearance - Pinpoint - Scale"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = nil,
@@ -475,21 +494,60 @@ do  -- CONSTANTS
 									["var_range_step"] = .1,
 									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
 									["var_range_set_lazy"] = function(value) end,
-									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE end,
-									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_PINPOINT_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_PINPOINT_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
 								}
 							}
 						},
-						[4] = {
+						{
+							["name"] = L["Config - Appearance - Navigator"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_subcontainer"] = false,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").WS_NAVIGATOR end,
+							["elements"] = {
+								{
+									["name"] = L["Config - Appearance - Navigator - Scale"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_range_min"] = .5,
+									["var_range_max"] = 2,
+									["var_range_step"] = .1,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_NAVIGATOR_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_NAVIGATOR_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").WS_NAVIGATOR end,
+								},
+								{
+									["name"] = L["Config - Appearance - Navigator - Alpha"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_range_min"] = .1,
+									["var_range_max"] = 1,
+									["var_range_step"] = .1,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_NAVIGATOR_ALPHA end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_NAVIGATOR_ALPHA = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").WS_NAVIGATOR end,
+								}
+							}
+						},
+						{
 							["name"] = L["Config - Appearance - Visual"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - Appearance - Visual - UseCustomColor"],
 									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 									["descriptor"] = nil,
@@ -499,14 +557,14 @@ do  -- CONSTANTS
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
 								},
-								[2] = {
+								{
 									["name"] = L["Config - Appearance - Visual - UseCustomColor - Quest - Complete - Default"],
 									["type"] = NS.Variables.Config.TYPE_CONTAINER,
 									["var_subcontainer"] = true,
 									["var_transparent"] = false,
 									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 									["elements"] = {
-										[1] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - Color"],
 											["type"] = NS.Variables.Config.TYPE_COLOR,
 											["descriptor"] = nil,
@@ -516,7 +574,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return false end,
 										},
-										[2] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - TintIcon"],
 											["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 											["descriptor"] = nil,
@@ -526,7 +584,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 										},
-										[3] = {
+										{
 											["name"] = "",
 											["type"] = NS.Variables.Config.TYPE_BUTTON,
 											["descriptor"] = nil,
@@ -538,14 +596,14 @@ do  -- CONSTANTS
 										}
 									}
 								},
-								[3] = {
+								{
 									["name"] = L["Config - Appearance - Visual - UseCustomColor - Quest - Complete - Repeatable"],
 									["type"] = NS.Variables.Config.TYPE_CONTAINER,
 									["var_subcontainer"] = true,
 									["var_transparent"] = false,
 									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 									["elements"] = {
-										[1] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - Color"],
 											["type"] = NS.Variables.Config.TYPE_COLOR,
 											["descriptor"] = nil,
@@ -555,7 +613,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return false end,
 										},
-										[2] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - TintIcon"],
 											["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 											["descriptor"] = nil,
@@ -565,7 +623,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 										},
-										[3] = {
+										{
 											["name"] = "",
 											["type"] = NS.Variables.Config.TYPE_BUTTON,
 											["descriptor"] = nil,
@@ -577,14 +635,14 @@ do  -- CONSTANTS
 										}
 									}
 								},
-								[4] = {
+								{
 									["name"] = L["Config - Appearance - Visual - UseCustomColor - Quest - Complete - Important"],
 									["type"] = NS.Variables.Config.TYPE_CONTAINER,
 									["var_subcontainer"] = true,
 									["var_transparent"] = false,
 									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 									["elements"] = {
-										[1] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - Color"],
 											["type"] = NS.Variables.Config.TYPE_COLOR,
 											["descriptor"] = nil,
@@ -594,7 +652,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return false end,
 										},
-										[2] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - TintIcon"],
 											["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 											["descriptor"] = nil,
@@ -604,7 +662,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 										},
-										[3] = {
+										{
 											["name"] = "",
 											["type"] = NS.Variables.Config.TYPE_BUTTON,
 											["descriptor"] = nil,
@@ -616,14 +674,14 @@ do  -- CONSTANTS
 										}
 									}
 								},
-								[5] = {
+								{
 									["name"] = L["Config - Appearance - Visual - UseCustomColor - Quest - Incomplete"],
 									["type"] = NS.Variables.Config.TYPE_CONTAINER,
 									["var_subcontainer"] = true,
 									["var_transparent"] = false,
 									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 									["elements"] = {
-										[1] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - Color"],
 											["type"] = NS.Variables.Config.TYPE_COLOR,
 											["descriptor"] = nil,
@@ -633,7 +691,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return false end,
 										},
-										[2] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - TintIcon"],
 											["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 											["descriptor"] = nil,
@@ -643,7 +701,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 										},
-										[3] = {
+										{
 											["name"] = "",
 											["type"] = NS.Variables.Config.TYPE_BUTTON,
 											["descriptor"] = nil,
@@ -655,14 +713,14 @@ do  -- CONSTANTS
 										}
 									}
 								},
-								[6] = {
+								{
 									["name"] = L["Config - Appearance - Visual - UseCustomColor - Neutral"],
 									["type"] = NS.Variables.Config.TYPE_CONTAINER,
 									["var_subcontainer"] = true,
 									["var_transparent"] = false,
 									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 									["elements"] = {
-										[1] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - Color"],
 											["type"] = NS.Variables.Config.TYPE_COLOR,
 											["descriptor"] = nil,
@@ -672,7 +730,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return false end,
 										},
-										[2] = {
+										{
 											["name"] = L["Config - Appearance - Visual - UseCustomColor - TintIcon"],
 											["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 											["descriptor"] = nil,
@@ -682,7 +740,7 @@ do  -- CONSTANTS
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
 										},
-										[3] = {
+										{
 											["name"] = "",
 											["type"] = NS.Variables.Config.TYPE_BUTTON,
 											["descriptor"] = nil,
@@ -698,26 +756,26 @@ do  -- CONSTANTS
 						}
 					}
 				},
-				[4] = {
+				{
 					["name"] = L["Config - Audio"],
 					["type"] = NS.Variables.Config.TYPE_TAB,
 					["var_tab_footer"] = false,
 					["elements"] = {
-						[1] = {
+						{
 							["name"] = L["Config - Audio - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
 							["var_title_imageTexture"] = addon.CREF:NewIcon("speaker-on"),
 							["var_title_text"] = L["Config - Audio - Title"],
 							["var_title_subtext"] = L["Config - Audio - Title - Subtext"],
 						},
-						[2] = {
+						{
 							["name"] = L["Config - Audio - General"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - Audio - General - EnableGlobalAudio"],
 									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
 									["descriptor"] = nil,
@@ -731,26 +789,26 @@ do  -- CONSTANTS
 						}
 					}
 				},
-				[5] = {
+				{
 					["name"] = L["Config - About"],
 					["type"] = NS.Variables.Config.TYPE_TAB,
 					["var_tab_footer"] = true,
 					["elements"] = {
-						[1] = {
+						{
 							["name"] = L["Config - About"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
 							["var_title_imageTexture"] = addon.C.AddonInfo.Variables.General.ADDON_ICON_ALT,
 							["var_title_text"] = addon.CREF:GetAddonName(),
 							["var_title_subtext"] = addon.CREF:GetAddonVersionString(),
 						},
-						[2] = {
+						{
 							["name"] = L["Config - About - Contributors"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = true,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Contributors - ZamestoTV"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - ZamestoTV - Description"]),
@@ -758,7 +816,7 @@ do  -- CONSTANTS
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
 								},
-								[2] = {
+								{
 									["name"] = L["Contributors - huchang47"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - huchang47 - Description"]),
@@ -766,7 +824,7 @@ do  -- CONSTANTS
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
 								},
-								[3] = {
+								{
 									["name"] = L["Contributors - BlueNightSky"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - BlueNightSky - Description"]),
@@ -774,7 +832,7 @@ do  -- CONSTANTS
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
 								},
-								[4] = {
+								{
 									["name"] = L["Contributors - Crazyyoungs"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Crazyyoungs - Description"]),
@@ -782,7 +840,7 @@ do  -- CONSTANTS
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
 								},
-								[5] = {
+								{
 									["name"] = L["Contributors - Klep"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Klep - Description"]),
@@ -790,24 +848,32 @@ do  -- CONSTANTS
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
 								},
-								[6] = {
+								{
 									["name"] = L["Contributors - y45853160"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - y45853160 - Description"]),
 									["indent"] = 0,
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
+								},
+								{
+									["name"] = L["Contributors - lemieszek"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - lemieszek - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
 								}
 							}
 						},
-						[3] = {
+						{
 							["name"] = L["Config - About - Developer"],
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = true,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-								[1] = {
+								{
 									["name"] = L["Config - About - Developer - AdaptiveX"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = nil,

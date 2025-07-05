@@ -84,6 +84,9 @@ function NS:Load()
 		L["Config - WaypointSystem - Pinpoint"] = "위치 정보창"
 		L["Config - WaypointSystem - Pinpoint - Detail"] = "정보 옵션 표시"
 		L["Config - WaypointSystem - Pinpoint - Detail - Description"] = "이름 / 설명 등의 추가 정보 포함."
+		L["Config - WaypointSystem - Navigator"] = "Navigator"
+		L["Config - WaypointSystem - Navigator - Enable"] = "Show"
+		L["Config - WaypointSystem - Navigator - Enable - Description"] = "When the Waypoint or Pinpoint is off-screen, the navigator will point at the direction."
 
 		L["Config - Appearance"] = "UI 디자인"
 		L["Config - Appearance - Title"] = "UI 디자인"
@@ -100,6 +103,9 @@ function NS:Load()
 		L["Config - Appearance - Waypoint - Footer - Alpha"] = "거리 정보 투명도"
 		L["Config - Appearance - Pinpoint"] = "위치 정보창"
 		L["Config - Appearance - Pinpoint - Scale"] = "정보창 크기"
+		L["Config - Appearance - Navigator"] = "Navigator"
+		L["Config - Appearance - Navigator - Scale"] = "Size"
+		L["Config - Appearance - Navigator - Alpha"] = "Transparency"
 		L["Config - Appearance - Visual"] = "위치 아이콘 설정"
 		L["Config - Appearance - Visual - UseCustomColor"] = "사용자 지정 색상"
 		L["Config - Appearance - Visual - UseCustomColor - Color"] = "색상"
@@ -139,6 +145,8 @@ function NS:Load()
 		L["Contributors - Klep - Description"] = "Translator - French"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "코드: 베타 버그 수정"
+		L["Contributors - lemieszek"] = "lemieszek"
+		L["Contributors - lemieszek - Description"] = "Code — Beta Bug Fix"
 	end
 end
 
