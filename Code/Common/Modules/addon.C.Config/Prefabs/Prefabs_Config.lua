@@ -1467,6 +1467,43 @@ function NS.Prefabs:Load()
 
 					return Frame
 				end)
+
+				PrefabRegistry:Add("C.Config.Main.Setting.Element.TextBox", function(parent, frameStrata, frameLevel, data, name)
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Template", parent, frameStrata, frameLevel, data, name)
+					Frame:SetFrameStrata(frameStrata)
+					Frame:SetFrameLevel(frameLevel)
+
+					--------------------------------
+
+					do -- ELEMENTS
+						do -- ACTION CONTENT
+							local Action_Content = Frame.REF_MAIN_ACTION_CONTENT
+							local Action_Content_FrameLevel = Action_Content:GetFrameLevel()
+
+							--------------------------------
+
+							do -- TEXT BOX
+								Action_Content.TextBox = PrefabRegistry:Create("C.FrameTemplates.Blizzard.TextBox", Action_Content, frameStrata, Action_Content_FrameLevel + 1, { inset = 10 }, "$parent.TextBox")
+								Action_Content.TextBox:SetSize(125, Frame.VAR_ELEMENT_HEIGHT * 1.5)
+								Action_Content.TextBox:SetPoint("RIGHT", Action_Content)
+								Action_Content.TextBox:SetFrameStrata(frameStrata)
+								Action_Content.TextBox:SetFrameLevel(Action_Content_FrameLevel + 1)
+							end
+						end
+					end
+
+					do -- REFERENCES
+						Frame.REF_TEXTBOX = Frame.REF_MAIN_ACTION_CONTENT.TextBox
+					end
+
+					do -- SETUP
+						Frame:OnLeave(true)
+					end
+
+					--------------------------------
+
+					return Frame
+				end)
 			end
 		end
 	end

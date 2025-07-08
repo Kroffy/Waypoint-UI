@@ -22,11 +22,278 @@ end
 --------------------------------
 
 do
+	-- Create a text box.
+	---@param parent frame
+	---@param frameStrata string
+	---@param frameLevel number
+	---@param data table
+	---@param name string
+	function NS:CreateTextBox(parent, frameStrata, frameLevel, data, name)
+		local inset = data.inset or 5
+
+		--------------------------------
+
+		local Frame = CreateFrame("Frame", name, parent)
+		Frame:SetFrameStrata(frameStrata)
+		Frame:SetFrameLevel(frameLevel)
+
+		--------------------------------
+
+		do -- ELEMENTS
+			do -- CONTENT
+				Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content:SetPoint("CENTER", Frame)
+				Frame.Content:SetFrameStrata(frameStrata)
+				Frame.Content:SetFrameLevel(frameLevel + 1)
+				addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+
+				local Content = Frame.Content
+
+				--------------------------------
+
+				do -- TEXT BOX
+					Content.TextBox = CreateFrame("Frame", "$parent.TextBox", Content)
+					Content.TextBox:SetPoint("CENTER", Content)
+					Content.TextBox:SetFrameStrata(frameStrata)
+					Content.TextBox:SetFrameLevel(frameLevel + 2)
+					addon.C.API.FrameUtil:SetDynamicSize(Content.TextBox, Content, inset, inset)
+
+					local TextBox = Content.TextBox
+
+					--------------------------------
+
+					do -- INPUT
+						TextBox.Input = CreateFrame("EditBox", "$parent.Input", TextBox)
+						TextBox.Input:SetPoint("CENTER", TextBox)
+						TextBox.Input:SetFrameStrata(frameStrata)
+						TextBox.Input:SetFrameLevel(frameLevel + 3)
+						addon.C.API.FrameUtil:SetDynamicSize(TextBox.Input, TextBox, 0, 0)
+
+						TextBox.Input:SetMultiLine(false)
+						TextBox.Input:SetAutoFocus(false)
+					end
+
+					do -- PLACEHOLDER
+						TextBox.Placeholder = CreateFrame("Frame", "$parent.Placeholder", TextBox)
+						TextBox.Placeholder:SetPoint("CENTER", TextBox)
+						TextBox.Placeholder:SetFrameStrata(frameStrata)
+						TextBox.Placeholder:SetFrameLevel(frameLevel + 3)
+						addon.C.API.FrameUtil:SetDynamicSize(TextBox.Placeholder, TextBox, 0, 0)
+					end
+				end
+			end
+		end
+
+		do -- REFERENCES
+			-- CORE
+			Frame.REF_CONTENT = Frame.Content
+			Frame.REF_INPUT = Frame.Content.TextBox.Input
+			Frame.REF_PLACEHOLDER = Frame.Content.TextBox.Placeholder
+
+			-- INPUT
+			Frame.REF_INPUT_RAWTEXT = select(1, Frame.Content.TextBox.Input:GetRegions())
+		end
+
+		do -- LOGIC
+			Frame.autoFocus = false
+			Frame.isMouseOver = false
+			Frame.isMouseDown = false
+
+			Frame.enterCallbacks = {}
+			Frame.leaveCallbacks = {}
+			Frame.mouseDownCallbacks = {}
+			Frame.mouseUpCallbacks = {}
+			Frame.escapePressedCallbacks = {}
+			Frame.textChangedCallbacks = {}
+			Frame.focusChangedCallbacks = {}
+
+			--------------------------------
+
+			do -- FUNCTIONS
+				do -- SET
+					function Frame:SetText(text)
+						Frame.REF_INPUT:SetText(text)
+					end
+
+					function Frame:SetAutoFocus(autoFocus)
+						Frame.autoFocus = autoFocus
+					end
+
+					function Frame:SetFocus()
+						Frame.REF_INPUT:SetFocus()
+					end
+
+					function Frame:ClearFocus()
+						Frame.REF_INPUT:ClearFocus()
+						Frame.REF_INPUT:ClearHighlightText()
+					end
+				end
+
+				do -- GET
+					function Frame:GetText()
+						return Frame.REF_INPUT:GetText()
+					end
+
+					function Frame:GetAutoFocus()
+						return Frame.autoFocus
+					end
+
+					function Frame:HasFocus()
+						return Frame.REF_INPUT:HasFocus()
+					end
+				end
+
+				do -- LOGIC
+					function Frame:UpdatePlaceholder()
+						if Frame.REF_INPUT:GetText() == "" then
+							Frame.REF_PLACEHOLDER:Show()
+						else
+							Frame.REF_PLACEHOLDER:Hide()
+						end
+					end
+				end
+			end
+
+			do -- EVENTS
+				local function Event_OnShow()
+					if Frame.autoFocus then
+						Frame:SetFocus()
+					end
+				end
+
+				function Frame:OnEnter(skipAnimation)
+					Frame.isMouseOver = true
+
+					--------------------------------
+
+					do -- ON ENTER
+						local enterCallbacks = Frame.enterCallbacks
+
+						if #enterCallbacks >= 1 then
+							for callback = 1, #enterCallbacks do
+								enterCallbacks[callback](Frame, skipAnimation)
+							end
+						end
+					end
+				end
+
+				function Frame:OnLeave(skipAnimation)
+					Frame.isMouseOver = false
+
+					--------------------------------
+
+					do -- ON LEAVE
+						local leaveCallbacks = Frame.leaveCallbacks
+
+						if #leaveCallbacks >= 1 then
+							for callback = 1, #leaveCallbacks do
+								leaveCallbacks[callback](Frame, skipAnimation)
+							end
+						end
+					end
+				end
+
+				function Frame:OnMouseDown(skipAnimation)
+					Frame.isMouseDown = true
+
+					--------------------------------
+
+					Frame:SetFocus()
+
+					--------------------------------
+
+					do -- ON MOUSE DOWN
+						local mouseDownCallbacks = Frame.mouseDownCallbacks
+
+						if #mouseDownCallbacks >= 1 then
+							for callback = 1, #mouseDownCallbacks do
+								mouseDownCallbacks[callback](Frame, skipAnimation)
+							end
+						end
+					end
+				end
+
+				function Frame:OnMouseUp(skipAnimation)
+					Frame.isMouseDown = false
+
+					--------------------------------
+
+					do -- ON MOUSE UP
+						local mouseUpCallbacks = Frame.mouseUpCallbacks
+
+						if #mouseUpCallbacks >= 1 then
+							for callback = 1, #mouseUpCallbacks do
+								mouseUpCallbacks[callback](Frame, skipAnimation)
+							end
+						end
+					end
+				end
+
+				function Frame:OnEscapePressed()
+					Frame:ClearFocus()
+
+					--------------------------------
+
+					do -- ON ESCAPE PRESSED
+						local escapePressedCallbacks = Frame.escapePressedCallbacks
+
+						if #escapePressedCallbacks >= 1 then
+							for callback = 1, #escapePressedCallbacks do
+								escapePressedCallbacks[callback](Frame, Frame.REF_INPUT)
+							end
+						end
+					end
+				end
+
+				function Frame:OnTextChanged(_, userInput)
+					Frame:UpdatePlaceholder()
+
+					--------------------------------
+
+					do -- ON TEXT CHANGED
+						local textChangedCallbacks = Frame.textChangedCallbacks
+
+						if #textChangedCallbacks >= 1 then
+							for callback = 1, #textChangedCallbacks do
+								textChangedCallbacks[callback](Frame, userInput)
+							end
+						end
+					end
+				end
+
+				function Frame:OnFocusChanged()
+					do -- ON FOCUS CHANGED
+						local focusChangedCallbacks = Frame.focusChangedCallbacks
+
+						if #focusChangedCallbacks >= 1 then
+							for callback = 1, #focusChangedCallbacks do
+								focusChangedCallbacks[callback](Frame, Frame.REF_INPUT:HasFocus())
+							end
+						end
+					end
+				end
+
+				addon.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.OnEnter, leaveCallback = Frame.OnLeave, mouseDownCallback = Frame.OnMouseDown, mouseUpCallback = Frame.OnMouseUp })
+
+				Frame.REF_INPUT:SetScript("OnEscapePressed", Frame.OnEscapePressed)
+				Frame.REF_INPUT:HookScript("OnTextChanged", Frame.OnTextChanged)
+				Frame.REF_INPUT:SetScript("OnEditFocusGained", Frame.OnFocusChanged)
+				Frame.REF_INPUT:SetScript("OnEditFocusLost", Frame.OnFocusChanged)
+
+				Frame:HookScript("OnShow", Event_OnShow)
+			end
+		end
+
+		--------------------------------
+
+		return Frame
+	end
+
 	-- Creates a text field.
 	---@param parent any
 	---@param data table
 	---@param name string
-	function NS:CreateTextBox(parent, frameStrata, frameLevel, data, name)
+	function NS:CreateTextBox_Legacy(parent, frameStrata, frameLevel, data, name)
 		local inset = data.inset or 5
 
 		--------------------------------
@@ -53,13 +320,6 @@ do
 
 				do -- SCORLL BAR
 					ScrollFrame.ScrollBar:Hide()
-
-					ScrollFrame.CustomScrollBar = PrefabRegistry:Create("Global.Default.ScrollBar", ScrollFrame, frameStrata, frameLevel + 2, { scrollFrame = ScrollFrame, scrollFrameType = "scrollFrame", direction = "vertical" }, "$parent.CustomScrollBar")
-					ScrollFrame.CustomScrollBar:SetWidth(5)
-					ScrollFrame.CustomScrollBar:SetPoint("RIGHT", Frame, -5, 0)
-					ScrollFrame.CustomScrollBar:SetFrameStrata(frameStrata)
-					ScrollFrame.CustomScrollBar:SetFrameLevel(frameLevel + 2)
-					addon.C.API.FrameUtil:SetDynamicSize(ScrollFrame.CustomScrollBar, Frame, nil, 10, true)
 				end
 
 				do -- CONTENT
@@ -136,7 +396,7 @@ do
 									TextBox.Placeholder = CreateFrame("Frame", "$parent.Placeholder", TextBox)
 									TextBox.Placeholder:SetPoint("CENTER", TextBox)
 									addon.C.API.FrameUtil:SetDynamicSize(TextBox.Placeholder, TextBox, 0, 0)
-									TextBox.Placeholder:SetAlpha(.25)
+									TextBox.Placeholder:SetAlpha(1)
 
 									local Placeholder = TextBox.Placeholder
 
@@ -149,40 +409,59 @@ do
 										Placeholder.Text.justifyV = "TOP"
 									end
 								end
+							end
 
-								do -- EVENTS
-									local function UpdateLayout()
-										local indentWidth = LayoutGroup.ImageFrame:IsShown() and IMAGE_FRAME_WIDTH or 0
-										TextBox:SetWidth(LayoutGroup:GetWidth() - indentWidth)
-										Subcontent.LayoutGroup:Sort()
-									end
+							do -- EVENTS
+								local function UpdateLayout()
+									local indentWidth = LayoutGroup.ImageFrame:IsShown() and IMAGE_FRAME_WIDTH or 0
+									LayoutGroup.TextBox:SetWidth(LayoutGroup:GetWidth() - indentWidth)
+									Subcontent.LayoutGroup:Sort()
+								end
 
-									local function UpdateSize(self, userInput)
-										if userInput then
-											if TextBox:IsMultiLine() then
-												local stringHeight = TextBox.Text:GetHeight()
+								local function UpdateSize(self, userInput)
+									if userInput then
+										if LayoutGroup.TextBox:IsMultiLine() then
+											local stringHeight = LayoutGroup.TextBox.Text:GetHeight()
 
-												--------------------------------
+											--------------------------------
 
-												TextBox:SetHeight(stringHeight)
-												TextBox.Text:SetJustifyV(TextBox.Text.justifyV)
-												TextBox.Placeholder.Text:SetJustifyV(TextBox.Placeholder.Text.justifyV)
-											else
-												TextBox:SetHeight(Subcontent:GetHeight())
-												TextBox.Text:SetJustifyV("MIDDLE")
-												TextBox.Placeholder.Text:SetJustifyV("MIDDLE")
-											end
+											LayoutGroup.TextBox:SetHeight(stringHeight)
+											LayoutGroup.TextBox.Text:SetJustifyV(LayoutGroup.TextBox.Text.justifyV)
+											LayoutGroup.TextBox.Placeholder.Text:SetJustifyV(LayoutGroup.TextBox.Placeholder.Text.justifyV)
+										else
+											LayoutGroup.TextBox:SetHeight(Subcontent:GetHeight())
+											LayoutGroup.TextBox.Text:SetJustifyV("MIDDLE")
+											LayoutGroup.TextBox.Placeholder.Text:SetJustifyV("MIDDLE")
 										end
 									end
-
-									TextBox:SetScript("OnShow", UpdateLayout)
-									TextBox:SetScript("OnUpdate", UpdateSize)
 								end
+
+								LayoutGroup.TextBox:SetScript("OnShow", UpdateLayout)
+								LayoutGroup.TextBox:SetScript("OnUpdate", UpdateSize)
 							end
 						end
 					end
 				end
 			end
+		end
+
+		do -- REFERENCES
+			-- CORE
+			Frame.REF_SCROLL = Frame.ScrollFrame
+			Frame.REF_CONTENT = Frame.ScrollChildFrame.Content.Content
+
+			-- SCROLL
+			Frame.REF_SCROLL_CHILD = Frame.ScrollChildFrame
+
+			-- CONTENT
+			Frame.REF_CONTENT_LAYOUT = Frame.REF_CONTENT.LayoutGroup
+			Frame.REF_CONTENT_LAYOUT_IMAGE = Frame.REF_CONTENT_LAYOUT.ImageFrame
+			Frame.REF_CONTENT_LAYOUT_IMAGE_BACKGROUND = Frame.REF_CONTENT_LAYOUT_IMAGE.Background
+			Frame.REF_CONTENT_LAYOUT_IMAGE_BACKGROUND_TEXTURE = Frame.REF_CONTENT_LAYOUT_IMAGE.BackgroundTexture
+			Frame.REF_CONTENT_LAYOUT_TEXTBOX = Frame.REF_CONTENT_LAYOUT.TextBox
+			Frame.REF_CONTENT_LAYOUT_TEXTBOX_TEXT = Frame.REF_CONTENT_LAYOUT_TEXTBOX.Text
+			Frame.REF_CONTENT_LAYOUT_TEXTBOX_PLACEHOLDER = Frame.REF_CONTENT_LAYOUT_TEXTBOX.Placeholder
+			Frame.REF_CONTENT_LAYOUT_TEXTBOX_PLACEHOLDER_TEXT = Frame.REF_CONTENT_LAYOUT_TEXTBOX_PLACEHOLDER.Text
 		end
 
 		do -- LOGIC
@@ -201,26 +480,28 @@ do
 
 			do -- FUNCTIONS
 				do -- GET
-					do -- REFERENCES
-						function Frame:GetImage()
-							return Frame.ScrollChildFrame.Content.Content.LayoutGroup.ImageFrame
-						end
+					function Frame:GetImage()
+						return Frame.REF_CONTENT_LAYOUT_IMAGE
+					end
 
-						function Frame:GetTextBox()
-							return Frame.ScrollChildFrame.Content.Content.LayoutGroup.TextBox
-						end
+					function Frame:GetTextBox()
+						return Frame.REF_CONTENT_LAYOUT_TEXTBOX
+					end
 
-						function Frame:GetTextBoxPlaceholder()
-							return Frame:GetTextBox().Placeholder
-						end
+					function Frame:GetTextBoxPlaceholder()
+						return Frame.REF_CONTENT_LAYOUT_TEXTBOX_PLACEHOLDER
+					end
 
-						function Frame:GetTextBoxPlaceholderTextObject()
-							return Frame:GetTextBoxPlaceholder().Text
-						end
+					function Frame:GetTextBoxPlaceholderTextObject()
+						return Frame.REF_CONTENT_LAYOUT_TEXTBOX_PLACEHOLDER_TEXT
+					end
 
-						function Frame:GetTextBoxTextObject()
-							return Frame:GetTextBox().Text
-						end
+					function Frame:GetTextBoxTextObject()
+						return Frame.REF_CONTENT_LAYOUT_TEXTBOX_TEXT
+					end
+
+					function Frame:IsFocused()
+						return Frame:GetTextBox():HasFocus()
 					end
 				end
 
@@ -255,7 +536,7 @@ do
 			end
 
 			do -- EVENTS
-				function Frame:Event_OnEnter()
+				function Frame:OnEnter(skipAnimation)
 					Frame.isMouseOver = true
 
 					--------------------------------
@@ -265,13 +546,13 @@ do
 
 						if #enterCallbacks >= 1 then
 							for callback = 1, #enterCallbacks do
-								enterCallbacks[callback](Frame)
+								enterCallbacks[callback](Frame, skipAnimation)
 							end
 						end
 					end
 				end
 
-				function Frame:Event_OnLeave()
+				function Frame:OnLeave(skipAnimation)
 					if not Frame:GetTextBox():HasFocus() then
 						Frame.isMouseOver = false
 
@@ -282,14 +563,14 @@ do
 
 							if #leaveCallbacks >= 1 then
 								for callback = 1, #leaveCallbacks do
-									leaveCallbacks[callback](Frame)
+									leaveCallbacks[callback](Frame, skipAnimation)
 								end
 							end
 						end
 					end
 				end
 
-				function Frame:Event_OnMouseDown()
+				function Frame:OnMouseDown(skipAnimation)
 					Frame.isMouseDown = true
 
 					--------------------------------
@@ -299,13 +580,13 @@ do
 
 						if #mouseDownCallbacks >= 1 then
 							for callback = 1, #mouseDownCallbacks do
-								mouseDownCallbacks[callback](Frame)
+								mouseDownCallbacks[callback](Frame, skipAnimation)
 							end
 						end
 					end
 				end
 
-				function Frame:Event_OnMouseUp()
+				function Frame:OnMouseUp(skipAnimation)
 					Frame.isMouseDown = false
 
 					--------------------------------
@@ -315,13 +596,13 @@ do
 
 						if #mouseUpCallbacks >= 1 then
 							for callback = 1, #mouseUpCallbacks do
-								mouseUpCallbacks[callback](Frame)
+								mouseUpCallbacks[callback](Frame, skipAnimation)
 							end
 						end
 					end
 				end
 
-				function Frame:Event_OnEscapePressed()
+				function Frame:OnEscapePressed()
 					Frame:GetTextBox():ClearFocus()
 
 					--------------------------------
@@ -337,7 +618,7 @@ do
 					end
 				end
 
-				function Frame:Event_OnTextChanged()
+				function Frame:OnTextChanged()
 					Frame:UpdatePlaceholder()
 
 					--------------------------------
@@ -353,11 +634,11 @@ do
 					end
 				end
 
-				addon.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.Event_OnEnter, leaveCallback = Frame.Event_OnLeave, mouseDownCallback = Frame.Event_OnMouseDown, mouseUpCallback = Frame.Event_OnMouseUp })
-				Frame:GetTextBox():SetScript("OnEditFocusGained", Frame.Event_OnEnter)
-				Frame:GetTextBox():SetScript("OnEditFocusLost", Frame.Event_OnLeave)
-				Frame:GetTextBox():SetScript("OnEscapePressed", Frame.Event_OnEscapePressed)
-				Frame:GetTextBox():HookScript("OnTextChanged", Frame.Event_OnTextChanged)
+				addon.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.OnEnter, leaveCallback = Frame.OnLeave, mouseDownCallback = Frame.OnMouseDown, mouseUpCallback = Frame.OnMouseUp })
+				Frame:GetTextBox():SetScript("OnEditFocusGained", Frame.OnEnter)
+				Frame:GetTextBox():SetScript("OnEditFocusLost", Frame.OnLeave)
+				Frame:GetTextBox():SetScript("OnEscapePressed", Frame.OnEscapePressed)
+				Frame:GetTextBox():HookScript("OnTextChanged", Frame.OnTextChanged)
 				Frame:SetScript("OnShow", function()
 					Frame:UpdatePlaceholder()
 
@@ -377,7 +658,6 @@ do
 
 		do -- SETUP
 			Frame:SetImage(nil)
-			Frame:Event_OnLeave()
 			Frame:UpdatePlaceholder()
 		end
 

@@ -117,7 +117,6 @@ function NS.Elements:Load()
 									Content.Footer:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Content.Footer:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
 									Content.Footer:SetAlpha(.5)
-									Content.Footer:SetScale(.75)
 									Content.Footer:SetIgnoreParentScale(true)
 
 									local Footer = Content.Footer

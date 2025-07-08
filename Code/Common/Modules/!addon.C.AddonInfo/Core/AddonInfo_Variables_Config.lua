@@ -20,18 +20,19 @@ end
 
 do  -- CONSTANTS
 	do -- REFERENCES
-		NS.Variables.Config.TYPE_TAB = "Tab"
-		NS.Variables.Config.TYPE_TITLE = "Title"
-		NS.Variables.Config.TYPE_CONTAINER = "Container"
-		NS.Variables.Config.TYPE_TEXT = "Text"
-		NS.Variables.Config.TYPE_RANGE = "Range"
-		NS.Variables.Config.TYPE_BUTTON = "Button"
-		NS.Variables.Config.TYPE_CHECKBOX = "Checkbox"
-		NS.Variables.Config.TYPE_DROPDOWN = "Dropdown"
-		NS.Variables.Config.TYPE_COLOR = "Color"
+		NS.Variables.Config.TYPE_TAB = "TAB"
+		NS.Variables.Config.TYPE_TITLE = "TITLE"
+		NS.Variables.Config.TYPE_CONTAINER = "CONTAINER"
+		NS.Variables.Config.TYPE_TEXT = "TEXT"
+		NS.Variables.Config.TYPE_RANGE = "RANGE"
+		NS.Variables.Config.TYPE_BUTTON = "BUTTON"
+		NS.Variables.Config.TYPE_CHECKBOX = "CHECKBOX"
+		NS.Variables.Config.TYPE_DROPDOWN = "DROPDOWN"
+		NS.Variables.Config.TYPE_COLOR = "COLOR"
+		NS.Variables.Config.TYPE_TEXTBOX = "TEXT_BOX"
 
-		NS.Variables.Config.IMAGE_TYPE_LARGE = "Large"
-		NS.Variables.Config.IMAGE_TYPE_SMALL = "Small"
+		NS.Variables.Config.IMAGE_TYPE_LARGE = "LARGE"
+		NS.Variables.Config.IMAGE_TYPE_SMALL = "SMALL"
 
 		--------------------------------
 
@@ -55,6 +56,7 @@ do  -- CONSTANTS
 		-- 	local checkboxValue = false
 		-- 	local dropdownValue = 1
 		-- 	local colorValue = { r = 1, g = 1, b = 1, a = 1 }
+		-- 	local textBoxValue = ""
 
 		-- 	NS.Variables.Config.TABLE = {
 		-- 		{
@@ -137,6 +139,17 @@ do  -- CONSTANTS
 		-- 							["var_disabled"] = function() return false end,
 		-- 							["var_hidden"] = function() return false end,
 		-- 						},
+		--						{
+		--							["name"] = "TextBox",
+		--							["type"] = NS.Variables.Config.TYPE_TEXTBOX,
+		--							["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, "Placeholder"),
+		--							["indent"] = 0,
+		--							["var_textbox_placeholder"] = "Placeholder",
+		--							["var_get"] = function() return textBoxValue end,
+		--							["var_set"] = function(value) textBoxValue = value end,
+		--							["var_disabled"] = function() return false end,
+		--							["var_hidden"] = function() return false end,
+		--						}
 		-- 					}
 		-- 				}
 		-- 			}
@@ -339,14 +352,24 @@ do  -- CONSTANTS
 							["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE ~= 1 and GetDatabase("DB_GLOBAL").WS_TYPE ~= 3 end,
 							["elements"] = {
 								{
-									["name"] = L["Config - WaypointSystem - Pinpoint - Detail"],
+									["name"] = L["Config - WaypointSystem - Pinpoint - Info"],
 									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
-									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - Pinpoint - Detail - Description"]),
+									["descriptor"] = nil,
 									["indent"] = 0,
-									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL end,
-									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_DETAIL = value end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_INFO end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_INFO = value end,
 									["var_disabled"] = function() return false end,
-									["var_hidden"] = function() return false end,
+									["var_hidden"] = function() return false end
+								},
+								{
+									["name"] = L["Config - WaypointSystem - Pinpoint - Info - Extended"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - Pinpoint - Info - Extended - Description"]),
+									["indent"] = 1,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_PINPOINT_INFO_EXTENDED end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_PINPOINT_INFO_EXTENDED = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").WS_PINPOINT_INFO end
 								}
 							}
 						},
@@ -388,7 +411,7 @@ do  -- CONSTANTS
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
-							["var_hidden"] = function() return false end,
+							["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE == 3 end,
 							["elements"] = {
 								{
 									["name"] = L["Config - Appearance - Waypoint - Scale"],
@@ -461,10 +484,35 @@ do  -- CONSTANTS
 									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_WAYPOINT_BEAM end,
 								},
 								{
+									["name"] = L["Config - Appearance - Waypoint - Footer"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE == 4 end,
+								},
+								{
+									["name"] = L["Config - Appearance - Waypoint - Footer - Scale"],
+									["type"] = NS.Variables.Config.TYPE_RANGE,
+									["descriptor"] = nil,
+									["indent"] = 1,
+									["var_range_min"] = .1,
+									["var_range_max"] = 2,
+									["var_range_step"] = .1,
+									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
+									["var_range_set_lazy"] = function(value) end,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT_SCALE end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT or GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE == 4 end,
+								},
+								{
 									["name"] = L["Config - Appearance - Waypoint - Footer - Alpha"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = nil,
-									["indent"] = 0,
+									["indent"] = 1,
 									["var_range_min"] = 0,
 									["var_range_max"] = 1,
 									["var_range_step"] = .1,
@@ -473,7 +521,7 @@ do  -- CONSTANTS
 									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT_ALPHA end,
 									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT_ALPHA = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
-									["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE == 4 end,
+									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_WAYPOINT_DISTANCE_TEXT or GetDatabase("DB_GLOBAL").WS_DISTANCE_TEXT_TYPE == 4 end,
 								}
 							}
 						},
@@ -482,7 +530,7 @@ do  -- CONSTANTS
 							["type"] = NS.Variables.Config.TYPE_CONTAINER,
 							["var_subcontainer"] = false,
 							["var_transparent"] = false,
-							["var_hidden"] = function() return false end,
+							["var_hidden"] = function() return GetDatabase("DB_GLOBAL").WS_TYPE == 2 end,
 							["elements"] = {
 								{
 									["name"] = L["Config - Appearance - Pinpoint - Scale"],
@@ -521,7 +569,7 @@ do  -- CONSTANTS
 									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_NAVIGATOR_SCALE end,
 									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_NAVIGATOR_SCALE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
-									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").WS_NAVIGATOR end,
+									["var_hidden"] = function() return false end
 								},
 								{
 									["name"] = L["Config - Appearance - Navigator - Alpha"],
@@ -536,7 +584,7 @@ do  -- CONSTANTS
 									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_NAVIGATOR_ALPHA end,
 									["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_NAVIGATOR_ALPHA = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 									["var_disabled"] = function() return false end,
-									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").WS_NAVIGATOR end,
+									["var_hidden"] = function() return false end
 								}
 							}
 						},

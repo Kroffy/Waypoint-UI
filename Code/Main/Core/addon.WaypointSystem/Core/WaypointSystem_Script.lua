@@ -136,10 +136,6 @@ function NS.Script:Load()
 					Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT_SUBTEXT:SetTextColor(tintColor.r, tintColor.g, tintColor.b, tintColor.a)
 				end
 
-				function Frame_World_Waypoint:APP_SetTextAlpha(alpha)
-					Frame.REF_WORLD_WAYPOINT_FOOTER:SetAlpha(alpha or .5)
-				end
-
 				function Frame_World_Waypoint:APP_Context_SetTint(tintColor)
 					Frame.REF_WORLD_WAYPOINT_CONTEXT:SetTint(tintColor)
 				end
@@ -155,6 +151,12 @@ function NS.Script:Load()
 				function Frame_World_Waypoint:APP_Beam_Set(visible, opacity)
 					Frame.REF_WORLD_WAYPOINT_MARKER_CONTENT:SetShown(visible)
 					Frame.REF_WORLD_WAYPOINT_MARKER_CONTENT:SetAlpha(opacity)
+				end
+
+				function Frame_World_Waypoint:APP_DistanceText_Set(visible, opacity, scale)
+					Frame.REF_WORLD_WAYPOINT_FOOTER:SetShown(visible)
+					Frame.REF_WORLD_WAYPOINT_FOOTER:SetAlpha(opacity)
+					Frame.REF_WORLD_WAYPOINT_FOOTER:SetScale(scale)
 				end
 
 				function Frame_World_Waypoint:APP_SetScale(scale)
@@ -394,13 +396,16 @@ function NS.Script:Load()
 		local C_WS_DISTANCE_TRANSITION
 		local C_WS_DISTANCE_HIDE
 		local C_WS_DISTANCE_TEXT_TYPE
-		local C_WS_PINPOINT_DETAIL
+		local C_WS_PINPOINT_INFO
+		local C_WS_PINPOINT_INFO_EXTENDED
 		local C_WS_NAVIGATOR
 		local C_APP_WAYPOINT_SCALE
 		local C_APP_WAYPOINT_SCALE_MIN
 		local C_APP_WAYPOINT_SCALE_MAX
 		local C_APP_WAYPOINT_BEAM
 		local C_APP_WAYPOINT_BEAM_ALPHA
+		local C_APP_WAYPOINT_DISTANCE_TEXT
+		local C_APP_WAYPOINT_DISTANCE_TEXT_SCALE
 		local C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA
 		local C_APP_PINPOINT_SCALE
 		local C_APP_NAVIGATOR_SCALE
@@ -427,13 +432,16 @@ function NS.Script:Load()
 				C_WS_DISTANCE_TRANSITION = addon.C.Database.Variables.DB_GLOBAL.profile.WS_DISTANCE_TRANSITION
 				C_WS_DISTANCE_HIDE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_DISTANCE_HIDE
 				C_WS_DISTANCE_TEXT_TYPE = addon.C.Database.Variables.DB_GLOBAL.profile.WS_DISTANCE_TEXT_TYPE
-				C_WS_PINPOINT_DETAIL = addon.C.Database.Variables.DB_GLOBAL.profile.WS_PINPOINT_DETAIL
+				C_WS_PINPOINT_INFO = addon.C.Database.Variables.DB_GLOBAL.profile.WS_PINPOINT_INFO
+				C_WS_PINPOINT_INFO_EXTENDED = addon.C.Database.Variables.DB_GLOBAL.profile.WS_PINPOINT_INFO_EXTENDED
 				C_WS_NAVIGATOR = addon.C.Database.Variables.DB_GLOBAL.profile.WS_NAVIGATOR
 				C_APP_WAYPOINT_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_SCALE
 				C_APP_WAYPOINT_SCALE_MIN = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_SCALE_MIN
 				C_APP_WAYPOINT_SCALE_MAX = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_SCALE_MAX
 				C_APP_WAYPOINT_BEAM = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_BEAM
 				C_APP_WAYPOINT_BEAM_ALPHA = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_BEAM_ALPHA
+				C_APP_WAYPOINT_DISTANCE_TEXT = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_DISTANCE_TEXT
+				C_APP_WAYPOINT_DISTANCE_TEXT_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_DISTANCE_TEXT_SCALE
 				C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA = addon.C.Database.Variables.DB_GLOBAL.profile.APP_WAYPOINT_DISTANCE_TEXT_ALPHA
 				C_APP_PINPOINT_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.APP_PINPOINT_SCALE
 				C_APP_NAVIGATOR_SCALE = addon.C.Database.Variables.DB_GLOBAL.profile.APP_NAVIGATOR_SCALE
@@ -1083,9 +1091,9 @@ function NS.Script:Load()
 				Frame_World_Waypoint:APP_SetTint(appearanceInfo.color)
 				Frame_World_Waypoint:APP_Context_SetTint(appearanceInfo.color)
 				Frame_World_Waypoint:APP_Context_SetRecolor(appearanceInfo.recolorContext)
-				Frame_World_Waypoint:APP_SetTextAlpha(C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA)
 				Frame_World_Waypoint:APP_Beam_Set(C_APP_WAYPOINT_BEAM, C_APP_WAYPOINT_BEAM_ALPHA)
 				Frame_World_Waypoint:APP_SetScale(C_APP_WAYPOINT_SCALE)
+				Frame_World_Waypoint:APP_DistanceText_Set(C_APP_WAYPOINT_DISTANCE_TEXT, C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA, C_APP_WAYPOINT_DISTANCE_TEXT_SCALE * .75)
 
 				Frame_World_Pinpoint:APP_SetTint(appearanceInfo.color)
 				Frame_World_Pinpoint:APP_Context_SetTint(appearanceInfo.color)
@@ -1292,7 +1300,7 @@ function NS.Script:Load()
 						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
 					else
 						if isComplete then
-							if C_WS_PINPOINT_DETAIL then
+							if C_WS_PINPOINT_INFO_EXTENDED then
 								text = questName .. " — " .. L["WaypointSystem - Pinpoint - Quest - Complete"]
 							else
 								text = L["WaypointSystem - Pinpoint - Quest - Complete"]
@@ -1301,6 +1309,7 @@ function NS.Script:Load()
 							text = currentQuestObjective
 						end
 					end
+					if not C_WS_PINPOINT_INFO then text = nil end
 
 					Frame_World_Pinpoint:SetText(text)
 					Frame_World_Pinpoint:Context_SetOpacity(.25)
@@ -1328,7 +1337,7 @@ function NS.Script:Load()
 					elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
 						text = nil
 					else
-						if C_WS_PINPOINT_DETAIL then
+						if C_WS_PINPOINT_INFO_EXTENDED then
 							if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
 								text = pinInfo.pinName .. " — " .. pinInfo.poiInfo.description
 							else
@@ -1338,6 +1347,7 @@ function NS.Script:Load()
 							text = pinInfo.pinName
 						end
 					end
+					if not C_WS_PINPOINT_INFO then text = nil end
 
 					Frame_World_Pinpoint:SetText(text)
 					Frame_World_Pinpoint:Context_SetOpacity(text and .25 or 1)

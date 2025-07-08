@@ -30,7 +30,7 @@ function NS:Load()
 
 	do
 		-- PINPOINT
-		--L["WaypointSystem - Pinpoint - Quest - Complete"] = "Ready for Turn-in"
+		L["WaypointSystem - Pinpoint - Quest - Complete"] = "Ready for Turn-in"
 	end
 
 	--------------------------------
@@ -69,7 +69,7 @@ function NS:Load()
 		L["Config - WaypointSystem - Type"] = "Activer"
 		L["Config - WaypointSystem - Type - Both"] = "Tout"
 		L["Config - WaypointSystem - Type - Waypoint"] = "Point de passage"
-		--L["Config - WaypointSystem - Type - Pinpoint"] = "Pinpoint"
+		L["Config - WaypointSystem - Type - Pinpoint"] = "Pinpoint"
 		L["Config - WaypointSystem - General"] = "Général"
 		L["Config - WaypointSystem - General - Transition Distance"] = "Pinpoint Distance"
 		L["Config - WaypointSystem - General - Transition Distance - Description"] = "Distance before Pinpoint is shown."
@@ -82,8 +82,9 @@ function NS:Load()
 		L["Config - WaypointSystem - Waypoint - Footer - Type - ETA"] = "Heure d'arrivée"
 		L["Config - WaypointSystem - Waypoint - Footer - Type - None"] = "Aucun"
 		L["Config - WaypointSystem - Pinpoint"] = "Pinpoint"
-		L["Config - WaypointSystem - Pinpoint - Detail"] = "Afficher les informations détaillées"
-		L["Config - WaypointSystem - Pinpoint - Detail - Description"] = "Comme le nom et la description."
+		L["Config - WaypointSystem - Pinpoint - Info"] = "Show Info"
+		L["Config - WaypointSystem - Pinpoint - Info - Extended"] = "Afficher les informations détaillées"
+		L["Config - WaypointSystem - Pinpoint - Info - Extended - Description"] = "Comme le nom et la description."
 		L["Config - WaypointSystem - Navigator"] = "Navigator"
 		L["Config - WaypointSystem - Navigator - Enable"] = "Show"
 		L["Config - WaypointSystem - Navigator - Enable - Description"] = "When the Waypoint or Pinpoint is off-screen, the navigator will point at the direction."
@@ -100,6 +101,8 @@ function NS:Load()
 		L["Config - Appearance - Waypoint - Scale - Max - Description"] = "La taille peut être agrandie de"
 		L["Config - Appearance - Waypoint - Beam"] = "Afficher le faisceau"
 		L["Config - Appearance - Waypoint - Beam - Alpha"] = "Transparence"
+		L["Config - Appearance - Waypoint - Footer"] = "Show Info Text"
+		L["Config - Appearance - Waypoint - Footer - Scale"] = "Size"
 		L["Config - Appearance - Waypoint - Footer - Alpha"] = "Transparence du texte d'information"
 		L["Config - Appearance - Pinpoint"] = "Pinpoint"
 		L["Config - Appearance - Pinpoint - Scale"] = "Taille"

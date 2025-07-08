@@ -1442,7 +1442,7 @@ function NS.Prefabs:Load()
 				local DEFAULT_IMAGE_TEXTURE = data.DEFAULT_IMAGE_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-input-background.png"
 				local HIGHLIGHTED_BACKGROUND_TEXTURE = data.HIGHLIGHTED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-background-highlighted.png"
 				local HIGHLIGHTED_IMAGE_TEXTURE = data.HIGHLIGHTED_IMAGE_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-input-background-highlighted.png"
-				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-background-clicked.png"
+				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-background-highlighted.png"
 				local CLICKED_IMAGE_TEXTURE = data.CLICKED_IMAGE_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/color-input-background-clicked.png"
 
 				--------------------------------
@@ -1687,6 +1687,225 @@ function NS.Prefabs:Load()
 						table.insert(Frame.mouseDownCallbacks, Event_OnMouseDown)
 						table.insert(Frame.mouseUpCallbacks, Event_OnMouseUp)
 						Frame:SetClick(Frame.ToggleColorPicker)
+					end
+				end
+
+				do -- SETUP
+					Frame:OnLeave(true)
+				end
+
+				--------------------------------
+
+				return Frame
+			end)
+		end
+
+		do -- TEXT BOX
+			PrefabRegistry:Add("C.FrameTemplates.Blizzard.TextBox", function(parent, frameStrata, frameLevel, data, name)
+				local DEFAULT_BACKGROUND_TEXTURE = data.DEFAULT_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/textbox-background.png"
+				local DEFAULT_CONTENT_COLOR = data.DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = .75 }
+				local HIGHLIGHTED_BACKGROUND_TEXTURE = data.HIGHLIGHTED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/textbox-background.png"
+				local HIGHLIGHTED_CONTENT_COLOR = data.DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = .75 }
+				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/textbox-background.png"
+				local CLICKED_CONTENT_COLOR = data.DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = .75 }
+
+				local ACTIVE_DEFAULT_BACKGROUND_TEXTURE = data.ACTIVE_DEFAULT_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
+				local ACTIVE_DEFAULT_CONTENT_COLOR = data.ACTIVE_DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = 1 }
+				local ACTIVE_HIGHLIGHTED_BACKGROUND_TEXTURE = data.ACTIVE_HIGHLIGHTED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
+				local ACTIVE_HIGHLIGHTED_CONTENT_COLOR = data.ACTIVE_HIGHLIGHTED_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = 1 }
+				local ACTIVE_CLICKED_BACKGROUND_TEXTURE = data.ACTIVE_CLICKED_BACKGROUND_TEXTURE or addon.CREF:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
+				local ACTIVE_CLICKED_CONTENT_COLOR = data.ACTIVE_CLICKED_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = 1 }
+
+				--------------------------------
+
+				local Frame = addon.C.FrameTemplates:CreateTextBox(parent, frameStrata, frameLevel, data, name)
+				Frame:SetFrameStrata(frameStrata)
+				Frame:SetFrameLevel(frameLevel)
+
+				--------------------------------
+
+				do -- ELEMENTS
+					do -- CONTENT
+						local Content = Frame.REF_CONTENT
+
+						--------------------------------
+
+						do -- BACKGROUND
+							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .0575, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background:SetPoint("CENTER", Content)
+							Content.Background:SetFrameStrata(frameStrata)
+							Content.Background:SetFrameLevel(frameLevel + 1)
+							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
+						end
+					end
+
+					do -- INPUT
+						local Input = Frame.REF_INPUT
+
+						--------------------------------
+
+						do -- TEXT
+							local RawText = Frame.REF_INPUT_RAWTEXT
+							RawText:SetFont(addon.C.Fonts.CONTENT_DEFAULT.font, 12.5, "")
+							RawText:Hide()
+
+							Input.Text = addon.C.FrameTemplates:CreateText(Input, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+							Input.Text:SetPoint("CENTER", Input)
+							addon.C.API.FrameUtil:SetDynamicSize(Input.Text, Input, 0, 0)
+						end
+					end
+
+					do -- PLACEHOLDER
+						local Placeholder = Frame.REF_PLACEHOLDER
+						Placeholder:SetAlpha(.75)
+
+						--------------------------------
+
+						do -- TEXT
+							Placeholder.Text = addon.C.FrameTemplates:CreateText(Placeholder, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Placeholder", "GameFontNormal")
+							Placeholder.Text:SetPoint("CENTER", Placeholder)
+							addon.C.API.FrameUtil:SetDynamicSize(Placeholder.Text, Placeholder, 0, 0)
+						end
+					end
+				end
+
+				do -- REFERENCES
+					-- CONTENT
+					Frame.REF_CONTENT_BACKGROUND = Frame.REF_CONTENT.Background
+					Frame.REF_CONTENT_BACKGROUND_TEXTURE = Frame.REF_CONTENT.BackgroundTexture
+
+					-- INPUT
+					Frame.REF_INPUT_TEXT = Frame.REF_INPUT.Text
+
+					-- PLACEHOLDER
+					Frame.REF_PLACEHOLDER_TEXT = Frame.REF_PLACEHOLDER.Text
+				end
+
+				do -- ANIMATIONS
+					local function SetStyle(backgroundTexture, contentColor)
+						Frame.REF_CONTENT_BACKGROUND_TEXTURE:SetTexture(backgroundTexture)
+						Frame.REF_INPUT_TEXT:SetTextColor(contentColor.r, contentColor.g, contentColor.b, contentColor.a)
+						Frame.REF_PLACEHOLDER_TEXT:SetTextColor(contentColor.r, contentColor.b, contentColor.g, contentColor.a)
+					end
+
+					function Frame:Animation_UpdateStyle()
+						if Frame:HasFocus() then
+							if Frame.isMouseDown then
+								SetStyle(ACTIVE_CLICKED_BACKGROUND_TEXTURE, ACTIVE_CLICKED_CONTENT_COLOR)
+							elseif Frame.isMouseOver then
+								SetStyle(ACTIVE_HIGHLIGHTED_BACKGROUND_TEXTURE, ACTIVE_HIGHLIGHTED_CONTENT_COLOR)
+							else
+								SetStyle(ACTIVE_DEFAULT_BACKGROUND_TEXTURE, ACTIVE_DEFAULT_CONTENT_COLOR)
+							end
+						else
+							if Frame.isMouseDown then
+								SetStyle(CLICKED_BACKGROUND_TEXTURE, CLICKED_CONTENT_COLOR)
+							elseif Frame.isMouseOver then
+								SetStyle(HIGHLIGHTED_BACKGROUND_TEXTURE, HIGHLIGHTED_CONTENT_COLOR)
+							else
+								SetStyle(DEFAULT_BACKGROUND_TEXTURE, DEFAULT_CONTENT_COLOR)
+							end
+						end
+					end
+
+					--------------------------------
+
+					do -- ON ENTER
+						function Frame:Animation_OnEnter_StopEvent()
+							return not Frame.isMouseOver
+						end
+
+						function Frame:Animation_OnEnter(skipAnimation)
+							Frame:Animation_UpdateStyle()
+						end
+					end
+
+					do -- ON LEAVE
+						function Frame:Animation_OnLeave_StopEvent()
+							return Frame.isMouseOver
+						end
+
+						function Frame:Animation_OnLeave(skipAnimation)
+							Frame:Animation_UpdateStyle()
+						end
+					end
+
+					do -- ON MOUSE DOWN
+						function Frame:Animation_OnMouseDown_StopEvent()
+							return not Frame.isMouseDown
+						end
+
+						function Frame:Animation_OnMouseDown(skipAnimation)
+							Frame:Animation_UpdateStyle()
+						end
+					end
+
+					do -- ON MOUSE UP
+						function Frame:Animation_OnMouseUp_StopEvent()
+							return Frame.isMouseDown
+						end
+
+						function Frame:Animation_OnMouseUp(skipAnimation)
+							Frame:Animation_UpdateStyle()
+						end
+					end
+				end
+
+				do -- LOGIC
+					do -- FUNCTIONS
+						do -- SET
+							function Frame:SetPlaceholder(text)
+								Frame.REF_PLACEHOLDER_TEXT:SetText(text)
+							end
+						end
+					end
+
+					do -- EVENTS
+						local function Event_OnEnter(frame, skipAnimation)
+							Frame:Animation_OnEnter(skipAnimation)
+						end
+
+						local function Event_OnLeave(frame, skipAnimation)
+							Frame:Animation_OnLeave(skipAnimation)
+						end
+
+						local function Event_OnMouseDown(frame, skipAnimation)
+							Frame:Animation_OnMouseDown(skipAnimation)
+						end
+
+						local function Event_OnMouseUp(frame, skipAnimation)
+							Frame:Animation_OnMouseUp(skipAnimation)
+						end
+
+						local function Event_OnEscapePressed()
+							Frame:Animation_OnLeave(true)
+						end
+
+						local function Event_OnTextChanged(frame, userInput)
+							local font, fontSize, fontFlags = Frame.REF_INPUT_TEXT:GetFont()
+							Frame.REF_INPUT_RAWTEXT:SetFont(font, fontSize, fontFlags)
+							Frame.REF_INPUT_TEXT:SetText(Frame.REF_INPUT_RAWTEXT:GetText())
+						end
+
+						local function Event_OnFocusChanged(frame, focus)
+							Frame:Animation_UpdateStyle()
+						end
+
+						local function Event_GlobalMouseDown()
+							if not Frame:IsMouseOver() then
+								Frame:OnEscapePressed()
+							end
+						end
+
+						table.insert(Frame.enterCallbacks, Event_OnEnter)
+						table.insert(Frame.leaveCallbacks, Event_OnLeave)
+						table.insert(Frame.mouseDownCallbacks, Event_OnMouseDown)
+						table.insert(Frame.mouseUpCallbacks, Event_OnMouseUp)
+						table.insert(Frame.escapePressedCallbacks, Event_OnEscapePressed)
+						table.insert(Frame.textChangedCallbacks, Event_OnTextChanged)
+						table.insert(Frame.focusChangedCallbacks, Event_OnFocusChanged)
+
+						CallbackRegistry:Add("EVENT_MOUSE_DOWN", Event_GlobalMouseDown)
 					end
 				end
 

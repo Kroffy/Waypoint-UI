@@ -277,6 +277,23 @@ function NS.Script:Load()
 
 					return Frame
 				end
+
+				function Callback.Constructor:Create_Setting_Element_TextBox(parent, data, name)
+					local FRAME_STRATA, FRAME_LEVEL = parent:GetFrameStrata(), parent:GetFrameLevel()
+
+					--------------------------------
+
+					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.TextBox", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
+					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+
+					--------------------------------
+
+					parent:AddElement(Frame)
+
+					--------------------------------
+
+					return Frame
+				end
 			end
 
 			do -- FUNCTIONS (MAIN)
@@ -525,6 +542,30 @@ function NS.Script:Load()
 							table.insert(color.onCloseCallbacks, function()
 								if NS.Variables.ConfigReady then
 									CallbackRegistry:Trigger("C_CONFIG_UPDATE")
+								end
+							end)
+						end
+						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_TEXTBOX then
+							local var_textbox_placeholder = v.var_textbox_placeholder
+
+							--------------------------------
+
+							newFrame = Callback.Constructor:Create_Setting_Element_TextBox(parent, { indent = v_indent, transparent = var_transparent }, v_name)
+							newFrame:SetTitle(v_name, v_imageInfo, v_description)
+
+							local textBox = newFrame.REF_TEXTBOX
+							textBox:SetPlaceholder(var_textbox_placeholder)
+							textBox:SetText(Get())
+
+							local eventResponder = Callback.Constructor:Create_Responder(newFrame)
+
+							table.insert(eventResponder.onConfigUpdateCallbacks, function()
+								newFrame:SetShown(not Check_Hidden())
+								textBox:SetText(Get())
+							end)
+							table.insert(textBox.textChangedCallbacks, function(_, userInput)
+								if userInput then
+									Set(textBox:GetText())
 								end
 							end)
 						end

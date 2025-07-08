@@ -36,7 +36,8 @@ do -- CONSTANTS
 				WS_DISTANCE_TRANSITION = 225,
 				WS_DISTANCE_HIDE = 25,
 				WS_DISTANCE_TEXT_TYPE = 2,
-				WS_PINPOINT_DETAIL = false,
+				WS_PINPOINT_INFO = true,
+				WS_PINPOINT_INFO_EXTENDED = false,
 				WS_NAVIGATOR = true,
 
 				-- APPEARANCE
@@ -45,6 +46,8 @@ do -- CONSTANTS
 				APP_WAYPOINT_SCALE_MAX = 1.5,
 				APP_WAYPOINT_BEAM = true,
 				APP_WAYPOINT_BEAM_ALPHA = 1,
+				APP_WAYPOINT_DISTANCE_TEXT = true,
+				APP_WAYPOINT_DISTANCE_TEXT_SCALE = 1,
 				APP_WAYPOINT_DISTANCE_TEXT_ALPHA = .5,
 				APP_PINPOINT_SCALE = 1,
 				APP_NAVIGATOR_SCALE = 1,
@@ -99,24 +102,29 @@ do -- CONSTANTS
 		-- 	}
 
 		NS.Variables.Database.MIGRATION_GLOBAL = {
+			-- < 0.0.1 (Beta 9)
+			{
+				from = "WS_PINPOINT_DETAIL",
+				to = "WS_PINPOINT_INFO_EXTENDED"
+			},
 			-- < 0.0.1 (Beta 8)
-			[1] = {
+			{
 				from = "WS_WAYPOINT_SCALE",
 				to = "APP_WAYPOINT_SCALE"
 			},
-			[2] = {
+			{
 				from = "WS_WAYPOINT_MIN_SCALE",
 				to = "APP_WAYPOINT_SCALE_MIN"
 			},
-			[3] = {
+			{
 				from = "WS_WAYPOINT_MAX_SCALE",
 				to = "APP_WAYPOINT_SCALE_MAX"
 			},
-			[4] = {
+			{
 				from = "WS_WAYPOINT_DISTANCE_TEXT_ALPHA",
 				to = "APP_WAYPOINT_DISTANCE_TEXT_ALPHA"
 			},
-			[5] = {
+			{
 				from = "WS_PINPOINT_SCALE",
 				to = "APP_PINPOINT_SCALE"
 			}

@@ -32,6 +32,14 @@ function NS.Script:Load()
 				end
 			end
 		end
+
+		function Callback:OverrideFont(fontKey, newFont)
+			NS[fontKey] = newFont
+
+			--------------------------------
+
+			CallbackRegistry:Trigger("C_FONT_OVERRIDE", fontKey, newFont)
+		end
 	end
 
 	--------------------------------

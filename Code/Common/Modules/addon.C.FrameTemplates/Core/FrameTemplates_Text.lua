@@ -219,6 +219,19 @@ do
 						return Frame.autoFit
 					end
 				end
+
+				do -- LOGIC
+					function Frame:UpdateFont(newFont)
+						local fontName, fontHeight, fontFlags = Frame.Renderer:GetFont()
+						Frame:SetFont(newFont, fontHeight, fontFlags)
+
+						--------------------------------
+
+						if Frame:IsAutoFit() then
+							Frame:SetToFit(Frame.autoFit_preserveHeight)
+						end
+					end
+				end
 			end
 
 			do -- EVENTS
@@ -231,6 +244,7 @@ do
 				Frame:RegisterEvent("UI_SCALE_CHANGED")
 				Frame:SetScript("OnEvent", AutoFit)
 				CallbackRegistry:Add("C_TEXT_AUTOFIT", AutoFit)
+				CallbackRegistry:Add("C_FONT_OVERRIDE", function(_, newFont) Frame:UpdateFont(newFont) end)
 			end
 		end
 
