@@ -630,7 +630,7 @@ do  -- CONSTANTS
 											["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_COMPLETE_TINT end,
 											["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_COMPLETE_TINT = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										},
 										{
 											["name"] = "",
@@ -640,7 +640,7 @@ do  -- CONSTANTS
 											["var_button_text"] = L["Config - Appearance - Visual - UseCustomColor - Reset"],
 											["var_set"] = function() ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_COMPLETE"); ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_COMPLETE_TINT"); CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										}
 									}
 								},
@@ -669,7 +669,7 @@ do  -- CONSTANTS
 											["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT end,
 											["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										},
 										{
 											["name"] = "",
@@ -679,7 +679,7 @@ do  -- CONSTANTS
 											["var_button_text"] = L["Config - Appearance - Visual - UseCustomColor - Reset"],
 											["var_set"] = function() ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_COMPLETE_REPEATABLE"); ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT"); CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										}
 									}
 								},
@@ -708,7 +708,7 @@ do  -- CONSTANTS
 											["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT end,
 											["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										},
 										{
 											["name"] = "",
@@ -718,7 +718,7 @@ do  -- CONSTANTS
 											["var_button_text"] = L["Config - Appearance - Visual - UseCustomColor - Reset"],
 											["var_set"] = function() ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_COMPLETE_IMPORTANT"); ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT"); CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										}
 									}
 								},
@@ -747,7 +747,7 @@ do  -- CONSTANTS
 											["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_INCOMPLETE_TINT end,
 											["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_COLOR_QUEST_INCOMPLETE_TINT = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										},
 										{
 											["name"] = "",
@@ -757,7 +757,7 @@ do  -- CONSTANTS
 											["var_button_text"] = L["Config - Appearance - Visual - UseCustomColor - Reset"],
 											["var_set"] = function() ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_INCOMPLETE"); ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_QUEST_INCOMPLETE_TINT"); CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										}
 									}
 								},
@@ -786,7 +786,7 @@ do  -- CONSTANTS
 											["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_COLOR_NEUTRAL_TINT end,
 											["var_set"] = function(value) GetDatabase("DB_GLOBAL").APP_COLOR_NEUTRAL_TINT = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										},
 										{
 											["name"] = "",
@@ -796,7 +796,7 @@ do  -- CONSTANTS
 											["var_button_text"] = L["Config - Appearance - Visual - UseCustomColor - Reset"],
 											["var_set"] = function() ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_NEUTRAL"); ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "APP_COLOR_NEUTRAL_TINT"); CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE") end,
 											["var_disabled"] = function() return false end,
-											["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").APP_COLOR end,
+											["var_hidden"] = function() return false end,
 										}
 									}
 								}
@@ -832,6 +832,105 @@ do  -- CONSTANTS
 									["var_set"] = function(value) GetDatabase("DB_GLOBAL").AUDIO_GLOBAL = value end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
+								}
+							}
+						},
+						{
+							["name"] = L["Config - Audio - Customize"],
+							["type"] = NS.Variables.Config.TYPE_CONTAINER,
+							["var_subcontainer"] = false,
+							["var_transparent"] = false,
+							["var_hidden"] = function() return false end,
+							["elements"] = {
+								{
+									["name"] = L["Config - Audio - Customize - UseCustomAudio"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = nil,
+									["indent"] = 0,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").AUDIO_CUSTOM end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").AUDIO_CUSTOM = value end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end,
+								},
+								{
+									["name"] = L["Config - Audio - Customize - UseCustomAudio - WaypointShow"],
+									["type"] = NS.Variables.Config.TYPE_CONTAINER,
+									["var_subcontainer"] = true,
+									["var_transparent"] = false,
+									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").AUDIO_CUSTOM end,
+									["elements"] = {
+										{
+											["name"] = L["Config - Audio - Customize - UseCustomAudio - Sound ID"],
+											["type"] = NS.Variables.Config.TYPE_TEXTBOX,
+											["descriptor"] = nil,
+											["indent"] = 0,
+											["var_textbox_placeholder"] = L["Config - Audio - Customize - UseCustomAudio - Sound ID - Placeholder"],
+											["var_get"] = function() return GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_WAYPOINT_SHOW end,
+											["var_set"] = function(value) if tonumber(value) then GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_WAYPOINT_SHOW = tonumber(value) else GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_WAYPOINT_SHOW = "" end; CallbackRegistry:Trigger("C_CONFIG_AUDIO_UPDATE") end,
+											["var_disabled"] = function() return false end,
+											["var_hidden"] = function() return false end,
+										},
+										{
+											["name"] = "",
+											["type"] = NS.Variables.Config.TYPE_BUTTON,
+											["descriptor"] = nil,
+											["indent"] = 0,
+											["var_button_text"] = L["Config - Audio - Customize - UseCustomAudio - Preview"],
+											["var_set"] = function() addon.C.Sound.Script:PlaySound(GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_WAYPOINT_SHOW, true) end,
+											["var_disabled"] = function() return false end,
+											["var_hidden"] = function() return false end,
+										},
+										{
+											["name"] = "",
+											["type"] = NS.Variables.Config.TYPE_BUTTON,
+											["descriptor"] = nil,
+											["indent"] = 0,
+											["var_button_text"] = L["Config - Audio - Customize - UseCustomAudio - Reset"],
+											["var_set"] = function() ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "AUDIO_CUSTOM_WAYPOINT_SHOW") end,
+											["var_disabled"] = function() return false end,
+											["var_hidden"] = function() return false end,
+										}
+									}
+								},
+								{
+									["name"] = L["Config - Audio - Customize - UseCustomAudio - PinpointShow"],
+									["type"] = NS.Variables.Config.TYPE_CONTAINER,
+									["var_subcontainer"] = true,
+									["var_transparent"] = false,
+									["var_hidden"] = function() return not GetDatabase("DB_GLOBAL").AUDIO_CUSTOM end,
+									["elements"] = {
+										{
+											["name"] = L["Config - Audio - Customize - UseCustomAudio - Sound ID"],
+											["type"] = NS.Variables.Config.TYPE_TEXTBOX,
+											["descriptor"] = nil,
+											["indent"] = 0,
+											["var_textbox_placeholder"] = L["Config - Audio - Customize - UseCustomAudio - Sound ID - Placeholder"],
+											["var_get"] = function() return GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_PINPOINT_SHOW end,
+											["var_set"] = function(value) if tonumber(value) then GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_PINPOINT_SHOW = tonumber(value) else GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_PINPOINT_SHOW = "" end; CallbackRegistry:Trigger("C_CONFIG_AUDIO_UPDATE") end,
+											["var_disabled"] = function() return false end,
+											["var_hidden"] = function() return false end,
+										},
+										{
+											["name"] = "",
+											["type"] = NS.Variables.Config.TYPE_BUTTON,
+											["descriptor"] = nil,
+											["indent"] = 0,
+											["var_button_text"] = L["Config - Audio - Customize - UseCustomAudio - Preview"],
+											["var_set"] = function() addon.C.Sound.Script:PlaySound(GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_PINPOINT_SHOW, true) end,
+											["var_disabled"] = function() return false end,
+											["var_hidden"] = function() return false end,
+										},
+										{
+											["name"] = "",
+											["type"] = NS.Variables.Config.TYPE_BUTTON,
+											["descriptor"] = nil,
+											["indent"] = 0,
+											["var_button_text"] = L["Config - Audio - Customize - UseCustomAudio - Reset"],
+											["var_set"] = function() ResetEntry("DB_GLOBAL", "GLOBAL_DEFAULT", "AUDIO_CUSTOM_PINPOINT_SHOW") end,
+											["var_disabled"] = function() return false end,
+											["var_hidden"] = function() return false end,
+										}
+									}
 								}
 							}
 						}

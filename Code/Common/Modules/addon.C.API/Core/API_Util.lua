@@ -212,7 +212,10 @@ do
 		---@return string
 		function NS.Util:StripColorCodes(text)
 			if text ~= nil then
-				return text:gsub("|cff%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
+				local new = string.gsub(text, "|cff%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
+				new = string.gsub(new, "|cn.-:", "")
+
+				return new
 			else
 				return ""
 			end

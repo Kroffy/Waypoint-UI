@@ -421,6 +421,9 @@ function NS.Script:Load()
 		local C_APP_COLOR_QUEST_COMPLETE_REPEATABLE
 		local C_APP_COLOR_QUEST_COMPLETE_IMPORTANT
 		local C_APP_COLOR_NEUTRAL
+		local C_AUDIO_CUSTOM
+		local C_AUDIO_CUSTOM_WAYPOINT_SHOW
+		local C_AUDIO_CUSTOM_PINPOINT_SHOW
 		local C_PREF_METRIC
 		local CVAR_FOV
 		local CVAR_ACTIONCAM_SHOULDER
@@ -457,6 +460,9 @@ function NS.Script:Load()
 				C_APP_COLOR_QUEST_COMPLETE_REPEATABLE = addon.C.Database.Variables.DB_GLOBAL.profile.APP_COLOR_QUEST_COMPLETE_REPEATABLE
 				C_APP_COLOR_QUEST_COMPLETE_IMPORTANT = addon.C.Database.Variables.DB_GLOBAL.profile.APP_COLOR_QUEST_COMPLETE_IMPORTANT
 				C_APP_COLOR_NEUTRAL = addon.C.Database.Variables.DB_GLOBAL.profile.APP_COLOR_NEUTRAL
+				C_AUDIO_CUSTOM = addon.C.Database.Variables.DB_GLOBAL.profile.AUDIO_CUSTOM
+				C_AUDIO_CUSTOM_WAYPOINT_SHOW = addon.C.Database.Variables.DB_GLOBAL.profile.AUDIO_CUSTOM_WAYPOINT_SHOW
+				C_AUDIO_CUSTOM_PINPOINT_SHOW = addon.C.Database.Variables.DB_GLOBAL.profile.AUDIO_CUSTOM_PINPOINT_SHOW
 				C_PREF_METRIC = addon.C.Database.Variables.DB_GLOBAL.profile.PREF_METRIC
 				CVAR_FOV = tonumber(GetCVar("cameraFov"))
 				CVAR_ACTIONCAM_SHOULDER = tonumber(GetCVar("test_cameraOverShoulder"))
@@ -466,6 +472,7 @@ function NS.Script:Load()
 			UpdateReferences()
 			CallbackRegistry:Add("C_CONFIG_UPDATE", UpdateReferences)
 			CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", UpdateReferences)
+			CallbackRegistry:Add("C_CONFIG_AUDIO_UPDATE", UpdateReferences)
 			CallbackRegistry:Add("EVENT_CVAR_UPDATE", UpdateReferences)
 		end
 
@@ -1120,7 +1127,8 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					addon.C.Sound.Script:PlaySound(SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
+					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
+					addon.C.Sound.Script:PlaySound(audioPath)
 				else
 					Frame_World_Pinpoint:ShowWithAnimation(id, false)
 				end
@@ -1140,7 +1148,8 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					addon.C.Sound.Script:PlaySound(SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
+					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
+					addon.C.Sound.Script:PlaySound(audioPath)
 				else
 					Frame_World_Waypoint:ShowWithAnimation(id, false)
 				end
@@ -1161,7 +1170,8 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					addon.C.Sound.Script:PlaySound(SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
+					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
+					addon.C.Sound.Script:PlaySound(audioPath)
 				end
 
 				--------------------------------
@@ -1180,7 +1190,8 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					addon.C.Sound.Script:PlaySound(SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
+					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
+					addon.C.Sound.Script:PlaySound(audioPath)
 				end
 
 				--------------------------------
@@ -1312,7 +1323,7 @@ function NS.Script:Load()
 					if not C_WS_PINPOINT_INFO then text = nil end
 
 					Frame_World_Pinpoint:SetText(text)
-					Frame_World_Pinpoint:Context_SetOpacity(.25)
+					Frame_World_Pinpoint:Context_SetOpacity(text and .25 or 1)
 					Frame_World_Pinpoint:Context_SetImage(contextIcon)
 				else
 					local text = nil
@@ -1339,12 +1350,12 @@ function NS.Script:Load()
 					else
 						if C_WS_PINPOINT_INFO_EXTENDED then
 							if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
-								text = pinInfo.pinName .. " — " .. pinInfo.poiInfo.description
+								text = addon.C.API.Util:StripColorCodes(pinInfo.pinName) .. " — " .. addon.C.API.Util:StripColorCodes(pinInfo.poiInfo.description)
 							else
-								text = pinInfo.pinName
+								text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
 							end
 						else
-							text = pinInfo.pinName
+							text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
 						end
 					end
 					if not C_WS_PINPOINT_INFO then text = nil end

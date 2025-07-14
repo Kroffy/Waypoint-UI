@@ -112,7 +112,7 @@ do
 			do -- FUNCTIONS
 				do -- SET
 					function Frame:SetText(text)
-						Frame.REF_INPUT:SetText(text)
+						Frame.REF_INPUT:SetText(text or "")
 					end
 
 					function Frame:SetAutoFocus(autoFocus)
@@ -245,7 +245,7 @@ do
 					end
 				end
 
-				function Frame:OnTextChanged(_, userInput)
+				function Frame:OnTextChanged(userInput)
 					Frame:UpdatePlaceholder()
 
 					--------------------------------

@@ -23,17 +23,17 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		function Callback:PlaySoundFile(filePath)
-			if filePath then
-				if addon.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
+		function Callback:PlaySoundFile(filePath, bypass)
+			if filePath and filePath ~= "" then
+				if bypass or addon.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
 					PlaySoundFile(filePath)
 				end
 			end
 		end
 
-		function Callback:PlaySound(soundID)
-			if soundID then
-				if addon.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
+		function Callback:PlaySound(soundID, bypass)
+			if soundID and soundID ~= "" then
+				if bypass or addon.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
 					PlaySound(soundID)
 				end
 			end
