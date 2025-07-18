@@ -211,6 +211,18 @@ function NS.Script:Load()
 						addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetAlpha(), ["to"] = alpha, ["ease"] = "EaseExpo_Out", ["stopEvent"] = nil })
 					end
 				end
+
+				function Frame_World_Waypoint:APP_MouseOverAlpha_Reset()
+					if Frame.REF_WORLD_WAYPOINT_CONTENT:GetAlpha() < 1 then
+						Frame.REF_WORLD_WAYPOINT_CONTENT:SetAlpha(1)
+					end
+				end
+
+				function Frame_World_Waypoint:APP_CenterDistanceAlpha_Reset()
+					if Frame.REF_WORLD_WAYPOINT_CONTEXT:GetAlpha() < 1 then
+						Frame.REF_WORLD_WAYPOINT_CONTEXT:SetAlpha(1)
+					end
+				end
 			end
 		end
 
@@ -679,10 +691,10 @@ function NS.Script:Load()
 						texture.path = pinInfo.poiInfo.atlasName
 					elseif isWay then
 						texture.type = "TEXTURE"
-						texture.path = addon.CREF:GetAddonPath() .. "Art/ContextIcons/map-pin-way.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/map-pin-way.png"
 					elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
 						texture.type = "TEXTURE"
-						texture.path = addon.CREF:GetAddonPath() .. "Art/ContextIcons/map-pin-default.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/map-pin-default.png"
 					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.TaxiNode then
 						texture.type = "ATLAS"
 						texture.path = "Crosshair_Taxi_128"
@@ -710,15 +722,15 @@ function NS.Script:Load()
 						-- })
 
 						-- texture.type = "TEXTURE"
-						-- texture.path = contextIcon and addon.CREF:GetAddonPath() .. "Art/ContextIcons/" .. contextIcon .. ".png" or addon.CREF:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
+						-- texture.path = contextIcon and addon.CS:GetAddonPath() .. "Art/ContextIcons/" .. contextIcon .. ".png" or addon.CS:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
 
 						-- --------------------------------
 
 						texture.type = "TEXTURE"
-						texture.path = addon.CREF:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
 					else
 						texture.type = "TEXTURE"
-						texture.path = addon.CREF:GetAddonPath() .. "Art/ContextIcons/map-pin-default.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/map-pin-default.png"
 					end
 				end
 
@@ -740,17 +752,17 @@ function NS.Script:Load()
 
 					if questComplete then
 						if questClassification == Enum.QuestClassification.Recurring then
-							texture = addon.CREF:GetAddonPath() .. "Art/ContextIcons/redirect-repeatable.png"
+							texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-repeatable.png"
 						elseif questClassification == Enum.QuestClassification.Important then
-							texture = addon.CREF:GetAddonPath() .. "Art/ContextIcons/redirect-important.png"
+							texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-important.png"
 						else
-							texture = addon.CREF:GetAddonPath() .. "Art/ContextIcons/redirect-default.png"
+							texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-default.png"
 						end
 					else
-						texture = addon.CREF:GetAddonPath() .. "Art/ContextIcons/redirect-incomplete.png"
+						texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-incomplete.png"
 					end
 				else
-					texture = addon.CREF:GetAddonPath() .. "Art/ContextIcons/redirect-neutral.png"
+					texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-neutral.png"
 				end
 
 				--------------------------------
@@ -933,6 +945,26 @@ function NS.Script:Load()
 				return result
 			end
 
+			function Callback:GetRedirectInfo()
+				local result = {}
+
+				--------------------------------
+
+				local mapID = C_Map.GetBestMapForUnit("player")
+				local waypointX, waypointY, waypointText = C_SuperTrack.GetNextWaypointForMap(mapID)
+
+				result = {
+					valid = (waypointText ~= nil),
+					x = waypointX,
+					y = waypointY,
+					text = waypointText
+				}
+
+				--------------------------------
+
+				return result
+			end
+
 			--------------------------------
 
 			local clampThreshold = .125
@@ -1012,11 +1044,11 @@ function NS.Script:Load()
 
 				local trackingType = Callback:GetTrackingType(questID)
 
-				local COLOR_QUEST_INCOMPLETE = C_APP_COLOR and C_APP_COLOR_QUEST_INCOMPLETE or addon.CREF:GetSharedColor().RGB_PING_QUEST_NEUTRAL
-				local COLOR_QUEST_COMPLETE = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE or addon.CREF:GetSharedColor().RGB_PING_QUEST_NORMAL
-				local COLOR_QUEST_COMPLETE_REPEATABLE = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_REPEATABLE or addon.CREF:GetSharedColor().RGB_PING_QUEST_REPEATABLE
-				local COLOR_QUEST_COMPLETE_IMPORTANT = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_IMPORTANT or addon.CREF:GetSharedColor().RGB_PING_QUEST_IMPORTANT
-				local COLOR_NEUTRAL = C_APP_COLOR and C_APP_COLOR_NEUTRAL or addon.CREF:GetSharedColor().RGB_PING_NEUTRAL
+				local COLOR_QUEST_INCOMPLETE = C_APP_COLOR and C_APP_COLOR_QUEST_INCOMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL
+				local COLOR_QUEST_COMPLETE = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL
+				local COLOR_QUEST_COMPLETE_REPEATABLE = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_REPEATABLE or addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE
+				local COLOR_QUEST_COMPLETE_IMPORTANT = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_IMPORTANT or addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT
+				local COLOR_NEUTRAL = C_APP_COLOR and C_APP_COLOR_NEUTRAL or addon.CS:GetSharedColor().RGB_PING_NEUTRAL
 
 				--------------------------------
 
@@ -1029,7 +1061,7 @@ function NS.Script:Load()
 				elseif trackingType == "QUEST_INCOMPLETE" then
 					result = COLOR_QUEST_INCOMPLETE
 				elseif trackingType == "CORPSE" then
-					result = { r = addon.CREF:GetSharedColor().RGB_WHITE.r, g = addon.CREF:GetSharedColor().RGB_WHITE.g, b = addon.CREF:GetSharedColor().RGB_WHITE.b, a = 1 }
+					result = { r = addon.CS:GetSharedColor().RGB_WHITE.r, g = addon.CS:GetSharedColor().RGB_WHITE.g, b = addon.CS:GetSharedColor().RGB_WHITE.b, a = 1 }
 				else
 					result = COLOR_NEUTRAL
 				end
@@ -1220,6 +1252,23 @@ function NS.Script:Load()
 
 			local Process = {}
 
+			function Process:GetInfo()
+				local questInfo = Callback:GetQuestInfo()
+				local appearanceInfo = Callback:APP_GetInfo(questInfo and questInfo.questID)
+				local state = Callback:GetCurrentState()
+				local id, isNewState = Callback:UpdateStateSession(state)
+				local isClamped, isNewClamped = Callback:GetIsClamped()
+
+				NS.Variables.Session = {}
+				NS.Variables.Session.questInfo = questInfo
+				NS.Variables.Session.appearanceInfo = appearanceInfo
+				NS.Variables.Session.state = state
+				NS.Variables.Session.id = id
+				NS.Variables.Session.isClamped = isClamped
+
+				return { isNewState = isNewState, isNewClamped = isNewClamped }
+			end
+
 			function Process:Update_Waypoint_Distance()
 				local DISTANCE = C_Navigation.GetDistance()
 
@@ -1263,10 +1312,10 @@ function NS.Script:Load()
 				--------------------------------
 
 				if questInfo then
+					local redirectInfo = Callback:GetRedirectInfo()
 					local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
-					local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(questInfo.questID))
 
-					if currentWaypointObjective then
+					if redirectInfo.valid then
 						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
 					end
 
@@ -1276,7 +1325,12 @@ function NS.Script:Load()
 					Frame_World_Waypoint:Context_SetImage(contextIcon)
 					Frame_World_Waypoint:Context_SetVFX("Wave", appearanceInfo.color)
 				else
+					local redirectInfo = Callback:GetRedirectInfo()
 					local contextIcon = (Callback:GetContextIcon_Pin())
+
+					if redirectInfo.valid then
+						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect() }
+					end
 
 					--------------------------------
 
@@ -1299,15 +1353,15 @@ function NS.Script:Load()
 					local text = nil
 					local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
 
+					local redirectInfo = Callback:GetRedirectInfo()
 					local isComplete = (questInfo.completed)
-					local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(questInfo.questID))
 					local currentQuestObjective = ((questInfo.objectiveInfo.objectives and #questInfo.objectiveInfo.objectives >= questInfo.objectiveInfo.objectiveIndex and questInfo.objectiveInfo.objectives[questInfo.objectiveInfo.objectiveIndex].text) or "")
 					local questName = (C_QuestLog.GetTitleForQuestID(questInfo.questID))
 
 					--------------------------------
 
-					if currentWaypointObjective then
-						text = currentWaypointObjective
+					if redirectInfo.valid then
+						text = redirectInfo.text
 						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
 					else
 						if isComplete then
@@ -1329,33 +1383,38 @@ function NS.Script:Load()
 					local text = nil
 					local contextIcon = (Callback:GetContextIcon_Pin())
 
+					local redirectInfo = Callback:GetRedirectInfo()
 					local pinInfo = (Callback:GetPinInfo())
 
 					--------------------------------
 
-					if pinInfo.isWay then
-						local wayInfo = WaypointUI_GetWay()
-
-						--------------------------------
-
-						if #wayInfo.name >= 1 then
-							text = wayInfo.name
-						else
-							text = nil
-						end
-					elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
-						text = nil
-					elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
-						text = nil
+					if redirectInfo.valid then
+						text = redirectInfo.text
 					else
-						if C_WS_PINPOINT_INFO_EXTENDED then
-							if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
-								text = addon.C.API.Util:StripColorCodes(pinInfo.pinName) .. " — " .. addon.C.API.Util:StripColorCodes(pinInfo.poiInfo.description)
+						if pinInfo.isWay then
+							local wayInfo = WaypointUI_GetWay()
+
+							--------------------------------
+
+							if #wayInfo.name >= 1 then
+								text = wayInfo.name
+							else
+								text = nil
+							end
+						elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
+							text = nil
+						elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
+							text = nil
+						else
+							if C_WS_PINPOINT_INFO_EXTENDED then
+								if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
+									text = addon.C.API.Util:StripColorCodes(pinInfo.pinName) .. " — " .. addon.C.API.Util:StripColorCodes(pinInfo.poiInfo.description)
+								else
+									text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
+								end
 							else
 								text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
 							end
-						else
-							text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
 						end
 					end
 					if not C_WS_PINPOINT_INFO then text = nil end
@@ -1380,10 +1439,10 @@ function NS.Script:Load()
 				--------------------------------
 
 				if questInfo then
+					local redirectInfo = Callback:GetRedirectInfo()
 					local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
-					local currentWaypointObjective = (C_QuestLog.GetNextWaypointText(questInfo.questID))
 
-					if currentWaypointObjective then
+					if redirectInfo.valid then
 						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
 					end
 
@@ -1392,7 +1451,12 @@ function NS.Script:Load()
 					Frame_Navigator_Arrow:Context_SetOpacity(1)
 					Frame_Navigator_Arrow:Context_SetImage(contextIcon)
 				else
+					local redirectInfo = Callback:GetRedirectInfo()
 					local contextIcon = (Callback:GetContextIcon_Pin())
+
+					if redirectInfo.valid then
+						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect() }
+					end
 
 					--------------------------------
 
@@ -1427,6 +1491,8 @@ function NS.Script:Load()
 
 					if CVAR_ACTIONCAM_SHOULDER <= 0 and CVAR_ACTIONCAM_PITCH <= 0 then
 						Frame_World_Waypoint:APP_CenterDistanceAlpha_Update()
+					else
+						Frame_World_Waypoint:APP_CenterDistanceAlpha_Reset()
 					end
 				end
 			end
@@ -1595,14 +1661,12 @@ function NS.Script:Load()
 			end
 
 			function Event:NewWaypoint()
-				Callback:Waypoint_Reset()
+				Process:GetInfo()
 
 				--------------------------------
 
-				Process:GetInfo()
-				Event:Update()
-				Event:BackgroundUpdate()
-				Event:StateChanged(NS.Variables.Session.state, true, NS.Variables.Session.id)
+				CallbackRegistry:Trigger("WaypointSystem.ClampChanged")
+				CallbackRegistry:Trigger("WaypointSystem.StateChanged")
 			end
 
 			function Event:Navigator_Show()
@@ -1650,21 +1714,10 @@ function NS.Script:Load()
 			local backgroundUpdateTimer = 0
 
 			local function EventManager_Process()
-				local questInfo = Callback:GetQuestInfo()
-				local appearanceInfo = Callback:APP_GetInfo(questInfo and questInfo.questID)
-				local state = Callback:GetCurrentState()
-				local id, isNewState = Callback:UpdateStateSession(state)
-				local isClamped, isNewClamped = Callback:GetIsClamped()
+				local info = Process:GetInfo()
 
-				NS.Variables.Session = {}
-				NS.Variables.Session.questInfo = questInfo
-				NS.Variables.Session.appearanceInfo = appearanceInfo
-				NS.Variables.Session.state = state
-				NS.Variables.Session.id = id
-				NS.Variables.Session.isClamped = isClamped
-
-				if isNewState then CallbackRegistry:Trigger("WaypointSystem.StateChanged") end
-				if isNewClamped then CallbackRegistry:Trigger("WaypointSystem.ClampChanged") end
+				if info.isNewState then CallbackRegistry:Trigger("WaypointSystem.StateChanged") end
+				if info.isNewClamped then CallbackRegistry:Trigger("WaypointSystem.ClampChanged") end
 			end
 
 			local function EventManager_Update(context, elapsed)
@@ -1704,6 +1757,12 @@ function NS.Script:Load()
 
 						if context == "SUPER_TRACKING_CHANGED" then
 							CallbackRegistry:Trigger("WaypointSystem.SuperTrackedChanged")
+
+							--------------------------------
+
+							C_Timer.After(0, function()
+								CallbackRegistry:Trigger("WaypointSystem.NewWaypoint")
+							end)
 						elseif context == "SUPER_TRACKING_PATH_UPDATED" then
 							CallbackRegistry:Trigger("WaypointSystem.SuperTrackedNewPath")
 						elseif context == "MAP_PIN_NEW_WAY" then
@@ -1729,6 +1788,22 @@ function NS.Script:Load()
 			CallbackRegistry:Trigger("MapPin.NewWay", function()
 				EventManager_Update("MAP_PIN_NEW_WAY", nil)
 			end)
+		end
+	end
+
+	--------------------------------
+	-- FUNCTIONS (GLOBAL)
+	--------------------------------
+
+	do
+		function WaypointUI_ClearAll()
+			if WaypointUI_IsWay() then
+				WaypointUI_ClearWay()
+			end
+
+			if C_SuperTrack.IsSuperTrackingAnything() then
+				C_SuperTrack.ClearAllSuperTracked()
+			end
 		end
 	end
 

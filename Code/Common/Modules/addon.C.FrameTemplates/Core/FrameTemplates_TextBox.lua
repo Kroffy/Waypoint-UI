@@ -403,7 +403,7 @@ do
 									--------------------------------
 
 									do -- TEXT
-										Placeholder.Text = addon.C.FrameTemplates:CreateText(Placeholder, addon.CREF:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "TOP", addon.C.Fonts.CONTENT_MEDIUM, "$parent.Text")
+										Placeholder.Text = addon.C.FrameTemplates:CreateText(Placeholder, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "TOP", addon.C.Fonts.CONTENT_MEDIUM, "$parent.Text")
 										Placeholder.Text:SetPoint("CENTER", Placeholder)
 										addon.C.API.FrameUtil:SetDynamicSize(Placeholder.Text, Placeholder, 0, 0)
 										Placeholder.Text.justifyV = "TOP"

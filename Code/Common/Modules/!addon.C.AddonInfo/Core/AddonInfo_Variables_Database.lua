@@ -15,7 +15,7 @@ do -- MAIN
 
 end
 
-do -- CONSTANTS
+do  -- CONSTANTS
 	do -- REFERENCES
 		NS.Variables.Database.GLOBAL_REFERENCE = WaypointDB_Global
 		NS.Variables.Database.LOCAL_REFERENCE = WaypointDB_Local
@@ -31,6 +31,9 @@ do -- CONSTANTS
 	do -- DEFAULTS
 		NS.Variables.Database.GLOBAL_DEFAULT = {
 			profile = {
+				-- Common Framework (Don't delete)
+				C_FONT_CUSTOM = {},
+
 				-- WAYPOINT SYSTEM
 				WS_TYPE = 1,
 				WS_DISTANCE_TRANSITION = 225,
@@ -54,15 +57,15 @@ do -- CONSTANTS
 				APP_NAVIGATOR_ALPHA = 1,
 				APP_COLOR = false,
 				APP_COLOR_QUEST_INCOMPLETE_TINT = false,
-				APP_COLOR_QUEST_INCOMPLETE = { r = addon.CREF:GetSharedColor().RGB_PING_QUEST_NEUTRAL.r, g = addon.CREF:GetSharedColor().RGB_PING_QUEST_NEUTRAL.g, b = addon.CREF:GetSharedColor().RGB_PING_QUEST_NEUTRAL.b, a = 1 },
+				APP_COLOR_QUEST_INCOMPLETE = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.b, a = 1 },
 				APP_COLOR_QUEST_COMPLETE_TINT = false,
-				APP_COLOR_QUEST_COMPLETE = { r = addon.CREF:GetSharedColor().RGB_PING_QUEST_NORMAL.r, g = addon.CREF:GetSharedColor().RGB_PING_QUEST_NORMAL.g, b = addon.CREF:GetSharedColor().RGB_PING_QUEST_NORMAL.b, a = 1 },
+				APP_COLOR_QUEST_COMPLETE = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.b, a = 1 },
 				APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT = false,
-				APP_COLOR_QUEST_COMPLETE_REPEATABLE = { r = addon.CREF:GetSharedColor().RGB_PING_QUEST_REPEATABLE.r, g = addon.CREF:GetSharedColor().RGB_PING_QUEST_REPEATABLE.g, b = addon.CREF:GetSharedColor().RGB_PING_QUEST_REPEATABLE.b, a = 1 },
+				APP_COLOR_QUEST_COMPLETE_REPEATABLE = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.b, a = 1 },
 				APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT = false,
-				APP_COLOR_QUEST_COMPLETE_IMPORTANT = { r = addon.CREF:GetSharedColor().RGB_PING_QUEST_IMPORTANT.r, g = addon.CREF:GetSharedColor().RGB_PING_QUEST_IMPORTANT.g, b = addon.CREF:GetSharedColor().RGB_PING_QUEST_IMPORTANT.b, a = 1 },
+				APP_COLOR_QUEST_COMPLETE_IMPORTANT = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.b, a = 1 },
 				APP_COLOR_NEUTRAL_TINT = true,
-				APP_COLOR_NEUTRAL = { r = addon.CREF:GetSharedColor().RGB_PING_NEUTRAL.r, g = addon.CREF:GetSharedColor().RGB_PING_NEUTRAL.g, b = addon.CREF:GetSharedColor().RGB_PING_NEUTRAL.b , a = 1 },
+				APP_COLOR_NEUTRAL = { r = addon.CS:GetSharedColor().RGB_PING_NEUTRAL.r, g = addon.CS:GetSharedColor().RGB_PING_NEUTRAL.g, b = addon.CS:GetSharedColor().RGB_PING_NEUTRAL.b, a = 1 },
 
 				-- AUDIO
 				AUDIO_GLOBAL = true,
@@ -72,7 +75,6 @@ do -- CONSTANTS
 
 				-- PREFERENCES
 				PREF_METRIC = false,
-				PREF_FONT = "", -- [WIP]
 			},
 		}
 

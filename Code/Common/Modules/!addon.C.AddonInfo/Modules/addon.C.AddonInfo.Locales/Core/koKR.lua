@@ -101,7 +101,7 @@ function NS:Load()
 		L["Config - Appearance - Waypoint - Scale - Max - Description"] = "위치가 확대될 수 있는 최대 크기를 설정합니다."
 		L["Config - Appearance - Waypoint - Beam"] = "광선 효과"
 		L["Config - Appearance - Waypoint - Beam - Alpha"] = "투명도"
-		L["Config - Appearance - Waypoint - Footer"] = "경로 글자 표시"
+		L["Config - Appearance - Waypoint - Footer"] = "정보 글자 표시"
 		L["Config - Appearance - Waypoint - Footer - Scale"] = "크기"
 		L["Config - Appearance - Waypoint - Footer - Alpha"] = "거리 정보 투명도"
 		L["Config - Appearance - Pinpoint"] = "위치 정보창"

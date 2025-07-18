@@ -482,10 +482,10 @@ do
 
 					--------------------------------
 
-					addon.CREF:GetCommonFrame().GameTooltip:SetOwner(frame, location, locationX, locationY)
-					addon.CREF:GetCommonFrame().GameTooltip:SetText(frame.tooltipText, 1, 1, 1, 1, (wrapText == nil and true or wrapText))
+					addon.CS:GetCommonFrame().GameTooltip:SetOwner(frame, location, locationX, locationY)
+					addon.CS:GetCommonFrame().GameTooltip:SetText(frame.tooltipText, 1, 1, 1, 1, (wrapText == nil and true or wrapText))
 
-					addon.CREF:GetCommonFrame().GameTooltip:Show()
+					addon.CS:GetCommonFrame().GameTooltip:Show()
 				end
 
 				frame.API_HideTooltip = function()
@@ -493,7 +493,7 @@ do
 
 					--------------------------------
 
-					addon.CREF:GetCommonFrame().GameTooltip:Clear()
+					addon.CS:GetCommonFrame().GameTooltip:Clear()
 				end
 
 				--------------------------------
