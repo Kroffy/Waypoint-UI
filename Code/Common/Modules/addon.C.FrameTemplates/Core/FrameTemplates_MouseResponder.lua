@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -48,7 +49,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", "$parent.MouseResponder", parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.MouseResponder", parent)
 		Frame:SetFrameStrata("FULLSCREEN_DIALOG")
 		Frame:SetFrameLevel(999)
 
@@ -165,7 +166,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", "ScrollResponder", parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", "ScrollResponder", parent)
 		Frame:SetFrameStrata("FULLSCREEN_DIALOG")
 		Frame:SetFrameLevel(999)
 

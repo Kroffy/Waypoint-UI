@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.WaypointSystem; addon.WaypointSystem = NS
 
@@ -18,7 +19,7 @@ function NS.Elements:Load()
 
 	do
 		do -- ELEMENTS
-			WaypointFrame.Waypoint = CreateFrame("Frame", "$parent.Waypoint", WaypointFrame)
+			WaypointFrame.Waypoint = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Waypoint", WaypointFrame)
 			WaypointFrame.Waypoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
 			WaypointFrame.Waypoint:SetFrameLevel(NS.Variables.FRAME_LEVEL)
 
@@ -33,7 +34,7 @@ function NS.Elements:Load()
 				--------------------------------
 
 				do -- WORLD
-					Frame.World = CreateFrame("Frame", "$parent.World", Frame)
+					Frame.World = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.World", Frame)
 					Frame.World:SetAllPoints(Frame)
 
 					local World = Frame.World
@@ -41,7 +42,7 @@ function NS.Elements:Load()
 					--------------------------------
 
 					do -- WAYPOINT
-						World.Waypoint = CreateFrame("Frame", "$parent.Waypoint", World)
+						World.Waypoint = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Waypoint", World)
 						World.Waypoint:SetSize(37.5, 37.5)
 						World.Waypoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
 						World.Waypoint:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
@@ -51,7 +52,7 @@ function NS.Elements:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Waypoint.Content = CreateFrame("Frame", "$parent.Content", Waypoint)
+							Waypoint.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Waypoint)
 							Waypoint.Content:SetPoint("CENTER", Waypoint)
 							Waypoint.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Waypoint.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 2)
@@ -78,7 +79,7 @@ function NS.Elements:Load()
 									--------------------------------
 
 									do -- VFX
-										ContextFrame.VFX = CreateFrame("Frame", "$parent.VFX", ContextFrame)
+										ContextFrame.VFX = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.VFX", ContextFrame)
 										ContextFrame.VFX:SetSize(125, 125)
 										ContextFrame.VFX:SetPoint("CENTER", ContextFrame)
 										ContextFrame.VFX:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -89,7 +90,7 @@ function NS.Elements:Load()
 										--------------------------------
 
 										do -- WAVE
-											VFX.Wave = CreateFrame("Frame", "$parent.Wave", VFX)
+											VFX.Wave = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Wave", VFX)
 											VFX.Wave:SetSize(75, 75)
 											VFX.Wave:SetPoint("CENTER", VFX)
 											VFX.Wave:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -111,7 +112,7 @@ function NS.Elements:Load()
 								end
 
 								do -- FOOTER
-									Content.Footer = CreateFrame("Frame", "$parent.Footer", Content)
+									Content.Footer = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Footer", Content)
 									Content.Footer:SetSize(200, 37.5)
 									Content.Footer:SetPoint("TOP", Content, "BOTTOM", 0, -7.5)
 									Content.Footer:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -137,7 +138,7 @@ function NS.Elements:Load()
 
 										do -- ELEMENTS
 											do -- TEXT FRAME
-												LayoutGroup.TextFrame = CreateFrame("Frame", "$parent.TextFrame", LayoutGroup)
+												LayoutGroup.TextFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", LayoutGroup)
 												LayoutGroup.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 												LayoutGroup.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
 												addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.TextFrame, LayoutGroup, 0, nil)
@@ -157,7 +158,7 @@ function NS.Elements:Load()
 											end
 
 											do -- SUBTEXT FRAME
-												LayoutGroup.SubtextFrame = CreateFrame("Frame", "$parent.SubtextFrame", LayoutGroup)
+												LayoutGroup.SubtextFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.SubtextFrame", LayoutGroup)
 												LayoutGroup.SubtextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 												LayoutGroup.SubtextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
 												addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.SubtextFrame, LayoutGroup.TextFrame, 0, nil)
@@ -180,7 +181,7 @@ function NS.Elements:Load()
 								end
 
 								do -- MARKER
-									Content.Marker = CreateFrame("Frame", "$parent.Marker", Content)
+									Content.Marker = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Marker", Content)
 									Content.Marker:SetSize(35, MARKER_HEIGHT)
 									Content.Marker:SetPoint("BOTTOM", Content, 0, 25)
 									Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -191,7 +192,7 @@ function NS.Elements:Load()
 									--------------------------------
 
 									do -- CONTENT
-										Marker.Content = CreateFrame("Frame", "$parent.Content", Marker)
+										Marker.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Marker)
 										Marker.Content:SetPoint("CENTER", Marker)
 										Marker.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Marker.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
@@ -228,7 +229,7 @@ function NS.Elements:Load()
 					end
 
 					do -- PINPOINT
-						World.Pinpoint = CreateFrame("Frame", "$parent.Pinpoint", World)
+						World.Pinpoint = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Pinpoint", World)
 						World.Pinpoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
 						World.Pinpoint:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
 
@@ -237,7 +238,7 @@ function NS.Elements:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Pinpoint.Content = CreateFrame("Frame", "$parent.Content", Pinpoint)
+							Pinpoint.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Pinpoint)
 							Pinpoint.Content:SetPoint("CENTER", Pinpoint)
 							Pinpoint.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Pinpoint.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
@@ -255,7 +256,7 @@ function NS.Elements:Load()
 								--------------------------------
 
 								do -- BACKGROUND
-									Content.Background = CreateFrame("Frame", "$parent.Background", Content)
+									Content.Background = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Content)
 									Content.Background:SetPoint("CENTER", Content)
 									Content.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Content.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL)
@@ -287,7 +288,7 @@ function NS.Elements:Load()
 								end
 
 								do -- FOREGROUND
-									Content.Foreground = CreateFrame("Frame", "$parent.Foreground", Content)
+									Content.Foreground = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Foreground", Content)
 									Content.Foreground:SetPoint("CENTER", Content)
 									Content.Foreground:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Content.Foreground:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
@@ -298,7 +299,7 @@ function NS.Elements:Load()
 									--------------------------------
 
 									do -- BACKGROUND
-										Foreground.Background = CreateFrame("Frame", "$parent.Background", Foreground)
+										Foreground.Background = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Foreground)
 										Foreground.Background:SetPoint("CENTER", Foreground)
 										Foreground.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Foreground.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 1)
@@ -328,7 +329,7 @@ function NS.Elements:Load()
 									end
 
 									do -- CONTENT
-										Foreground.Content = CreateFrame("Frame", "$parent.Content", Foreground)
+										Foreground.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Foreground)
 										Foreground.Content:SetPoint("CENTER", Foreground)
 										Foreground.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Foreground.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 5)
@@ -339,7 +340,7 @@ function NS.Elements:Load()
 										--------------------------------
 
 										do -- TEXT FRAME
-											Content.TextFrame = CreateFrame("Frame", "$parent.TextFrame", Content)
+											Content.TextFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", Content)
 											Content.TextFrame:SetPoint("CENTER", Content)
 											Content.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 											Content.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 6)
@@ -365,7 +366,7 @@ function NS.Elements:Load()
 				end
 
 				do -- NAVIGATOR
-					Frame.Navigator = CreateFrame("Frame", "$parent.Navigator", Frame)
+					Frame.Navigator = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Navigator", Frame)
 					Frame.Navigator:SetAllPoints(Frame)
 
 					local Navigator = Frame.Navigator
@@ -373,7 +374,7 @@ function NS.Elements:Load()
 					--------------------------------
 
 					do -- ARROW
-						Navigator.Arrow = CreateFrame("Frame", "$parent.Arrow", Navigator)
+						Navigator.Arrow = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Arrow", Navigator)
 						Navigator.Arrow:SetSize(37.5, 37.5)
 						Navigator.Arrow:SetFrameStrata(NS.Variables.FRAME_STRATA)
 						Navigator.Arrow:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
@@ -383,7 +384,7 @@ function NS.Elements:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Arrow.Content = CreateFrame("Frame", "$parent.Content", Arrow)
+							Arrow.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Arrow)
 							Arrow.Content:SetPoint("CENTER", Arrow)
 							Arrow.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Arrow.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 2)
@@ -402,7 +403,7 @@ function NS.Elements:Load()
 							end
 
 							do -- INDICATOR
-								Content.Indicator = CreateFrame("Frame", "$parent.Indicator", Content)
+								Content.Indicator = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Indicator", Content)
 								Content.Indicator:SetSize(75, 75)
 								Content.Indicator:SetPoint("CENTER", Content)
 								Content.Indicator:SetFrameStrata(NS.Variables.FRAME_STRATA)

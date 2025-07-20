@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -33,7 +34,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", name, parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 		Frame:SetFrameStrata(frameStrata)
 		Frame:SetFrameLevel(frameLevel)
 
@@ -41,7 +42,7 @@ do
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 				Frame.Content:SetPoint("CENTER", Frame)
 				Frame.Content:SetFrameStrata(frameStrata)
 				Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -52,7 +53,7 @@ do
 				--------------------------------
 
 				do -- TEXT BOX
-					Content.TextBox = CreateFrame("Frame", "$parent.TextBox", Content)
+					Content.TextBox = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.TextBox", Content)
 					Content.TextBox:SetPoint("CENTER", Content)
 					Content.TextBox:SetFrameStrata(frameStrata)
 					Content.TextBox:SetFrameLevel(frameLevel + 2)
@@ -63,7 +64,7 @@ do
 					--------------------------------
 
 					do -- INPUT
-						TextBox.Input = CreateFrame("EditBox", "$parent.Input", TextBox)
+						TextBox.Input = addon.C.FrameTemplates:CreateFrame("EditBox", "$parent.Input", TextBox)
 						TextBox.Input:SetPoint("CENTER", TextBox)
 						TextBox.Input:SetFrameStrata(frameStrata)
 						TextBox.Input:SetFrameLevel(frameLevel + 3)
@@ -74,7 +75,7 @@ do
 					end
 
 					do -- PLACEHOLDER
-						TextBox.Placeholder = CreateFrame("Frame", "$parent.Placeholder", TextBox)
+						TextBox.Placeholder = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Placeholder", TextBox)
 						TextBox.Placeholder:SetPoint("CENTER", TextBox)
 						TextBox.Placeholder:SetFrameStrata(frameStrata)
 						TextBox.Placeholder:SetFrameLevel(frameLevel + 3)
@@ -298,7 +299,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", name, parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 		Frame:SetFrameStrata(frameStrata)
 		Frame:SetFrameLevel(frameLevel)
 
@@ -323,7 +324,7 @@ do
 				end
 
 				do -- CONTENT
-					ScrollChildFrame.Content = CreateFrame("Frame", "$parent.Content", ScrollChildFrame)
+					ScrollChildFrame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", ScrollChildFrame)
 					ScrollChildFrame.Content:SetPoint("TOP", ScrollChildFrame)
 					ScrollChildFrame.Content:SetFrameStrata(frameStrata)
 					ScrollChildFrame.Content:SetFrameLevel(frameLevel + 2)
@@ -335,7 +336,7 @@ do
 					----------------------------------
 
 					do -- CONTENT
-						Content.Content = CreateFrame("Frame", "$parent.Content", Content)
+						Content.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
 						Content.Content:SetPoint("CENTER", Content)
 						Content.Content:SetFrameStrata(frameStrata)
 						Content.Content:SetFrameLevel(frameLevel + 3)
@@ -358,7 +359,7 @@ do
 							local IMAGE_FRAME_HEIGHT = 20
 
 							do -- IMAGE FRAME
-								LayoutGroup.ImageFrame = CreateFrame("Frame", "$parent.ImageFrame", LayoutGroup)
+								LayoutGroup.ImageFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", LayoutGroup)
 								LayoutGroup.ImageFrame:SetSize(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
 								LayoutGroup:AddElement(LayoutGroup.ImageFrame)
 
@@ -374,7 +375,7 @@ do
 							end
 
 							do -- TEXT BOX
-								LayoutGroup.TextBox = CreateFrame("EditBox", name, LayoutGroup)
+								LayoutGroup.TextBox = addon.C.FrameTemplates:CreateFrame("EditBox", name, LayoutGroup)
 								LayoutGroup.TextBox:SetFrameStrata(frameStrata)
 								LayoutGroup.TextBox:SetFrameLevel(frameLevel + 4)
 								addon.C.API.FrameUtil:SetDynamicSize(ScrollChildFrame, LayoutGroup.TextBox, nil, 0)
@@ -393,7 +394,7 @@ do
 								end
 
 								do -- PLACEHOLDER
-									TextBox.Placeholder = CreateFrame("Frame", "$parent.Placeholder", TextBox)
+									TextBox.Placeholder = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Placeholder", TextBox)
 									TextBox.Placeholder:SetPoint("CENTER", TextBox)
 									addon.C.API.FrameUtil:SetDynamicSize(TextBox.Placeholder, TextBox, 0, 0)
 									TextBox.Placeholder:SetAlpha(1)

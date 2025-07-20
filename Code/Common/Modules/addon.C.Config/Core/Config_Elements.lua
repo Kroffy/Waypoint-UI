@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.Config; addon.C.Config = NS
 
@@ -18,7 +19,7 @@ function NS.Elements:Load()
 
 	do
 		do -- ELEMENTS
-			local Frame = CreateFrame("Frame")
+			local Frame = addon.C.FrameTemplates:CreateFrame("Frame")
 			Frame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 			Frame:SetFrameLevel(NS.Variables.FRAME_LEVEL)
 
@@ -27,7 +28,7 @@ function NS.Elements:Load()
 			--------------------------------
 
 			do -- CONTENT
-				Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 				Frame.Content:SetPoint("CENTER", Frame)
 				Frame.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 				Frame.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
@@ -44,7 +45,7 @@ function NS.Elements:Load()
 					--------------------------------
 
 					do -- SIDEBAR
-						Content.Sidebar = CreateFrame("Frame", "$parent.Sidebar", Content)
+						Content.Sidebar = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Sidebar", Content)
 						Content.Sidebar:SetWidth(SIDEBAR_WIDTH)
 						Content.Sidebar:SetPoint("LEFT", Content)
 						Content.Sidebar:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -74,7 +75,7 @@ function NS.Elements:Load()
 								--------------------------------
 
 								do -- HEADER
-									Sidebar_LayoutGroup.Header = CreateFrame("Frame", "$parent.Header", Sidebar_LayoutGroup)
+									Sidebar_LayoutGroup.Header = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Header", Sidebar_LayoutGroup)
 									Sidebar_LayoutGroup.Header:SetHeight(HEADER_HEIGHT)
 									Sidebar_LayoutGroup.Header:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Sidebar_LayoutGroup.Header:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
@@ -86,7 +87,7 @@ function NS.Elements:Load()
 									--------------------------------
 
 									do -- LOGO
-										Header.Logo = CreateFrame("Frame", "$parent.Logo", Header)
+										Header.Logo = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Logo", Header)
 										Header.Logo:SetPoint("CENTER", Header, 0, -25)
 										Header.Logo:SetSize(112.5, 112.5)
 										Header.Logo:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -110,7 +111,7 @@ function NS.Elements:Load()
 								end
 
 								do -- MAIN
-									Sidebar_LayoutGroup.Main = CreateFrame("Frame", "$parent.Main", Sidebar_LayoutGroup)
+									Sidebar_LayoutGroup.Main = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Sidebar_LayoutGroup)
 									Sidebar_LayoutGroup.Main:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Sidebar_LayoutGroup.Main:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
 									addon.C.API.FrameUtil:SetDynamicSize(Sidebar_LayoutGroup.Main, Sidebar_LayoutGroup, 0, function(relativeWidth, relativeHeight) return relativeHeight - HEADER_HEIGHT - FOOTER_HEIGHT end)
@@ -137,7 +138,7 @@ function NS.Elements:Load()
 								end
 
 								do -- FOOTER
-									Sidebar_LayoutGroup.Footer = CreateFrame("Frame", "$parent.Footer", Sidebar_LayoutGroup)
+									Sidebar_LayoutGroup.Footer = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Footer", Sidebar_LayoutGroup)
 									Sidebar_LayoutGroup.Footer:SetHeight(FOOTER_HEIGHT)
 									Sidebar_LayoutGroup.Footer:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Sidebar_LayoutGroup.Footer:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
@@ -160,7 +161,7 @@ function NS.Elements:Load()
 							end
 
 							do -- DIVIDER
-								Sidebar.Divider = CreateFrame("Frame", "$parent.Divider", Sidebar)
+								Sidebar.Divider = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Divider", Sidebar)
 								Sidebar.Divider:SetWidth(2)
 								Sidebar.Divider:SetPoint("CENTER", Sidebar, "RIGHT", 0, 0)
 								Sidebar.Divider:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -184,7 +185,7 @@ function NS.Elements:Load()
 						end
 
 						do -- MAIN
-							Content.Main = CreateFrame("Frame", "$parent.Main", Content)
+							Content.Main = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
 							Content.Main:SetPoint("RIGHT", Content)
 							Content.Main:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Content.Main:SetFrameLevel(NS.Variables.FRAME_LEVEL + 2)
@@ -195,7 +196,7 @@ function NS.Elements:Load()
 							--------------------------------
 
 							do -- CONTENT
-								Main.Content = CreateFrame("Frame", "$parent.Content", Main)
+								Main.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Main)
 								Main.Content:SetPoint("CENTER", Main)
 								Main.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 								Main.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)

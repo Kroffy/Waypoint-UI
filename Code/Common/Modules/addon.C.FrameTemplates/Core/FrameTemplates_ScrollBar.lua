@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -33,26 +34,26 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", name or "$parent.ScrollBar", parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or "$parent.ScrollBar", parent)
 
 		--------------------------------
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 				Frame.Content:SetPoint("CENTER", Frame)
 				addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0, true)
 
 				--------------------------------
 
 				do -- TRACK
-					Frame.Content.Track = CreateFrame("Frame", "$parent.Track", Frame.Content)
+					Frame.Content.Track = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Track", Frame.Content)
 					Frame.Content.Track:SetPoint("CENTER", Frame.Content)
 					addon.C.API.FrameUtil:SetDynamicSize(Frame.Content.Track, Frame.Content, 0, 0, true)
 				end
 
 				do -- THUMB
-					Frame.Content.Thumb = CreateFrame("Frame", "$parent.Thumb", Frame.Content)
+					Frame.Content.Thumb = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Thumb", Frame.Content)
 					addon.C.API.FrameUtil:SetDynamicSize(Frame.Content.Thumb, Frame.Content, 0, nil, true)
 				end
 			end

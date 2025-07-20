@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.Frame.ContextMenu; addon.C.Frame.ContextMenu = NS
 
@@ -20,7 +21,7 @@ function NS.Elements:Load()
 
 	do
 		do -- ELEMENTS
-			Frame.ContextMenu = CreateFrame("Frame", "$parent.ContextMenu", Frame)
+			Frame.ContextMenu = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.ContextMenu", Frame)
 			Frame.ContextMenu:SetPoint("CENTER", Frame)
 			Frame.ContextMenu:SetFrameStrata(NS.Variables.FRAME_STRATA)
 			Frame.ContextMenu:SetFrameLevel(NS.Variables.FRAME_LEVEL)

@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -35,7 +36,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Slider", name, parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Slider", name, parent)
 		Frame:SetOrientation(orientation)
 		Frame:SetObeyStepOnDrag(true)
 
@@ -43,7 +44,7 @@ do
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 				Frame.Content:SetPoint("CENTER", Frame)
 				addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 			end

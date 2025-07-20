@@ -10,9 +10,12 @@ local NS = addon.C; addon.C = NS
 
 function NS:Load()
 	local function Modules()
-		-- PRIORITY
+		-- PACKAGES
 		NS.CallbackRegistry:Load()
+		NS.TagManager:Load()
 		NS.PrefabRegistry:Load()
+
+		-- PRIORITY
 		NS.Frame:Load()
 		NS.Sound:Load()
 		NS.SharedVariables:Load()

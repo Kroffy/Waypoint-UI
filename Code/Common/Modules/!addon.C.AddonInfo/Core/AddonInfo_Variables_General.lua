@@ -17,7 +17,7 @@ end
 
 do -- CONSTANTS
 	do -- VERSION
-		NS.Variables.General.VERSION_STRING = "0.0.1 — Release Candidate 2"
+		NS.Variables.General.VERSION_STRING = "0.0.1 — Release Candidate 2.5"
 		NS.Variables.General.VERSION_NUMBER = 00000111 -- XX.XX.XX.XX
 	end
 

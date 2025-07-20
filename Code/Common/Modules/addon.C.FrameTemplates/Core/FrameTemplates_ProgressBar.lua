@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -31,18 +32,18 @@ do
 
 		--------------------------------
 
-		local ProgressBar = CreateFrame("Frame", name, parent)
+		local ProgressBar = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 
 		--------------------------------
 
 		do -- CONTENT
-			ProgressBar.Content = CreateFrame("Frame", "$parent.Content", ProgressBar)
+			ProgressBar.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", ProgressBar)
 			ProgressBar.Content:SetAllPoints(ProgressBar)
 
 			--------------------------------
 
 			do -- PROGRESS BAR
-				ProgressBar.Content.Bar = CreateFrame("Frame", "$parent.Bar", ProgressBar.Content)
+				ProgressBar.Content.Bar = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Bar", ProgressBar.Content)
 				addon.C.API.FrameUtil:SetDynamicSize(ProgressBar.Content.Bar, ProgressBar, false, 0, 0)
 
 				if direction == "LEFT" then

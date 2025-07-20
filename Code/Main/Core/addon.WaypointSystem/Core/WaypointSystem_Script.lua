@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.WaypointSystem; addon.WaypointSystem = NS
 
@@ -951,14 +952,23 @@ function NS.Script:Load()
 				--------------------------------
 
 				local mapID = C_Map.GetBestMapForUnit("player")
-				local waypointX, waypointY, waypointText = C_SuperTrack.GetNextWaypointForMap(mapID)
+				if mapID then
+					local waypointX, waypointY, waypointText = C_SuperTrack.GetNextWaypointForMap(mapID)
 
-				result = {
-					valid = (waypointText ~= nil),
-					x = waypointX,
-					y = waypointY,
-					text = waypointText
-				}
+					result = {
+						valid = (waypointText ~= nil),
+						x = waypointX,
+						y = waypointY,
+						text = waypointText
+					}
+				else
+					result = {
+						valid = false,
+						x = nil,
+						y = nil,
+						text = nil,
+					}
+				end
 
 				--------------------------------
 
@@ -1776,7 +1786,7 @@ function NS.Script:Load()
 				end
 			end
 
-			local EventManager = CreateFrame("Frame")
+			local EventManager = addon.C.FrameTemplates:CreateFrame("Frame")
 			EventManager:RegisterEvent("SUPER_TRACKING_CHANGED")
 			EventManager:RegisterEvent("SUPER_TRACKING_PATH_UPDATED")
 			EventManager:SetScript("OnUpdate", function(_, elapsed)

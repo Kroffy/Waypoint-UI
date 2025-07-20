@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.Config; addon.C.Config = NS
 
@@ -58,7 +59,7 @@ function NS.Prefabs:Load()
 						end
 
 						do -- CONTENT
-							Content.Content = CreateFrame("Frame", "$parent.Content", Content)
+							Content.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
 							Content.Content:SetPoint("CENTER", Content)
 							Content.Content:SetFrameStrata(frameStrata)
 							Content.Content:SetFrameLevel(frameLevel + 2)
@@ -221,7 +222,7 @@ function NS.Prefabs:Load()
 	do -- MAIN
 		do -- TAB
 			PrefabRegistry:Add("C.Config.Main.Tab", function(parent, frameStrata, frameLevel, name)
-				local Frame = CreateFrame("Frame", name, parent)
+				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -233,7 +234,7 @@ function NS.Prefabs:Load()
 					--------------------------------
 
 					do -- CONTENT
-						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -403,7 +404,7 @@ function NS.Prefabs:Load()
 		do -- SETTING
 			do -- TITLE
 				PrefabRegistry:Add("C.Config.Main.Setting.Title", function(parent, frameStrata, frameLevel, name)
-					local Frame = CreateFrame("Frame", name, parent)
+					local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 					Frame:SetFrameStrata(frameStrata)
 					Frame:SetFrameLevel(frameLevel)
 
@@ -411,7 +412,7 @@ function NS.Prefabs:Load()
 
 					do -- ELEMENTS
 						do -- CONTENT
-							Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+							Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 							Frame.Content:SetPoint("CENTER", Frame, -12.5, -12.5)
 							Frame.Content:SetFrameStrata(frameStrata)
 							Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -421,7 +422,7 @@ function NS.Prefabs:Load()
 							--------------------------------
 
 							do -- CONTAINER
-								Content.Container = CreateFrame("Frame", "$parent.Container", Content)
+								Content.Container = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Container", Content)
 								Content.Container:SetPoint("CENTER", Content)
 								Content.Container:SetFrameStrata(frameStrata)
 								Content.Container:SetFrameLevel(frameLevel + 2)
@@ -437,7 +438,7 @@ function NS.Prefabs:Load()
 									--------------------------------
 
 									do -- IMAGE
-										Container.Image = CreateFrame("Frame", "$parent.Image", Container)
+										Container.Image = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Image", Container)
 										Container.Image:SetSize(IMAGE_SIZE, IMAGE_SIZE)
 										Container.Image:SetPoint("LEFT", Container)
 										Container.Image:SetFrameStrata(frameStrata)
@@ -457,7 +458,7 @@ function NS.Prefabs:Load()
 									end
 
 									do -- INFO
-										Container.Info = CreateFrame("Frame", "$parent.Info", Container)
+										Container.Info = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Info", Container)
 										Container.Info:SetPoint("TOPLEFT", Container.Image, "TOPRIGHT", 7.5, -2.5)
 										Container.Info:SetFrameStrata(frameStrata)
 										Container.Info:SetFrameLevel(frameLevel + 3)
@@ -541,7 +542,7 @@ function NS.Prefabs:Load()
 
 					--------------------------------
 
-					local Frame = CreateFrame("Frame", name, parent)
+					local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 					Frame:SetFrameStrata(frameStrata)
 					Frame:SetFrameLevel(frameLevel)
 
@@ -553,7 +554,7 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+							Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 							Frame.Content:SetPoint("CENTER", Frame)
 							Frame.Content:SetFrameStrata(frameStrata)
 							Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -572,7 +573,7 @@ function NS.Prefabs:Load()
 							end
 
 							do -- CONTENT
-								Content.Content = CreateFrame("Frame", "$parent.Content", Content)
+								Content.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
 								Content.Content:SetPoint("CENTER", Content)
 								Content.Content:SetFrameStrata(frameStrata)
 								Content.Content:SetFrameLevel(frameLevel + 2)
@@ -702,7 +703,7 @@ function NS.Prefabs:Load()
 				end)
 
 				PrefabRegistry:Add("C.Config.Main.Setting.Container.Title", function(parent, frameStrata, frameLevel, data, name)
-					local Frame = CreateFrame("Frame", name, parent)
+					local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 					Frame:SetFrameStrata(frameStrata)
 					Frame:SetFrameLevel(frameLevel)
 
@@ -710,7 +711,7 @@ function NS.Prefabs:Load()
 
 					do -- ELEMENTS
 						do -- CONTENT
-							Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+							Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 							Frame.Content:SetPoint("CENTER", Frame)
 							Frame.Content:SetFrameStrata(frameStrata)
 							Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -739,7 +740,7 @@ function NS.Prefabs:Load()
 									--------------------------------
 
 									do -- HEADER
-										Content_LayoutGroup.Header = CreateFrame("Frame", "$parent.Header", Content_LayoutGroup)
+										Content_LayoutGroup.Header = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Header", Content_LayoutGroup)
 										Content_LayoutGroup.Header:SetHeight(HEADER_HEIGHT)
 										Content_LayoutGroup.Header:SetFrameStrata(frameStrata)
 										Content_LayoutGroup.Header:SetFrameLevel(frameLevel + 3)
@@ -751,7 +752,7 @@ function NS.Prefabs:Load()
 										--------------------------------
 
 										do -- TITLE
-											Header.Title = CreateFrame("Frame", "$parent.Title", Header)
+											Header.Title = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Title", Header)
 											Header.Title:SetPoint("CENTER", Header)
 											Header.Title:SetFrameStrata(frameStrata)
 											Header.Title:SetFrameLevel(frameLevel + 4)
@@ -855,7 +856,7 @@ function NS.Prefabs:Load()
 
 					--------------------------------
 
-					local Frame = CreateFrame("Frame", name, parent)
+					local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 					Frame:SetFrameStrata(frameStrata)
 					Frame:SetFrameLevel(frameLevel)
 
@@ -868,7 +869,7 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+							Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 							Frame.Content:SetPoint("CENTER", Frame)
 							Frame.Content:SetFrameStrata(frameStrata)
 							Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -901,7 +902,7 @@ function NS.Prefabs:Load()
 								end
 
 								do -- CONTENT
-									Content.Content = CreateFrame("Frame", "$parent.Content", Content)
+									Content.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
 									Content.Content:SetPoint("RIGHT", Content, -PADDING_CONTENT / 2, 0)
 									Content.Content:SetFrameStrata(frameStrata)
 									Content.Content:SetFrameLevel(frameLevel + 2)
@@ -919,7 +920,7 @@ function NS.Prefabs:Load()
 										--------------------------------
 
 										do -- INFO
-											Subcontent.Info = CreateFrame("Frame", "$parent.Info", Subcontent)
+											Subcontent.Info = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Info", Subcontent)
 											Subcontent.Info:SetPoint("LEFT", Subcontent)
 											Subcontent.Info:SetFrameStrata(frameStrata)
 											Subcontent.Info:SetFrameLevel(frameLevel + 3)
@@ -930,7 +931,7 @@ function NS.Prefabs:Load()
 											--------------------------------
 
 											do -- CONTENT
-												Info.Content = CreateFrame("Frame", "$parent.Content", Info)
+												Info.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Info)
 												Info.Content:SetPoint("CENTER", Info)
 												Info.Content:SetFrameStrata(frameStrata)
 												Info.Content:SetFrameLevel(frameLevel + 4)
@@ -968,7 +969,7 @@ function NS.Prefabs:Load()
 														end
 
 														do -- IMAGE
-															Info_LayoutGroup.Image = CreateFrame("Frame", "$parent.Image", Info_LayoutGroup)
+															Info_LayoutGroup.Image = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Image", Info_LayoutGroup)
 															Info_LayoutGroup.Image:SetFrameStrata(frameStrata)
 															Info_LayoutGroup.Image:SetFrameLevel(frameLevel + 6)
 															Info_LayoutGroup:AddElement(Info_LayoutGroup.Image)
@@ -999,7 +1000,7 @@ function NS.Prefabs:Load()
 										end
 
 										do -- ACTION
-											Subcontent.Action = CreateFrame("Frame", "$parent.Action", Subcontent)
+											Subcontent.Action = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Action", Subcontent)
 											Subcontent.Action:SetHeight(MIN_HEIGHT)
 											Subcontent.Action:SetPoint("RIGHT", Subcontent, 0, 0)
 											Subcontent.Action:SetFrameStrata(frameStrata)
@@ -1011,7 +1012,7 @@ function NS.Prefabs:Load()
 											--------------------------------
 
 											do -- CONTENT
-												Action.Content = CreateFrame("Frame", "$parent.Content", Action)
+												Action.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Action)
 												Action.Content:SetPoint("CENTER", Action)
 												Action.Content:SetFrameStrata(frameStrata)
 												Action.Content:SetFrameLevel(frameLevel + 5)
@@ -1237,7 +1238,7 @@ function NS.Prefabs:Load()
 				end)
 
 				PrefabRegistry:Add("C.Config.Main.Setting.Element.Template.Divider", function(parent, frameStrata, frameLevel, name)
-					local Frame = CreateFrame("Frame", name, parent)
+					local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 					Frame:SetFrameStrata(frameStrata)
 					Frame:SetFrameLevel(frameLevel)
 

@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -28,18 +29,54 @@ do
 	---@param texture string
 	---@param name? string
 	function NS:CreateTexture(parent, frameStrata, texture, name)
-		if not parent then
-			return
-		end
-
-		--------------------------------
-
-		local Frame = CreateFrame("Frame", name or nil, parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or nil, parent)
 		Frame:SetFrameStrata(frameStrata)
 
 		local Texture = Frame:CreateTexture(tostring(name) .. "Texture" or nil, "BACKGROUND")
 		Texture:SetAllPoints(Frame, true)
 		Texture:SetTexture(texture)
+
+		--------------------------------
+
+		do -- LOGIC
+			do -- FUNCTIONS
+				do -- GET
+					-- Returns the texture's id
+					function Texture:GetId()
+						return Texture.C_REFERENCE_REGISTRY_ID
+					end
+
+					-- Returns the texture's class
+					function Texture:GetClass()
+						return Texture.C_REFERENCE_REGISTRY_CLASS
+					end
+				end
+
+				do -- SET
+					-- Adds the texture to the reference registry under an id. The id must be unique.
+					---@param id string
+					function Texture:SetId(id)
+						TagManager.Id:Add(Texture, id)
+					end
+
+					-- Adds the texture to the reference registry under a class. The class may contain multiple frames.
+					---@param class string
+					function Texture:SetClass(class)
+						TagManager.Class:Add(Texture, class)
+					end
+
+					-- Removes the texture from the reference registry under an id.
+					function Texture:RemoveId()
+						TagManager.Id:Remove(Texture:GetId())
+					end
+
+					-- Removes the texture from the reference registry in a class.
+					function Texture:RemoveClass()
+						TagManager.Class:Remove(Texture, Frame:GetClass())
+					end
+				end
+			end
+		end
 
 		--------------------------------
 
@@ -96,7 +133,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 		Frame:SetBackdrop(Backdrop)
 		Frame:SetBackdropBorderColor(borderColor.r, borderColor.g, borderColor.b, borderColor.a)
 		Frame:SetBackdropColor(color.r, color.g, color.b, color.a)
@@ -132,7 +169,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 		Frame:SetBackdrop(Backdrop)
 		Frame:SetBackdropBorderColor(borderColor.r, borderColor.g, borderColor.b, borderColor.a)
 		Frame:SetBackdropColor(color.r, color.g, color.b, color.a)

@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -568,12 +569,12 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", name, parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 
 		--------------------------------
 
 		do -- CONTENT
-			Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+			Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 			Frame.Content:SetAllPoints(Frame)
 		end
 

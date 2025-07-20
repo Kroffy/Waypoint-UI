@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -37,7 +38,7 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("PlayerModel", name, parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("PlayerModel", name, parent)
 
 		--------------------------------
 
@@ -149,10 +150,10 @@ do
 
 		local Frame = nil
 		if dynamicEffectInfo then
-			Frame = CreateFrame("ModelScene", name, parent, "ScriptAnimatedModelSceneTemplate")
+			Frame = addon.C.FrameTemplates:CreateFrame("ModelScene", name, parent, "ScriptAnimatedModelSceneTemplate")
 			Frame.activeEffect = Frame:AddDynamicEffect({ effectID = dynamicEffectInfo.effectID, offsetX = dynamicEffectInfo.offsetX, offsetY = dynamicEffectInfo.offsetY }, Frame)
 		else
-			Frame = CreateFrame("PlayerModel", name, parent)
+			Frame = addon.C.FrameTemplates:CreateFrame("PlayerModel", name, parent)
 			Frame:SetKeepModelOnHide(true)
 			Frame:SetModel(spellID)
 			Frame:MakeCurrentCameraCustom()

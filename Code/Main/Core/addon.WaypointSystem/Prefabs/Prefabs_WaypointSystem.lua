@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.WaypointSystem; addon.WaypointSystem = NS
 
@@ -17,7 +18,7 @@ function NS.Prefabs:Load()
 	do -- GENERAL
 		do -- CONTEXT FRAME
 			PrefabRegistry:Add("WaypointSystem.General.ContextFrame", function(parent, frameStrata, frameLevel, name)
-				local Frame = CreateFrame("Frame", name, parent)
+				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -25,7 +26,7 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -36,7 +37,7 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background = CreateFrame("Frame", "$parent.Background", Content)
+							Content.Background = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Content)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 2)
@@ -66,7 +67,7 @@ function NS.Prefabs:Load()
 						end
 
 						do -- MAIN
-							Content.Main = CreateFrame("Frame", "$parent.Main", Content)
+							Content.Main = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
 							Content.Main:SetPoint("CENTER", Content)
 							Content.Main:SetFrameStrata(frameStrata)
 							Content.Main:SetFrameLevel(frameLevel + 10)
@@ -77,7 +78,7 @@ function NS.Prefabs:Load()
 							--------------------------------
 
 							do -- IMAGE FRAME
-								Main.ImageFrame = CreateFrame("Frame", "$parent.ImageFrame", Main)
+								Main.ImageFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", Main)
 								Main.ImageFrame:SetPoint("CENTER", Main)
 								Main.ImageFrame:SetFrameStrata(frameStrata)
 								Main.ImageFrame:SetFrameLevel(frameLevel + 11)
@@ -210,7 +211,7 @@ function NS.Prefabs:Load()
 	do -- WAYPOINT
 		do -- MARKER
 			PrefabRegistry:Add("WaypointSystem.Waypoint.Marker.PulseFrame", function(parent, frameStrata, frameLevel, name)
-				local Frame = CreateFrame("Frame", name, parent)
+				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -218,7 +219,7 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -314,7 +315,7 @@ function NS.Prefabs:Load()
 			end)
 
 			PrefabRegistry:Add("WaypointSystem.Waypoint.Marker.PulseFrame.Element", function(parent, frameStrata, frameLevel, name)
-				local Frame = CreateFrame("Frame", name, parent)
+				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -322,7 +323,7 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -426,7 +427,7 @@ function NS.Prefabs:Load()
 
 				--------------------------------
 
-				local Frame = CreateFrame("Frame", name, parent)
+				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -434,7 +435,7 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
@@ -530,7 +531,7 @@ function NS.Prefabs:Load()
 			end)
 
 			PrefabRegistry:Add("WaypointSystem.Pinpoint.ArrowFrame.Element", function(parent, frameStrata, frameLevel, name)
-				local Frame = CreateFrame("Frame", name, parent)
+				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -538,7 +539,7 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)

@@ -4,6 +4,7 @@
 	<Script file="Load.lua"/>
 
 	<!-- Core -->
+	<Script file="Core/FrameTemplates_Frame.lua"/>
 	<Script file="Core/FrameTemplates_Button.lua"/>
 	<Script file="Core/FrameTemplates_Checkbox.lua"/>
 	<Script file="Core/FrameTemplates_LayoutGroup.lua"/>

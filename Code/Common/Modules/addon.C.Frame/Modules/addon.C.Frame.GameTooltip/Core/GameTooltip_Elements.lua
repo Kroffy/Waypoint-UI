@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.Frame.GameTooltip; addon.C.Frame.GameTooltip = NS
 
@@ -20,9 +21,9 @@ function NS.Elements:Load()
 
 	do
 		do -- ELEMENTS
-			Frame.GameTooltip = CreateFrame("GameTooltip", "$parent.GameTooltip", Frame, "GameTooltipTemplate")
-			Frame.ShoppingTooltip1 = CreateFrame("GameTooltip", "$parent.ShoppingTooltip1", Frame, "GameTooltipTemplate")
-			Frame.ShoppingTooltip2 = CreateFrame("GameTooltip", "$parent.ShoppingTooltip2", Frame, "GameTooltipTemplate")
+			Frame.GameTooltip = addon.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.GameTooltip", Frame, "GameTooltipTemplate")
+			Frame.ShoppingTooltip1 = addon.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.ShoppingTooltip1", Frame, "GameTooltipTemplate")
+			Frame.ShoppingTooltip2 = addon.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.ShoppingTooltip2", Frame, "GameTooltipTemplate")
 
 			--------------------------------
 
@@ -38,7 +39,7 @@ function NS.Elements:Load()
 					end
 
 					do -- CUSTOM
-						tooltip.Custom = CreateFrame("Frame", "$parent.Custom", tooltip)
+						tooltip.Custom = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Custom", tooltip)
 						tooltip.Custom:SetAllPoints(tooltip)
 						tooltip.Custom:SetFrameStrata(FRAME_STRATA)
 						tooltip.Custom:SetFrameLevel(FRAME_LEVEL)

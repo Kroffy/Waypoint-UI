@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -36,7 +37,7 @@ do
 			fontFile = fontFile.path
 		end
 
-		local Frame = CreateFrame("Frame", name, parent)
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
 
 		--------------------------------
 

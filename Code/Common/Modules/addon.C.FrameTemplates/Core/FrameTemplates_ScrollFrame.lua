@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
 
@@ -37,20 +38,20 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("ScrollFrame", name, parent, "ScrollFrameTemplate")
+		local Frame = addon.C.FrameTemplates:CreateFrame("ScrollFrame", name, parent, "ScrollFrameTemplate")
 
 		--------------------------------
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.API_Content = CreateFrame("Frame", "$parent.API_Content", Frame)
+				Frame.API_Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.API_Content", Frame)
 				Frame.API_Content:SetAllPoints(Frame)
 				Frame.API_Content:SetClipsChildren(true)
 			end
 
 			do -- SCROLL CHILD CONTENT
 				if not customContent then
-					Frame.API_Content.ScrollChildContentFrame = CreateFrame("Frame", contentName .. "ContentFrame", Frame.API_Content)
+					Frame.API_Content.ScrollChildContentFrame = addon.C.FrameTemplates:CreateFrame("Frame", contentName .. "ContentFrame", Frame.API_Content)
 					Frame.API_Content.ScrollChildContentFrame:SetPoint("TOP", Frame)
 
 					--------------------------------
@@ -76,7 +77,7 @@ do
 			end
 
 			do -- SCROLL CHILD
-				Frame.API_Content.ScrollChildFrame = CreateFrame("Frame", contentName, Frame.API_Content)
+				Frame.API_Content.ScrollChildFrame = addon.C.FrameTemplates:CreateFrame("Frame", contentName, Frame.API_Content)
 				Frame.API_Content.ScrollChildFrame:SetPoint("TOP", Frame)
 
 				--------------------------------
@@ -399,13 +400,13 @@ do
 
 		--------------------------------
 
-		local Frame = CreateFrame("Frame", name, parent, "WowScrollBoxList")
+		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent, "WowScrollBoxList")
 
 		--------------------------------
 
 		do -- ELEMENTS
 			do -- SCROLL BAR
-				Frame.ScrollBar = CreateFrame("EventFrame", "ScrollBoxScrollBar", parent, "MinimalScrollBar")
+				Frame.ScrollBar = addon.C.FrameTemplates:CreateFrame("EventFrame", "ScrollBoxScrollBar", parent, "MinimalScrollBar")
 				Frame.ScrollBar:SetPoint("TOPLEFT", Frame, "TOPRIGHT")
 				Frame.ScrollBar:SetPoint("BOTTOMLEFT", Frame, "BOTTOMRIGHT")
 			end
@@ -539,7 +540,7 @@ do
 				if smoothScrollingRatio then
 					local isDestination = true
 
-					local _ = CreateFrame("Frame", nil, Frame)
+					local _ = addon.C.FrameTemplates:CreateFrame("Frame", nil, Frame)
 					_:SetScript("OnUpdate", function(self, elapsed)
 						local targetOffsetY = Frame.targetScroll
 						local currentOffsetY = Frame:GetVerticalScroll()

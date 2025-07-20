@@ -2,6 +2,7 @@
 local addon = select(2, ...)
 local CallbackRegistry = addon.C.CallbackRegistry.Script
 local PrefabRegistry = addon.C.PrefabRegistry.Script
+local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.C.Initializer; addon.C.Initializer = NS
 
@@ -81,7 +82,7 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		local Events = CreateFrame("Frame")
+		local Events = addon.C.FrameTemplates:CreateFrame("Frame")
 		Events:RegisterEvent("PLAYER_REGEN_ENABLED")
 		Events:SetScript("OnEvent", function(_, event, ...)
 			if NS.Variables.QueuedForInitalization then
