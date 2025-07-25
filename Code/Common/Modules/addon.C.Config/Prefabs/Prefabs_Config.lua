@@ -384,6 +384,10 @@ function NS.Prefabs:Load()
 							Frame:UpdateLayout()
 						end
 
+						local function Event_FontOverrideReady()
+							Frame:UpdateLayout()
+						end
+
 						local function Event_TabChanged()
 							if Frame:IsVisible() then
 								Frame:Reset()
@@ -392,6 +396,7 @@ function NS.Prefabs:Load()
 
 						CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 11)
 						CallbackRegistry:Add("C_CONFIG_TAB_CHANGED", Event_TabChanged, 11)
+						CallbackRegistry:Add("C_FONT_OVERRIDE_READY", Event_FontOverrideReady, 11)
 					end
 				end
 
@@ -682,11 +687,12 @@ function NS.Prefabs:Load()
 								Frame:UpdateLayout()
 							end
 
-							if Frame.VAR_SUBCONTAINER then
-								CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 9)
-							else
-								CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 10)
+							local function Event_FontOverrideReady()
+								Frame:UpdateLayout()
 							end
+
+							if Frame.VAR_SUBCONTAINER then CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 9) else CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate, 10) end
+							CallbackRegistry:Add("C_FONT_OVERRIDE_READY", Event_FontOverrideReady, 10)
 						end
 					end
 
@@ -1151,6 +1157,10 @@ function NS.Prefabs:Load()
 								end
 							end
 
+							local function Event_FontOverrideReady()
+								Frame:UpdateLayout()
+							end
+
 							function Frame:OnEnter(skipAnimation)
 								Frame.isMouseOver = true
 
@@ -1225,6 +1235,7 @@ function NS.Prefabs:Load()
 
 							addon.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.OnEnter, leaveCallback = Frame.OnLeave, mouseDownCallback = Frame.OnMouseDown, mouseUpCallback = Frame.OnMouseUp })
 							CallbackRegistry:Add("C_CONFIG_UPDATE", Event_ConfigUpdate)
+							CallbackRegistry:Add("C_FONT_OVERRIDE_READY", Event_FontOverrideReady)
 						end
 					end
 

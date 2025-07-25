@@ -692,10 +692,10 @@ function NS.Script:Load()
 						texture.path = pinInfo.poiInfo.atlasName
 					elseif isWay then
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/map-pin-way.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-way.png"
 					elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/map-pin-default.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-default.png"
 					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.TaxiNode then
 						texture.type = "ATLAS"
 						texture.path = "Crosshair_Taxi_128"
@@ -723,15 +723,15 @@ function NS.Script:Load()
 						-- })
 
 						-- texture.type = "TEXTURE"
-						-- texture.path = contextIcon and addon.CS:GetAddonPath() .. "Art/ContextIcons/" .. contextIcon .. ".png" or addon.CS:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
+						-- texture.path = contextIcon and addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/" .. contextIcon .. ".png" or addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/quest-available.png"
 
 						-- --------------------------------
 
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/quest-available.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/quest-available.png"
 					else
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/ContextIcons/map-pin-default.png"
+						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-default.png"
 					end
 				end
 
@@ -753,17 +753,17 @@ function NS.Script:Load()
 
 					if questComplete then
 						if questClassification == Enum.QuestClassification.Recurring then
-							texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-repeatable.png"
+							texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-repeatable.png"
 						elseif questClassification == Enum.QuestClassification.Important then
-							texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-important.png"
+							texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-important.png"
 						else
-							texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-default.png"
+							texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-default.png"
 						end
 					else
-						texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-incomplete.png"
+						texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-incomplete.png"
 					end
 				else
-					texture = addon.CS:GetAddonPath() .. "Art/ContextIcons/redirect-neutral.png"
+					texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-neutral.png"
 				end
 
 				--------------------------------

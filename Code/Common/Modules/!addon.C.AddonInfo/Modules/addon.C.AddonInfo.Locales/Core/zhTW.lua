@@ -57,6 +57,8 @@ function NS:Load()
 		L["Config - General - Preferences"] = "偏好"
 		L["Config - General - Preferences - Meter"] = "使用公尺代替碼"
 		L["Config - General - Preferences - Meter - Description"] = "將測量單位更改為公制。"
+		L["Config - General - Preferences - Font"] = "Font"
+		L["Config - General - Preferences - Font - Description"] = "The font used throughout the add-on."
 		L["Config - General - Reset"] = "重置"
 		L["Config - General - Reset - Button"] = "重置回預設"
 		L["Config - General - Reset - Confirm"] = "你確定要重置所有設定嗎？"

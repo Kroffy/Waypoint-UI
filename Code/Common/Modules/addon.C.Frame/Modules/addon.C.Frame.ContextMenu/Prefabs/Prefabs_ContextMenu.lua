@@ -253,6 +253,10 @@ function NS.Prefabs:Load()
 					end
 
 					do -- EVENTS
+						local function Event_FontOverrideReady()
+							Frame:UpdateLayout()
+						end
+
 						local function Logic_GlobalClick(button)
 							if Frame:IsVisible() then
 								if (Frame.buttonParent and not Frame.buttonParent:IsMouseOver() and not Frame:IsMouseOver()) or (not Frame.buttonParent and not Frame:IsMouseOver()) then
@@ -273,6 +277,7 @@ function NS.Prefabs:Load()
 							end
 						end
 
+						CallbackRegistry:Add("C_FONT_OVERRIDE_READY", Event_FontOverrideReady)
 						CallbackRegistry:Add("EVENT_MOUSE_DOWN", Logic_GlobalClick)
 						CallbackRegistry:Add("EVENT_KEY_DOWN", Logic_OnKeyDown)
 					end

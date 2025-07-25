@@ -48,7 +48,8 @@ function NS.Script:Load()
 
 			--------------------------------
 
-			CallbackRegistry:Trigger("C_FONT_OVERRIDE", fontKey, newFontInfo)
+			CallbackRegistry:Trigger("C_FONT_OVERRIDE", newFontInfo)
+			C_Timer.After(0, function() CallbackRegistry:Trigger("C_FONT_OVERRIDE_READY") end)
 		end
 	end
 
@@ -103,10 +104,19 @@ function NS.Script:Load()
 		function Callback.CustomFontUtil:GetAllFonts()
 			local results = {}
 			local default = Callback.CustomFontUtil:GetDefault("CONTENT_DEFAULT")
-			local libFonts = Callback.LibSharedMedia:GetFonts()
+
+			--------------------------------
 
 			table.insert(results, default)
-			for i = 1, #libFonts do table.insert(results, libFonts[i]) end
+
+			if Callback.LibSharedMedia.GetFonts then
+				local libFonts = Callback.LibSharedMedia:GetFonts()
+				for i = 1, #libFonts do
+					table.insert(results, libFonts[i])
+				end
+			end
+
+			--------------------------------
 
 			return results
 		end
@@ -129,8 +139,57 @@ function NS.Script:Load()
 		end
 
 		function Callback.CustomFontUtil:SetFont(key, fontInfo)
-			local db = Callback.CustomFontUtil:GetDatabase()
-			db[key] = fontInfo
+			Callback:OverrideFont(key, fontInfo)
+		end
+
+		--------------------------------
+
+		function Callback.CustomFontUtil:GetFontNameList()
+			local allFonts = Callback.CustomFontUtil:GetAllFonts()
+			local fontNames = {}
+			local index = 0
+			for k, v in ipairs(allFonts) do
+				index = index + 1
+				fontNames[index] = v.name
+			end
+
+			return fontNames
+		end
+
+		function Callback.CustomFontUtil:GetFontInfoFromIndex(index)
+			local allFonts = Callback.CustomFontUtil:GetAllFonts()
+			return allFonts[index]
+		end
+
+		function Callback.CustomFontUtil:GetIndexFromFontInfo(font)
+			local allFonts = Callback.CustomFontUtil:GetAllFonts()
+			for i = 1, #allFonts do
+				if allFonts[i] == font then return i end
+			end
+		end
+	end
+
+	--------------------------------
+	-- FUNCTIONS (DropdownUtil)
+	--------------------------------
+
+	do
+		Callback.DropdownUtil = {}
+
+		--------------------------------
+
+		function Callback.DropdownUtil:GetKeys()
+			local fontNameList = Callback.CustomFontUtil:GetFontNameList()
+			return fontNameList
+		end
+
+		function Callback.DropdownUtil:Get(key)
+			return Callback.CustomFontUtil:GetIndexFromFontInfo(Callback.CustomFontUtil:GetFont(key)) or 1
+		end
+
+		function Callback.DropdownUtil:Set(key, index)
+			local fontInfo = Callback.CustomFontUtil:GetFontInfoFromIndex(index)
+			Callback.CustomFontUtil:SetFont(key, fontInfo)
 		end
 	end
 

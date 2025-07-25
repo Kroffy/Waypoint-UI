@@ -54,6 +54,8 @@ function NS:Load()
 		L["Config - General - Preferences"] = "Preferences"
 		L["Config - General - Preferences - Meter"] = "Use Meters instead of Yards"
 		L["Config - General - Preferences - Meter - Description"] = "Changes the unit of measurement to Metric."
+		L["Config - General - Preferences - Font"] = "Font"
+		L["Config - General - Preferences - Font - Description"] = "The font used throughout the add-on."
 		L["Config - General - Reset"] = "Reset"
 		L["Config - General - Reset - Button"] = "Reset to Default"
 		L["Config - General - Reset - Confirm"] = "Are you sure you want to reset all settings?"

@@ -226,7 +226,18 @@ do  -- CONSTANTS
 									["var_set"] = function(value) GetDatabase("DB_GLOBAL").PREF_METRIC = value end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
-								}
+								},
+								-- {
+								-- 	["name"] = L["Config - General - Preferences - Font"],
+								-- 	["type"] = NS.Variables.Config.TYPE_DROPDOWN,
+								-- 	["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - General - Preferences - Font - Description"]),
+								-- 	["indent"] = 0,
+								-- 	["var_dropdown_info"] = function() return addon.C.Fonts.Script.DropdownUtil:GetKeys() end,
+								-- 	["var_get"] = function() return addon.C.Fonts.Script.DropdownUtil:Get("CONTENT_DEFAULT") end,
+								-- 	["var_set"] = function(value) addon.C.Fonts.Script.DropdownUtil:Set("CONTENT_DEFAULT", value) end,
+								-- 	["var_disabled"] = function() return false end,
+								-- 	["var_hidden"] = function() return false end,
+								-- }
 							}
 						},
 						{

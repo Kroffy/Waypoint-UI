@@ -17,6 +17,25 @@ end
 
 do  -- CONSTANTS
 	do -- REGISTER
+		--------------------------------
+		-- DOCUMENTATION
+		--------------------------------
+
+		do
+			-- 	[1] = {
+			-- 		["name"] = "EXAMPLE", -- Slash command ID.
+			-- 		["hook"] = "EXAMPLE_02", -- Trigger when another slash command ID is called.
+			-- 		["command"] = "/example",
+			-- 		["callback"] = function(msg, tokens)
+			-- 			...
+			-- 		end
+			-- 	}
+		end
+
+		--------------------------------
+		-- TABLE
+		--------------------------------
+
 		local function WAYPOINT_UI_WAY_LOCATION()
 			local playerMapID = C_Map.GetBestMapForUnit("player")
 			local playerPosition = C_Map.GetPlayerMapPosition(playerMapID, "player")
@@ -71,7 +90,7 @@ do  -- CONSTANTS
 									end
 								end
 
-							-- <x> <y>
+								-- <x> <y>
 							elseif token1 and token2 and (tonumber(token1) and tonumber(token2)) then
 								mapID = C_Map.GetBestMapForUnit("player")
 								x = token1
