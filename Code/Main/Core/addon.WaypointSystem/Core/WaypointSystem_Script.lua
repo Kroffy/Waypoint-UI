@@ -92,6 +92,13 @@ function NS.Script:Load()
 		end
 
 		do -- WAYPOINT
+			Frame_World_Waypoint:EnableMouse(true)
+			Frame_World_Waypoint:SetScript("OnMouseDown", function(self, button)
+				if button == "RightButton" then
+					WaypointUI_ClearAll()
+				end
+			end)
+
 			do -- SET
 				function Frame_World_Waypoint:SetText(text, subtext)
 					if text then
@@ -229,6 +236,13 @@ function NS.Script:Load()
 
 		do -- PINPOINT
 			do -- SET
+				Frame_World_Pinpoint:EnableMouse(true)
+				Frame_World_Pinpoint:SetScript("OnMouseDown", function(self, button)
+					if button == "RightButton" then
+						WaypointUI_ClearAll()
+					end
+				end)
+				
 				function Frame_World_Pinpoint:SetText(text)
 					if text and text ~= Frame.REF_WORLD_PINPOINT_FOREGROUND_TEXT:GetText() then
 						Frame.REF_WORLD_PINPOINT_FOREGROUND_TEXT:SetText(text)
@@ -275,6 +289,13 @@ function NS.Script:Load()
 
 		do -- NAVIGATOR
 			do -- SET
+				Frame_Navigator_Arrow:EnableMouse(true)
+				Frame_Navigator_Arrow:SetScript("OnMouseDown", function(self, button)
+					if button == "RightButton" then
+						WaypointUI_ClearAll()
+					end
+				end)
+				
 				function Frame_Navigator_Arrow:Context_SetOpacity(opacity)
 					Frame.REF_NAVIGATOR_ARROW_CONTEXT:SetOpacity(opacity)
 				end
