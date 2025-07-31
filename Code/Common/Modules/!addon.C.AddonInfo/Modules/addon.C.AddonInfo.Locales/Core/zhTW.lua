@@ -156,12 +156,20 @@ function NS:Load()
 		L["Contributors - Crazyyoungs - Description"] = "翻譯者 — 韓語"
 		L["Contributors - Klep"] = "Klep"
 		L["Contributors - Klep - Description"] = "翻譯者 — 法語"
+		L["Contributors - cathtail"] = "cathtail"
+		L["Contributors - cathtail - Description"] = "Translator - Brazilian Portuguese"
 		L["Contributors - Larsj02"] = "Larsj02"
 		L["Contributors - Larsj02 - Description"] = "翻譯者 — 德語"
+		L["Contributors - dabear78"] = "dabear78"
+		L["Contributors - dabear78 - Description"] = "翻譯者 — 德語"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "代碼 — 測試錯誤修復"
 		L["Contributors - lemieszek"] = "lemieszek"
 		L["Contributors - lemieszek - Description"] = "代碼 — 測試錯誤修復"
+		L["Contributors - BadBoyBarny"] = "BadBoyBarny"
+		L["Contributors - BadBoyBarny - Description"] = "Code — Bug Fix"
+		L["Contributors - SyverGiswold"] = "SyverGiswold"
+		L["Contributors - SyverGiswold - Description"] = "Code - Feature"
 	end
 end
 

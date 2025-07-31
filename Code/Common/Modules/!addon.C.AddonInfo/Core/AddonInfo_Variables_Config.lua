@@ -1027,7 +1027,6 @@ do  -- CONSTANTS
 							["var_transparent"] = true,
 							["var_hidden"] = function() return false end,
 							["elements"] = {
-                                                               
 								{
 									["name"] = L["Contributors - ZamestoTV"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
@@ -1069,6 +1068,14 @@ do  -- CONSTANTS
 									["var_hidden"] = function() return false end,
 								},
 								{
+									["name"] = L["Contributors - cathtail"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - cathtail - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								{
 									["name"] = L["Contributors - Larsj02"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Larsj02 - Description"]),
@@ -1076,10 +1083,10 @@ do  -- CONSTANTS
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
 								},
-                                                                {
-									["name"] = L["Contributors - cathtail"],
+								{
+									["name"] = L["Contributors - dabear78"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
-									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - cathtail - Description"]),
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - dabear78 - Description"]),
 									["indent"] = 0,
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
@@ -1096,6 +1103,22 @@ do  -- CONSTANTS
 									["name"] = L["Contributors - lemieszek"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - lemieszek - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								{
+									["name"] = L["Contributors - BadBoyBarny"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - BadBoyBarny - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								{
+									["name"] = L["Contributors - SyverGiswold"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - SyverGiswold - Description"]),
 									["indent"] = 0,
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,
@@ -1125,4 +1148,3 @@ do  -- CONSTANTS
 		end)
 	end
 end
-
