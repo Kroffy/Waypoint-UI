@@ -30,6 +30,106 @@ function NS.Script:Load()
 	local function GetNavFrame() Frame.navFrame["frame"] = C_Navigation.GetFrame() end
 
 	--------------------------------
+	-- LOCAL VARIABLE
+	--------------------------------
+
+	local IsWaypoint = false
+	local IsPinpoint = false
+	local IsNavigator = false
+
+	local C_WS_TYPE
+	local C_WS_RIGHT_CLICK_TO_CLEAR
+	local C_WS_DISTANCE_TRANSITION
+	local C_WS_DISTANCE_HIDE
+	local C_WS_DISTANCE_TEXT_TYPE
+	local C_WS_PINPOINT_INFO
+	local C_WS_PINPOINT_INFO_EXTENDED
+	local C_WS_NAVIGATOR
+	local C_APP_WAYPOINT_SCALE
+	local C_APP_WAYPOINT_SCALE_MIN
+	local C_APP_WAYPOINT_SCALE_MAX
+	local C_APP_WAYPOINT_BEAM
+	local C_APP_WAYPOINT_BEAM_ALPHA
+	local C_APP_WAYPOINT_DISTANCE_TEXT
+	local C_APP_WAYPOINT_DISTANCE_TEXT_SCALE
+	local C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA
+	local C_APP_PINPOINT_SCALE
+	local C_APP_NAVIGATOR_SCALE
+	local C_APP_NAVIGATOR_ALPHA
+	local C_APP_NAVIGATOR_DISTANCE
+	local C_APP_COLOR
+	local C_APP_COLOR_QUEST_INCOMPLETE_TINT
+	local C_APP_COLOR_QUEST_COMPLETE_TINT
+	local C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT
+	local C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT
+	local C_APP_COLOR_NEUTRAL_TINT
+	local C_APP_COLOR_QUEST_INCOMPLETE
+	local C_APP_COLOR_QUEST_COMPLETE
+	local C_APP_COLOR_QUEST_COMPLETE_REPEATABLE
+	local C_APP_COLOR_QUEST_COMPLETE_IMPORTANT
+	local C_APP_COLOR_NEUTRAL
+	local C_AUDIO_CUSTOM
+	local C_AUDIO_CUSTOM_WAYPOINT_SHOW
+	local C_AUDIO_CUSTOM_PINPOINT_SHOW
+	local C_PREF_METRIC
+	local CVAR_FOV
+	local CVAR_ACTIONCAM_SHOULDER
+	local CVAR_ACTIONCAM_PITCH
+
+	do
+		local Database = addon.C.Database.Variables.DB_GLOBAL.profile
+
+		local function UpdateReferences()
+			if not Database then return end
+
+			C_WS_TYPE = Database.WS_TYPE
+			C_WS_RIGHT_CLICK_TO_CLEAR = Database.WS_RIGHT_CLICK_TO_CLEAR
+			C_WS_DISTANCE_TRANSITION = Database.WS_DISTANCE_TRANSITION
+			C_WS_DISTANCE_HIDE = Database.WS_DISTANCE_HIDE
+			C_WS_DISTANCE_TEXT_TYPE = Database.WS_DISTANCE_TEXT_TYPE
+			C_WS_PINPOINT_INFO = Database.WS_PINPOINT_INFO
+			C_WS_PINPOINT_INFO_EXTENDED = Database.WS_PINPOINT_INFO_EXTENDED
+			C_WS_NAVIGATOR = Database.WS_NAVIGATOR
+			C_APP_WAYPOINT_SCALE = Database.APP_WAYPOINT_SCALE
+			C_APP_WAYPOINT_SCALE_MIN = Database.APP_WAYPOINT_SCALE_MIN
+			C_APP_WAYPOINT_SCALE_MAX = Database.APP_WAYPOINT_SCALE_MAX
+			C_APP_WAYPOINT_BEAM = Database.APP_WAYPOINT_BEAM
+			C_APP_WAYPOINT_BEAM_ALPHA = Database.APP_WAYPOINT_BEAM_ALPHA
+			C_APP_WAYPOINT_DISTANCE_TEXT = Database.APP_WAYPOINT_DISTANCE_TEXT
+			C_APP_WAYPOINT_DISTANCE_TEXT_SCALE = Database.APP_WAYPOINT_DISTANCE_TEXT_SCALE
+			C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA = Database.APP_WAYPOINT_DISTANCE_TEXT_ALPHA
+			C_APP_PINPOINT_SCALE = Database.APP_PINPOINT_SCALE
+			C_APP_NAVIGATOR_SCALE = Database.APP_NAVIGATOR_SCALE
+			C_APP_NAVIGATOR_ALPHA = Database.APP_NAVIGATOR_ALPHA
+			C_APP_NAVIGATOR_DISTANCE = Database.APP_NAVIGATOR_DISTANCE
+			C_APP_COLOR = Database.APP_COLOR
+			C_APP_COLOR_QUEST_INCOMPLETE_TINT = Database.APP_COLOR_QUEST_INCOMPLETE_TINT
+			C_APP_COLOR_QUEST_COMPLETE_TINT = Database.APP_COLOR_QUEST_COMPLETE_TINT
+			C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT
+			C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT
+			C_APP_COLOR_NEUTRAL_TINT = Database.APP_COLOR_NEUTRAL_TINT
+			C_APP_COLOR_QUEST_INCOMPLETE = Database.APP_COLOR_QUEST_INCOMPLETE
+			C_APP_COLOR_QUEST_COMPLETE = Database.APP_COLOR_QUEST_COMPLETE
+			C_APP_COLOR_QUEST_COMPLETE_REPEATABLE = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE
+			C_APP_COLOR_QUEST_COMPLETE_IMPORTANT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT
+			C_APP_COLOR_NEUTRAL = Database.APP_COLOR_NEUTRAL
+			C_AUDIO_CUSTOM = Database.AUDIO_CUSTOM
+			C_AUDIO_CUSTOM_WAYPOINT_SHOW = Database.AUDIO_CUSTOM_WAYPOINT_SHOW
+			C_AUDIO_CUSTOM_PINPOINT_SHOW = Database.AUDIO_CUSTOM_PINPOINT_SHOW
+			C_PREF_METRIC = Database.PREF_METRIC
+			CVAR_FOV = tonumber(GetCVar("cameraFov"))
+			CVAR_ACTIONCAM_SHOULDER = tonumber(GetCVar("test_cameraOverShoulder"))
+			CVAR_ACTIONCAM_PITCH = tonumber(GetCVar("test_cameraDynamicPitch"))
+		end
+
+		UpdateReferences()
+		CallbackRegistry:Add("C_CONFIG_UPDATE", UpdateReferences)
+		CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", UpdateReferences)
+		CallbackRegistry:Add("C_CONFIG_AUDIO_UPDATE", UpdateReferences)
+		CallbackRegistry:Add("EVENT_CVAR_UPDATE", UpdateReferences)
+	end
+
+	--------------------------------
 	-- FUNCTIONS (FRAME)
 	--------------------------------
 
@@ -396,7 +496,7 @@ function NS.Script:Load()
 
 				local function GetCenterScreenPoint()
 					local centerX, centerY = WorldFrame:GetCenter()
-					local scale = UIParent:GetEffectiveScale() or 1
+					local scale = Frame_World:GetEffectiveScale() or 1
 					return centerX / scale, centerY / scale
 				end
 
@@ -458,6 +558,8 @@ function NS.Script:Load()
 					local baseZoom = 35
 					local baseMajor, baseMinor = 200, 100
 					local major, minor = math.min(baseMajor * (baseZoom / zoom), 500), math.min(baseMinor * (baseZoom / zoom), 500)
+					major = major * (C_APP_NAVIGATOR_DISTANCE or 1)
+					minor = minor * (C_APP_NAVIGATOR_DISTANCE or 1)
 
 					Frame_Navigator_Arrow:Nav_SetInfo(major, minor)
 				end
@@ -486,102 +588,6 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		local IsWaypoint = false
-		local IsPinpoint = false
-		local IsNavigator = false
-
-		--------------------------------
-
-		local C_WS_TYPE
-		local C_WS_DISTANCE_TRANSITION
-		local C_WS_DISTANCE_HIDE
-		local C_WS_DISTANCE_TEXT_TYPE
-		local C_WS_PINPOINT_INFO
-		local C_WS_PINPOINT_INFO_EXTENDED
-		local C_WS_NAVIGATOR
-		local C_APP_WAYPOINT_SCALE
-		local C_APP_WAYPOINT_SCALE_MIN
-		local C_APP_WAYPOINT_SCALE_MAX
-		local C_APP_WAYPOINT_BEAM
-		local C_APP_WAYPOINT_BEAM_ALPHA
-		local C_APP_WAYPOINT_DISTANCE_TEXT
-		local C_APP_WAYPOINT_DISTANCE_TEXT_SCALE
-		local C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA
-		local C_APP_PINPOINT_SCALE
-		local C_APP_NAVIGATOR_SCALE
-		local C_APP_NAVIGATOR_ALPHA
-		local C_APP_COLOR
-		local C_APP_COLOR_QUEST_INCOMPLETE_TINT
-		local C_APP_COLOR_QUEST_COMPLETE_TINT
-		local C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT
-		local C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT
-		local C_APP_COLOR_NEUTRAL_TINT
-		local C_APP_COLOR_QUEST_INCOMPLETE
-		local C_APP_COLOR_QUEST_COMPLETE
-		local C_APP_COLOR_QUEST_COMPLETE_REPEATABLE
-		local C_APP_COLOR_QUEST_COMPLETE_IMPORTANT
-		local C_APP_COLOR_NEUTRAL
-		local C_AUDIO_CUSTOM
-		local C_AUDIO_CUSTOM_WAYPOINT_SHOW
-		local C_AUDIO_CUSTOM_PINPOINT_SHOW
-		local C_PREF_METRIC
-		local CVAR_FOV
-		local CVAR_ACTIONCAM_SHOULDER
-		local CVAR_ACTIONCAM_PITCH
-
-		do
-			local Database = addon.C.Database.Variables.DB_GLOBAL.profile
-
-			local function UpdateReferences()
-				if not Database then return end
-
-				C_WS_TYPE = Database.WS_TYPE
-				C_WS_DISTANCE_TRANSITION = Database.WS_DISTANCE_TRANSITION
-				C_WS_DISTANCE_HIDE = Database.WS_DISTANCE_HIDE
-				C_WS_DISTANCE_TEXT_TYPE = Database.WS_DISTANCE_TEXT_TYPE
-				C_WS_PINPOINT_INFO = Database.WS_PINPOINT_INFO
-				C_WS_PINPOINT_INFO_EXTENDED = Database.WS_PINPOINT_INFO_EXTENDED
-				C_WS_NAVIGATOR = Database.WS_NAVIGATOR
-				C_APP_WAYPOINT_SCALE = Database.APP_WAYPOINT_SCALE
-				C_APP_WAYPOINT_SCALE_MIN = Database.APP_WAYPOINT_SCALE_MIN
-				C_APP_WAYPOINT_SCALE_MAX = Database.APP_WAYPOINT_SCALE_MAX
-				C_APP_WAYPOINT_BEAM = Database.APP_WAYPOINT_BEAM
-				C_APP_WAYPOINT_BEAM_ALPHA = Database.APP_WAYPOINT_BEAM_ALPHA
-				C_APP_WAYPOINT_DISTANCE_TEXT = Database.APP_WAYPOINT_DISTANCE_TEXT
-				C_APP_WAYPOINT_DISTANCE_TEXT_SCALE = Database.APP_WAYPOINT_DISTANCE_TEXT_SCALE
-				C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA = Database.APP_WAYPOINT_DISTANCE_TEXT_ALPHA
-				C_APP_PINPOINT_SCALE = Database.APP_PINPOINT_SCALE
-				C_APP_NAVIGATOR_SCALE = Database.APP_NAVIGATOR_SCALE
-				C_APP_NAVIGATOR_ALPHA = Database.APP_NAVIGATOR_ALPHA
-				C_APP_COLOR = Database.APP_COLOR
-				C_APP_COLOR_QUEST_INCOMPLETE_TINT = Database.APP_COLOR_QUEST_INCOMPLETE_TINT
-				C_APP_COLOR_QUEST_COMPLETE_TINT = Database.APP_COLOR_QUEST_COMPLETE_TINT
-				C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT
-				C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT
-				C_APP_COLOR_NEUTRAL_TINT = Database.APP_COLOR_NEUTRAL_TINT
-				C_APP_COLOR_QUEST_INCOMPLETE = Database.APP_COLOR_QUEST_INCOMPLETE
-				C_APP_COLOR_QUEST_COMPLETE = Database.APP_COLOR_QUEST_COMPLETE
-				C_APP_COLOR_QUEST_COMPLETE_REPEATABLE = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE
-				C_APP_COLOR_QUEST_COMPLETE_IMPORTANT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT
-				C_APP_COLOR_NEUTRAL = Database.APP_COLOR_NEUTRAL
-				C_AUDIO_CUSTOM = Database.AUDIO_CUSTOM
-				C_AUDIO_CUSTOM_WAYPOINT_SHOW = Database.AUDIO_CUSTOM_WAYPOINT_SHOW
-				C_AUDIO_CUSTOM_PINPOINT_SHOW = Database.AUDIO_CUSTOM_PINPOINT_SHOW
-				C_PREF_METRIC = Database.PREF_METRIC
-				CVAR_FOV = tonumber(GetCVar("cameraFov"))
-				CVAR_ACTIONCAM_SHOULDER = tonumber(GetCVar("test_cameraOverShoulder"))
-				CVAR_ACTIONCAM_PITCH = tonumber(GetCVar("test_cameraDynamicPitch"))
-			end
-
-			UpdateReferences()
-			CallbackRegistry:Add("C_CONFIG_UPDATE", UpdateReferences)
-			CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", UpdateReferences)
-			CallbackRegistry:Add("C_CONFIG_AUDIO_UPDATE", UpdateReferences)
-			CallbackRegistry:Add("EVENT_CVAR_UPDATE", UpdateReferences)
-		end
-
-		--------------------------------
-
 		do -- 3D
 			-- ---@param framePosX number
 			-- ---@param framePosY number
@@ -1909,7 +1915,12 @@ function NS.Script:Load()
 
 			local Process_Movement_Cache = { lastUpdateTime = 0, updateInterval = .5, lastPlayerPosition = nil, playerMovementUpdateThreshold = 1, isPlayerMoving = false }
 			function Callback.Logic:Process_Movement()
-				local currentPos = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player")
+				local mapID = C_Map.GetBestMapForUnit("player")
+				if not mapID then return end
+
+				--------------------------------
+
+				local currentPos = C_Map.GetPlayerMapPosition(mapID, "player")
 				if currentPos and Process_Movement_Cache.lastPlayerPosition then
 					local dx = currentPos.x - Process_Movement_Cache.lastPlayerPosition.x
 					local dy = currentPos.y - Process_Movement_Cache.lastPlayerPosition.y
@@ -2831,21 +2842,21 @@ function NS.Script:Load()
 		-- 	> Right click on Waypoint/Pinpoint/Navigator to untrack
 		Frame_World_Waypoint:EnableMouse(true)
 		Frame_World_Waypoint:SetScript("OnMouseDown", function(_, button)
-			if button == "RightButton" then
+			if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
 				WaypointUI_ClearAll()
 			end
 		end)
 
 		Frame_World_Pinpoint:EnableMouse(true)
 		Frame_World_Pinpoint:SetScript("OnMouseDown", function(_, button)
-			if button == "RightButton" then
+			if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
 				WaypointUI_ClearAll()
 			end
 		end)
 
 		Frame_Navigator_Arrow:EnableMouse(true)
 		Frame_Navigator_Arrow:SetScript("OnMouseDown", function(_, button)
-			if button == "RightButton" then
+			if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
 				WaypointUI_ClearAll()
 			end
 		end)

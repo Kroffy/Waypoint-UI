@@ -1,4 +1,4 @@
--- ♡ Translation // Klep
+-- ♡ Translation // Klep, Kroffy
 
 ---@class addon
 local addon = select(2, ...)
@@ -73,6 +73,8 @@ function NS:Load()
 		L["Config - WaypointSystem - Type - Waypoint"] = "Point de passage"
 		L["Config - WaypointSystem - Type - Pinpoint"] = "Point de repère"
 		L["Config - WaypointSystem - General"] = "Général"
+		L["Config - WaypointSystem - General - RightClickToClear"] = "Right-Click To Clear"
+		L["Config - WaypointSystem - General - RightClickToClear - Description"] = "Allows you to clear the Waypoint/Pinpoint/Navigator by right-clicking it."
 		L["Config - WaypointSystem - General - Transition Distance"] = "Distance du point de repère"
 		L["Config - WaypointSystem - General - Transition Distance - Description"] = "Distance à partir de laquelle le point de repère est visible."
 		L["Config - WaypointSystem - General - Hide Distance"] = "Distance minimale"
@@ -111,6 +113,7 @@ function NS:Load()
 		L["Config - Appearance - Navigator"] = "Navigateur"
 		L["Config - Appearance - Navigator - Scale"] = "Taille"
 		L["Config - Appearance - Navigator - Alpha"] = "Transparence"
+		L['Config - Appearance - Navigator - Distance'] = "Distance"
 		L["Config - Appearance - Visual"] = "Visuel"
 		L["Config - Appearance - Visual - UseCustomColor"] = "Utiliser une couleur personnalisée"
 		L["Config - Appearance - Visual - UseCustomColor - Color"] = "Couleur"
@@ -157,6 +160,8 @@ function NS:Load()
 		L["Contributors - Crazyyoungs - Description"] = "Translator — Korean"
 		L["Contributors - Klep"] = "Klep"
 		L["Contributors - Klep - Description"] = "Translator — Français"
+		L["Contributors - Kroffy"] = "Kroffy"
+		L["Contributors - Kroffy - Description"] = "Translator — Français"
 		L["Contributors - cathtail"] = "cathtail"
 		L["Contributors - cathtail - Description"] = "Translator - Brazilian Portuguese"
 		L["Contributors - Larsj02"] = "Larsj02"

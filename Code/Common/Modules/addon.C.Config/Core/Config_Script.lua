@@ -642,18 +642,19 @@ function NS.Script:Load()
 
 		hooksecurefunc(Frame, "Show", function()
 			local SettingsCanvas = SettingsPanel.Container.SettingsCanvas
+			local Offset = addon.C.WoWClient.Script:IsAddOnLoaded("ElvUI") and 0 or 10
 
 			--------------------------------
 
 			Frame:ClearAllPoints()
-			Frame:SetPoint("CENTER", SettingsCanvas, -10, 5)
+			Frame:SetPoint("CENTER", SettingsCanvas, -Offset, 5)
 
 			if not loaded then
 				loaded = true
 
 				--------------------------------
 
-				Frame:SetSize(SettingsCanvas:GetWidth() + 10, SettingsCanvas:GetHeight() + 5)
+				Frame:SetSize(SettingsCanvas:GetWidth() + Offset, SettingsCanvas:GetHeight() + Offset / 2)
 
 				--------------------------------
 
