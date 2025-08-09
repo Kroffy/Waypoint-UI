@@ -174,6 +174,8 @@ function NS:Load()
 		L["Contributors - lemieszek - Description"] = "Code — Beta Bug Fix"
 		L["Contributors - BadBoyBarny"] = "BadBoyBarny"
 		L["Contributors - BadBoyBarny - Description"] = "Code — Bug Fix"
+		L["Contributors - Christinxa"] = "Christinxa"
+		L["Contributors - Christinxa - Description"] = "Code - Bug Fix"
 		L["Contributors - SyverGiswold"] = "SyverGiswold"
 		L["Contributors - SyverGiswold - Description"] = "Code - Feature"
 	end

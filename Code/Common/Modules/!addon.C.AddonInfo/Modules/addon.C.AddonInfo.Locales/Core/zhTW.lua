@@ -173,6 +173,8 @@ function NS:Load()
 		L["Contributors - lemieszek - Description"] = "代碼 — 測試錯誤修復"
 		L["Contributors - BadBoyBarny"] = "BadBoyBarny"
 		L["Contributors - BadBoyBarny - Description"] = "代碼 — 錯誤修復"
+		L["Contributors - Christinxa"] = "Christinxa"
+		L["Contributors - Christinxa - Description"] = "Code - Bug Fix"
 		L["Contributors - SyverGiswold"] = "SyverGiswold"
 		L["Contributors - SyverGiswold - Description"] = "代碼 — 功能"
 	end

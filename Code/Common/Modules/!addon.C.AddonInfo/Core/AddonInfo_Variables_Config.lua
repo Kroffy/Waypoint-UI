@@ -308,7 +308,7 @@ do  -- CONSTANTS
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - RightClickToClear - Description"]),
 									["indent"] = 0,
 									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_RIGHT_CLICK_TO_CLEAR end,
-									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_RIGHT_CLICK_TO_CLEAR = value end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_RIGHT_CLICK_TO_CLEAR = value; CallbackRegistry:Trigger("C_CONFIG_RIGHT_CLICK_TO_CLEAR") end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end
 								},
@@ -1146,6 +1146,14 @@ do  -- CONSTANTS
 									["name"] = L["Contributors - BadBoyBarny"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - BadBoyBarny - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								{
+									["name"] = L["Contributors - Christinxa"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Christinxa - Description"]),
 									["indent"] = 0,
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,

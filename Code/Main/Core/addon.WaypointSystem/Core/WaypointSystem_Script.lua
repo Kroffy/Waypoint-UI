@@ -125,6 +125,7 @@ function NS.Script:Load()
 		UpdateReferences()
 		CallbackRegistry:Add("C_CONFIG_UPDATE", UpdateReferences)
 		CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", UpdateReferences)
+		CallbackRegistry:Add("C_CONFIG_RIGHT_CLICK_TO_CLEAR", UpdateReferences)
 		CallbackRegistry:Add("C_CONFIG_AUDIO_UPDATE", UpdateReferences)
 		CallbackRegistry:Add("EVENT_CVAR_UPDATE", UpdateReferences)
 	end
@@ -496,7 +497,7 @@ function NS.Script:Load()
 
 				local function GetCenterScreenPoint()
 					local centerX, centerY = WorldFrame:GetCenter()
-					local scale = Frame_World:GetEffectiveScale() or 1
+					local scale = UIParent:GetEffectiveScale() or 1
 					return centerX / scale, centerY / scale
 				end
 
@@ -532,7 +533,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local centerScreenX, centerScreenY = GetCenterScreenPoint()
-					local indicatorX, indicatorY = Frame_Navigator_Arrow:GetCenter()
+					local indicatorX, indicatorY = Frame.navFrame.frame:GetCenter()
 
 					local indicatorVec = Frame_Navigator_Arrow.indicatorVec
 					indicatorVec:SetXY(indicatorX - centerScreenX, indicatorY - centerScreenY)
@@ -2815,57 +2816,64 @@ function NS.Script:Load()
 	-- SETTINGS
 	--------------------------------
 
-	do
-		local function C_CONFIG_WS_TYPE()
-			Callback:Waypoint_Reset(true)
-		end
-
-		local function C_CONFIG_APPEARANCE_UPDATE(skipDelay)
-			if skipDelay then Callback:APP_Set() else C_Timer.After(0, function() Callback:APP_Set() end) end
-		end
-
-		C_CONFIG_APPEARANCE_UPDATE(true)
-
-		--------------------------------
-
-		CallbackRegistry:Add("C_CONFIG_WS_TYPE", C_CONFIG_WS_TYPE)
-		CallbackRegistry:Add("C_CONFIG_WS_NAVIGATOR", C_CONFIG_APPEARANCE_UPDATE)
-		CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", C_CONFIG_APPEARANCE_UPDATE)
+	local function C_CONFIG_WS_TYPE()
+		Callback:Waypoint_Reset(true)
 	end
+
+	local function C_CONFIG_APPEARANCE_UPDATE(skipDelay)
+		if skipDelay then Callback:APP_Set() else C_Timer.After(0, function() Callback:APP_Set() end) end
+	end
+
+	local function C_CONFIG_RIGHT_CLICK_TO_CLEAR()
+		if C_WS_RIGHT_CLICK_TO_CLEAR then
+			Frame_World_Waypoint:EnableMouse(true)
+			Frame_World_Pinpoint:EnableMouse(true)
+			Frame_Navigator_Arrow:EnableMouse(true)
+		else
+			Frame_World_Waypoint:EnableMouse(false)
+			Frame_World_Pinpoint:EnableMouse(false)
+			Frame_Navigator_Arrow:EnableMouse(false)
+		end
+	end
+
+	CallbackRegistry:Add("C_CONFIG_WS_TYPE", C_CONFIG_WS_TYPE)
+	CallbackRegistry:Add("C_CONFIG_WS_NAVIGATOR", C_CONFIG_APPEARANCE_UPDATE)
+	CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", C_CONFIG_APPEARANCE_UPDATE)
+	CallbackRegistry:Add("C_CONFIG_RIGHT_CLICK_TO_CLEAR", C_CONFIG_RIGHT_CLICK_TO_CLEAR)
 
 	--------------------------------
 	-- EVENTS
 	--------------------------------
 
-	do
-		-- Sincere thanks to SyverGiswold!
-		-- 	> Right click on Waypoint/Pinpoint/Navigator to untrack
-		Frame_World_Waypoint:EnableMouse(true)
-		Frame_World_Waypoint:SetScript("OnMouseDown", function(_, button)
-			if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
-				WaypointUI_ClearAll()
-			end
-		end)
+	-- Sincere thanks to SyverGiswold!
+	-- 	> Right click on Waypoint/Pinpoint/Navigator to untrack
+	Frame_World_Waypoint:SetScript("OnMouseDown", function(_, button)
+		if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
+			WaypointUI_ClearAll()
+		end
+	end)
+	Frame_World_Pinpoint:SetScript("OnMouseDown", function(_, button)
+		if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
+			WaypointUI_ClearAll()
+		end
+	end)
+	Frame_Navigator_Arrow:SetScript("OnMouseDown", function(_, button)
+		if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
+			WaypointUI_ClearAll()
+		end
+	end)
 
-		Frame_World_Pinpoint:EnableMouse(true)
-		Frame_World_Pinpoint:SetScript("OnMouseDown", function(_, button)
-			if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
-				WaypointUI_ClearAll()
-			end
-		end)
+	--	> Set FadeUtil parameter
+	Callback.FadeUtil.MouseOver:SetParameter(Frame.REF_WORLD_WAYPOINT_ALPHA_MOUSE_OVER, 7.5, 15, .125)
+	Callback.FadeUtil.MouseOver:SetParameter(Frame.REF_WORLD_PINPOINT_ALPHA_MOUSE_OVER, 15, 27.5, .125)
+	Callback.FadeUtil.MouseOver:SetParameter(Frame.REF_NAVIGATOR_ARROW_ALPHA_MOUSE_OVER, 7.5, 15, .125)
+	Callback.FadeUtil.CharacterOverlap:SetParameter(Frame.REF_WORLD_WAYPOINT_ALPHA_CHARACTER_OVERLAP, 75, 100, .125)
+	Callback.FadeUtil.CharacterOverlap:SetParameter(Frame.REF_WORLD_PINPOINT_ALPHA_CHARACTER_OVERLAP, 75, 100, .125)
 
-		Frame_Navigator_Arrow:EnableMouse(true)
-		Frame_Navigator_Arrow:SetScript("OnMouseDown", function(_, button)
-			if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
-				WaypointUI_ClearAll()
-			end
-		end)
+	--------------------------------
+	-- SETUP
+	--------------------------------
 
-		--	> Set FadeUtil parameter
-		Callback.FadeUtil.MouseOver:SetParameter(Frame.REF_WORLD_WAYPOINT_ALPHA_MOUSE_OVER, 7.5, 15, .125)
-		Callback.FadeUtil.MouseOver:SetParameter(Frame.REF_WORLD_PINPOINT_ALPHA_MOUSE_OVER, 15, 27.5, .125)
-		Callback.FadeUtil.MouseOver:SetParameter(Frame.REF_NAVIGATOR_ARROW_ALPHA_MOUSE_OVER, 7.5, 15, .125)
-		Callback.FadeUtil.CharacterOverlap:SetParameter(Frame.REF_WORLD_WAYPOINT_ALPHA_CHARACTER_OVERLAP, 75, 100, .125)
-		Callback.FadeUtil.CharacterOverlap:SetParameter(Frame.REF_WORLD_PINPOINT_ALPHA_CHARACTER_OVERLAP, 75, 100, .125)
-	end
+	C_CONFIG_APPEARANCE_UPDATE(true)
+	C_CONFIG_RIGHT_CLICK_TO_CLEAR()
 end
