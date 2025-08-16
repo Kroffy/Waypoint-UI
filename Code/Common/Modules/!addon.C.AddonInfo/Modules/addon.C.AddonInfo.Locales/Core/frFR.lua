@@ -75,6 +75,8 @@ function NS:Load()
 		L["Config - WaypointSystem - General"] = "Général"
 		L["Config - WaypointSystem - General - RightClickToClear"] = "Clic droit pour effacer"
 		L["Config - WaypointSystem - General - RightClickToClear - Description"] = "Permet d'effacer le point de passage/repère ou le navigateur avec un clic droit de la souris."
+		L["Config - WaypointSystem - General - BackgroundPreview"] = "Background Preview"
+		L["Config - WaypointSystem - General - BackgroundPreview - Description"] = "Lowers the navigation frame's visibility when the mouse is over it."
 		L["Config - WaypointSystem - General - Transition Distance"] = "Distance du point de repère"
 		L["Config - WaypointSystem - General - Transition Distance - Description"] = "Distance à partir de laquelle le point de repère est visible."
 		L["Config - WaypointSystem - General - Hide Distance"] = "Distance minimale"
@@ -176,6 +178,8 @@ function NS:Load()
 		L["Contributors - BadBoyBarny - Description"] = "Code — Bug Fix"
 		L["Contributors - Christinxa"] = "Christinxa"
 		L["Contributors - Christinxa - Description"] = "Code - Bug Fix"
+		L["Contributors - HectorZaGa"] = "HectorZaGa"
+		L["Contributors - HectorZaGa - Description"] = "Code - Bug Fix"
 		L["Contributors - SyverGiswold"] = "SyverGiswold"
 		L["Contributors - SyverGiswold - Description"] = "Code - Feature"
 	end

@@ -76,6 +76,8 @@ function NS:Load()
 		L["Config - WaypointSystem - General"] = "Общие"
 		L["Config - WaypointSystem - General - RightClickToClear"] = "ПКМ, чтобы очистить"
 		L["Config - WaypointSystem - General - RightClickToClear - Description"] = "Позволяет очистить точку маршрута/точку назначения/навигатор, нажав ПКМ."
+		L["Config - WaypointSystem - General - BackgroundPreview"] = "Background Preview"
+		L["Config - WaypointSystem - General - BackgroundPreview - Description"] = "Lowers the navigation frame's visibility when the mouse is over it."
 		L["Config - WaypointSystem - General - Transition Distance"] = "Точное расстояние"
 		L["Config - WaypointSystem - General - Transition Distance - Description"] = "Показано максимальное расстояние до точечного обнаружения."
 		L["Config - WaypointSystem - General - Hide Distance"] = "Минимальное расстояние"
@@ -176,6 +178,8 @@ function NS:Load()
 		L["Contributors - BadBoyBarny - Description"] = "Код — Исправление ошибок"
 		L["Contributors - Christinxa"] = "Christinxa"
 		L["Contributors - Christinxa - Description"] = "Код — Исправление ошибок"
+		L["Contributors - HectorZaGa"] = "HectorZaGa"
+		L["Contributors - HectorZaGa - Description"] = "Код — Исправление ошибок"
 		L["Contributors - SyverGiswold"] = "SyverGiswold"
 		L["Contributors - SyverGiswold - Description"] = "Код - Особенность"
 	end

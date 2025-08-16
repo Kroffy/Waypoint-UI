@@ -75,6 +75,8 @@ function NS:Load()
 		L["Config - WaypointSystem - General"] = "Allgemein"
 		L["Config - WaypointSystem - General - RightClickToClear"] = "Right-Click To Clear"
 		L["Config - WaypointSystem - General - RightClickToClear - Description"] = "Allows you to clear the Waypoint/Pinpoint/Navigator by right-clicking it."
+		L["Config - WaypointSystem - General - BackgroundPreview"] = "Background Preview"
+		L["Config - WaypointSystem - General - BackgroundPreview - Description"] = "Lowers the navigation frame's visibility when the mouse is over it."
 		L["Config - WaypointSystem - General - Transition Distance"] = "Zielmarkierungs-Distanz"
 		L["Config - WaypointSystem - General - Transition Distance - Description"] = "Distanz, bevor die Zielmarkierung angezeigt wird."
 		L["Config - WaypointSystem - General - Hide Distance"] = "Minimale Distanz"
@@ -176,6 +178,8 @@ function NS:Load()
 		L["Contributors - BadBoyBarny - Description"] = "Code — Bug Fix"
 		L["Contributors - Christinxa"] = "Christinxa"
 		L["Contributors - Christinxa - Description"] = "Code - Bug Fix"
+		L["Contributors - HectorZaGa"] = "HectorZaGa"
+		L["Contributors - HectorZaGa - Description"] = "Code - Bug Fix"
 		L["Contributors - SyverGiswold"] = "SyverGiswold"
 		L["Contributors - SyverGiswold - Description"] = "Code - Feature"
 	end

@@ -75,6 +75,8 @@ function NS:Load()
 		L["Config - WaypointSystem - General"] = "通用"
 		L["Config - WaypointSystem - General - RightClickToClear"] = "点击右键清除"
 		L["Config - WaypointSystem - General - RightClickToClear - Description"] = "可以点击右键清除路径点、标记点和导航信息。"
+		L["Config - WaypointSystem - General - BackgroundPreview"] = "Background Preview"
+		L["Config - WaypointSystem - General - BackgroundPreview - Description"] = "Lowers the navigation frame's visibility when the mouse is over it."
 		L["Config - WaypointSystem - General - Transition Distance"] = "标记点距离"
 		L["Config - WaypointSystem - General - Transition Distance - Description"] = "标记点显示的最大距离。"
 		L["Config - WaypointSystem - General - Hide Distance"] = "最小距离"
@@ -176,6 +178,8 @@ function NS:Load()
 		L["Contributors - BadBoyBarny - Description"] = "编码者 — 修复Bug"
 		L["Contributors - Christinxa"] = "Christinxa"
 		L["Contributors - Christinxa - Description"] = "编码者 - 修复Bug"
+		L["Contributors - HectorZaGa"] = "HectorZaGa"
+		L["Contributors - HectorZaGa - Description"] = "编码者 - 修复Bug"
 		L["Contributors - SyverGiswold"] = "SyverGiswold"
 		L["Contributors - SyverGiswold - Description"] = "编码者 - 提交功能"
 	end

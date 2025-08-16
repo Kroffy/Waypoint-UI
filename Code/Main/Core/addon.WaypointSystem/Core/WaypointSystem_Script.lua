@@ -6,11 +6,7 @@ local TagManager = addon.C.TagManager.Script
 local L = addon.C.AddonInfo.Locales
 local NS = addon.WaypointSystem; addon.WaypointSystem = NS
 
---------------------------------
-
 NS.Script = {}
-
---------------------------------
 
 function NS.Script:Load()
 	--------------------------------
@@ -37,44 +33,7 @@ function NS.Script:Load()
 	local IsPinpoint = false
 	local IsNavigator = false
 
-	local C_WS_TYPE
-	local C_WS_RIGHT_CLICK_TO_CLEAR
-	local C_WS_DISTANCE_TRANSITION
-	local C_WS_DISTANCE_HIDE
-	local C_WS_DISTANCE_TEXT_TYPE
-	local C_WS_PINPOINT_INFO
-	local C_WS_PINPOINT_INFO_EXTENDED
-	local C_WS_NAVIGATOR
-	local C_APP_WAYPOINT_SCALE
-	local C_APP_WAYPOINT_SCALE_MIN
-	local C_APP_WAYPOINT_SCALE_MAX
-	local C_APP_WAYPOINT_BEAM
-	local C_APP_WAYPOINT_BEAM_ALPHA
-	local C_APP_WAYPOINT_DISTANCE_TEXT
-	local C_APP_WAYPOINT_DISTANCE_TEXT_SCALE
-	local C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA
-	local C_APP_PINPOINT_SCALE
-	local C_APP_NAVIGATOR_SCALE
-	local C_APP_NAVIGATOR_ALPHA
-	local C_APP_NAVIGATOR_DISTANCE
-	local C_APP_COLOR
-	local C_APP_COLOR_QUEST_INCOMPLETE_TINT
-	local C_APP_COLOR_QUEST_COMPLETE_TINT
-	local C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT
-	local C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT
-	local C_APP_COLOR_NEUTRAL_TINT
-	local C_APP_COLOR_QUEST_INCOMPLETE
-	local C_APP_COLOR_QUEST_COMPLETE
-	local C_APP_COLOR_QUEST_COMPLETE_REPEATABLE
-	local C_APP_COLOR_QUEST_COMPLETE_IMPORTANT
-	local C_APP_COLOR_NEUTRAL
-	local C_AUDIO_CUSTOM
-	local C_AUDIO_CUSTOM_WAYPOINT_SHOW
-	local C_AUDIO_CUSTOM_PINPOINT_SHOW
-	local C_PREF_METRIC
-	local CVAR_FOV
-	local CVAR_ACTIONCAM_SHOULDER
-	local CVAR_ACTIONCAM_PITCH
+	local Config = {}
 
 	do
 		local Database = addon.C.Database.Variables.DB_GLOBAL.profile
@@ -82,51 +41,51 @@ function NS.Script:Load()
 		local function UpdateReferences()
 			if not Database then return end
 
-			C_WS_TYPE = Database.WS_TYPE
-			C_WS_RIGHT_CLICK_TO_CLEAR = Database.WS_RIGHT_CLICK_TO_CLEAR
-			C_WS_DISTANCE_TRANSITION = Database.WS_DISTANCE_TRANSITION
-			C_WS_DISTANCE_HIDE = Database.WS_DISTANCE_HIDE
-			C_WS_DISTANCE_TEXT_TYPE = Database.WS_DISTANCE_TEXT_TYPE
-			C_WS_PINPOINT_INFO = Database.WS_PINPOINT_INFO
-			C_WS_PINPOINT_INFO_EXTENDED = Database.WS_PINPOINT_INFO_EXTENDED
-			C_WS_NAVIGATOR = Database.WS_NAVIGATOR
-			C_APP_WAYPOINT_SCALE = Database.APP_WAYPOINT_SCALE
-			C_APP_WAYPOINT_SCALE_MIN = Database.APP_WAYPOINT_SCALE_MIN
-			C_APP_WAYPOINT_SCALE_MAX = Database.APP_WAYPOINT_SCALE_MAX
-			C_APP_WAYPOINT_BEAM = Database.APP_WAYPOINT_BEAM
-			C_APP_WAYPOINT_BEAM_ALPHA = Database.APP_WAYPOINT_BEAM_ALPHA
-			C_APP_WAYPOINT_DISTANCE_TEXT = Database.APP_WAYPOINT_DISTANCE_TEXT
-			C_APP_WAYPOINT_DISTANCE_TEXT_SCALE = Database.APP_WAYPOINT_DISTANCE_TEXT_SCALE
-			C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA = Database.APP_WAYPOINT_DISTANCE_TEXT_ALPHA
-			C_APP_PINPOINT_SCALE = Database.APP_PINPOINT_SCALE
-			C_APP_NAVIGATOR_SCALE = Database.APP_NAVIGATOR_SCALE
-			C_APP_NAVIGATOR_ALPHA = Database.APP_NAVIGATOR_ALPHA
-			C_APP_NAVIGATOR_DISTANCE = Database.APP_NAVIGATOR_DISTANCE
-			C_APP_COLOR = Database.APP_COLOR
-			C_APP_COLOR_QUEST_INCOMPLETE_TINT = Database.APP_COLOR_QUEST_INCOMPLETE_TINT
-			C_APP_COLOR_QUEST_COMPLETE_TINT = Database.APP_COLOR_QUEST_COMPLETE_TINT
-			C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT
-			C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT
-			C_APP_COLOR_NEUTRAL_TINT = Database.APP_COLOR_NEUTRAL_TINT
-			C_APP_COLOR_QUEST_INCOMPLETE = Database.APP_COLOR_QUEST_INCOMPLETE
-			C_APP_COLOR_QUEST_COMPLETE = Database.APP_COLOR_QUEST_COMPLETE
-			C_APP_COLOR_QUEST_COMPLETE_REPEATABLE = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE
-			C_APP_COLOR_QUEST_COMPLETE_IMPORTANT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT
-			C_APP_COLOR_NEUTRAL = Database.APP_COLOR_NEUTRAL
-			C_AUDIO_CUSTOM = Database.AUDIO_CUSTOM
-			C_AUDIO_CUSTOM_WAYPOINT_SHOW = Database.AUDIO_CUSTOM_WAYPOINT_SHOW
-			C_AUDIO_CUSTOM_PINPOINT_SHOW = Database.AUDIO_CUSTOM_PINPOINT_SHOW
-			C_PREF_METRIC = Database.PREF_METRIC
-			CVAR_FOV = tonumber(GetCVar("cameraFov"))
-			CVAR_ACTIONCAM_SHOULDER = tonumber(GetCVar("test_cameraOverShoulder"))
-			CVAR_ACTIONCAM_PITCH = tonumber(GetCVar("test_cameraDynamicPitch"))
+			Config.C_WS_TYPE = Database.WS_TYPE
+			Config.C_WS_RIGHT_CLICK_TO_CLEAR = Database.WS_RIGHT_CLICK_TO_CLEAR
+			Config.C_WS_BACKGROUND_PREVIEW = Database.WS_BACKGROUND_PREVIEW
+			Config.C_WS_DISTANCE_TRANSITION = Database.WS_DISTANCE_TRANSITION
+			Config.C_WS_DISTANCE_HIDE = Database.WS_DISTANCE_HIDE
+			Config.C_WS_DISTANCE_TEXT_TYPE = Database.WS_DISTANCE_TEXT_TYPE
+			Config.C_WS_PINPOINT_INFO = Database.WS_PINPOINT_INFO
+			Config.C_WS_PINPOINT_INFO_EXTENDED = Database.WS_PINPOINT_INFO_EXTENDED
+			Config.C_WS_NAVIGATOR = Database.WS_NAVIGATOR
+			Config.C_APP_WAYPOINT_SCALE = Database.APP_WAYPOINT_SCALE
+			Config.C_APP_WAYPOINT_SCALE_MIN = Database.APP_WAYPOINT_SCALE_MIN
+			Config.C_APP_WAYPOINT_SCALE_MAX = Database.APP_WAYPOINT_SCALE_MAX
+			Config.C_APP_WAYPOINT_BEAM = Database.APP_WAYPOINT_BEAM
+			Config.C_APP_WAYPOINT_BEAM_ALPHA = Database.APP_WAYPOINT_BEAM_ALPHA
+			Config.C_APP_WAYPOINT_DISTANCE_TEXT = Database.APP_WAYPOINT_DISTANCE_TEXT
+			Config.C_APP_WAYPOINT_DISTANCE_TEXT_SCALE = Database.APP_WAYPOINT_DISTANCE_TEXT_SCALE
+			Config.C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA = Database.APP_WAYPOINT_DISTANCE_TEXT_ALPHA
+			Config.C_APP_PINPOINT_SCALE = Database.APP_PINPOINT_SCALE
+			Config.C_APP_NAVIGATOR_SCALE = Database.APP_NAVIGATOR_SCALE
+			Config.C_APP_NAVIGATOR_ALPHA = Database.APP_NAVIGATOR_ALPHA
+			Config.C_APP_NAVIGATOR_DISTANCE = Database.APP_NAVIGATOR_DISTANCE
+			Config.C_APP_COLOR = Database.APP_COLOR
+			Config.C_APP_COLOR_QUEST_INCOMPLETE_TINT = Database.APP_COLOR_QUEST_INCOMPLETE_TINT
+			Config.C_APP_COLOR_QUEST_COMPLETE_TINT = Database.APP_COLOR_QUEST_COMPLETE_TINT
+			Config.C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT
+			Config.C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT
+			Config.C_APP_COLOR_NEUTRAL_TINT = Database.APP_COLOR_NEUTRAL_TINT
+			Config.C_APP_COLOR_QUEST_INCOMPLETE = Database.APP_COLOR_QUEST_INCOMPLETE
+			Config.C_APP_COLOR_QUEST_COMPLETE = Database.APP_COLOR_QUEST_COMPLETE
+			Config.C_APP_COLOR_QUEST_COMPLETE_REPEATABLE = Database.APP_COLOR_QUEST_COMPLETE_REPEATABLE
+			Config.C_APP_COLOR_QUEST_COMPLETE_IMPORTANT = Database.APP_COLOR_QUEST_COMPLETE_IMPORTANT
+			Config.C_APP_COLOR_NEUTRAL = Database.APP_COLOR_NEUTRAL
+			Config.C_AUDIO_CUSTOM = Database.AUDIO_CUSTOM
+			Config.C_AUDIO_CUSTOM_WAYPOINT_SHOW = Database.AUDIO_CUSTOM_WAYPOINT_SHOW
+			Config.C_AUDIO_CUSTOM_PINPOINT_SHOW = Database.AUDIO_CUSTOM_PINPOINT_SHOW
+			Config.C_PREF_METRIC = Database.PREF_METRIC
+			Config.CVAR_ACTIONCAM_SHOULDER = tonumber(GetCVar("test_cameraOverShoulder"))
+			Config.CVAR_ACTIONCAM_PITCH = tonumber(GetCVar("test_cameraDynamicPitch"))
 		end
 
 		UpdateReferences()
 		CallbackRegistry:Add("C_CONFIG_UPDATE", UpdateReferences)
 		CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", UpdateReferences)
-		CallbackRegistry:Add("C_CONFIG_RIGHT_CLICK_TO_CLEAR", UpdateReferences)
 		CallbackRegistry:Add("C_CONFIG_AUDIO_UPDATE", UpdateReferences)
+		CallbackRegistry:Add("C_CONFIG_RIGHT_CLICK_TO_CLEAR", UpdateReferences)
 		CallbackRegistry:Add("EVENT_CVAR_UPDATE", UpdateReferences)
 	end
 
@@ -554,15 +513,24 @@ function NS.Script:Load()
 					Frame_Navigator_Arrow.axesMultiplied = Frame_Navigator_Arrow.majorAxis * Frame_Navigator_Arrow.minorAxis
 				end
 
+				local savedZoom = nil
+				local savedDistance = nil
+
 				function Frame_Navigator_Arrow:Nav_UpdateVariables()
 					local zoom = GetCameraZoom()
-					local baseZoom = 35
-					local baseMajor, baseMinor = 200, 100
-					local major, minor = math.min(baseMajor * (baseZoom / zoom), 500), math.min(baseMinor * (baseZoom / zoom), 500)
-					major = major * (C_APP_NAVIGATOR_DISTANCE or 1)
-					minor = minor * (C_APP_NAVIGATOR_DISTANCE or 1)
 
-					Frame_Navigator_Arrow:Nav_SetInfo(major, minor)
+					if zoom ~= savedZoom or Config.C_APP_NAVIGATOR_DISTANCE ~= savedDistance then
+						local baseZoom = 35
+						local baseMajor, baseMinor = 200, 100
+						local major, minor = math.min(baseMajor * (baseZoom / zoom), 500), math.min(baseMinor * (baseZoom / zoom), 500)
+						major = major * (Config.C_APP_NAVIGATOR_DISTANCE or 1)
+						minor = minor * (Config.C_APP_NAVIGATOR_DISTANCE or 1)
+
+						Frame_Navigator_Arrow:Nav_SetInfo(major, minor)
+
+						savedZoom = zoom
+						savedDistance = Config.C_APP_NAVIGATOR_DISTANCE
+					end
 				end
 
 				local lastUpdateTime = 0
@@ -832,6 +800,9 @@ function NS.Script:Load()
 					if pinInfo.pinType == Enum.SuperTrackingType.Corpse then
 						texture.type = "ATLAS"
 						texture.path = "poi-torghast"
+					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.TaxiNode then
+						texture.type = "ATLAS"
+						texture.path = "Crosshair_Taxi_128"
 					elseif pinInfo.poiInfo and pinInfo.poiInfo.atlasName then
 						texture.type = "ATLAS"
 						texture.path = pinInfo.poiInfo.atlasName
@@ -841,9 +812,6 @@ function NS.Script:Load()
 					elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
 						texture.type = "TEXTURE"
 						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-default.png"
-					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.TaxiNode then
-						texture.type = "ATLAS"
-						texture.path = "Crosshair_Taxi_128"
 					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.DigSite then
 						texture.type = "ATLAS"
 						texture.path = "ArchBlob"
@@ -1035,28 +1003,18 @@ function NS.Script:Load()
 				return pinInfo
 			end
 
-			local GetCurrentState_Cache = { distance = nil, state = nil, lastUpdateTime = 0, updateInterval = .05, distanceUpdateThreshold = 2 }
 			function Callback:GetCurrentState()
-				-- Use cached result if distance hasn't changed much and cache is still valid
-				local currentTime = GetTime()
-				local distance = C_Navigation.GetDistance()
-
-				if GetCurrentState_Cache.state and GetCurrentState_Cache.distance and (currentTime - GetCurrentState_Cache.lastUpdateTime) < GetCurrentState_Cache.updateInterval and math.abs(distance - GetCurrentState_Cache.distance) < GetCurrentState_Cache.distanceUpdateThreshold then
-					return GetCurrentState_Cache.state
-				end
-
-				--------------------------------
-
 				local SUPER_TRACKING_INFO = Callback:GetSuperTrackingInfo()
 				local QUEST_INFO = Callback:GetQuestInfo()
 
 				local state = nil
-				local isInAreaPOI = Callback:GetInQuestAreaPOI()
+				local distance = C_Navigation.GetDistance()
+				local isInAreaPOI = NS.Variables.Session.IsInsideQuestBlob
 				local isQuest = (QUEST_INFO ~= nil)
 				local isValid = SUPER_TRACKING_INFO.valid
 				local isDefault = (SUPER_TRACKING_INFO.texture == "3308452")
-				local isRangeProximity = (distance < C_WS_DISTANCE_TRANSITION)
-				local isRangeValid = (distance > C_WS_DISTANCE_HIDE)
+				local isRangeProximity = (distance < Config.C_WS_DISTANCE_TRANSITION)
+				local isRangeValid = (distance > Config.C_WS_DISTANCE_HIDE)
 
 				if isInAreaPOI or not isRangeValid or not isValid then
 					if isInAreaPOI then
@@ -1072,25 +1030,7 @@ function NS.Script:Load()
 					state = (isQuest and isDefault) and "QUEST_AREA" or "AREA"
 				end
 
-				-- Cache the result
-				GetCurrentState_Cache.state = state
-				GetCurrentState_Cache.distance = distance
-				GetCurrentState_Cache.lastUpdateTime = currentTime
-
 				return state
-			end
-
-			function Callback:GetInQuestAreaPOI()
-				local result = false
-
-				--------------------------------
-
-				local questID = C_SuperTrack.GetSuperTrackedQuestID()
-				result = (questID) and (C_Minimap.IsInsideQuestBlob(questID)) or false
-
-				--------------------------------
-
-				return result
 			end
 
 			function Callback:GetRedirectInfo()
@@ -1132,6 +1072,7 @@ function NS.Script:Load()
 				local resultMinDistance = Callback.FadeUtil.ScreenEdge:GetDistanceFromEdge(Frame.navFrame.frame)
 				local isClamped = (resultMinDistance < clampThreshold)
 				local newClamped = NS.Variables.Session.isClamped ~= isClamped
+				NS.Variables.Session.isClamped = isClamped
 
 				return isClamped, newClamped
 			end
@@ -1162,7 +1103,6 @@ function NS.Script:Load()
 			end
 
 			function Callback:World_Hide()
-				local isSuperTracking = C_SuperTrack.IsSuperTrackingAnything()
 				Frame_World:HideWithAnimation()
 			end
 
@@ -1172,17 +1112,14 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				local isSuperTracking = C_SuperTrack.IsSuperTrackingAnything()
 				Frame_World:ShowWithAnimation()
 			end
 
 			function Callback:Navigator_Hide()
-				local isSuperTracking = C_SuperTrack.IsSuperTrackingAnything()
 				Frame_Navigator:HideWithAnimation()
 			end
 
 			function Callback:Navigator_Show()
-				local isSuperTracking = C_SuperTrack.IsSuperTrackingAnything()
 				local state, isNewState = Callback:GetCurrentState()
 
 				if state == "INVALID_RANGE" then
@@ -1201,11 +1138,11 @@ function NS.Script:Load()
 
 				local trackingType = Callback:GetTrackingType(questID)
 
-				local COLOR_QUEST_INCOMPLETE = C_APP_COLOR and C_APP_COLOR_QUEST_INCOMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL
-				local COLOR_QUEST_COMPLETE = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL
-				local COLOR_QUEST_COMPLETE_REPEATABLE = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_REPEATABLE or addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE
-				local COLOR_QUEST_COMPLETE_IMPORTANT = C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_IMPORTANT or addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT
-				local COLOR_NEUTRAL = C_APP_COLOR and C_APP_COLOR_NEUTRAL or addon.CS:GetSharedColor().RGB_PING_NEUTRAL
+				local COLOR_QUEST_INCOMPLETE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_INCOMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL
+				local COLOR_QUEST_COMPLETE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL
+				local COLOR_QUEST_COMPLETE_REPEATABLE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_REPEATABLE or addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE
+				local COLOR_QUEST_COMPLETE_IMPORTANT = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_IMPORTANT or addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT
+				local COLOR_NEUTRAL = Config.C_APP_COLOR and Config.C_APP_COLOR_NEUTRAL or addon.CS:GetSharedColor().RGB_PING_NEUTRAL
 
 				--------------------------------
 
@@ -1235,11 +1172,11 @@ function NS.Script:Load()
 
 				local trackingType = Callback:GetTrackingType(questID)
 
-				local RECOLOR_QUEST_INCOMPLETE = (C_APP_COLOR and C_APP_COLOR_QUEST_INCOMPLETE_TINT) or (not C_APP_COLOR and false)
-				local RECOLOR_QUEST_COMPLETE = (C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_TINT) or (not C_APP_COLOR and false)
-				local RECOLOR_QUEST_COMPLETE_REPEATABLE = (C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT) or (not C_APP_COLOR and false)
-				local RECOLOR_QUEST_COMPLETE_IMPORTANT = (C_APP_COLOR and C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT) or (not C_APP_COLOR and false)
-				local RECOLOR_NEUTRAL = (C_APP_COLOR and C_APP_COLOR_NEUTRAL_TINT) or (not C_APP_COLOR and true)
+				local RECOLOR_QUEST_INCOMPLETE = (Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_INCOMPLETE_TINT) or (not Config.C_APP_COLOR and false)
+				local RECOLOR_QUEST_COMPLETE = (Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_TINT) or (not Config.C_APP_COLOR and false)
+				local RECOLOR_QUEST_COMPLETE_REPEATABLE = (Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT) or (not Config.C_APP_COLOR and false)
+				local RECOLOR_QUEST_COMPLETE_IMPORTANT = (Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT) or (not Config.C_APP_COLOR and false)
+				local RECOLOR_NEUTRAL = (Config.C_APP_COLOR and Config.C_APP_COLOR_NEUTRAL_TINT) or (not Config.C_APP_COLOR and true)
 
 				--------------------------------
 
@@ -1287,786 +1224,831 @@ function NS.Script:Load()
 				Frame_World_Waypoint:APP_SetTint(appearanceInfo.color)
 				Frame_World_Waypoint:APP_Context_SetTint(appearanceInfo.color)
 				Frame_World_Waypoint:APP_Context_SetRecolor(appearanceInfo.recolorContext)
-				Frame_World_Waypoint:APP_Beam_Set(C_APP_WAYPOINT_BEAM, C_APP_WAYPOINT_BEAM_ALPHA)
-				Frame_World_Waypoint:APP_SetScale(C_APP_WAYPOINT_SCALE)
-				Frame_World_Waypoint:APP_DistanceText_Set(C_APP_WAYPOINT_DISTANCE_TEXT, C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA, C_APP_WAYPOINT_DISTANCE_TEXT_SCALE * .75)
+				Frame_World_Waypoint:APP_Beam_Set(Config.C_APP_WAYPOINT_BEAM, Config.C_APP_WAYPOINT_BEAM_ALPHA)
+				Frame_World_Waypoint:APP_SetScale(Config.C_APP_WAYPOINT_SCALE)
+				Frame_World_Waypoint:APP_DistanceText_Set(Config.C_APP_WAYPOINT_DISTANCE_TEXT, Config.C_APP_WAYPOINT_DISTANCE_TEXT_ALPHA, Config.C_APP_WAYPOINT_DISTANCE_TEXT_SCALE * .75)
 
 				Frame_World_Pinpoint:APP_SetTint(appearanceInfo.color)
 				Frame_World_Pinpoint:APP_Context_SetTint(appearanceInfo.color)
 				Frame_World_Pinpoint:APP_Context_SetRecolor(appearanceInfo.recolorContext)
-				Frame_World_Pinpoint:APP_SetScale(C_APP_PINPOINT_SCALE)
+				Frame_World_Pinpoint:APP_SetScale(Config.C_APP_PINPOINT_SCALE)
 
 				Frame_Navigator_Arrow:APP_SetTint(appearanceInfo.color)
 				Frame_Navigator_Arrow:APP_Context_SetTint(appearanceInfo.color)
 				Frame_Navigator_Arrow:APP_Context_SetRecolor(appearanceInfo.recolorContext)
-				Frame_Navigator_Arrow:APP_SetScale(C_APP_NAVIGATOR_SCALE)
-				Frame_Navigator_Arrow:APP_SetOpacity(C_APP_NAVIGATOR_ALPHA)
-				Frame_Navigator_Arrow:APP_SetVisibility(C_WS_NAVIGATOR)
+				Frame_Navigator_Arrow:APP_SetScale(Config.C_APP_NAVIGATOR_SCALE)
+				Frame_Navigator_Arrow:APP_SetOpacity(Config.C_APP_NAVIGATOR_ALPHA)
+				Frame_Navigator_Arrow:APP_SetVisibility(Config.C_WS_NAVIGATOR)
 			end
 		end
 
 		do -- LOGIC
-			Callback.Transition = {}
+			do -- TRANSITION
+				Callback.Transition = {}
 
-			function Callback.Transition:Pinpoint(id)
-				if not Frame_World_Waypoint.hidden then
-					Frame_World_Waypoint:HideWithAnimation(id).onFinish(function()
-						Frame_World_Pinpoint:ShowWithAnimation(id, false)
-					end)
+				function Callback.Transition:Pinpoint(id)
+					if not Frame_World_Waypoint.hidden then
+						Frame_World_Waypoint:HideWithAnimation(id).onFinish(function()
+							Frame_World_Pinpoint:ShowWithAnimation(id, false)
+						end)
 
-					--------------------------------
+						--------------------------------
 
-					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
-					addon.C.Sound.Script:PlaySound(audioPath)
-				else
-					Frame_World_Pinpoint:ShowWithAnimation(id, false)
-				end
-
-				--------------------------------
-
-				IsWaypoint = false
-				IsPinpoint = true
-			end
-
-			function Callback.Transition:Waypoint(id)
-				if not Frame_World_Pinpoint.hidden then
-					Frame_World_Pinpoint:HideWithAnimation(id).onFinish(function()
-						Frame_World_Waypoint:ShowWithAnimation(id, false)
-					end)
-
-
-					--------------------------------
-
-					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
-					addon.C.Sound.Script:PlaySound(audioPath)
-				else
-					Frame_World_Waypoint:ShowWithAnimation(id, false)
-				end
-
-				--------------------------------
-
-				IsWaypoint = true
-				IsPinpoint = false
-			end
-
-			function Callback.Transition:OnlyPinpoint(id)
-				if Frame_World_Pinpoint.hidden then
-					Frame_World_Pinpoint:ShowWithAnimation(id, false)
-				end
-
-				if not Frame_World_Waypoint.hidden then
-					Frame_World_Waypoint:HideWithAnimation(id, false)
-
-					--------------------------------
-
-					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
-					addon.C.Sound.Script:PlaySound(audioPath)
-				end
-
-				--------------------------------
-
-				IsWaypoint = false
-				IsPinpoint = true
-			end
-
-			function Callback.Transition:OnlyWaypoint(id)
-				if not Frame_World_Pinpoint.hidden then
-					Frame_World_Pinpoint:HideWithAnimation(id, false)
-				end
-
-				if Frame_World_Waypoint.hidden then
-					Frame_World_Waypoint:ShowWithAnimation(id, false)
-
-					--------------------------------
-
-					local audioPath = (C_AUDIO_CUSTOM and C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
-					addon.C.Sound.Script:PlaySound(audioPath)
-				end
-
-				--------------------------------
-
-				IsWaypoint = true
-				IsPinpoint = false
-			end
-
-			function Callback.Transition:ShowNavigator()
-				Frame_Navigator_Arrow:ShowWithAnimation()
-
-				--------------------------------
-
-				IsNavigator = true
-			end
-
-			function Callback.Transition:HideNavigator()
-				Frame_Navigator_Arrow:HideWithAnimation()
-
-				--------------------------------
-
-				IsNavigator = false
-			end
-
-			--------------------------------
-
-			Callback.Process = {}
-
-			function Callback.Process:GetInfo()
-				local questInfo = Callback:GetQuestInfo()
-				local appearanceInfo = Callback:APP_GetInfo(questInfo and questInfo.questID)
-				local state = Callback:GetCurrentState()
-				local id, isNewState = Callback.Logic:UpdateStateSession(state)
-
-				NS.Variables.Session = {}
-				NS.Variables.Session.questInfo = questInfo
-				NS.Variables.Session.appearanceInfo = appearanceInfo
-				NS.Variables.Session.state = state
-				NS.Variables.Session.id = id
-
-				return { isNewState = isNewState }
-			end
-
-			function Callback.Process:GetClamped()
-				local isClamped, isNewClamped = Callback:GetIsClamped()
-				NS.Variables.Session.isClamped = isClamped
-				return { isNewClamped = isNewClamped }
-			end
-
-			local Update_Waypoint_Distance_Cache = { distance = nil, arrivalTime = nil, text = nil, lastArrivalTimeText = nil, distanceChangeThreshold = 1 }
-			function Callback.Process:Update_Waypoint_Distance()
-				local DISTANCE = C_Navigation.GetDistance()
-				if not DISTANCE then return end
-
-				--------------------------------
-
-				-- Only recalculate if distance changed significantly
-				local distanceChanged = not Update_Waypoint_Distance_Cache.distance or math.abs(DISTANCE - Update_Waypoint_Distance_Cache.distance) > Update_Waypoint_Distance_Cache.distanceChangeThreshold
-				local arrivalTimeChanged = Update_Waypoint_Distance_Cache.arrivalTime ~= NS.Variables.ArrivalTime
-				local text, subtext = nil, nil
-
-				-- Cache distance text if changed
-				if distanceChanged then
-					Update_Waypoint_Distance_Cache.distance = DISTANCE
-					if C_PREF_METRIC then
-						local km, m = addon.C.API.Util:ConvertYardsToMetric(DISTANCE)
-						Update_Waypoint_Distance_Cache.text = km >= 1 and string.format("%.2fkm", km) or string.format("%.0fm", m)
+						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
+						addon.C.Sound.Script:PlaySound(audioPath)
 					else
-						Update_Waypoint_Distance_Cache.text = addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE)) .. " yds"
+						Frame_World_Pinpoint:ShowWithAnimation(id, false)
 					end
+
+					--------------------------------
+
+					IsWaypoint = false
+					IsPinpoint = true
 				end
 
-				-- Cache arrival time text if changed
-				if arrivalTimeChanged then
-					Update_Waypoint_Distance_Cache.arrivalTime = NS.Variables.ArrivalTime
-					if Update_Waypoint_Distance_Cache.arrivalTime and Update_Waypoint_Distance_Cache.arrivalTime > 0 then
-						local _, _, _, strHr, strMin, strSec = addon.C.API.Util:FormatTime(Update_Waypoint_Distance_Cache.arrivalTime)
-						Update_Waypoint_Distance_Cache.arrivalTimeText = strHr .. strMin .. strSec
-						if #Update_Waypoint_Distance_Cache.arrivalTimeText == 0 then
+				function Callback.Transition:Waypoint(id)
+					if not Frame_World_Pinpoint.hidden then
+						Frame_World_Pinpoint:HideWithAnimation(id).onFinish(function()
+							Frame_World_Waypoint:ShowWithAnimation(id, false)
+						end)
+
+
+						--------------------------------
+
+						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
+						addon.C.Sound.Script:PlaySound(audioPath)
+					else
+						Frame_World_Waypoint:ShowWithAnimation(id, false)
+					end
+
+					--------------------------------
+
+					IsWaypoint = true
+					IsPinpoint = false
+				end
+
+				function Callback.Transition:OnlyPinpoint(id)
+					if Frame_World_Pinpoint.hidden then
+						Frame_World_Pinpoint:ShowWithAnimation(id, false)
+					end
+
+					if not Frame_World_Waypoint.hidden then
+						Frame_World_Waypoint:HideWithAnimation(id, false)
+
+						--------------------------------
+
+						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
+						addon.C.Sound.Script:PlaySound(audioPath)
+					end
+
+					--------------------------------
+
+					IsWaypoint = false
+					IsPinpoint = true
+				end
+
+				function Callback.Transition:OnlyWaypoint(id)
+					if not Frame_World_Pinpoint.hidden then
+						Frame_World_Pinpoint:HideWithAnimation(id, false)
+					end
+
+					if Frame_World_Waypoint.hidden then
+						Frame_World_Waypoint:ShowWithAnimation(id, false)
+
+						--------------------------------
+
+						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
+						addon.C.Sound.Script:PlaySound(audioPath)
+					end
+
+					--------------------------------
+
+					IsWaypoint = true
+					IsPinpoint = false
+				end
+
+				function Callback.Transition:ShowNavigator()
+					IsNavigator = true
+				end
+
+				function Callback.Transition:HideNavigator()
+					IsNavigator = false
+				end
+			end
+
+			do -- PROCESS
+				Callback.Process = {}
+
+				function Callback.Process:GetInfo()
+					local questInfo = Callback:GetQuestInfo()
+					local appearanceInfo = Callback:APP_GetInfo(questInfo and questInfo.questID)
+
+					NS.Variables.Session.questInfo = questInfo
+					NS.Variables.Session.appearanceInfo = appearanceInfo
+				end
+
+				local Update_Waypoint_Distance_Cache = { distance = nil, arrivalTime = nil, text = nil, lastArrivalTimeText = nil, distanceChangeThreshold = 1 }
+				function Callback.Process:Update_Waypoint_Distance()
+					local DISTANCE = C_Navigation.GetDistance()
+					if not DISTANCE then return end
+
+					--------------------------------
+
+					-- Only recalculate if distance changed significantly
+					local distanceChanged = not Update_Waypoint_Distance_Cache.distance or math.abs(DISTANCE - Update_Waypoint_Distance_Cache.distance) > Update_Waypoint_Distance_Cache.distanceChangeThreshold
+					local arrivalTimeChanged = Update_Waypoint_Distance_Cache.arrivalTime ~= NS.Variables.ArrivalTime
+					local text, subtext = nil, nil
+
+					-- Cache distance text if changed
+					if distanceChanged then
+						Update_Waypoint_Distance_Cache.distance = DISTANCE
+						if Config.C_PREF_METRIC then
+							local km, m = addon.C.API.Util:ConvertYardsToMetric(DISTANCE)
+							Update_Waypoint_Distance_Cache.text = km >= 1 and string.format("%.2fkm", km) or string.format("%.0fm", m)
+						else
+							Update_Waypoint_Distance_Cache.text = addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE)) .. " yds"
+						end
+					end
+
+					-- Cache arrival time text if changed
+					if arrivalTimeChanged then
+						Update_Waypoint_Distance_Cache.arrivalTime = NS.Variables.ArrivalTime
+						if Update_Waypoint_Distance_Cache.arrivalTime and Update_Waypoint_Distance_Cache.arrivalTime > 0 then
+							local _, _, _, strHr, strMin, strSec = addon.C.API.Util:FormatTime(Update_Waypoint_Distance_Cache.arrivalTime)
+							Update_Waypoint_Distance_Cache.arrivalTimeText = strHr .. strMin .. strSec
+							if #Update_Waypoint_Distance_Cache.arrivalTimeText == 0 then
+								Update_Waypoint_Distance_Cache.arrivalTimeText = nil
+							end
+						else
 							Update_Waypoint_Distance_Cache.arrivalTimeText = nil
 						end
-					else
-						Update_Waypoint_Distance_Cache.arrivalTimeText = nil
 					end
-				end
 
-				-- Generate text to display based on user setting
-				if C_WS_DISTANCE_TEXT_TYPE == 1 then -- Distance + Arrival Time
-					text = Update_Waypoint_Distance_Cache.text
-					subtext = Update_Waypoint_Distance_Cache.arrivalTimeText
-				elseif C_WS_DISTANCE_TEXT_TYPE == 2 then -- Distance
-					text = Update_Waypoint_Distance_Cache.text
-				elseif C_WS_DISTANCE_TEXT_TYPE == 3 then -- Arrival Time
-					subtext = Update_Waypoint_Distance_Cache.arrivalTimeText
-				end
-
-				--------------------------------
-
-				-- Set text and only update if something changed
-				if distanceChanged or arrivalTimeChanged then
-					Frame_World_Waypoint:SetText(text, subtext)
-				end
-			end
-
-			function Callback.Process:Update_Waypoint()
-				local questInfo = NS.Variables.Session.questInfo
-				local appearanceInfo = NS.Variables.Session.appearanceInfo
-
-				--------------------------------
-
-				if questInfo then
-					local redirectInfo = Callback:GetRedirectInfo()
-					local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
-
-					if redirectInfo.valid then
-						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
+					-- Generate text to display based on user setting
+					if Config.C_WS_DISTANCE_TEXT_TYPE == 1 then -- Distance + Arrival Time
+						text = Update_Waypoint_Distance_Cache.text
+						subtext = Update_Waypoint_Distance_Cache.arrivalTimeText
+					elseif Config.C_WS_DISTANCE_TEXT_TYPE == 2 then -- Distance
+						text = Update_Waypoint_Distance_Cache.text
+					elseif Config.C_WS_DISTANCE_TEXT_TYPE == 3 then -- Arrival Time
+						subtext = Update_Waypoint_Distance_Cache.arrivalTimeText
 					end
 
 					--------------------------------
 
-					Frame_World_Waypoint:Context_SetOpacity(1)
-					Frame_World_Waypoint:Context_SetImage(contextIcon)
-					Frame_World_Waypoint:Context_SetVFX("Wave", appearanceInfo.color)
-				else
-					local redirectInfo = Callback:GetRedirectInfo()
-					local contextIcon = (Callback:GetContextIcon_Pin())
-
-					if redirectInfo.valid then
-						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect() }
+					-- Set text and only update if something changed
+					if distanceChanged or arrivalTimeChanged then
+						Frame_World_Waypoint:SetText(text, subtext)
 					end
-
-					--------------------------------
-
-					Frame_World_Waypoint:Context_SetOpacity(1)
-					Frame_World_Waypoint:Context_SetImage(contextIcon)
-					Frame_World_Waypoint:Context_SetVFX("Wave", appearanceInfo.color)
 				end
 
-				--------------------------------
-
-				Callback:APP_Set(questInfo and questInfo.questID)
-			end
-
-			function Callback.Process:Update_Pinpoint()
-				local questInfo = NS.Variables.Session.questInfo
-
-				--------------------------------
-
-				if questInfo then
-					local text = nil
-					local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
-
-					local redirectInfo = Callback:GetRedirectInfo()
-					local isComplete = (questInfo.completed)
-					local currentQuestObjective = ((questInfo.objectiveInfo.objectives and #questInfo.objectiveInfo.objectives >= questInfo.objectiveInfo.objectiveIndex and questInfo.objectiveInfo.objectives[questInfo.objectiveInfo.objectiveIndex].text) or "")
-					local questName = (C_QuestLog.GetTitleForQuestID(questInfo.questID))
+				function Callback.Process:Update_Waypoint()
+					local questInfo = NS.Variables.Session.questInfo
+					local appearanceInfo = NS.Variables.Session.appearanceInfo
 
 					--------------------------------
 
-					if redirectInfo.valid then
-						text = redirectInfo.text
-						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
-					else
-						if isComplete then
-							if C_WS_PINPOINT_INFO_EXTENDED then
-								text = questName .. " — " .. L["WaypointSystem - Pinpoint - Quest - Complete"]
-							else
-								text = L["WaypointSystem - Pinpoint - Quest - Complete"]
-							end
-						elseif currentQuestObjective then
-							text = currentQuestObjective
+					if questInfo then
+						local redirectInfo = Callback:GetRedirectInfo()
+						local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
+
+						if redirectInfo.valid then
+							contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
 						end
+
+						--------------------------------
+
+						Frame_World_Waypoint:Context_SetOpacity(1)
+						Frame_World_Waypoint:Context_SetImage(contextIcon)
+						Frame_World_Waypoint:Context_SetVFX("Wave", appearanceInfo.color)
+					else
+						local redirectInfo = Callback:GetRedirectInfo()
+						local contextIcon = (Callback:GetContextIcon_Pin())
+
+						if redirectInfo.valid then
+							contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect() }
+						end
+
+						--------------------------------
+
+						Frame_World_Waypoint:Context_SetOpacity(1)
+						Frame_World_Waypoint:Context_SetImage(contextIcon)
+						Frame_World_Waypoint:Context_SetVFX("Wave", appearanceInfo.color)
 					end
-					if not C_WS_PINPOINT_INFO then text = nil end
-
-					Frame_World_Pinpoint:SetText(text)
-					Frame_World_Pinpoint:Context_SetOpacity(text and .25 or 1)
-					Frame_World_Pinpoint:Context_SetImage(contextIcon)
-				else
-					local text = nil
-					local contextIcon = (Callback:GetContextIcon_Pin())
-
-					local redirectInfo = Callback:GetRedirectInfo()
-					local pinInfo = (Callback:GetPinInfo())
 
 					--------------------------------
 
-					if redirectInfo.valid then
-						text = redirectInfo.text
-					else
-						if pinInfo.isWay then
-							local wayInfo = WaypointUI_GetWay()
+					Callback:APP_Set()
+				end
 
-							--------------------------------
+				function Callback.Process:Update_Pinpoint()
+					local questInfo = NS.Variables.Session.questInfo
 
-							if #wayInfo.name >= 1 then
-								text = wayInfo.name
-							else
-								text = nil
-							end
-						elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
-							text = nil
-						elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
-							text = nil
+					--------------------------------
+
+					if questInfo then
+						local text = nil
+						local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
+
+						local redirectInfo = Callback:GetRedirectInfo()
+						local isComplete = (questInfo.completed)
+						local currentQuestObjective = "" -- ((questInfo.objectiveInfo.objectives and #questInfo.objectiveInfo.objectives >= questInfo.objectiveInfo.objectiveIndex and questInfo.objectiveInfo.objectives[questInfo.objectiveInfo.objectiveIndex].text) or "")
+						local questName = (C_QuestLog.GetTitleForQuestID(questInfo.questID))
+
+						--------------------------------
+
+						if redirectInfo.valid then
+							text = redirectInfo.text
+							contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
 						else
-							if C_WS_PINPOINT_INFO_EXTENDED then
-								if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
-									text = addon.C.API.Util:StripColorCodes(pinInfo.pinName) .. " — " .. addon.C.API.Util:StripColorCodes(pinInfo.poiInfo.description)
+							if isComplete then
+								if Config.C_WS_PINPOINT_INFO_EXTENDED then
+									text = questName .. " — " .. L["WaypointSystem - Pinpoint - Quest - Complete"]
+								else
+									text = L["WaypointSystem - Pinpoint - Quest - Complete"]
+								end
+							else
+								-- Gather objective info and display incomplete tasks
+								local numObjectives = #questInfo.objectiveInfo.objectives
+								local index = 1
+								for _ = 1, numObjectives do
+									if questInfo.objectiveInfo.objectives[index].text and not questInfo.objectiveInfo.objectives[index].finished then
+										currentQuestObjective = currentQuestObjective .. (index > 1 and "\n" or "") .. questInfo.objectiveInfo.objectives[index].text
+
+										index = index + 1
+									end
+								end
+								if currentQuestObjective then text = currentQuestObjective end
+							end
+						end
+						if not Config.C_WS_PINPOINT_INFO then text = nil end
+
+						Frame_World_Pinpoint:SetText(text)
+						Frame_World_Pinpoint:Context_SetOpacity(text and .25 or 1)
+						Frame_World_Pinpoint:Context_SetImage(contextIcon)
+					else
+						local text = nil
+						local contextIcon = (Callback:GetContextIcon_Pin())
+
+						local redirectInfo = Callback:GetRedirectInfo()
+						local pinInfo = (Callback:GetPinInfo())
+
+						--------------------------------
+
+						if redirectInfo.valid then
+							text = redirectInfo.text
+						else
+							if pinInfo.isWay then
+								local wayInfo = WaypointUI_GetWay()
+
+								--------------------------------
+
+								if #wayInfo.name >= 1 then
+									text = wayInfo.name
+								else
+									text = nil
+								end
+							elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
+								text = nil
+							elseif pinInfo.pinType == Enum.SuperTrackingType.Corpse then
+								text = nil
+							else
+								if Config.C_WS_PINPOINT_INFO_EXTENDED then
+									if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
+										text = addon.C.API.Util:StripColorCodes(pinInfo.pinName) .. " — " .. addon.C.API.Util:StripColorCodes(pinInfo.poiInfo.description)
+									else
+										text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
+									end
 								else
 									text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
 								end
-							else
-								text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
 							end
 						end
-					end
-					if not C_WS_PINPOINT_INFO then text = nil end
+						if not Config.C_WS_PINPOINT_INFO then text = nil end
 
-					Frame_World_Pinpoint:SetText(text)
-					Frame_World_Pinpoint:Context_SetOpacity(text and .25 or 1)
-					Frame_World_Pinpoint:Context_SetImage(contextIcon)
-				end
-
-				--------------------------------
-
-				Callback:APP_Set()
-			end
-
-			function Callback.Process:Update_Navigator()
-				if not C_WS_NAVIGATOR then return end
-
-				--------------------------------
-
-				local questInfo = NS.Variables.Session.questInfo
-
-				--------------------------------
-
-				if questInfo then
-					local redirectInfo = Callback:GetRedirectInfo()
-					local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
-
-					if redirectInfo.valid then
-						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
+						Frame_World_Pinpoint:SetText(text)
+						Frame_World_Pinpoint:Context_SetOpacity(text and .25 or 1)
+						Frame_World_Pinpoint:Context_SetImage(contextIcon)
 					end
 
 					--------------------------------
 
-					Frame_Navigator_Arrow:Context_SetOpacity(1)
-					Frame_Navigator_Arrow:Context_SetImage(contextIcon)
-				else
-					local redirectInfo = Callback:GetRedirectInfo()
-					local contextIcon = (Callback:GetContextIcon_Pin())
+					Callback:APP_Set()
+				end
 
-					if redirectInfo.valid then
-						contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect() }
-					end
+				function Callback.Process:Update_Navigator()
+					if not Config.C_WS_NAVIGATOR then return end
 
 					--------------------------------
 
-					Frame_Navigator_Arrow:Context_SetOpacity(1)
-					Frame_Navigator_Arrow:Context_SetImage(contextIcon)
-				end
+					local questInfo = NS.Variables.Session.questInfo
 
-				--------------------------------
+					--------------------------------
 
-				Callback:APP_Set(questInfo and questInfo.questID)
-			end
+					if questInfo then
+						local redirectInfo = Callback:GetRedirectInfo()
+						local contextIcon = { type = "TEXTURE", path = questInfo.contextIcon.texture }
 
-			function Callback.Process:Update_3D()
-				-- [DISTANCE SCALE]
-				local DISTANCE = C_Navigation.GetDistance()
-				local WAYPOINT_3D_MODIFIER_SCALE = Callback:GetDistanceScale(DISTANCE, 2000, .25, C_APP_WAYPOINT_SCALE_MIN, C_APP_WAYPOINT_SCALE_MAX, 1)
-				Frame.REF_WORLD_WAYPOINT_CONTENT:SetScale(WAYPOINT_3D_MODIFIER_SCALE)
+						if redirectInfo.valid then
+							contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect(questInfo.questID) }
+						end
 
-				-- [WAYPOINT BEAM ROTATION]
-				-- local DISTANCE_2D = Callback:GetDistance2D()
-				-- local ELEVATION = Callback:GetElevation()
-				-- local WAYPOINT_3D_MODIFIER_ROTATION = Callback:GetPerspectiveRotation(SuperTrackedFrame:GetLeft() or 0, SuperTrackedFrame:GetTop() or 0, GetScreenWidth(), GetScreenHeight(), DISTANCE_2D, ELEVATION, CVAR_FOV)
-				-- Frame.REF_WORLD_WAYPOINT_MARKER_BACKGROUND_TEXTURE:SetRotation(WAYPOINT_3D_MODIFIER_ROTATION)
+						--------------------------------
 
-				-- local WAYPOINT_3D_MODIFIER_ROTATION = Callback:GetPerspectiveRotation(SuperTrackedFrame:GetLeft() or 0, CVAR_FOV, DISTANCE)
-				-- Frame.REF_WORLD_WAYPOINT_MARKER_BACKGROUND_TEXTURE:SetRotation(WAYPOINT_3D_MODIFIER_ROTATION)
-			end
-
-			function Callback.Process:Update_Appearance()
-				if IsWaypoint then
-					-- MouseOver
-					Callback.FadeUtil.MouseOver:Update(Frame.REF_WORLD_WAYPOINT_ALPHA_MOUSE_OVER)
-
-					--CharacterOverlap
-					if CVAR_ACTIONCAM_SHOULDER <= 0 and CVAR_ACTIONCAM_PITCH <= 0 then
-						Callback.FadeUtil.CharacterOverlap:Update(Frame.REF_WORLD_WAYPOINT_ALPHA_CHARACTER_OVERLAP)
+						Frame_Navigator_Arrow:Context_SetOpacity(1)
+						Frame_Navigator_Arrow:Context_SetImage(contextIcon)
 					else
-						Callback.FadeUtil.CharacterOverlap:Reset(Frame.REF_WORLD_WAYPOINT_ALPHA_CHARACTER_OVERLAP)
+						local redirectInfo = Callback:GetRedirectInfo()
+						local contextIcon = (Callback:GetContextIcon_Pin())
+
+						if redirectInfo.valid then
+							contextIcon = { type = "TEXTURE", path = Callback:GetContextIcon_Redirect() }
+						end
+
+						--------------------------------
+
+						Frame_Navigator_Arrow:Context_SetOpacity(1)
+						Frame_Navigator_Arrow:Context_SetImage(contextIcon)
 					end
-				end
-
-				if IsPinpoint then
-					-- MouseOver
-					Callback.FadeUtil.MouseOver:Update(Frame.REF_WORLD_PINPOINT_ALPHA_MOUSE_OVER)
-
-					-- CharacterOverlap
-					if CVAR_ACTIONCAM_SHOULDER <= 0 and CVAR_ACTIONCAM_PITCH <= 0 then
-						Callback.FadeUtil.CharacterOverlap:Update(Frame.REF_WORLD_PINPOINT_ALPHA_CHARACTER_OVERLAP)
-					else
-						Callback.FadeUtil.CharacterOverlap:Reset(Frame.REF_WORLD_PINPOINT_ALPHA_CHARACTER_OVERLAP)
-					end
-				end
-
-				if IsNavigator then
-					-- MouseOver
-					Callback.FadeUtil.MouseOver:Update(Frame.REF_NAVIGATOR_ARROW_ALPHA_MOUSE_OVER)
-				end
-			end
-
-			--------------------------------
-
-			Callback.Event = {}
-
-			function Callback.Event:SuperTrackedChanged()
-				Callback:Waypoint_Reset()
-			end
-
-			function Callback.Event:SuperTrackedNewPath()
-				if IsWaypoint then Callback.Process:Update_Waypoint() end
-				if IsPinpoint then Callback.Process:Update_Pinpoint() end
-				if IsNavigator then Callback.Process:Update_Navigator() end
-			end
-
-			function Callback.Event:PlayerMoving()
-				Callback.Process:Update_3D()
-
-				--------------------------------
-
-				if IsWaypoint then
-					Callback.Process:Update_Waypoint_Distance()
-				end
-			end
-
-			function Callback.Event:ClampChanged()
-				if NS.Variables.Session.isClamped then
-					Callback:World_Hide()
-					Callback:Navigator_Show()
-					Callback:Blizzard_Hide()
-				else
-					Callback:World_Show()
-					Callback:Navigator_Hide()
-					Callback:Blizzard_Hide()
-				end
-
-				--------------------------------
-
-				if NS.Variables.Session.isClamped then
-					Callback.Transition:ShowNavigator()
 
 					--------------------------------
 
-					CallbackRegistry:Trigger("WaypointSystem.Navigator.Show")
-				else
-					Callback.Transition:HideNavigator()
-
-					--------------------------------
-
-					CallbackRegistry:Trigger("WaypointSystem.Navigator.Hide")
+					Callback:APP_Set()
 				end
-			end
 
-			function Callback.Event:StateChanged()
-				if NS.Variables.Session.state == "INVALID" or NS.Variables.Session.state == "INVALID_RANGE" then
-					if NS.Variables.Session.state == "INVALID_RANGE" then
-						if not Frame_World_Waypoint.hidden then
-							Frame_World_Waypoint:HideWithAnimation(NS.Variables.Session.id, false)
+				function Callback.Process:Update_3D()
+					-- [DISTANCE SCALE]
+					local DISTANCE = C_Navigation.GetDistance()
+					local WAYPOINT_3D_MODIFIER_SCALE = Callback:GetDistanceScale(DISTANCE, 2000, .25, Config.C_APP_WAYPOINT_SCALE_MIN, Config.C_APP_WAYPOINT_SCALE_MAX, 1)
+					Frame.REF_WORLD_WAYPOINT_CONTENT:SetScale(WAYPOINT_3D_MODIFIER_SCALE)
+
+					-- [WAYPOINT BEAM ROTATION]
+					-- local DISTANCE_2D = Callback:GetDistance2D()
+					-- local ELEVATION = Callback:GetElevation()
+					-- local WAYPOINT_3D_MODIFIER_ROTATION = Callback:GetPerspectiveRotation(SuperTrackedFrame:GetLeft() or 0, SuperTrackedFrame:GetTop() or 0, GetScreenWidth(), GetScreenHeight(), DISTANCE_2D, ELEVATION, CVAR_FOV)
+					-- Frame.REF_WORLD_WAYPOINT_MARKER_BACKGROUND_TEXTURE:SetRotation(WAYPOINT_3D_MODIFIER_ROTATION)
+
+					-- local WAYPOINT_3D_MODIFIER_ROTATION = Callback:GetPerspectiveRotation(SuperTrackedFrame:GetLeft() or 0, CVAR_FOV, DISTANCE)
+					-- Frame.REF_WORLD_WAYPOINT_MARKER_BACKGROUND_TEXTURE:SetRotation(WAYPOINT_3D_MODIFIER_ROTATION)
+				end
+
+				function Callback.Process:Update_PointerEffect()
+					if IsWaypoint then
+						-- MouseOver
+						if Config.C_WS_BACKGROUND_PREVIEW then
+							Callback.FadeUtil.MouseOver:Update(Frame.REF_WORLD_WAYPOINT_ALPHA_MOUSE_OVER)
 						end
 
-						if not Frame_World_Pinpoint.hidden then
-							Frame_World_Pinpoint:HideWithAnimation(NS.Variables.Session.id, false)
-						end
-
-						if not Frame_Navigator.hidden then
-							Frame_Navigator:HideWithAnimation()
+						--CharacterOverlap
+						if Config.CVAR_ACTIONCAM_SHOULDER <= 0 and Config.CVAR_ACTIONCAM_PITCH <= 0 then
+							Callback.FadeUtil.CharacterOverlap:Update(Frame.REF_WORLD_WAYPOINT_ALPHA_CHARACTER_OVERLAP)
+						else
+							Callback.FadeUtil.CharacterOverlap:Reset(Frame.REF_WORLD_WAYPOINT_ALPHA_CHARACTER_OVERLAP)
 						end
 					end
 
-					--------------------------------
+					if IsPinpoint then
+						-- MouseOver
+						if Config.C_WS_BACKGROUND_PREVIEW then
+							Callback.FadeUtil.MouseOver:Update(Frame.REF_WORLD_PINPOINT_ALPHA_MOUSE_OVER)
+						end
 
-					Callback:Blizzard_Hide()
+						-- CharacterOverlap
+						if Config.CVAR_ACTIONCAM_SHOULDER <= 0 and Config.CVAR_ACTIONCAM_PITCH <= 0 then
+							Callback.FadeUtil.CharacterOverlap:Update(Frame.REF_WORLD_PINPOINT_ALPHA_CHARACTER_OVERLAP)
+						else
+							Callback.FadeUtil.CharacterOverlap:Reset(Frame.REF_WORLD_PINPOINT_ALPHA_CHARACTER_OVERLAP)
+						end
+					end
 
-					--------------------------------
-
-					return
+					if IsNavigator then
+						-- MouseOver
+						if Config.C_WS_BACKGROUND_PREVIEW then
+							Callback.FadeUtil.MouseOver:Update(Frame.REF_NAVIGATOR_ARROW_ALPHA_MOUSE_OVER)
+						end
+					end
 				end
+			end
 
-				if NS.Variables.Session.state == "QUEST_PROXIMITY" then
-					if C_WS_TYPE == 1 then -- Both
-						Callback.Transition:Pinpoint(NS.Variables.Session.id)
-					end
+			do -- EVENT
+				Callback.Event = {}
 
-					if C_WS_TYPE == 2 then -- Waypoint
-						Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
-					end
+				function Callback.Event:Update()
+					Callback.Process:Update_3D()
+					Callback.Process:Update_PointerEffect()
 
-					if C_WS_TYPE == 3 then -- Pinpoint
-						Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
-					end
-				elseif NS.Variables.Session.state == "PROXIMITY" then
-					if C_WS_TYPE == 1 then -- Both
-						Callback.Transition:Pinpoint(NS.Variables.Session.id)
-					end
-
-					if C_WS_TYPE == 2 then -- Waypoint
-						Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
-					end
-
-					if C_WS_TYPE == 3 then -- Pinpoint
-						Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
-					end
-				elseif NS.Variables.Session.state == "QUEST_AREA" then
-					if C_WS_TYPE == 1 then -- Both
-						Callback.Transition:Waypoint(NS.Variables.Session.id)
-					end
-
-					if C_WS_TYPE == 2 then -- Waypoint
-						Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
-					end
-
-					if C_WS_TYPE == 3 then -- Pinpoint
-						Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
-					end
-				elseif NS.Variables.Session.state == "AREA" then
-					if C_WS_TYPE == 1 then -- Both
-						Callback.Transition:Waypoint(NS.Variables.Session.id)
-					end
-
-					if C_WS_TYPE == 2 then -- Waypoint
-						Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
-					end
-
-					if C_WS_TYPE == 3 then -- Pinpoint
-						Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
+					if IsWaypoint then
+						Callback.Process:Update_Waypoint_Distance()
 					end
 				end
 
-				--------------------------------
+				function Callback.Event:ContextUpdate()
+					GetNavFrame()
+					Callback.Process:GetInfo()
 
-				if IsWaypoint then
 					Callback.Process:Update_Waypoint()
-				end
-
-				if IsPinpoint then
 					Callback.Process:Update_Pinpoint()
-				end
-
-				if IsNavigator then
 					Callback.Process:Update_Navigator()
 				end
-			end
 
-			function Callback.Event:Update()
-
-			end
-
-			function Callback.Event:ResponsiveUpdate()
-				Callback.Process:Update_Appearance()
-			end
-
-			function Callback.Event:BackgroundUpdate()
-				Callback.Process:Update_3D()
-
-				if IsWaypoint then
-					Callback.Process:Update_Waypoint_Distance()
+				function Callback.Event:AppearanceUpdate()
+					Callback.Process:GetInfo()
+					Callback:APP_Set()
 				end
 
-				if IsPinpoint then
-					Callback.Process:Update_Pinpoint()
-				end
+				function Callback.Event:StateChanged()
+					if NS.Variables.Session.state == "INVALID" or NS.Variables.Session.state == "INVALID_RANGE" then
+						if NS.Variables.Session.state == "INVALID_RANGE" then
+							if not Frame_World_Waypoint.hidden then
+								Frame_World_Waypoint:HideWithAnimation(NS.Variables.Session.id, false)
+							end
 
-				if IsNavigator then
-					Callback.Process:Update_Navigator()
-				end
-			end
+							if not Frame_World_Pinpoint.hidden then
+								Frame_World_Pinpoint:HideWithAnimation(NS.Variables.Session.id, false)
+							end
 
-			function Callback.Event:NewWaypoint()
-				Callback.Process:GetInfo()
+							if not Frame_Navigator.hidden then
+								Frame_Navigator:HideWithAnimation()
+							end
+						end
 
-				--------------------------------
+						--------------------------------
 
-				CallbackRegistry:Trigger("WaypointSystem.ClampChanged")
-				CallbackRegistry:Trigger("WaypointSystem.StateChanged")
-			end
+						Callback:Blizzard_Hide()
 
-			function Callback.Event:Navigator_Show()
-				Callback.Process:Update_Navigator()
-			end
+						--------------------------------
 
-			CallbackRegistry:Add("WaypointSystem.SuperTrackedChanged", Callback.Event.SuperTrackedChanged)
-			CallbackRegistry:Add("WaypointSystem.SuperTrackedNewPath", Callback.Event.SuperTrackedNewPath)
-			CallbackRegistry:Add("WaypointSystem.PlayerMoving", Callback.Event.PlayerMoving)
-			CallbackRegistry:Add("WaypointSystem.ClampChanged", Callback.Event.ClampChanged)
-			CallbackRegistry:Add("WaypointSystem.StateChanged", Callback.Event.StateChanged)
-			CallbackRegistry:Add("WaypointSystem.Update", Callback.Event.Update)
-			CallbackRegistry:Add("WaypointSystem.ResponsiveUpdate", Callback.Event.ResponsiveUpdate)
-			CallbackRegistry:Add("WaypointSystem.BackgroundUpdate", Callback.Event.BackgroundUpdate)
-			CallbackRegistry:Add("WaypointSystem.NewWaypoint", Callback.Event.NewWaypoint)
-			CallbackRegistry:Add("WaypointSystem.Navigator.Show", Callback.Event.Navigator_Show)
-
-			--------------------------------
-
-			Callback.Logic = {}
-			local isPlayerMoving = false
-			local update = { lastUpdateTime = 0, interval = 1 / 60 }
-			local responsiveUpdate = { lastUpdateTime = 0, interval = 1 / 15 }
-			local backgroundUpdate = { lastUpdateTime = 0, interval = 1 / 5 }
-			local movementCheck = { lastUpdateTime = 0, interval = 1 / 5 }
-
-			function Callback.Logic:UpdateStateSession(currentState)
-				local id = nil
-				local isNewState = nil
-
-				--------------------------------
-
-				if NS.Variables.Session.state ~= currentState then
-					id = addon.C.API.Util:gen_hash()
-					isNewState = true
-				else
-					id = NS.Variables.Session.id
-					isNewState = false
-				end
-
-				--------------------------------
-
-				return id, isNewState
-			end
-
-			local Process_Movement_Cache = { lastUpdateTime = 0, updateInterval = .5, lastPlayerPosition = nil, playerMovementUpdateThreshold = 1, isPlayerMoving = false }
-			function Callback.Logic:Process_Movement()
-				local mapID = C_Map.GetBestMapForUnit("player")
-				if not mapID then return end
-
-				--------------------------------
-
-				local currentPos = C_Map.GetPlayerMapPosition(mapID, "player")
-				if currentPos and Process_Movement_Cache.lastPlayerPosition then
-					local dx = currentPos.x - Process_Movement_Cache.lastPlayerPosition.x
-					local dy = currentPos.y - Process_Movement_Cache.lastPlayerPosition.y
-					local distance = math.sqrt(dx * dx + dy * dy) * 1000 -- Approximate conversion to yards
-					Process_Movement_Cache.isPlayerMoving = distance > Process_Movement_Cache.playerMovementUpdateThreshold
-				end
-				Process_Movement_Cache.lastPlayerPosition = currentPos
-			end
-
-			function Callback.Logic:Process_Clamp()
-				local info_clamped = Callback.Process:GetClamped()
-				if info_clamped.isNewClamped then CallbackRegistry:Trigger("WaypointSystem.ClampChanged") end
-			end
-
-			function Callback.Logic:Process_State()
-				local info = Callback.Process:GetInfo()
-				if info.isNewState then CallbackRegistry:Trigger("WaypointSystem.StateChanged") end
-			end
-
-			function Callback.Logic:Update(context, elapsed)
-				elapsed = elapsed or 0
-
-				--------------------------------
-
-				-- ▶ Return when the SuperTracking isn't active, or if the player is in a cutscene.
-				if not C_SuperTrack.IsSuperTrackingAnything() or IsInCinematicScene() then
-					Callback:Navigator_Hide(); Callback:World_Hide(); Callback:Blizzard_Hide(); Callback.Logic.Frame_Update:Hide(); Callback.Logic.Frame_Update:Hide(); return
-				end
-
-				-- ▶ Return if the player is in an instance.
-				if IsInInstance() then
-					Callback:Navigator_Hide(); Callback:World_Hide(); Callback:Blizzard_Show(); Callback.Logic.Frame_Update:Hide(); return
-				end
-
-				-- ▶ Get navFrame, if invalid return.
-				GetNavFrame()
-				if not Frame.navFrame.frame then return end
-
-				--------------------------------
-
-				-- When player is moving, increase update interval
-				movementCheck.lastUpdateTime = movementCheck.lastUpdateTime + elapsed
-				if movementCheck.lastUpdateTime >= movementCheck.interval then
-					movementCheck.lastUpdateTime = 0
-					Callback.Logic:Process_Movement()
-				end
-
-				local newUpdateInterval = isPlayerMoving and update.interval or (update.interval * 2)
-				local newBackgroundUpdateInterval = isPlayerMoving and backgroundUpdate.interval or (backgroundUpdate.interval * 1.5)
-
-				-- ▶▶▶ UPDATE (FAST)
-				update.lastUpdateTime = update.lastUpdateTime + (elapsed or 0)
-				if context or update.lastUpdateTime >= newUpdateInterval then
-					update.lastUpdateTime = 0
-
-					--------------------------------
-
-					local isMoving = IsPlayerMoving()
-					if isMoving then
-						CallbackRegistry:Trigger("WaypointSystem.PlayerMoving")
+						return
 					end
 
-					Callback.Logic:Process_Clamp()
-					CallbackRegistry:Trigger("WaypointSystem.Update")
+					if NS.Variables.Session.state == "QUEST_PROXIMITY" then
+						if Config.C_WS_TYPE == 1 then -- Both
+							Callback.Transition:Pinpoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 2 then -- Waypoint
+							Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 3 then -- Pinpoint
+							Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
+						end
+					elseif NS.Variables.Session.state == "PROXIMITY" then
+						if Config.C_WS_TYPE == 1 then -- Both
+							Callback.Transition:Pinpoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 2 then -- Waypoint
+							Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 3 then -- Pinpoint
+							Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
+						end
+					elseif NS.Variables.Session.state == "QUEST_AREA" then
+						if Config.C_WS_TYPE == 1 then -- Both
+							Callback.Transition:Waypoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 2 then -- Waypoint
+							Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 3 then -- Pinpoint
+							Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
+						end
+					elseif NS.Variables.Session.state == "AREA" then
+						if Config.C_WS_TYPE == 1 then -- Both
+							Callback.Transition:Waypoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 2 then -- Waypoint
+							Callback.Transition:OnlyWaypoint(NS.Variables.Session.id)
+						end
+
+						if Config.C_WS_TYPE == 3 then -- Pinpoint
+							Callback.Transition:OnlyPinpoint(NS.Variables.Session.id)
+						end
+					end
 				end
 
-				-- ▶▶ RESPONSIVE UPDATE (MEDIUM)
-				responsiveUpdate.lastUpdateTime = responsiveUpdate.lastUpdateTime + (elapsed or 0)
-				if context or responsiveUpdate.lastUpdateTime >= responsiveUpdate.interval then
-					responsiveUpdate.lastUpdateTime = 0
+				function Callback.Event:ClampChanged()
+					if NS.Variables.Session.isClamped then
+						Callback:World_Hide()
+						Callback:Navigator_Show()
+						Callback:Blizzard_Hide()
+					else
+						Callback:World_Show()
+						Callback:Navigator_Hide()
+						Callback:Blizzard_Hide()
+					end
 
 					--------------------------------
 
-					CallbackRegistry:Trigger("WaypointSystem.ResponsiveUpdate")
+					if NS.Variables.Session.isClamped then
+						Callback.Transition:ShowNavigator()
+
+						--------------------------------
+
+						CallbackRegistry:Trigger("WaypointSystem.Navigator.Show")
+					else
+						Callback.Transition:HideNavigator()
+
+						--------------------------------
+
+						CallbackRegistry:Trigger("WaypointSystem.Navigator.Hide")
+					end
 				end
 
-				-- ▶ BACKGROUND UPDATE (SLOW)
-				backgroundUpdate.lastUpdateTime = backgroundUpdate.lastUpdateTime + (elapsed or 0)
-				if context or backgroundUpdate.lastUpdateTime >= newBackgroundUpdateInterval then
-					backgroundUpdate.lastUpdateTime = 0
+				function Callback.Event:ActiveChanged(active)
+					if not active then
+						Callback:World_Hide()
+						Callback:Navigator_Hide()
+						Callback:Blizzard_Show()
+					end
+				end
+
+				function Callback.Event:New()
+					Callback:Waypoint_Reset()
+				end
+
+				--------------------------------
+
+				-- New
+				CallbackRegistry:Add("WaypointSystem.New", Callback.Event.New)
+
+				-- Responsive Update
+				CallbackRegistry:Add("WaypointSystem.Update", Callback.Event.Update)
+
+				-- Context Update
+				CallbackRegistry:Add("WaypointSystem.ContextUpdate", Callback.Event.ContextUpdate)
+
+				-- Appearance Update
+				CallbackRegistry:Add("WaypointSystem.AppearanceUpdate", Callback.Event.AppearanceUpdate)
+
+				-- State Changedd
+				CallbackRegistry:Add("WaypointSystem.StateChanged", Callback.Event.StateChanged)
+
+				-- Clamp Changed
+				CallbackRegistry:Add("WaypointSystem.ClampChanged", Callback.Event.ClampChanged)
+
+				-- Active Changed
+				CallbackRegistry:Add("WaypointSystem.ActiveChanged", Callback.Event.ActiveChanged)
+			end
+
+			do -- EVENT MANAGER
+				local EventManager = {}
+
+				--------------------------------
+				-- DISTANCE QUERY
+				--------------------------------
+
+				do
+					-- High performance cost.
+					-- Runs until C_Navigation.Distance() is valid (not zero)
+					-- Calls "WaypointSystem.DistanceReady" when true
+
+					EventManager.Distance = CreateFrame("Frame")
+					EventManager.Distance:SetScript("OnUpdate", function()
+						if C_Navigation.GetDistance() > 0 then
+							CallbackRegistry:Trigger("WaypointSystem.DistanceReady")
+							EventManager.Distance:Hide()
+						end
+					end)
+					EventManager.Distance:Hide()
+				end
+
+				--------------------------------
+				-- FUNCTIONS
+				--------------------------------
+
+				do
+					-- Acquire id, and check if its a new state
+					function EventManager.UpdateStateSession(currentState)
+						local id = nil
+						local isNewState = nil
+
+						--------------------------------
+
+						if NS.Variables.Session.state ~= currentState then
+							id = addon.C.API.Util:gen_hash()
+							isNewState = true
+						else
+							id = NS.Variables.Session.id
+							isNewState = false
+						end
+
+						--------------------------------
+
+						return id, isNewState
+					end
+
+					-- Run checks and determine if its valid to set as active.
+					-- Triggers Callback when active state is changed.
+					function EventManager.UpdateActive()
+						local isActive = nil
+
+						if C_SuperTrack.IsSuperTrackingAnything() and not IsInInstance() then
+							isActive = true
+						else
+							isActive = false
+						end
+
+						-- Check if active state changed
+						local changed = NS.Variables.IsActive ~= isActive
+						if changed then
+							-- If the new state is active, wait until C_Navigation.GetDistance is valid.
+							if isActive then
+								EventManager.Distance:Show()
+							else
+								CallbackRegistry:Trigger("WaypointSystem.ActiveChanged", isActive)
+							end
+						end
+
+						NS.Variables.IsActive = isActive
+
+						return isActive
+					end
+
+					-- Call ActiveChanged when C_Navigation.GetDistance is obtained and ready
+					CallbackRegistry:Add("WaypointSystem.DistanceReady", function() CallbackRegistry:Trigger("WaypointSystem.ActiveChanged", true) end)
 
 					--------------------------------
 
-					if context then
-						if context == "SUPER_TRACKING_CHANGED" then
-							CallbackRegistry:Trigger("WaypointSystem.SuperTrackedChanged")
+					-- Utilises the QuestID to check whether the player is in a blob. This is less efficent than event-based.
+					function EventManager.ManualUpdateInQuestBlob()
+						NS.Variables.Session.IsInsideQuestBlob = C_Minimap.IsInsideQuestBlob(C_SuperTrack.GetSuperTrackedQuestID() or 0)
+					end
 
-							--------------------------------
+					-- We run this first since add-on initalization takes place after a delay when interface reload, therefore missing the event.
+					EventManager.ManualUpdateInQuestBlob()
 
-							C_Timer.After(0, function()
-								CallbackRegistry:Trigger("WaypointSystem.NewWaypoint")
-							end)
-						elseif context == "SUPER_TRACKING_PATH_UPDATED" then
-							CallbackRegistry:Trigger("WaypointSystem.SuperTrackedNewPath")
-						elseif context == "MAP_PIN_NEW_WAY" then
-							CallbackRegistry:Trigger("WaypointSystem.SuperTrackingChanged")
+					--------------------------------
+
+					function EventManager.Update_Slow()
+						CallbackRegistry:Trigger("WaypointSystem.Update")
+					end
+
+					function EventManager.Update_Clamp()
+						local isClamped, isNewClamped = Callback:GetIsClamped()
+						if isNewClamped then CallbackRegistry:Trigger("WaypointSystem.ClampChanged") end
+					end
+
+					function EventManager.Update_State()
+						local state = Callback:GetCurrentState()
+						local id, isNewState = EventManager.UpdateStateSession(state)
+						NS.Variables.Session.state = state
+						NS.Variables.Session.id = id
+
+						if isNewState then
+							CallbackRegistry:Trigger("WaypointSystem.StateChanged")
+							CallbackRegistry:Trigger("WaypointSystem.ContextUpdate")
 						end
 					end
 
-					Callback.Logic:Process_State()
-					CallbackRegistry:Trigger("WaypointSystem.BackgroundUpdate")
-				end
-			end
-
-			do -- EVENT MANAGER / UPDATE
-				local function ShowUpdaterIfValid()
-					if C_SuperTrack.IsSuperTrackingAnything() and not IsInCinematicScene() and not IsInInstance() then
-						Callback.Logic.Frame_Update:Show()
+					function EventManager.Update_Appearance()
+						CallbackRegistry:Trigger("WaypointSystem.AppearanceUpdate")
 					end
 				end
 
-				Callback.Logic.Frame_Update = addon.C.FrameTemplates:CreateFrame("Frame")
-				Callback.Logic.Frame_Update:SetScript("OnUpdate", function(_, elapsed)
-					Callback.Logic:Update(nil, elapsed)
-				end)
-				hooksecurefunc(Callback.Logic.Frame_Update, "Show", function()
-					NS.Variables.IsActive = true
-				end)
-				hooksecurefunc(Callback.Logic.Frame_Update, "Hide", function()
-					NS.Variables.IsActive = false
-				end)
+				--------------------------------
+				-- UPDATER (MOVING)
+				--------------------------------
 
-				Callback.Logic.Frame_Event = addon.C.FrameTemplates:CreateFrame("Frame")
-				Callback.Logic.Frame_Event:RegisterEvent("SUPER_TRACKING_CHANGED")
-				Callback.Logic.Frame_Event:RegisterEvent("SUPER_TRACKING_PATH_UPDATED")
-				Callback.Logic.Frame_Event:RegisterEvent("CINEMATIC_START")
-				Callback.Logic.Frame_Event:RegisterEvent("CINEMATIC_STOP")
-				Callback.Logic.Frame_Event:RegisterEvent("PLAY_MOVIE")
-				Callback.Logic.Frame_Event:RegisterEvent("STOP_MOVIE")
-				Callback.Logic.Frame_Event:RegisterEvent("ZONE_CHANGED")
-				Callback.Logic.Frame_Event:SetScript("OnEvent", function(_, event, ...)
-					ShowUpdaterIfValid()
+				do
+					EventManager.Event_Moving = CreateFrame("Frame")
+					EventManager.Event_Moving:SetScript("OnUpdate", function()
+						if not NS.Variables.IsActive then return end
 
-					--------------------------------
+						CallbackRegistry:Trigger("WaypointSystem.Update")
+					end)
+					EventManager.Event_Moving:Hide()
+				end
 
-					Callback.Logic:Update(event, nil)
-				end)
+				--------------------------------
+				-- UPDATER (ACTIVE CHECKER)
+				--------------------------------
 
-				CallbackRegistry:Add("MapPin.NewWay", function()
-					ShowUpdaterIfValid()
+				do
+					-- WHEN UN-TRACKING:
+					-- This is called before Event-Based to run first when un-tracking.
+					-- Triggers "WaypointSystem.ActiveChanged" which triggers the fade animation
 
-					--------------------------------
+					EventManager.Active = CreateFrame("Frame")
+					EventManager.Active:SetScript("OnEvent", EventManager.UpdateActive)
+					EventManager.Active:RegisterEvent("ZONE_CHANGED")
+					EventManager.Active:RegisterEvent("SUPER_TRACKING_CHANGED")
 
-					Callback.Logic:Update("MAP_PIN_NEW_WAY", nil)
-				end)
+					C_Timer.After(0, EventManager.UpdateActive)
+				end
+
+				--------------------------------
+				-- UPDATER (EVENT-BASED)
+				--------------------------------
+
+				do
+					-- WHEN UN-TRACKING
+					-- This is called after Active checker, so the events are blocked when `IsActive == false`
+
+					EventManager.Event = CreateFrame("Frame")
+					EventManager.Event:SetScript("OnEvent", function(self, event, ...)
+						if not NS.Variables.IsActive then return end
+
+						if event == "QUEST_POI_UPDATE" or
+							event == "QUEST_LOG_UPDATE" or
+							event == "ZONE_CHANGED" or
+							event == "QUEST_ACCEPTED" or
+							event == "QUEST_COMPLETE" or
+							event == "QUEST_DETAIL" or
+							event == "QUEST_FINISHED" or
+							event == "SUPER_TRACKING_PATH_UPDATED" then
+							CallbackRegistry:Trigger("WaypointSystem.ContextUpdate")
+						elseif event == "PLAYER_STARTED_MOVING" or
+							(event == "PLAYER_IS_GLIDING_CHANGED" and ... == true) then
+							EventManager.Event_Moving:Show()
+						elseif event == "PLAYER_STOPPED_MOVING" or
+							(event == "PLAYER_IS_GLIDING_CHANGED" and ... == false) then
+							EventManager.Event_Moving:Hide()
+						end
+
+						if event == "PLAYER_INSIDE_QUEST_BLOB_STATE_CHANGED" then
+							if select(1, ...) == C_SuperTrack.GetSuperTrackedQuestID() then
+								NS.Variables.Session.IsInsideQuestBlob = select(2, ...)
+							else
+								NS.Variables.Session.IsInsideQuestBlob = false
+							end
+
+							CallbackRegistry:Trigger("WaypointSystem.StateChanged")
+							CallbackRegistry:Trigger("WaypointSystem.ContextUpdate")
+						end
+
+						if event == "SUPER_TRACKING_CHANGED" then
+							CallbackRegistry:Trigger("WaypointSystem.New")
+							CallbackRegistry:Trigger("WaypointSystem.StateChanged")
+							CallbackRegistry:Trigger("WaypointSystem.ContextUpdate")
+						end
+					end)
+
+					-- UPDATE CONTEXT
+					EventManager.Event:RegisterEvent("QUEST_POI_UPDATE")
+					EventManager.Event:RegisterEvent("QUEST_LOG_UPDATE")
+					EventManager.Event:RegisterEvent("ZONE_CHANGED")
+					EventManager.Event:RegisterEvent("QUEST_ACCEPTED")
+					EventManager.Event:RegisterEvent("QUEST_COMPLETE")
+					EventManager.Event:RegisterEvent("QUEST_DETAIL")
+					EventManager.Event:RegisterEvent("QUEST_FINISHED")
+					EventManager.Event:RegisterEvent("SUPER_TRACKING_CHANGED")
+					EventManager.Event:RegisterEvent("SUPER_TRACKING_PATH_UPDATED")
+
+					-- PLAYER MOVING
+					EventManager.Event:RegisterEvent("PLAYER_STARTED_MOVING")
+					EventManager.Event:RegisterEvent("PLAYER_STOPPED_MOVING")
+					EventManager.Event:RegisterEvent("PLAYER_IS_GLIDING_CHANGED")
+
+					-- SUPER TRACKING
+					EventManager.Event:RegisterEvent("SUPER_TRACKING_CHANGED")
+					EventManager.Event:RegisterEvent("PLAYER_INSIDE_QUEST_BLOB_STATE_CHANGED")
+				end
+
+
+				--------------------------------
+				-- UPDATER (CONTINOUS)
+				--------------------------------
+
+				do
+					local slowUpdate
+					local clampUpdate
+					local stateUpdate
+
+					function EventManager.SetupTimers(active)
+						if slowUpdate then slowUpdate:Cancel() end
+						if clampUpdate then clampUpdate:Cancel() end
+						if stateUpdate then stateUpdate:Cancel() end
+
+						if active then
+							slowUpdate = C_Timer.NewTicker(.1, EventManager.Update_Slow)
+							clampUpdate = C_Timer.NewTicker(.025, EventManager.Update_Clamp)
+							stateUpdate = C_Timer.NewTicker(1, EventManager.Update_State)
+
+							EventManager.Update_Slow()
+							EventManager.Update_Clamp()
+							EventManager.Update_State()
+						end
+					end
+				end
+
+				--------------------------------
+				-- SETUP
+				--------------------------------
+
+				-- Enable continous updaters on load after a delay to make sure the rest of the script is initalized.
+				C_Timer.After(0, function() EventManager.SetupTimers(true) end)
+
+				-- Hook to CallbackRegistry events.
+				CallbackRegistry:Add("WaypointSystem.ActiveChanged", EventManager.SetupTimers)
+				CallbackRegistry:Add("C_CONFIG_WS_DISTANCE_HIDE", EventManager.Update_State)
+				CallbackRegistry:Add("C_CONFIG_WS_DISTANCE_TRANSITION", EventManager.Update_State)
+				CallbackRegistry:Add("C_CONFIG_APPEARANCE_UPDATE", EventManager.Update_Appearance)
 			end
 		end
 	end
@@ -2091,34 +2073,195 @@ function NS.Script:Load()
 	-- FUNCTIONS (ANIMATION)
 	--------------------------------
 
-	do
-		do -- WORLD
+	do -- WORLD
+		do -- SHOW
+			function Frame_World:ShowWithAnimation_StopEvent()
+				return Frame_World.hidden
+			end
+
+			function Frame_World:ShowWithAnimation(skipAnimation)
+				if not Frame_World.hidden then
+					return
+				end
+				Frame_World.hidden = false
+				Frame_World:Show()
+
+				--------------------------------
+
+				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					["stopEvent"] = Frame_World.ShowWithAnimation_StopEvent,
+					["sequences"] = {
+						["playback"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									addon.C.Animation:CancelAll(Frame_World)
+
+									--------------------------------
+
+									addon.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.ShowWithAnimation_StopEvent })
+								end
+							}
+						},
+						["instant"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									Frame_World:SetAlpha(1)
+								end
+							},
+							[2] = {
+								["wait"] = nil,
+								["animation"] = function()
+									Frame_World:Hide()
+								end
+							}
+						}
+					}
+				})
+				animation:Play(skipAnimation and "instant" or "playback")
+			end
+		end
+
+		do -- HIDE
+			function Frame_World:HideWithAnimation_StopEvent()
+				return not Frame_World.hidden
+			end
+
+			function Frame_World:HideWithAnimation(skipAnimation)
+				if Frame_World.hidden then
+					return
+				end
+				Frame_World.hidden = true
+
+				--------------------------------
+
+				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					["stopEvent"] = Frame_World.HideWithAnimation_StopEvent,
+					["sequences"] = {
+						["playback"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									addon.C.Animation:CancelAll(Frame_World)
+
+									--------------------------------
+
+									addon.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = Frame_World:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.HideWithAnimation_StopEvent })
+								end
+							},
+							[2] = {
+								["wait"] = .5,
+								["animation"] = function()
+									Frame_World:Hide()
+								end
+							}
+						},
+						["instant"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									Frame_World:SetAlpha(0)
+								end
+							},
+							[2] = {
+								["wait"] = nil,
+								["animation"] = function()
+									Frame_World:Hide()
+								end
+							}
+						}
+					}
+				})
+				animation:Play(skipAnimation and "instant" or "playback")
+			end
+		end
+
+		do -- WAYPOINT
+			do -- VFX
+				do -- WAVE
+					local Wave = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX_WAVE
+
+					--------------------------------
+
+					function Wave:Animation_Playback_StopEvent()
+						return not Wave:IsShown()
+					end
+
+					function Wave:Animation_Playback()
+						addon.C.Animation:CancelAll(Wave)
+
+						--------------------------------
+
+						addon.C.Animation:Alpha({ ["frame"] = Wave, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Wave.Animation_Playback_StopEvent })
+						addon.C.Animation:Scale({ ["frame"] = Wave, ["duration"] = 2, ["from"] = .5, ["to"] = 1.5, ["ease"] = "EaseExpo_InOut", ["stopEvent"] = Wave.Animation_Playback_StopEvent })
+					end
+
+					Wave.Animation_Playback_Loop = addon.C.Animation.Sequencer:CreateLoop()
+					Wave.Animation_Playback_Loop:SetInterval(1.75)
+					Wave.Animation_Playback_Loop:SetAnimation(Wave.Animation_Playback)
+					Wave.Animation_Playback_Loop:SetOnStart(function()
+						Wave:Show()
+					end)
+					Wave.Animation_Playback_Loop:SetOnStop(function()
+						Wave:Hide()
+					end)
+				end
+			end
+
 			do -- SHOW
-				function Frame_World:ShowWithAnimation_StopEvent()
-					return Frame_World.hidden
+				function Frame_World_Waypoint:ShowWithAnimation_StopEvent(id)
+					return NS.Variables.Session.id ~= id
 				end
 
-				function Frame_World:ShowWithAnimation(skipAnimation)
-					if not Frame_World.hidden then
-						return
-					end
-					Frame_World.hidden = false
-					Frame_World:Show()
+				function Frame_World_Waypoint:ShowWithAnimation(id, skipAnimation)
+					Frame_World_Waypoint.hidden = false
+					Frame_World_Waypoint:Show()
 
 					--------------------------------
 
 					local animation = addon.C.Animation.Sequencer:CreateAnimation({
-						["stopEvent"] = Frame_World.ShowWithAnimation_StopEvent,
+						["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame_World)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
 
 										--------------------------------
 
-										addon.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.ShowWithAnimation_StopEvent })
+										Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_MARKER:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE:Hide()
+										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 3.25, ["to"] = 1, ["ease"] = "EaseSine_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+									end,
+								},
+								[2] = {
+									["wait"] = .225,
+									["animation"] = function()
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = 1, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = 1, ["from"] = .25, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+
+										--------------------------------
+
+										Frame.REF_WORLD_WAYPOINT_CONTEXT:ShowWithAnimation(skipAnimation)
+									end
+								},
+								[3] = {
+									["wait"] = .5,
+									["animation"] = function()
+										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE:Show()
+										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Stop()
+										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Start()
 									end
 								}
 							},
@@ -2126,13 +2269,20 @@ function NS.Script:Load()
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										Frame_World:SetAlpha(1)
-									end
-								},
-								[2] = {
-									["wait"] = nil,
-									["animation"] = function()
-										Frame_World:Hide()
+										Frame.REF_WORLD_WAYPOINT_CONTEXT:SetScale(1)
+										Frame.REF_WORLD_WAYPOINT_CONTEXT:SetAlpha(1)
+										Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:SetAlpha(1)
+										Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetPoint("CENTER", Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetParent(), 0, 0)
+										Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetAlpha(1)
+										Frame.REF_WORLD_WAYPOINT_MARKER:SetAlpha(1)
+										Frame.REF_WORLD_WAYPOINT_MARKER:SetScale(1)
+
+										--------------------------------
+
+										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE:Show()
+										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Stop()
+										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Start()
+										Frame.REF_WORLD_WAYPOINT_CONTEXT:ShowWithAnimation(skipAnimation)
 									end
 								}
 							}
@@ -2143,36 +2293,50 @@ function NS.Script:Load()
 			end
 
 			do -- HIDE
-				function Frame_World:HideWithAnimation_StopEvent()
-					return not Frame_World.hidden
+				function Frame_World_Waypoint:HideWithAnimation_StopEvent(id)
+					return NS.Variables.Session.id ~= id
 				end
 
-				function Frame_World:HideWithAnimation(skipAnimation)
-					if Frame_World.hidden then
-						return
-					end
-					Frame_World.hidden = true
+				function Frame_World_Waypoint:HideWithAnimation(id, skipAnimation)
+					Frame_World_Waypoint.hidden = true
+
+					--------------------------------
+
+					local chain = addon.C.API.Util:AddMethodChain({ "onFinish" })
 
 					--------------------------------
 
 					local animation = addon.C.Animation.Sequencer:CreateAnimation({
-						["stopEvent"] = Frame_World.HideWithAnimation_StopEvent,
+						["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame_World)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
 
 										--------------------------------
 
-										addon.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = Frame_World:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.HideWithAnimation_StopEvent })
+										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseSine_In", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = .5, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = 0, ["to"] = 5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetScale(), ["to"] = .25, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
 									end
 								},
 								[2] = {
-									["wait"] = .5,
+									["wait"] = .25,
 									["animation"] = function()
-										Frame_World:Hide()
+										Frame_World_Waypoint:Hide()
+
+										if chain.onFinish.variable then
+											chain.onFinish.variable()
+										end
 									end
 								}
 							},
@@ -2180,107 +2344,119 @@ function NS.Script:Load()
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										Frame_World:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_CONTEXT:SetScale(2)
+										Frame.REF_WORLD_WAYPOINT_CONTEXT:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetPoint("CENTER", Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetParent(), 0, 7.5)
+										Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_MARKER:SetAlpha(0)
+										Frame.REF_WORLD_WAYPOINT_MARKER:SetScale(.25)
 									end
 								},
 								[2] = {
 									["wait"] = nil,
 									["animation"] = function()
-										Frame_World:Hide()
+										Frame_World_Waypoint:Hide()
+
+										if chain.onFinish.variable then
+											chain.onFinish.variable()
+										end
 									end
 								}
 							}
 						}
 					})
 					animation:Play(skipAnimation and "instant" or "playback")
+
+					---------------------------------
+
+					return { onFinish = chain.onFinish.set }
 				end
 			end
 
-			do -- WAYPOINT
-				do -- VFX
-					do -- WAVE
-						local Wave = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX_WAVE
+			do -- FOOTER
+				local SubtextFrame = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME
+				local Subtext = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT_SUBTEXT
 
-						--------------------------------
-
-						function Wave:Animation_Playback_StopEvent()
-							return not Wave:IsShown()
-						end
-
-						function Wave:Animation_Playback()
-							addon.C.Animation:CancelAll(Wave)
-
-							--------------------------------
-
-							addon.C.Animation:Alpha({ ["frame"] = Wave, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Wave.Animation_Playback_StopEvent })
-							addon.C.Animation:Scale({ ["frame"] = Wave, ["duration"] = 2, ["from"] = .5, ["to"] = 1.5, ["ease"] = "EaseExpo_InOut", ["stopEvent"] = Wave.Animation_Playback_StopEvent })
-						end
-
-						Wave.Animation_Playback_Loop = addon.C.Animation.Sequencer:CreateLoop()
-						Wave.Animation_Playback_Loop:SetInterval(1.75)
-						Wave.Animation_Playback_Loop:SetAnimation(Wave.Animation_Playback)
-						Wave.Animation_Playback_Loop:SetOnStart(function()
-							Wave:Show()
-						end)
-						Wave.Animation_Playback_Loop:SetOnStop(function()
-							Wave:Hide()
-						end)
-					end
-				end
+				--------------------------------
 
 				do -- SHOW
-					function Frame_World_Waypoint:ShowWithAnimation_StopEvent(id)
-						return NS.Variables.Session.id ~= id
+					function SubtextFrame:ShowWithAnimation_StopEvent()
+						return SubtextFrame.hidden
 					end
 
-					function Frame_World_Waypoint:ShowWithAnimation(id, skipAnimation)
-						Frame_World_Waypoint.hidden = false
-						Frame_World_Waypoint:Show()
+					function SubtextFrame:ShowWithAnimation(skipAnimation)
+						if not SubtextFrame.hidden then
+							return
+						end
+						SubtextFrame.hidden = false
+						SubtextFrame:Show()
 
 						--------------------------------
 
 						local animation = addon.C.Animation.Sequencer:CreateAnimation({
-							["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end,
+							["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent,
 							["sequences"] = {
 								["playback"] = {
 									[1] = {
 										["wait"] = nil,
 										["animation"] = function()
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
+											addon.C.Animation:CancelAll(SubtextFrame)
 
 											--------------------------------
 
-											Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:SetAlpha(0)
-											Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetAlpha(0)
-											Frame.REF_WORLD_WAYPOINT_MARKER:SetAlpha(0)
-											Frame.REF_WORLD_WAYPOINT_MARKER_PULSE:Hide()
-											addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 3.25, ["to"] = 1, ["ease"] = "EaseSine_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-										end,
-									},
-									[2] = {
-										["wait"] = .225,
+											addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
+											addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
+										end
+									}
+								},
+								["instant"] = {
+									[1] = {
+										["wait"] = nil,
 										["animation"] = function()
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = 1, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = 1, ["from"] = .25, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+											SubtextFrame:SetAlpha(1)
+											Subtext:SetPoint("CENTER", Subtext:GetParent(), 0, 0)
+										end
+									}
+								}
+							}
+						})
+						animation:Play(skipAnimation and "instant" or "playback")
+					end
+				end
+
+				do -- HIDE
+					function SubtextFrame:HideWithAnimation_StopEvent()
+						return not SubtextFrame.hidden
+					end
+
+					function SubtextFrame:HideWithAnimation(skipAnimation)
+						if SubtextFrame.hidden then
+							return
+						end
+						SubtextFrame.hidden = true
+
+						--------------------------------
+
+						local animation = addon.C.Animation.Sequencer:CreateAnimation({
+							["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent,
+							["sequences"] = {
+								["playback"] = {
+									[1] = {
+										["wait"] = nil,
+										["animation"] = function()
+											addon.C.Animation:CancelAll(SubtextFrame)
 
 											--------------------------------
 
-											Frame.REF_WORLD_WAYPOINT_CONTEXT:ShowWithAnimation(skipAnimation)
+											addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .25, ["from"] = SubtextFrame:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
+											addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = .75, ["from"] = 0, ["to"] = 7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
 										end
 									},
-									[3] = {
+									[2] = {
 										["wait"] = .5,
 										["animation"] = function()
-											Frame.REF_WORLD_WAYPOINT_MARKER_PULSE:Show()
-											Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Stop()
-											Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Start()
+											SubtextFrame:Hide()
 										end
 									}
 								},
@@ -2288,383 +2464,59 @@ function NS.Script:Load()
 									[1] = {
 										["wait"] = nil,
 										["animation"] = function()
-											Frame.REF_WORLD_WAYPOINT_CONTEXT:SetScale(1)
-											Frame.REF_WORLD_WAYPOINT_CONTEXT:SetAlpha(1)
-											Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:SetAlpha(1)
-											Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetPoint("CENTER", Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetParent(), 0, 0)
-											Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetAlpha(1)
-											Frame.REF_WORLD_WAYPOINT_MARKER:SetAlpha(1)
-											Frame.REF_WORLD_WAYPOINT_MARKER:SetScale(1)
-
-											--------------------------------
-
-											Frame.REF_WORLD_WAYPOINT_MARKER_PULSE:Show()
-											Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Stop()
-											Frame.REF_WORLD_WAYPOINT_MARKER_PULSE.Animation_Playback_Loop:Start()
-											Frame.REF_WORLD_WAYPOINT_CONTEXT:ShowWithAnimation(skipAnimation)
+											SubtextFrame:SetAlpha(0)
+											Subtext:SetPoint("CENTER", Subtext:GetParent(), 0, 7.5)
+										end
+									},
+									[2] = {
+										["wait"] = nil,
+										["animation"] = function()
+											SubtextFrame:Hide()
 										end
 									}
 								}
 							}
 						})
 						animation:Play(skipAnimation and "instant" or "playback")
-					end
-				end
-
-				do -- HIDE
-					function Frame_World_Waypoint:HideWithAnimation_StopEvent(id)
-						return NS.Variables.Session.id ~= id
-					end
-
-					function Frame_World_Waypoint:HideWithAnimation(id, skipAnimation)
-						Frame_World_Waypoint.hidden = true
-
-						--------------------------------
-
-						local chain = addon.C.API.Util:AddMethodChain({ "onFinish" })
-
-						--------------------------------
-
-						local animation = addon.C.Animation.Sequencer:CreateAnimation({
-							["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end,
-							["sequences"] = {
-								["playback"] = {
-									[1] = {
-										["wait"] = nil,
-										["animation"] = function()
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
-
-											--------------------------------
-
-											addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseSine_In", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = .5, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = 0, ["to"] = 5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetScale(), ["to"] = .25, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-										end
-									},
-									[2] = {
-										["wait"] = .25,
-										["animation"] = function()
-											Frame_World_Waypoint:Hide()
-
-											if chain.onFinish.variable then
-												chain.onFinish.variable()
-											end
-										end
-									}
-								},
-								["instant"] = {
-									[1] = {
-										["wait"] = nil,
-										["animation"] = function()
-											Frame.REF_WORLD_WAYPOINT_CONTEXT:SetScale(2)
-											Frame.REF_WORLD_WAYPOINT_CONTEXT:SetAlpha(0)
-											Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:SetAlpha(0)
-											Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetPoint("CENTER", Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetParent(), 0, 7.5)
-											Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetAlpha(0)
-											Frame.REF_WORLD_WAYPOINT_MARKER:SetAlpha(0)
-											Frame.REF_WORLD_WAYPOINT_MARKER:SetScale(.25)
-										end
-									},
-									[2] = {
-										["wait"] = nil,
-										["animation"] = function()
-											Frame_World_Waypoint:Hide()
-
-											if chain.onFinish.variable then
-												chain.onFinish.variable()
-											end
-										end
-									}
-								}
-							}
-						})
-						animation:Play(skipAnimation and "instant" or "playback")
-
-						---------------------------------
-
-						return { onFinish = chain.onFinish.set }
-					end
-				end
-
-				do -- FOOTER
-					local SubtextFrame = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT_SUBTEXT_FRAME
-					local Subtext = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT_SUBTEXT
-
-					--------------------------------
-
-					do -- SHOW
-						function SubtextFrame:ShowWithAnimation_StopEvent()
-							return SubtextFrame.hidden
-						end
-
-						function SubtextFrame:ShowWithAnimation(skipAnimation)
-							if not SubtextFrame.hidden then
-								return
-							end
-							SubtextFrame.hidden = false
-							SubtextFrame:Show()
-
-							--------------------------------
-
-							local animation = addon.C.Animation.Sequencer:CreateAnimation({
-								["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent,
-								["sequences"] = {
-									["playback"] = {
-										[1] = {
-											["wait"] = nil,
-											["animation"] = function()
-												addon.C.Animation:CancelAll(SubtextFrame)
-
-												--------------------------------
-
-												addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
-												addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
-											end
-										}
-									},
-									["instant"] = {
-										[1] = {
-											["wait"] = nil,
-											["animation"] = function()
-												SubtextFrame:SetAlpha(1)
-												Subtext:SetPoint("CENTER", Subtext:GetParent(), 0, 0)
-											end
-										}
-									}
-								}
-							})
-							animation:Play(skipAnimation and "instant" or "playback")
-						end
-					end
-
-					do -- HIDE
-						function SubtextFrame:HideWithAnimation_StopEvent()
-							return not SubtextFrame.hidden
-						end
-
-						function SubtextFrame:HideWithAnimation(skipAnimation)
-							if SubtextFrame.hidden then
-								return
-							end
-							SubtextFrame.hidden = true
-
-							--------------------------------
-
-							local animation = addon.C.Animation.Sequencer:CreateAnimation({
-								["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent,
-								["sequences"] = {
-									["playback"] = {
-										[1] = {
-											["wait"] = nil,
-											["animation"] = function()
-												addon.C.Animation:CancelAll(SubtextFrame)
-
-												--------------------------------
-
-												addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .25, ["from"] = SubtextFrame:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
-												addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = .75, ["from"] = 0, ["to"] = 7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
-											end
-										},
-										[2] = {
-											["wait"] = .5,
-											["animation"] = function()
-												SubtextFrame:Hide()
-											end
-										}
-									},
-									["instant"] = {
-										[1] = {
-											["wait"] = nil,
-											["animation"] = function()
-												SubtextFrame:SetAlpha(0)
-												Subtext:SetPoint("CENTER", Subtext:GetParent(), 0, 7.5)
-											end
-										},
-										[2] = {
-											["wait"] = nil,
-											["animation"] = function()
-												SubtextFrame:Hide()
-											end
-										}
-									}
-								}
-							})
-							animation:Play(skipAnimation and "instant" or "playback")
-						end
-					end
-				end
-			end
-
-			do -- PINPOINT
-				do -- SHOW
-					function Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id)
-						return NS.Variables.Session.id ~= id
-					end
-
-					function Frame_World_Pinpoint:ShowWithAnimation(id, skipAnimation)
-						Frame_World_Pinpoint.hidden = false
-						Frame_World_Pinpoint:Show()
-
-						--------------------------------
-
-						local animation = addon.C.Animation.Sequencer:CreateAnimation({
-							["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end,
-							["sequences"] = {
-								["playback"] = {
-									[1] = {
-										["wait"] = nil,
-										["animation"] = function()
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
-
-											addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 3, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
-										end
-									},
-									[2] = {
-										["wait"] = nil,
-										["animation"] = function()
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:ShowWithAnimation(skipAnimation)
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW.Animation_Playback_Loop:Start()
-										end
-									}
-								},
-								["instant"] = {
-									[1] = {
-										["wait"] = nil,
-										["animation"] = function()
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetScale(1)
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetAlpha(1)
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:SetAlpha(1)
-											Frame.REF_WORLD_PINPOINT_FOREGROUND:SetAlpha(1)
-										end
-									},
-									[2] = {
-										["wait"] = nil,
-										["animation"] = function()
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:ShowWithAnimation(skipAnimation)
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW.Animation_Playback_Loop:Start()
-										end
-									}
-								}
-							}
-						})
-						animation:Play(skipAnimation and "instant" or "playback")
-					end
-				end
-
-				do -- HIDE
-					function Frame_World_Pinpoint:HideWithAnimation_StopEvent(id)
-						return NS.Variables.Session.id ~= id
-					end
-
-					function Frame_World_Pinpoint:HideWithAnimation(id, skipAnimation)
-						Frame_World_Pinpoint.hidden = true
-
-						--------------------------------
-
-						local chain = addon.C.API.Util:AddMethodChain({ "onFinish" })
-
-						--------------------------------
-
-						local animation = addon.C.Animation.Sequencer:CreateAnimation({
-							["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end,
-							["sequences"] = {
-								["playback"] = {
-									[1] = {
-										["wait"] = nil,
-										["animation"] = function()
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
-											addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
-
-											addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseQuart_InOut", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
-											addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = .125, ["from"] = Frame.REF_WORLD_PINPOINT_FOREGROUND:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
-										end
-									},
-									[2] = {
-										["wait"] = .25,
-										["animation"] = function()
-											Frame_World_Pinpoint:Hide()
-
-											if chain.onFinish.variable then
-												chain.onFinish.variable()
-											end
-										end
-									}
-								},
-								["instant"] = {
-									[1] = {
-										["wait"] = nil,
-										["animation"] = function()
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetScale(1.125)
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetAlpha(0)
-											Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:SetAlpha(0)
-											Frame.REF_WORLD_PINPOINT_FOREGROUND:SetAlpha(0)
-										end
-									},
-									[2] = {
-										["wait"] = .25,
-										["animation"] = function()
-											Frame_World_Pinpoint:Hide()
-
-											if chain.onFinish.variable then
-												chain.onFinish.variable()
-											end
-										end
-									}
-								}
-							}
-						})
-						animation:Play(skipAnimation and "instant" or "playback")
-
-						---------------------------------
-
-						return { onFinish = chain.onFinish.set }
 					end
 				end
 			end
 		end
 
-		do -- NAVIGATOR
+		do -- PINPOINT
 			do -- SHOW
-				function Frame_Navigator:ShowWithAnimation_StopEvent()
-					return Frame_Navigator.hidden
+				function Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id)
+					return NS.Variables.Session.id ~= id
 				end
 
-				function Frame_Navigator:ShowWithAnimation(skipAnimation)
-					if not Frame_Navigator.hidden then
-						return
-					end
-					Frame_Navigator.hidden = false
-					Frame_Navigator:Show()
+				function Frame_World_Pinpoint:ShowWithAnimation(id, skipAnimation)
+					Frame_World_Pinpoint.hidden = false
+					Frame_World_Pinpoint:Show()
 
 					--------------------------------
 
 					local animation = addon.C.Animation.Sequencer:CreateAnimation({
-						["stopEvent"] = Frame_Navigator.ShowWithAnimation_StopEvent,
+						["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame_Navigator)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
 
-										--------------------------------
-
-										addon.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.ShowWithAnimation_StopEvent })
+										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 3, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+									end
+								},
+								[2] = {
+									["wait"] = nil,
+									["animation"] = function()
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:ShowWithAnimation(skipAnimation)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW.Animation_Playback_Loop:Start()
 									end
 								}
 							},
@@ -2672,7 +2524,17 @@ function NS.Script:Load()
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										Frame_Navigator:SetAlpha(1)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetScale(1)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetAlpha(1)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:SetAlpha(1)
+										Frame.REF_WORLD_PINPOINT_FOREGROUND:SetAlpha(1)
+									end
+								},
+								[2] = {
+									["wait"] = nil,
+									["animation"] = function()
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:ShowWithAnimation(skipAnimation)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW.Animation_Playback_Loop:Start()
 									end
 								}
 							}
@@ -2683,36 +2545,44 @@ function NS.Script:Load()
 			end
 
 			do -- HIDE
-				function Frame_Navigator:HideWithAnimation_StopEvent()
-					return not Frame_Navigator.hidden
+				function Frame_World_Pinpoint:HideWithAnimation_StopEvent(id)
+					return NS.Variables.Session.id ~= id
 				end
 
-				function Frame_Navigator:HideWithAnimation(skipAnimation)
-					if Frame_Navigator.hidden then
-						return
-					end
-					Frame_Navigator.hidden = true
+				function Frame_World_Pinpoint:HideWithAnimation(id, skipAnimation)
+					Frame_World_Pinpoint.hidden = true
+
+					--------------------------------
+
+					local chain = addon.C.API.Util:AddMethodChain({ "onFinish" })
 
 					--------------------------------
 
 					local animation = addon.C.Animation.Sequencer:CreateAnimation({
-						["stopEvent"] = Frame_Navigator.HideWithAnimation_StopEvent,
+						["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame_Navigator)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
+										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
 
-										--------------------------------
-
-										addon.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = Frame_Navigator:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.HideWithAnimation_StopEvent })
+										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseQuart_InOut", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
+										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = .125, ["from"] = Frame.REF_WORLD_PINPOINT_FOREGROUND:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
 									end
 								},
 								[2] = {
-									["wait"] = .5,
+									["wait"] = .25,
 									["animation"] = function()
-										Frame_Navigator:Hide()
+										Frame_World_Pinpoint:Hide()
+
+										if chain.onFinish.variable then
+											chain.onFinish.variable()
+										end
 									end
 								}
 							},
@@ -2720,94 +2590,130 @@ function NS.Script:Load()
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										Frame_Navigator:SetAlpha(0)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetScale(1.125)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:SetAlpha(0)
+										Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:SetAlpha(0)
+										Frame.REF_WORLD_PINPOINT_FOREGROUND:SetAlpha(0)
 									end
 								},
 								[2] = {
-									["wait"] = nil,
+									["wait"] = .25,
 									["animation"] = function()
-										Frame_Navigator:Hide()
+										Frame_World_Pinpoint:Hide()
+
+										if chain.onFinish.variable then
+											chain.onFinish.variable()
+										end
 									end
 								}
 							}
 						}
 					})
 					animation:Play(skipAnimation and "instant" or "playback")
+
+					---------------------------------
+
+					return { onFinish = chain.onFinish.set }
 				end
 			end
+		end
+	end
 
-			do -- ARROW
-				do -- SHOW
-					function Frame_Navigator_Arrow:ShowWithAnimation_StopEvent()
-						return Frame_Navigator_Arrow.hidden
-					end
+	do -- NAVIGATOR
+		do -- SHOW
+			function Frame_Navigator:ShowWithAnimation_StopEvent()
+				return Frame_Navigator.hidden
+			end
 
-					function Frame_Navigator_Arrow:ShowWithAnimation(skipAnimation)
-						Frame_Navigator_Arrow.hidden = false
-
-						--------------------------------
-
-						local animation = addon.C.Animation.Sequencer:CreateAnimation({
-							["stopEvent"] = Frame_Navigator_Arrow.ShowWithAnimation_StopEvent,
-							["sequences"] = {
-								["playback"] = {
-
-								},
-								["instant"] = {
-
-								}
-							}
-						})
-						animation:Play(skipAnimation and "instant" or "playback")
-					end
+			function Frame_Navigator:ShowWithAnimation(skipAnimation)
+				if not Frame_Navigator.hidden then
+					return
 				end
+				Frame_Navigator.hidden = false
+				Frame_Navigator:Show()
 
-				do -- HIDE
-					function Frame_Navigator_Arrow:HideWithAnimation_StopEvent()
-						return not Frame_Navigator_Arrow.hidden
-					end
+				--------------------------------
 
-					function Frame_Navigator_Arrow:HideWithAnimation(skipAnimation)
-						Frame_Navigator_Arrow.hidden = true
+				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					["stopEvent"] = Frame_Navigator.ShowWithAnimation_StopEvent,
+					["sequences"] = {
+						["playback"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									addon.C.Animation:CancelAll(Frame_Navigator)
 
-						--------------------------------
+									--------------------------------
 
-						local chain = addon.C.API.Util:AddMethodChain({ "onFinish" })
-
-						--------------------------------
-
-						local animation = addon.C.Animation.Sequencer:CreateAnimation({
-							["stopEvent"] = Frame_Navigator_Arrow.HideWithAnimation_StopEvent,
-							["sequences"] = {
-								["playback"] = {
-									[1] = {
-										["wait"] = .5,
-										["animation"] = function()
-											if chain.onFinish.variable then
-												chain.onFinish.variable()
-											end
-										end
-									}
-								},
-								["instant"] = {
-									[1] = {
-										["wait"] = .5,
-										["animation"] = function()
-											if chain.onFinish.variable then
-												chain.onFinish.variable()
-											end
-										end
-									}
-								}
+									addon.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.ShowWithAnimation_StopEvent })
+								end
 							}
-						})
-						animation:Play(skipAnimation and "instant" or "playback")
+						},
+						["instant"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									Frame_Navigator:SetAlpha(1)
+								end
+							}
+						}
+					}
+				})
+				animation:Play(skipAnimation and "instant" or "playback")
+			end
+		end
 
-						--------------------------------
+		do -- HIDE
+			function Frame_Navigator:HideWithAnimation_StopEvent()
+				return not Frame_Navigator.hidden
+			end
 
-						return { onFinish = chain.onFinish.set }
-					end
+			function Frame_Navigator:HideWithAnimation(skipAnimation)
+				if Frame_Navigator.hidden then
+					return
 				end
+				Frame_Navigator.hidden = true
+
+				--------------------------------
+
+				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					["stopEvent"] = Frame_Navigator.HideWithAnimation_StopEvent,
+					["sequences"] = {
+						["playback"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									addon.C.Animation:CancelAll(Frame_Navigator)
+
+									--------------------------------
+
+									addon.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = Frame_Navigator:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.HideWithAnimation_StopEvent })
+								end
+							},
+							[2] = {
+								["wait"] = .5,
+								["animation"] = function()
+									Frame_Navigator:Hide()
+								end
+							}
+						},
+						["instant"] = {
+							[1] = {
+								["wait"] = nil,
+								["animation"] = function()
+									Frame_Navigator:SetAlpha(0)
+								end
+							},
+							[2] = {
+								["wait"] = nil,
+								["animation"] = function()
+									Frame_Navigator:Hide()
+								end
+							}
+						}
+					}
+				})
+				animation:Play(skipAnimation and "instant" or "playback")
 			end
 		end
 	end
@@ -2825,7 +2731,7 @@ function NS.Script:Load()
 	end
 
 	local function C_CONFIG_RIGHT_CLICK_TO_CLEAR()
-		if C_WS_RIGHT_CLICK_TO_CLEAR then
+		if Config.C_WS_RIGHT_CLICK_TO_CLEAR then
 			Frame_World_Waypoint:EnableMouse(true)
 			Frame_World_Pinpoint:EnableMouse(true)
 			Frame_Navigator_Arrow:EnableMouse(true)
@@ -2848,17 +2754,17 @@ function NS.Script:Load()
 	-- Sincere thanks to SyverGiswold!
 	-- 	> Right click on Waypoint/Pinpoint/Navigator to untrack
 	Frame_World_Waypoint:SetScript("OnMouseDown", function(_, button)
-		if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
+		if Config.C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
 			WaypointUI_ClearAll()
 		end
 	end)
 	Frame_World_Pinpoint:SetScript("OnMouseDown", function(_, button)
-		if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
+		if Config.C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
 			WaypointUI_ClearAll()
 		end
 	end)
 	Frame_Navigator_Arrow:SetScript("OnMouseDown", function(_, button)
-		if C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
+		if Config.C_WS_RIGHT_CLICK_TO_CLEAR and button == "RightButton" then
 			WaypointUI_ClearAll()
 		end
 	end)

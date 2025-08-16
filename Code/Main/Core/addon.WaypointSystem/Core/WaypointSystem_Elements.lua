@@ -375,6 +375,7 @@ function NS.Elements:Load()
 												TextFrame.Text:SetPoint("CENTER", TextFrame)
 												TextFrame.Text:SetAutoFit(true)
 												TextFrame.Text:SetAutoFit_MaxWidth(TEXT_WIDTH_MAX)
+												TextFrame.Text:SetSpacing(2.75)
 												addon.C.API.FrameUtil:SetDynamicSize(Pinpoint, TextFrame.Text, 0, 0)
 											end
 										end

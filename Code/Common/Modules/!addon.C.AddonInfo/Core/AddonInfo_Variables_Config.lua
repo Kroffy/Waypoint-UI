@@ -313,6 +313,16 @@ do  -- CONSTANTS
 									["var_hidden"] = function() return false end
 								},
 								{
+									["name"] = L["Config - WaypointSystem - General - BackgroundPreview"],
+									["type"] = NS.Variables.Config.TYPE_CHECKBOX,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - BackgroundPreview - Description"]),
+									["indent"] = 0,
+									["var_get"] = function() return GetDatabase("DB_GLOBAL").WS_BACKGROUND_PREVIEW end,
+									["var_set"] = function(value) GetDatabase("DB_GLOBAL").WS_BACKGROUND_PREVIEW = value; CallbackRegistry:Trigger("C_CONFIG_BACKGROUND_PREVIEW") end,
+									["var_disabled"] = function() return false end,
+									["var_hidden"] = function() return false end
+								},
+								{
 									["name"] = L["Config - WaypointSystem - General - Transition Distance"],
 									["type"] = NS.Variables.Config.TYPE_RANGE,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - WaypointSystem - General - Transition Distance - Description"]),
@@ -641,7 +651,7 @@ do  -- CONSTANTS
 									["var_range_max"] = 3,
 									["var_range_step"] = .1,
 									["var_range_text"] = function(value) return string.format("%.0f", value * 100) .. "%" end,
-									["var_range_set_lazy"] = function(value) end,
+									["var_range_set_lazy"] = function(value) CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_NAVIGATOR_DISTANCE") end,
 									["var_get"] = function() return GetDatabase("DB_GLOBAL").APP_NAVIGATOR_DISTANCE end,
 									["var_set"] = function(value)
 										GetDatabase("DB_GLOBAL").APP_NAVIGATOR_DISTANCE = value; CallbackRegistry:Trigger("C_CONFIG_APPEARANCE_UPDATE")
@@ -1154,6 +1164,14 @@ do  -- CONSTANTS
 									["name"] = L["Contributors - Christinxa"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Christinxa - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								{
+									["name"] = L["Contributors - HectorZaGa"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - HectorZaGa - Description"]),
 									["indent"] = 0,
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,

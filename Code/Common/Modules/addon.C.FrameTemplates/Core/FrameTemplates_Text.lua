@@ -206,6 +206,8 @@ do
 
 					function Frame:GetStringHeight() return Frame.Renderer:GetStringHeight() end
 
+					function Frame:SetSpacing(...) return Frame.Renderer:SetSpacing(...) end
+
 					--------------------------------
 
 					function Frame:GetAutoFitMaxWidth()

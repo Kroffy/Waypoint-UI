@@ -33,9 +33,6 @@ function NS.Variables:Load()
 		do -- MAIN
 			NS.Variables.PATH = addon.CS:GetAddonPathElement() .. "Waypoint/"
 			NS.Variables.PADDING = 10
-			NS.Variables.DEFAULT_HEIGHT = 125
-			NS.Variables.BLOCKED_HEIGHT = 75
-			NS.Variables.ANIMATION_HEIGHT = 25
 
 			NS.Variables.FRAME_STRATA = "BACKGROUND"
 			NS.Variables.FRAME_LEVEL = 99
@@ -53,4 +50,6 @@ function NS.Variables:Load()
 	--------------------------------
 	-- EVENTS
 	--------------------------------
+
+
 end

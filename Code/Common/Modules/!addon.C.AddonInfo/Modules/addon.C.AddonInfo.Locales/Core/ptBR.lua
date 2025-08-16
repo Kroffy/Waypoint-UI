@@ -76,6 +76,8 @@ function NS:Load()
 		L["Config - WaypointSystem - General"] = "Geral"
 		L["Config - WaypointSystem - General - RightClickToClear"] = "Clique-dir. para limpar"
 		L["Config - WaypointSystem - General - RightClickToClear - Description"] = "Permite que você remova o Marcador de Mapa/Preciso/Navegador clicando com o botão direito do mouse."
+		L["Config - WaypointSystem - General - BackgroundPreview"] = "Background Preview"
+		L["Config - WaypointSystem - General - BackgroundPreview - Description"] = "Lowers the navigation frame's visibility when the mouse is over it."
 		L["Config - WaypointSystem - General - Transition Distance"] = "Distância do Marcador Preciso"
 		L["Config - WaypointSystem - General - Transition Distance - Description"] = "Distância antes do Marcador Preciso ser exibido."
 		L["Config - WaypointSystem - General - Hide Distance"] = "Distância Mínima"
@@ -177,6 +179,8 @@ function NS:Load()
 		L["Contributors - BadBoyBarny - Description"] = "Code — Bug Fix"
 		L["Contributors - Christinxa"] = "Christinxa"
 		L["Contributors - Christinxa - Description"] = "Code - Bug Fix"
+		L["Contributors - HectorZaGa"] = "HectorZaGa"
+		L["Contributors - HectorZaGa - Description"] = "Code - Bug Fix"
 		L["Contributors - SyverGiswold"] = "SyverGiswold"
 		L["Contributors - SyverGiswold - Description"] = "Code - Feature"
 	end
