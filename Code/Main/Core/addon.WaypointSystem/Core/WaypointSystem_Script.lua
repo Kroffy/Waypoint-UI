@@ -1854,7 +1854,7 @@ function NS.Script:Load()
 						end
 
 						-- Check if active state changed
-						local changed = NS.Variables.IsActive ~= isActive; print(changed)
+						local changed = NS.Variables.IsActive ~= isActive
 						if changed then
 							-- If the new state is active, wait until C_Navigation.GetDistance is valid.
 							if isActive then
