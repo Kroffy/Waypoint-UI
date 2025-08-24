@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.AddonInfo; env.C.AddonInfo = NS
 
 --------------------------------
 
@@ -60,15 +60,15 @@ do  -- CONSTANTS
 				APP_NAVIGATOR_DISTANCE = 1,
 				APP_COLOR = false,
 				APP_COLOR_QUEST_INCOMPLETE_TINT = false,
-				APP_COLOR_QUEST_INCOMPLETE = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.b, a = 1 },
+				APP_COLOR_QUEST_INCOMPLETE = { r = env.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.r, g = env.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.g, b = env.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL.b, a = 1 },
 				APP_COLOR_QUEST_COMPLETE_TINT = false,
-				APP_COLOR_QUEST_COMPLETE = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.b, a = 1 },
+				APP_COLOR_QUEST_COMPLETE = { r = env.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.r, g = env.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.g, b = env.CS:GetSharedColor().RGB_PING_QUEST_NORMAL.b, a = 1 },
 				APP_COLOR_QUEST_COMPLETE_REPEATABLE_TINT = false,
-				APP_COLOR_QUEST_COMPLETE_REPEATABLE = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.b, a = 1 },
+				APP_COLOR_QUEST_COMPLETE_REPEATABLE = { r = env.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.r, g = env.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.g, b = env.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE.b, a = 1 },
 				APP_COLOR_QUEST_COMPLETE_IMPORTANT_TINT = false,
-				APP_COLOR_QUEST_COMPLETE_IMPORTANT = { r = addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.r, g = addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.g, b = addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.b, a = 1 },
+				APP_COLOR_QUEST_COMPLETE_IMPORTANT = { r = env.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.r, g = env.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.g, b = env.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT.b, a = 1 },
 				APP_COLOR_NEUTRAL_TINT = true,
-				APP_COLOR_NEUTRAL = { r = addon.CS:GetSharedColor().RGB_PING_NEUTRAL.r, g = addon.CS:GetSharedColor().RGB_PING_NEUTRAL.g, b = addon.CS:GetSharedColor().RGB_PING_NEUTRAL.b, a = 1 },
+				APP_COLOR_NEUTRAL = { r = env.CS:GetSharedColor().RGB_PING_NEUTRAL.r, g = env.CS:GetSharedColor().RGB_PING_NEUTRAL.g, b = env.CS:GetSharedColor().RGB_PING_NEUTRAL.b, a = 1 },
 
 				-- AUDIO
 				AUDIO_GLOBAL = true,

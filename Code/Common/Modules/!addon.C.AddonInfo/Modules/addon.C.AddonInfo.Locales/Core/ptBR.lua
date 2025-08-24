@@ -1,9 +1,9 @@
 -- ♡ Translation // cathtail
 -- Tradutora @cathtail
 
----@class addon
-local addon = select(2, ...)
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
+local L = env.C.AddonInfo.Locales
 
 --------------------------------
 
@@ -59,7 +59,7 @@ function NS:Load()
 		L["Config - General - Preferences - Meter"] = "Use metros em vez de jardas."
 		L["Config - General - Preferences - Meter - Description"] = "Altera a unidade de medida para o sistema métrico."
 		L["Config - General - Preferences - Font"] = "Fonte"
-		L["Config - General - Preferences - Font - Description"] = "A fonte usada em todo o addon."
+		L["Config - General - Preferences - Font - Description"] = "A fonte usada em todo o env."
 		L["Config - General - Reset"] = "Redefinir"
 		L["Config - General - Reset - Button"] = "Redefinir pro padrão"
 		L["Config - General - Reset - Confirm"] = "Tem certeza que desejar redefinir todas as configurações?"
@@ -171,6 +171,8 @@ function NS:Load()
 		L["Contributors - Larsj02 - Description"] = "Tradutor — Alemão"
 		L["Contributors - dabear78"] = "dabear78"
 		L["Contributors - dabear78 - Description"] = "Tradutor — Alemão"
+		L["Contributors - Gotziko"] = "Gotziko"
+		L["Contributors - Gotziko - Description"] = "Translator - Spanish"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "Code — Beta Bug Fix"
 		L["Contributors - lemieszek"] = "lemieszek"

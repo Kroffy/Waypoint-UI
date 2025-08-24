@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Config; addon.C.Config = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Config; env.C.Config = NS
 
 --------------------------------
 
@@ -26,13 +26,13 @@ function NS.Variables:Load()
 
 			do -- FUNCTIONS
 				function NS.Variables:RATIO(level)
-					return NS.Variables.RATIO_REFERENCE / addon.C.Variables:RAW_RATIO(level)
+					return NS.Variables.RATIO_REFERENCE / env.C.Variables:RAW_RATIO(level)
 				end
 			end
 		end
 
 		do -- MAIN
-			NS.Variables.PATH = addon.CS:GetCommonPath() .. "Art/Config"
+			NS.Variables.PATH = env.CS:GetCommonPath() .. "Art/Config"
 
 			NS.Variables.FRAME_STRATA = "HIGH"
 			NS.Variables.FRAME_LEVEL = 1

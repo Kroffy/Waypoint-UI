@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Frame.GameTooltip; addon.C.Frame.GameTooltip = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Frame.GameTooltip; env.C.Frame.GameTooltip = NS
 
 --------------------------------
 
@@ -17,7 +17,7 @@ function NS.Script:Load()
 	-- REFERENCES
 	--------------------------------
 
-	local Frame = addon.CS:GetCommonFrame()
+	local Frame = env.CS:GetCommonFrame()
 	local Frame_GameTooltip = Frame.GameTooltip
 	local Frame_ShoppingTooltip1 = Frame.ShoppingTooltip1
 	local Frame_ShoppingTooltip2 = Frame.ShoppingTooltip2
@@ -79,8 +79,8 @@ function NS.Script:Load()
 					local primaryTooltip = tooltip.shoppingTooltips[1]
 					local secondaryTooltip = tooltip.shoppingTooltips[2]
 
-					addon.C.API.FrameUtil:SetVisibility(primaryTooltip, primaryShown)
-					addon.C.API.FrameUtil:SetVisibility(secondaryTooltip, secondaryShown)
+					env.C.API.FrameUtil:SetVisibility(primaryTooltip, primaryShown)
+					env.C.API.FrameUtil:SetVisibility(secondaryTooltip, secondaryShown)
 					primaryTooltip:SetAlpha(0)
 					secondaryTooltip:SetAlpha(0)
 
@@ -415,7 +415,7 @@ function NS.Script:Load()
 
 		do -- TOOLTIP
 			function Frame_GameTooltip:ShowComparison(self, anchorFrame)
-				if addon.C.AddonInfo.Variables.General.IS_WOW_VERSION_CLASSIC_ALL then
+				if env.C.AddonInfo.Variables.General.IS_WOW_VERSION_CLASSIC_ALL then
 					local tooltip, shoppingTooltip1, shoppingTooltip2;
 					tooltip, anchorFrame, shoppingTooltip1, shoppingTooltip2 = GameTooltip_InitializeComparisonTooltips(self, anchorFrame);
 
@@ -469,7 +469,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				addon.C.Animation:Alpha({ ["frame"] = Frame_GameTooltip, ["duration"] = .125, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame_GameTooltip.ShowWithAnimation_StopEvent })
+				env.C.Animation:Alpha({ ["frame"] = Frame_GameTooltip, ["duration"] = .125, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame_GameTooltip.ShowWithAnimation_StopEvent })
 			end
 
 			function Frame_GameTooltip:HideWithAnimation()
@@ -506,7 +506,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				addon.C.Animation:Alpha({ ["frame"] = Frame_ShoppingTooltip1, ["duration"] = .125, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame_ShoppingTooltip1.ShowWithAnimation_StopEvent })
+				env.C.Animation:Alpha({ ["frame"] = Frame_ShoppingTooltip1, ["duration"] = .125, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame_ShoppingTooltip1.ShowWithAnimation_StopEvent })
 			end
 
 			function Frame_ShoppingTooltip1:HideWithAnimation()
@@ -543,7 +543,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				addon.C.Animation:Alpha({ ["frame"] = Frame_ShoppingTooltip2, ["duration"] = .125, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame_ShoppingTooltip2.ShowWithAnimation_StopEvent })
+				env.C.Animation:Alpha({ ["frame"] = Frame_ShoppingTooltip2, ["duration"] = .125, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame_ShoppingTooltip2.ShowWithAnimation_StopEvent })
 			end
 
 			function Frame_ShoppingTooltip2:HideWithAnimation()

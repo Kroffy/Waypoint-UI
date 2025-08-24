@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.Initializer = {}
-local NS = addon.C.Initializer; addon.C.Initializer = NS
+env.C.Initializer = {}
+local NS = env.C.Initializer; env.C.Initializer = NS
 
 --------------------------------
 

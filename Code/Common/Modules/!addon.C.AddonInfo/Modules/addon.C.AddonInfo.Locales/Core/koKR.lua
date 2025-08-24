@@ -1,8 +1,8 @@
 -- ♡ Translation // Crazyyoungs
 
----@class addon
-local addon = select(2, ...)
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
+local L = env.C.AddonInfo.Locales
 
 --------------------------------
 
@@ -165,6 +165,8 @@ function NS:Load()
 		L["Contributors - Larsj02 - Description"] = "번역가: 독일어"
 		L["Contributors - dabear78"] = "dabear78"
 		L["Contributors - dabear78 - Description"] = "번역가: 독일어"
+		L["Contributors - Gotziko"] = "Gotziko"
+		L["Contributors - Gotziko - Description"] = "Translator - Spanish"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "코드: 베타 버그 수정"
 		L["Contributors - lemieszek"] = "lemieszek"

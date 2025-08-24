@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.DevTools; addon.C.DevTools = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.DevTools; env.C.DevTools = NS
 
 --------------------------------
 
@@ -26,7 +26,7 @@ function NS.Script:Load()
 	do
 		function Callback:Print(text)
 			if text then
-				if addon.C.AddonInfo.Variables.General.IS_DEVELOPER_MODE then
+				if env.C.AddonInfo.Variables.General.IS_DEVELOPER_MODE then
 					print(text)
 				end
 			end
@@ -71,9 +71,9 @@ function NS.Script:Load()
 					if scenario.test then
 						local success = scenario.test(unitTest, name)
 						if success then
-							print(addon.CS:GetSharedColor().RGB_GREEN_HEXCODE .. "UNIT_TEST_PASSED: ", name .. "|r")
+							print(env.CS:GetSharedColor().RGB_GREEN_HEXCODE .. "UNIT_TEST_PASSED: ", name .. "|r")
 						else
-							print(addon.CS:GetSharedColor().RGB_RED_HEXCODE .. "UNIT_TEST_FAILED: ", name .. "|r")
+							print(env.CS:GetSharedColor().RGB_RED_HEXCODE .. "UNIT_TEST_FAILED: ", name .. "|r")
 							print("UNIT_TEST_STOPPED: " .. (i - 1) .. "/" .. (#data))
 							return
 						end

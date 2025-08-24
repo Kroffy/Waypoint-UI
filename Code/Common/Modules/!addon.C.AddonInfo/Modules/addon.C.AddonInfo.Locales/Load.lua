@@ -1,7 +1,7 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.AddonInfo.Locales = {}
-local NS = addon.C.AddonInfo.Locales; addon.C.AddonInfo.Locales = NS
+env.C.AddonInfo.Locales = {}
+local NS = env.C.AddonInfo.Locales; env.C.AddonInfo.Locales = NS

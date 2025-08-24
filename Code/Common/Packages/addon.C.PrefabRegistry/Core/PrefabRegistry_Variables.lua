@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.PrefabRegistry; addon.C.PrefabRegistry = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.PrefabRegistry; env.C.PrefabRegistry = NS
 
 --------------------------------
 

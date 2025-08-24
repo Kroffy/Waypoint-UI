@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.Animation; addon.C.Animation = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.Animation; env.C.Animation = NS
 
 --------------------------------
 -- FUNCTIONS (LOGIC)
@@ -925,7 +925,7 @@ do
 
 			local function FollowCursor()
 				if frame.EnterMouseX and frame.EnterMouseY then
-					local MouseX, MouseY = addon.C.API.FrameUtil:GetMouseDelta(frame.EnterMouseX, frame.EnterMouseY)
+					local MouseX, MouseY = env.C.API.FrameUtil:GetMouseDelta(frame.EnterMouseX, frame.EnterMouseY)
 
 					--------------------------------
 
@@ -957,7 +957,7 @@ do
 
 			--------------------------------
 
-			addon.C.FrameTemplates:CreateMouseResponder(parent, { enterCallback = OnEnter, leaveCallback = OnLeave })
+			env.C.FrameTemplates:CreateMouseResponder(parent, { enterCallback = OnEnter, leaveCallback = OnLeave })
 
 			--------------------------------
 

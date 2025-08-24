@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.AddonInfo; env.C.AddonInfo = NS
 
 --------------------------------
 
@@ -16,5 +16,5 @@ do -- MAIN
 end
 
 do -- CONSTANTS
-	NS.Variables.SharedVariables.PATH_TOOLTIP_DIVIDER = addon.CS:GetAddonPathElement() .. "background-tooltip-divider.png"
+	NS.Variables.SharedVariables.PATH_TOOLTIP_DIVIDER = env.CS:GetAddonPathElement() .. "background-tooltip-divider.png"
 end

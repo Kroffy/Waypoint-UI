@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Frame.ContextMenu; addon.C.Frame.ContextMenu = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Frame.ContextMenu; env.C.Frame.ContextMenu = NS
 
 --------------------------------
 
@@ -19,7 +19,7 @@ function NS.Prefabs:Load()
 		local BASELINE = 100
 		local FRAME_DIVIDER_HEIGHT = 1
 
-		local function Ratio(level) return BASELINE / addon.C.Variables:RAW_RATIO(level) end
+		local function Ratio(level) return BASELINE / env.C.Variables:RAW_RATIO(level) end
 
 		local PADDING = Ratio(5)
 
@@ -27,7 +27,7 @@ function NS.Prefabs:Load()
 
 		do -- TEMPLATE
 			PrefabRegistry:Add("C.Frame.ContextMenu", function(parent, frameStrata, frameLevel, name)
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -35,32 +35,32 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, addon.CS:GetCommonPathElement() .. "context-background.png", { left = 75, top = 60, right = 75, bottom = 100 }, .375, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Content, frameStrata, env.CS:GetCommonPathElement() .. "context-background.png", { left = 75, top = 60, right = 75, bottom = 100 }, .375, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Content.Background:SetPoint("CENTER", Content, 0, -5)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -42.5, -42.5)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -42.5, -42.5)
 
 							Content.BackgroundTexture:SetVertexColor(1, 1, 1, 1)
 						end
 
 						do -- MAIN
-							Content.Main = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
+							Content.Main = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
 							Content.Main:SetPoint("CENTER", Content)
 							Content.Main:SetFrameStrata(frameStrata)
 							Content.Main:SetFrameLevel(frameLevel + 3)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Main, Content, PADDING, PADDING)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Main, Content, PADDING, PADDING)
 
 							local Main = Content.Main
 
@@ -72,12 +72,12 @@ function NS.Prefabs:Load()
 								--------------------------------
 
 								do -- LAYOUT GROUP
-									Main.LayoutGroup, Main.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Main, { point = "TOP", direction = "vertical", resize = true, padding = PADDING_ELEMENT, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+									Main.LayoutGroup, Main.LayoutGroup_Sort = env.C.FrameTemplates:CreateLayoutGroup(Main, { point = "TOP", direction = "vertical", resize = true, padding = PADDING_ELEMENT, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
 									Main.LayoutGroup:SetPoint("CENTER", Main)
 									Main.LayoutGroup:SetFrameStrata(frameStrata)
 									Main.LayoutGroup:SetFrameLevel(frameLevel + 4)
-									addon.C.API.FrameUtil:SetDynamicSize(Main.LayoutGroup, Main, 0, nil)
-									addon.C.API.FrameUtil:SetDynamicSize(Frame, Main.LayoutGroup, nil, -PADDING)
+									env.C.API.FrameUtil:SetDynamicSize(Main.LayoutGroup, Main, 0, nil)
+									env.C.API.FrameUtil:SetDynamicSize(Frame, Main.LayoutGroup, nil, -PADDING)
 									Frame.LGS_CONTENT = Main.LayoutGroup_Sort
 								end
 							end
@@ -109,8 +109,8 @@ function NS.Prefabs:Load()
 
 							--------------------------------
 
-							addon.C.Animation:Alpha({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.ShowWithAnimation_StopEvent })
-							addon.C.Animation:Translate({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = 7.5, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.ShowWithAnimation_StopEvent })
+							env.C.Animation:Alpha({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.ShowWithAnimation_StopEvent })
+							env.C.Animation:Translate({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = 7.5, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.ShowWithAnimation_StopEvent })
 						end
 					end
 
@@ -126,8 +126,8 @@ function NS.Prefabs:Load()
 
 							--------------------------------
 
-							addon.C.Animation:Alpha({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = Frame.REF_CONTENT:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.HideWithAnimation_StopEvent })
-							addon.C.Animation:Translate({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = select(5, Frame.REF_CONTENT:GetPoint()), ["to"] = 7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.HideWithAnimation_StopEvent })
+							env.C.Animation:Alpha({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = Frame.REF_CONTENT:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.HideWithAnimation_StopEvent })
+							env.C.Animation:Translate({ ["frame"] = Frame.REF_CONTENT, ["duration"] = .5, ["from"] = select(5, Frame.REF_CONTENT:GetPoint()), ["to"] = 7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.HideWithAnimation_StopEvent })
 						end
 					end
 				end
@@ -177,7 +177,7 @@ function NS.Prefabs:Load()
 										--------------------------------
 
 										Frame.titlePool[usedTitles]:Show()
-										Frame.titlePool[usedTitles]:SetInfo(var_name, { r = addon.CS:GetSharedColor().RGB_WHITE.r, g = addon.CS:GetSharedColor().RGB_WHITE.g, b = addon.CS:GetSharedColor().RGB_WHITE.b, a = 1 })
+										Frame.titlePool[usedTitles]:SetInfo(var_name, { r = env.CS:GetSharedColor().RGB_WHITE.r, g = env.CS:GetSharedColor().RGB_WHITE.g, b = env.CS:GetSharedColor().RGB_WHITE.b, a = 1 })
 										Frame.REF_MAIN_LAYOUT:AddElement(Frame.titlePool[usedTitles])
 									end
 
@@ -214,7 +214,7 @@ function NS.Prefabs:Load()
 								local Title = PrefabRegistry:Create("C.Frame.ContextMenu.Element.Title", Frame.REF_MAIN_LAYOUT, frameStrata, frameLevel + 5, "$parent.Title")
 								Title:SetFrameStrata(frameStrata)
 								Title:SetFrameLevel(frameLevel + 5)
-								addon.C.API.FrameUtil:SetDynamicSize(Title, Frame.REF_MAIN_LAYOUT, 0, nil)
+								env.C.API.FrameUtil:SetDynamicSize(Title, Frame.REF_MAIN_LAYOUT, 0, nil)
 
 								table.insert(Frame.titlePool, Title)
 
@@ -232,16 +232,16 @@ function NS.Prefabs:Load()
 									["CLICKED_BACKGROUND_COLOR"] = { r = 1, g = 1, b = 1, a = .175 },
 									["CLICKED_CONTENT_COLOR"] = { r = 1, g = 1, b = 1, a = 1 },
 									["ACTIVE_DEFAULT_BACKGROUND_COLOR"] = { r = 1, g = 1, b = 1, a = 0 },
-									["ACTIVE_DEFAULT_CONTENT_COLOR"] = { r = addon.CS:GetSharedColor().RGB_YELLOW.r, g = addon.CS:GetSharedColor().RGB_YELLOW.g, b = addon.CS:GetSharedColor().RGB_YELLOW.b, a = 1 },
+									["ACTIVE_DEFAULT_CONTENT_COLOR"] = { r = env.CS:GetSharedColor().RGB_YELLOW.r, g = env.CS:GetSharedColor().RGB_YELLOW.g, b = env.CS:GetSharedColor().RGB_YELLOW.b, a = 1 },
 									["ACTIVE_HIGHLIGHTED_BACKGROUND_COLOR"] = { r = 1, g = 1, b = 1, a = .125 },
-									["ACTIVE_HIGHLIGHTED_CONTENT_COLOR"] = { r = addon.CS:GetSharedColor().RGB_YELLOW.r, g = addon.CS:GetSharedColor().RGB_YELLOW.g, b = addon.CS:GetSharedColor().RGB_YELLOW.b, a = 1 },
+									["ACTIVE_HIGHLIGHTED_CONTENT_COLOR"] = { r = env.CS:GetSharedColor().RGB_YELLOW.r, g = env.CS:GetSharedColor().RGB_YELLOW.g, b = env.CS:GetSharedColor().RGB_YELLOW.b, a = 1 },
 									["ACTIVE_CLICKED_BACKGROUND_COLOR"] = { r = 1, g = 1, b = 1, a = .075 },
-									["ACTIVE_CLICKED_CONTENT_COLOR"] = { r = addon.CS:GetSharedColor().RGB_YELLOW.r, g = addon.CS:GetSharedColor().RGB_YELLOW.g, b = addon.CS:GetSharedColor().RGB_YELLOW.b, a = 1 },
+									["ACTIVE_CLICKED_CONTENT_COLOR"] = { r = env.CS:GetSharedColor().RGB_YELLOW.r, g = env.CS:GetSharedColor().RGB_YELLOW.g, b = env.CS:GetSharedColor().RGB_YELLOW.b, a = 1 },
 								}, "$parent.Button")
 								Button:SetHeight(25)
 								Button:SetFrameStrata(frameStrata)
 								Button:SetFrameLevel(frameLevel + 5)
-								addon.C.API.FrameUtil:SetDynamicSize(Button, Frame.REF_MAIN_LAYOUT, 0, nil)
+								env.C.API.FrameUtil:SetDynamicSize(Button, Frame.REF_MAIN_LAYOUT, 0, nil)
 
 								table.insert(Frame.buttonPool, Button)
 
@@ -293,7 +293,7 @@ function NS.Prefabs:Load()
 			end)
 
 			PrefabRegistry:Add("C.Frame.ContextMenu.Element.Title", function(parent, frameStrata, frameLevel, name)
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -301,20 +301,20 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- TEXT
-							Content.Text = addon.C.FrameTemplates:CreateText(Content, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+							Content.Text = env.C.FrameTemplates:CreateText(Content, env.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 							Content.Text:SetPoint("CENTER", Content)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Text, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Text, Content, 0, 0)
 						end
 					end
 				end
@@ -368,7 +368,7 @@ function NS.Prefabs:Load()
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateButton(parent, name)
+				local Frame = env.C.FrameTemplates:CreateButton(parent, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -376,41 +376,41 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, addon.CS:GetCommonPathArt() .. "Basic/square-bevel.png", 100, .0625, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Content, frameStrata, env.CS:GetCommonPathArt() .. "Basic/square-bevel.png", 100, .0625, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
 						end
 
 						do -- CONTENT
-							Content.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
+							Content.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
 							Content.Content:SetPoint("CENTER", Content)
 							Content.Content:SetFrameStrata(frameStrata)
 							Content.Content:SetFrameLevel(frameLevel + 3)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Content, Content, PADDING, PADDING)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Content, Content, PADDING, PADDING)
 
 							local Subcontent = Content.Content
 
 							--------------------------------
 
 							do -- TEXT
-								Subcontent.Text = addon.C.FrameTemplates:CreateText(Subcontent, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+								Subcontent.Text = env.C.FrameTemplates:CreateText(Subcontent, env.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 								Subcontent.Text:SetPoint("LEFT", Subcontent)
 								Subcontent.Text:SetAutoFit(true)
 								Subcontent.Text:SetAutoFit_MaxWidth(INFO_TEXT_WIDTH_MAX)
-								addon.C.API.FrameUtil:SetDynamicSize(Frame, Subcontent.Text, nil, -PADDING)
+								env.C.API.FrameUtil:SetDynamicSize(Frame, Subcontent.Text, nil, -PADDING)
 							end
 						end
 					end

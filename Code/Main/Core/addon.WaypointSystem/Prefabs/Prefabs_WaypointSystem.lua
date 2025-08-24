@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.WaypointSystem; addon.WaypointSystem = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.WaypointSystem; env.WaypointSystem = NS
 
 --------------------------------
 
@@ -18,7 +18,7 @@ function NS.Prefabs:Load()
 	do -- GENERAL
 		do -- CONTEXT FRAME
 			PrefabRegistry:Add("WaypointSystem.General.ContextFrame", function(parent, frameStrata, frameLevel, name)
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -26,74 +26,74 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Content)
+							Content.Background = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Content)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
 
 							local Background = Content.Background
 
 							--------------------------------
 
 							do -- FOREGROUND
-								Background.Foreground, Background.ForegroundTexture = addon.C.FrameTemplates:CreateTexture(Background, frameStrata, NS.Variables.PATH .. "waypoint-context.png", "$parent.Foreground")
+								Background.Foreground, Background.ForegroundTexture = env.C.FrameTemplates:CreateTexture(Background, frameStrata, NS.Variables.PATH .. "waypoint-context.png", "$parent.Foreground")
 								Background.Foreground:SetPoint("CENTER", Background)
 								Background.Foreground:SetFrameStrata(frameStrata)
 								Background.Foreground:SetFrameLevel(frameLevel + 4)
-								addon.C.API.FrameUtil:SetDynamicSize(Background.Foreground, Background, 0, 0)
+								env.C.API.FrameUtil:SetDynamicSize(Background.Foreground, Background, 0, 0)
 							end
 
 							do -- BACKGROUND
-								Background.Background, Background.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Background, frameStrata, NS.Variables.PATH .. "waypoint-context-background.png", "$parent.Background")
+								Background.Background, Background.BackgroundTexture = env.C.FrameTemplates:CreateTexture(Background, frameStrata, NS.Variables.PATH .. "waypoint-context-background.png", "$parent.Background")
 								Background.Background:SetPoint("CENTER", Background)
 								Background.Background:SetFrameStrata(frameStrata)
 								Background.Background:SetFrameLevel(frameLevel + 3)
-								addon.C.API.FrameUtil:SetDynamicSize(Background.Background, Background, -12.5, -12.5)
+								env.C.API.FrameUtil:SetDynamicSize(Background.Background, Background, -12.5, -12.5)
 
 								Background.Background:SetAlpha(.75)
 							end
 						end
 
 						do -- MAIN
-							Content.Main = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
+							Content.Main = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
 							Content.Main:SetPoint("CENTER", Content)
 							Content.Main:SetFrameStrata(frameStrata)
 							Content.Main:SetFrameLevel(frameLevel + 10)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Main, Content, function(relativeWidth, relativeHeight) return relativeHeight * .425 end, function(relativeWidth, relativeHeight) return relativeHeight * .425 end)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Main, Content, function(relativeWidth, relativeHeight) return relativeHeight * .425 end, function(relativeWidth, relativeHeight) return relativeHeight * .425 end)
 
 							local Main = Content.Main
 
 							--------------------------------
 
 							do -- IMAGE FRAME
-								Main.ImageFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", Main)
+								Main.ImageFrame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", Main)
 								Main.ImageFrame:SetPoint("CENTER", Main)
 								Main.ImageFrame:SetFrameStrata(frameStrata)
 								Main.ImageFrame:SetFrameLevel(frameLevel + 11)
-								addon.C.API.FrameUtil:SetDynamicSize(Main.ImageFrame, Main, 0, 0)
+								env.C.API.FrameUtil:SetDynamicSize(Main.ImageFrame, Main, 0, 0)
 
 								local ImageFrame = Main.ImageFrame
 
 								--------------------------------
 
 								do -- BACKGROUND
-									ImageFrame.Background, ImageFrame.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, nil, "$parent.Background")
+									ImageFrame.Background, ImageFrame.BackgroundTexture = env.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, nil, "$parent.Background")
 									ImageFrame.Background:SetPoint("CENTER", ImageFrame)
 									ImageFrame.Background:SetFrameStrata(frameStrata)
 									ImageFrame.Background:SetFrameLevel(frameLevel + 12)
-									addon.C.API.FrameUtil:SetDynamicSize(ImageFrame.Background, ImageFrame, 0, 0)
+									env.C.API.FrameUtil:SetDynamicSize(ImageFrame.Background, ImageFrame, 0, 0)
 								end
 							end
 						end
@@ -211,7 +211,7 @@ function NS.Prefabs:Load()
 	do -- WAYPOINT
 		do -- MARKER
 			PrefabRegistry:Add("WaypointSystem.Waypoint.Marker.PulseFrame", function(parent, frameStrata, frameLevel, name)
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -219,11 +219,11 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
@@ -262,7 +262,7 @@ function NS.Prefabs:Load()
 							end
 						end
 
-						Frame.Animation_Playback_Loop = addon.C.Animation.Sequencer:CreateLoop()
+						Frame.Animation_Playback_Loop = env.C.Animation.Sequencer:CreateLoop()
 						Frame.Animation_Playback_Loop:SetInterval(7.5)
 						Frame.Animation_Playback_Loop:SetAnimation(Frame.Animation_Playback_Cycle)
 						Frame.Animation_Playback_Loop:SetOnStart(function()
@@ -315,7 +315,7 @@ function NS.Prefabs:Load()
 			end)
 
 			PrefabRegistry:Add("WaypointSystem.Waypoint.Marker.PulseFrame.Element", function(parent, frameStrata, frameLevel, name)
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -323,22 +323,22 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Content, frameStrata, NS.Variables.PATH .. "waypoint-line-pulse.png", "$parent.Background")
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateTexture(Content, frameStrata, NS.Variables.PATH .. "waypoint-line-pulse.png", "$parent.Background")
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
 						end
 					end
 				end
@@ -349,14 +349,14 @@ function NS.Prefabs:Load()
 							return not Frame:IsShown()
 						end
 
-						Frame.Animation_Playback = addon.C.Animation.Sequencer:CreateAnimation({
+						Frame.Animation_Playback = env.C.Animation.Sequencer:CreateAnimation({
 							["stopEvent"] = Frame.Animation_Playback_StopEvent,
 							["sequences"] = {
 								["pre"] = {
 									[1] = {
 										["wait"] = nil,
 										["animation"] = function()
-											addon.C.Animation:CancelAll(Frame.Content)
+											env.C.Animation:CancelAll(Frame.Content)
 
 											--------------------------------
 
@@ -370,19 +370,19 @@ function NS.Prefabs:Load()
 									[1] = {
 										["wait"] = nil,
 										["animation"] = function()
-											addon.C.Animation:CancelAll(Frame.Content)
+											env.C.Animation:CancelAll(Frame.Content)
 
 											--------------------------------
 
 											Frame.Content:Show()
-											addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
-											addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 5, ["from"] = 0, ["to"] = 350, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+											env.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+											env.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 5, ["from"] = 0, ["to"] = 350, ["axis"] = "y", ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 										end
 									},
 									[2] = {
 										["wait"] = 3.5,
 										["animation"] = function()
-											addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+											env.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 										end
 									}
 								}
@@ -427,7 +427,7 @@ function NS.Prefabs:Load()
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -435,22 +435,22 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- LAYOUT GROUP
-							Content.LayoutGroup, Content.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Content, { point = "TOP", direction = "vertical", resize = false, padding = offset, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+							Content.LayoutGroup, Content.LayoutGroup_Sort = env.C.FrameTemplates:CreateLayoutGroup(Content, { point = "TOP", direction = "vertical", resize = false, padding = offset, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
 							Content.LayoutGroup:SetPoint("CENTER", Content)
 							Content.LayoutGroup:SetFrameStrata(frameStrata)
 							Content.LayoutGroup:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.LayoutGroup, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.LayoutGroup, Content, 0, 0)
 							Frame.LGS_Content = Content.LayoutGroup_Sort
 
 							local LayoutGroup = Content.LayoutGroup
@@ -491,7 +491,7 @@ function NS.Prefabs:Load()
 							end
 						end
 
-						Frame.Animation_Playback_Loop = addon.C.Animation.Sequencer:CreateLoop()
+						Frame.Animation_Playback_Loop = env.C.Animation.Sequencer:CreateLoop()
 						Frame.Animation_Playback_Loop:SetInterval(1.5)
 						Frame.Animation_Playback_Loop:SetAnimation(Frame.Animation_Playback_Cycle)
 					end
@@ -531,7 +531,7 @@ function NS.Prefabs:Load()
 			end)
 
 			PrefabRegistry:Add("WaypointSystem.Pinpoint.ArrowFrame.Element", function(parent, frameStrata, frameLevel, name)
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -539,22 +539,22 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Content, frameStrata, NS.Variables.PATH .. "pinpoint-arrow.png", "$parent.Background")
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateTexture(Content, frameStrata, NS.Variables.PATH .. "pinpoint-arrow.png", "$parent.Background")
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
 						end
 					end
 				end
@@ -567,21 +567,21 @@ function NS.Prefabs:Load()
 
 						function Frame:Animation_Playback()
 							do -- START
-								addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = 0, ["to"] = .75, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
-								addon.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 2, ["from"] = 7.5, ["to"] = -7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+								env.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = 0, ["to"] = .75, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+								env.C.Animation:Translate({ ["frame"] = Frame.Content, ["duration"] = 2, ["from"] = 7.5, ["to"] = -7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 							end
 
 							do -- END
 								C_Timer.After(.375, function()
 									if not Frame:Animation_Playback_StopEvent() then
-										addon.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = Frame.Content:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
+										env.C.Animation:Alpha({ ["frame"] = Frame.Content, ["duration"] = 1, ["from"] = Frame.Content:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame.Animation_Playback_StopEvent })
 									end
 								end)
 							end
 						end
 
 						function Frame:Animation_Playback_Pre()
-							addon.C.Animation:CancelAll(Frame.Content)
+							env.C.Animation:CancelAll(Frame.Content)
 
 							--------------------------------
 

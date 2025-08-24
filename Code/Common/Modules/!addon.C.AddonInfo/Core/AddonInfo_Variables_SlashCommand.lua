@@ -1,9 +1,9 @@
 -- Developer: @AdaptiveX
 -- ♡ Contributor: @BadBoyBarny
 
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.AddonInfo; env.C.AddonInfo = NS
 
 --------------------------------
 
@@ -43,14 +43,14 @@ do  -- CONSTANTS
 			local playerMapID = C_Map.GetBestMapForUnit("player")
 			local playerPosition = C_Map.GetPlayerMapPosition(playerMapID, "player")
 
-			DEFAULT_CHAT_FRAME:AddMessage(addon.CS:GetChatIcon("chat-subdivider", 16) .. " " .. addon.C.AddonInfo.Locales["SlashCommand - /way - Map ID - Prefix"] .. playerMapID .. addon.C.AddonInfo.Locales["SlashCommand - /way - Map ID - Suffix"])
-			DEFAULT_CHAT_FRAME:AddMessage(addon.CS:GetChatIcon("chat-subdivider", 16) .. " " .. addon.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (X) - Prefix"] .. math.ceil(playerPosition.x * 100) .. addon.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (X) - Suffix"] .. addon.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (Y) - Prefix"] .. math.ceil(playerPosition.y * 100) .. addon.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (Y) - Suffix"])
+			DEFAULT_CHAT_FRAME:AddMessage(env.CS:GetChatIcon("chat-subdivider", 16) .. " " .. env.C.AddonInfo.Locales["SlashCommand - /way - Map ID - Prefix"] .. playerMapID .. env.C.AddonInfo.Locales["SlashCommand - /way - Map ID - Suffix"])
+			DEFAULT_CHAT_FRAME:AddMessage(env.CS:GetChatIcon("chat-subdivider", 16) .. " " .. env.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (X) - Prefix"] .. math.ceil(playerPosition.x * 100) .. env.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (X) - Suffix"] .. env.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (Y) - Prefix"] .. math.ceil(playerPosition.y * 100) .. env.C.AddonInfo.Locales["SlashCommand - /way - Position - Axis (Y) - Suffix"])
 		end
 
 		local function WAYPOINT_UI_WAY_CATCH()
-			DEFAULT_CHAT_FRAME:AddMessage(addon.CS:GetAddonInlineIcon(16) .. " /way " .. addon.CS:GetSharedColor().RGB_YELLOW_HEXCODE .. "#<mapID> <x> <y> <name>" .. "|r")
-			DEFAULT_CHAT_FRAME:AddMessage(addon.CS:GetChatIcon("chat-subdivider", 16) .. " /way " .. addon.CS:GetSharedColor().RGB_YELLOW_HEXCODE .. "<x> <y> <name>" .. "|r")
-			DEFAULT_CHAT_FRAME:AddMessage(addon.CS:GetChatIcon("chat-subdivider", 16) .. " /way " .. addon.CS:GetSharedColor().RGB_YELLOW_HEXCODE .. "reset" .. "|r")
+			DEFAULT_CHAT_FRAME:AddMessage(env.CS:GetAddonInlineIcon(16) .. " /way " .. env.CS:GetSharedColor().RGB_YELLOW_HEXCODE .. "#<mapID> <x> <y> <name>" .. "|r")
+			DEFAULT_CHAT_FRAME:AddMessage(env.CS:GetChatIcon("chat-subdivider", 16) .. " /way " .. env.CS:GetSharedColor().RGB_YELLOW_HEXCODE .. "<x> <y> <name>" .. "|r")
+			DEFAULT_CHAT_FRAME:AddMessage(env.CS:GetChatIcon("chat-subdivider", 16) .. " /way " .. env.CS:GetSharedColor().RGB_YELLOW_HEXCODE .. "reset" .. "|r")
 
 			WAYPOINT_UI_WAY_LOCATION()
 		end

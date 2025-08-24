@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -29,7 +29,7 @@ do
 	---@param texture string
 	---@param name? string
 	function NS:CreateTexture(parent, frameStrata, texture, name)
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or nil, parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name or nil, parent)
 		Frame:SetFrameStrata(frameStrata)
 
 		local Texture = Frame:CreateTexture(tostring(name) .. "Texture" or nil, "BACKGROUND")
@@ -101,7 +101,7 @@ do
 
 		--------------------------------
 
-		local Frame, FrameTexture = addon.C.FrameTemplates:CreateTexture(parent, frameStrata, path, name or nil)
+		local Frame, FrameTexture = env.C.FrameTemplates:CreateTexture(parent, frameStrata, path, name or nil)
 		FrameTexture:SetTextureSliceMargins(margins[1], margins[2], margins[3], margins[4])
 		FrameTexture:SetTextureSliceMode(sliceMode or Enum.UITextureSliceMode.Tiled)
 		FrameTexture:SetScale(size or 1)
@@ -133,7 +133,7 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 		Frame:SetBackdrop(Backdrop)
 		Frame:SetBackdropBorderColor(borderColor.r, borderColor.g, borderColor.b, borderColor.a)
 		Frame:SetBackdropColor(color.r, color.g, color.b, color.a)
@@ -169,7 +169,7 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name or nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 		Frame:SetBackdrop(Backdrop)
 		Frame:SetBackdropBorderColor(borderColor.r, borderColor.g, borderColor.b, borderColor.a)
 		Frame:SetBackdropColor(color.r, color.g, color.b, color.a)

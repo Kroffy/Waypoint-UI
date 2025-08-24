@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.AddonInfo; env.C.AddonInfo = NS
 
 --------------------------------
 
@@ -17,6 +17,6 @@ end
 
 do -- CONSTANTS
 	NS.Variables.Sound.ENABLE_AUDIO = function()
-		return addon.C.Database.Variables.DB_GLOBAL.profile.AUDIO_GLOBAL
+		return env.C.Database.Variables.DB_GLOBAL.profile.AUDIO_GLOBAL
 	end
 end

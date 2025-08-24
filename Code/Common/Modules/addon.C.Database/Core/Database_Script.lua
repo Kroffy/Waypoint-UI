@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Database; addon.C.Database = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Database; env.C.Database = NS
 local AceDB = LibStub("AceDB-3.0")
 
 --------------------------------
@@ -26,8 +26,8 @@ function NS.Script:Load()
 
 	do
 		function Callback:ResetCache()
-			_G[addon.C.AddonInfo.Variables.Database.GLOBAL_NAME] = nil
-			_G[addon.C.AddonInfo.Variables.Database.LOCAL_NAME] = nil
+			_G[env.C.AddonInfo.Variables.Database.GLOBAL_NAME] = nil
+			_G[env.C.AddonInfo.Variables.Database.LOCAL_NAME] = nil
 		end
 
 		function Callback:ResetAll()
@@ -35,8 +35,8 @@ function NS.Script:Load()
 
 			--------------------------------
 
-			_G[addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_NAME] = nil
-			_G[addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_NAME] = nil
+			_G[env.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_NAME] = nil
+			_G[env.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_NAME] = nil
 		end
 	end
 
@@ -50,12 +50,12 @@ function NS.Script:Load()
 end
 
 function NS.Script:OnInitialize()
-	addon.C.Libraries.AceTimer:ScheduleTimer(function()
-		NS.Variables.DB_GLOBAL = AceDB:New(addon.C.AddonInfo.Variables.Database.GLOBAL_NAME, addon.C.AddonInfo.Variables.Database.GLOBAL_DEFAULT, true)
-		NS.Variables.DB_LOCAL = AceDB:New(addon.C.AddonInfo.Variables.Database.LOCAL_NAME, addon.C.AddonInfo.Variables.Database.LOCAL_DEFAULT, true)
-		NS.Variables.DB_GLOBAL_PERSISTENT = AceDB:New(addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_NAME, addon.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_DEFAULT, true)
-		NS.Variables.DB_LOCAL_PERSISTENT = AceDB:New(addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_NAME, addon.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_DEFAULT, true)
+	env.C.Libraries.AceTimer:ScheduleTimer(function()
+		NS.Variables.DB_GLOBAL = AceDB:New(env.C.AddonInfo.Variables.Database.GLOBAL_NAME, env.C.AddonInfo.Variables.Database.GLOBAL_DEFAULT, true)
+		NS.Variables.DB_LOCAL = AceDB:New(env.C.AddonInfo.Variables.Database.LOCAL_NAME, env.C.AddonInfo.Variables.Database.LOCAL_DEFAULT, true)
+		NS.Variables.DB_GLOBAL_PERSISTENT = AceDB:New(env.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_NAME, env.C.AddonInfo.Variables.Database.GLOBAL_PERSISTENT_DEFAULT, true)
+		NS.Variables.DB_LOCAL_PERSISTENT = AceDB:New(env.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_NAME, env.C.AddonInfo.Variables.Database.LOCAL_PERSISTENT_DEFAULT, true)
 	end, .1)
 end
 
-LibStub("AceAddon-3.0"):NewAddon(NS.Script, addon.C.AddonInfo.Variables.General.IDENTIFIER)
+LibStub("AceAddon-3.0"):NewAddon(NS.Script, env.C.AddonInfo.Variables.General.IDENTIFIER)

@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.CallbackRegistry = {}
-local NS = addon.C.CallbackRegistry; addon.C.CallbackRegistry = NS
+env.C.CallbackRegistry = {}
+local NS = env.C.CallbackRegistry; env.C.CallbackRegistry = NS
 
 --------------------------------
 

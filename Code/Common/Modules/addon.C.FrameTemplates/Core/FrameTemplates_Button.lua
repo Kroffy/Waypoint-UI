@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -27,15 +27,15 @@ do
 	---@param parent any
 	---@param name string
 	function NS:CreateButton(parent, name)
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 
 		--------------------------------
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 				Frame.Content:SetPoint("CENTER", Frame)
-				addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+				env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 			end
 		end
 

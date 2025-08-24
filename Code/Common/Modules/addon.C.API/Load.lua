@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.API = {}
-local NS = addon.C.API; addon.C.API = NS
+env.C.API = {}
+local NS = env.C.API; env.C.API = NS
 
 --------------------------------
 

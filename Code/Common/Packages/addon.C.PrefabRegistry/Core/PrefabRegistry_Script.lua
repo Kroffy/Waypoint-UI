@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.PrefabRegistry; addon.C.PrefabRegistry = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.PrefabRegistry; env.C.PrefabRegistry = NS
 
 --------------------------------
 
@@ -20,7 +20,7 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		-- Adds a prefab (function under the identifier name to create an element) to the registry. It can be created with [addon.C.PrefabRegistry:Create(id, ...)].
+		-- Adds a prefab (function under the identifier name to create an element) to the registry. It can be created with [env.C.PrefabRegistry:Create(id, ...)].
 		---@param id string
 		---@param prefabFunc function
 		function Callback:Add(id, prefabFunc)

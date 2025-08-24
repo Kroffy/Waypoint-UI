@@ -1,6 +1,8 @@
----@class addon
-local addon = select(2, ...)
-local L = addon.C.AddonInfo.Locales
+-- ♡ Translation // Gotxiko
+
+---@class env
+local env = select(2, ...)
+local L = env.C.AddonInfo.Locales
 
 --------------------------------
 
@@ -169,7 +171,7 @@ function NS:Load()
 		L["Contributors - dabear78"] = "dabear78"
 		L["Contributors - dabear78 - Description"] = "Traductor - Alemán"
         L["Contributors - Gotxiko"] = "Gotxiko"
-		L["Contributors - dabear78 - Description"] = "Traductor - Español Castellano"
+		L["Contributors - Gotxiko - Description"] = "Traductor - Español Castellano"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "Código — Corrección de Bug Beta"
 		L["Contributors - lemieszek"] = "lemieszek"

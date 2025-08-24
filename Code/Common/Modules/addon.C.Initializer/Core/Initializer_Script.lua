@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Initializer; addon.C.Initializer = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Initializer; env.C.Initializer = NS
 
 --------------------------------
 
@@ -26,8 +26,8 @@ function NS.Script:Load()
 	do
 		function Callback:LoadCode()
 			do -- PRIORITY
-				if addon.C.AddonInfo.Variables.Initializer.LIST_PRIORITY then
-					addon.C.AddonInfo.Variables.Initializer.LIST_PRIORITY()
+				if env.C.AddonInfo.Variables.Initializer.LIST_PRIORITY then
+					env.C.AddonInfo.Variables.Initializer.LIST_PRIORITY()
 				end
 
 				--------------------------------
@@ -37,10 +37,10 @@ function NS.Script:Load()
 
 			do -- MAIN
 				C_Timer.After(.1, function()
-					if addon.Main then
-						addon.Main:Load()
+					if env.Main then
+						env.Main:Load()
 					else
-						print("|cffFF0000" .. addon.C.AddonInfo.Variables.General.IDENTIFIER .. " - Missing reference to 'addon.Main'|r")
+						print("|cffFF0000" .. env.C.AddonInfo.Variables.General.IDENTIFIER .. " - Missing reference to 'env.Main'|r")
 					end
 
 					--------------------------------
@@ -82,7 +82,7 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		local Events = addon.C.FrameTemplates:CreateFrame("Frame")
+		local Events = env.C.FrameTemplates:CreateFrame("Frame")
 		Events:RegisterEvent("PLAYER_REGEN_ENABLED")
 		Events:SetScript("OnEvent", function(_, event, ...)
 			if NS.Variables.QueuedForInitalization then

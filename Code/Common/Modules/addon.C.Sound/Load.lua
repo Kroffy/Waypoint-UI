@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.Sound = {}
-local NS = addon.C.Sound; addon.C.Sound = NS
+env.C.Sound = {}
+local NS = env.C.Sound; env.C.Sound = NS
 
 --------------------------------
 

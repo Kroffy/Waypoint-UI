@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.Animation; addon.C.Animation = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.Animation; env.C.Animation = NS
 
 --------------------------------
 -- FUNCTIONS (EASE)

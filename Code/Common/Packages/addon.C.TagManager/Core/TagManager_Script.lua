@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.TagManager; addon.C.TagManager = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.TagManager; env.C.TagManager = NS
 
 --------------------------------
 
@@ -82,7 +82,7 @@ function NS.Script:Load()
 
 				frame.ctm_class = nil
 
-				local pos = addon.C.API.Util:FindValuePositionInTable(Callback.Class.Registry[class], frame)
+				local pos = env.C.API.Util:FindValuePositionInTable(Callback.Class.Registry[class], frame)
 				if pos and type(pos) == "number" then table.remove(Callback.Class.Registry[class], pos) end
 			end
 		end

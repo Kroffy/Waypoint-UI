@@ -6,4 +6,5 @@
 	<!-- Modules -->
 	<Include file="Core/addon.Support.MapPinEnhanced/Load.xml"/>
 	<Include file="Core/addon.Support.UnlimitedMapPinDistance/Load.xml"/>
+	<Include file="Core/addon.Support.WorldQuestsList/Load.xml"/>
 </Ui>

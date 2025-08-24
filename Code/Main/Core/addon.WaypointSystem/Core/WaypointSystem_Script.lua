@@ -1,10 +1,9 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.WaypointSystem; addon.WaypointSystem = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.WaypointSystem; env.WaypointSystem = NS
 
 NS.Script = {}
 
@@ -36,7 +35,7 @@ function NS.Script:Load()
 	local Config = {}
 
 	do
-		local Database = addon.C.Database.Variables.DB_GLOBAL.profile
+		local Database = env.C.Database.Variables.DB_GLOBAL.profile
 
 		local function UpdateReferences()
 			if not Database then return end
@@ -121,7 +120,7 @@ function NS.Script:Load()
 
 				local frameScale = frame:GetEffectiveScale()
 				frameX, frameY = frameX * frameScale, frameY * frameScale
-				local deltaX, deltaY = addon.C.API.FrameUtil:GetMouseDelta(frameX, frameY)
+				local deltaX, deltaY = env.C.API.FrameUtil:GetMouseDelta(frameX, frameY)
 
 				local resultX, resultY = deltaX / aspectRatio, deltaY / aspectRatio
 				return math.abs(resultX) + math.abs(resultY)
@@ -140,7 +139,7 @@ function NS.Script:Load()
 
 				if not frame.FADE_UTIL_MOUSE_OVER_lastAlpha or math.abs(frame.FADE_UTIL_MOUSE_OVER_lastAlpha - alpha) > 0.01 then
 					frame.FADE_UTIL_MOUSE_OVER_lastAlpha = alpha
-					addon.C.Animation:Alpha({
+					env.C.Animation:Alpha({
 						["frame"] = frame,
 						["duration"] = .5,
 						["from"] = frame:GetAlpha(),
@@ -195,7 +194,7 @@ function NS.Script:Load()
 
 				if not frame.FADE_UTIL_CHARACTER_OVERLAP_lastAlpha or math.abs(frame.FADE_UTIL_CHARACTER_OVERLAP_lastAlpha - alpha) > 0.01 then
 					frame.FADE_UTIL_CHARACTER_OVERLAP_lastAlpha = alpha
-					addon.C.Animation:Alpha({
+					env.C.Animation:Alpha({
 						["frame"] = frame,
 						["duration"] = .5,
 						["from"] = frame:GetAlpha(),
@@ -253,7 +252,7 @@ function NS.Script:Load()
 
 				if not Frame.FADE_UTIL_SCREEN_EDGE_lastAlpha or math.abs(Frame.FADE_UTIL_SCREEN_EDGE_lastAlpha - alpha) > 0.01 then
 					Frame.FADE_UTIL_SCREEN_EDGE_lastAlpha = alpha
-					addon.C.Animation:Alpha({
+					env.C.Animation:Alpha({
 						["frame"] = frame,
 						["duration"] = .5,
 						["from"] = frame:GetAlpha(),
@@ -639,7 +638,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				local superTrackedMapElement = addon.Query.Script:GetSuperTrackedMapElement()
+				local superTrackedMapElement = env.Query.Script:GetSuperTrackedMapElement()
 				local mapID = C_Map.GetBestMapForUnit("player")
 
 				if superTrackedMapElement then
@@ -778,7 +777,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				contextIconInfo.string, contextIconInfo.texture = addon.ContextIcon.Script:GetContextIcon(nil, nil, questID)
+				contextIconInfo.string, contextIconInfo.texture = env.ContextIcon.Script:GetContextIcon(nil, nil, questID)
 
 				--------------------------------
 
@@ -808,10 +807,10 @@ function NS.Script:Load()
 						texture.path = pinInfo.poiInfo.atlasName
 					elseif isWay then
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-way.png"
+						texture.path = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-way.png"
 					elseif pinInfo.pinType == Enum.SuperTrackingType.UserWaypoint then
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-default.png"
+						texture.path = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-default.png"
 					elseif pinInfo.poiType == Enum.SuperTrackingMapPinType.DigSite then
 						texture.type = "ATLAS"
 						texture.path = "ArchBlob"
@@ -819,9 +818,9 @@ function NS.Script:Load()
 						-- local mapID = C_Map.GetBestMapForUnit("player")
 						-- local quests = C_QuestLog.GetQuestsOnMap(mapID)
 
-						-- local currentMapElement = addon.Query.Script:GetSuperTrackedMapElement()
+						-- local currentMapElement = env.Query.Script:GetSuperTrackedMapElement()
 						-- local isProgress, isAccountCompleted, isAnchored, isCampaign, isCombatAllyQuest, isDaily, isHidden, isImportant, isLegendary, isLocalStory, isMapIndicatorQuest, isMeta, isQuestStart = currentMapElement.isProgress, currentMapElement.isAccountCompleted, currentMapElement.isAnchored, currentMapElement.isCampaign, currentMapElement.isCombatAllyQuest, currentMapElement.isDaily, currentMapElement.isHidden, currentMapElement.isImportant, currentMapElement.isLegendary, currentMapElement.isLocalStory, currentMapElement.isMapIndicatorQuest, currentMapElement.isMeta, currentMapElement.isQuestStart
-						-- local contextIcon = addon.ContextIcon.Script:GetQuestIconFromInfo({
+						-- local contextIcon = env.ContextIcon.Script:GetQuestIconFromInfo({
 						-- 	isCompleted = false,
 						-- 	isOnQuest = isProgress,
 						-- 	isDefault = isLocalStory,
@@ -836,15 +835,15 @@ function NS.Script:Load()
 						-- })
 
 						-- texture.type = "TEXTURE"
-						-- texture.path = contextIcon and addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/" .. contextIcon .. ".png" or addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/quest-available.png"
+						-- texture.path = contextIcon and env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/" .. contextIcon .. ".png" or env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/quest-available.png"
 
 						-- --------------------------------
 
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/quest-available.png"
+						texture.path = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/quest-available.png"
 					else
 						texture.type = "TEXTURE"
-						texture.path = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-default.png"
+						texture.path = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/map-pin-default.png"
 					end
 				end
 
@@ -866,17 +865,17 @@ function NS.Script:Load()
 
 					if questComplete then
 						if questClassification == Enum.QuestClassification.Recurring then
-							texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-repeatable.png"
+							texture = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-repeatable.png"
 						elseif questClassification == Enum.QuestClassification.Important then
-							texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-important.png"
+							texture = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-important.png"
 						else
-							texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-default.png"
+							texture = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-default.png"
 						end
 					else
-						texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-incomplete.png"
+						texture = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-incomplete.png"
 					end
 				else
-					texture = addon.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-neutral.png"
+					texture = env.CS:GetAddonPath() .. "Art/Elements/ContextIcons/redirect-neutral.png"
 				end
 
 				--------------------------------
@@ -1138,11 +1137,11 @@ function NS.Script:Load()
 
 				local trackingType = Callback:GetTrackingType(questID)
 
-				local COLOR_QUEST_INCOMPLETE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_INCOMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL
-				local COLOR_QUEST_COMPLETE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE or addon.CS:GetSharedColor().RGB_PING_QUEST_NORMAL
-				local COLOR_QUEST_COMPLETE_REPEATABLE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_REPEATABLE or addon.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE
-				local COLOR_QUEST_COMPLETE_IMPORTANT = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_IMPORTANT or addon.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT
-				local COLOR_NEUTRAL = Config.C_APP_COLOR and Config.C_APP_COLOR_NEUTRAL or addon.CS:GetSharedColor().RGB_PING_NEUTRAL
+				local COLOR_QUEST_INCOMPLETE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_INCOMPLETE or env.CS:GetSharedColor().RGB_PING_QUEST_NEUTRAL
+				local COLOR_QUEST_COMPLETE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE or env.CS:GetSharedColor().RGB_PING_QUEST_NORMAL
+				local COLOR_QUEST_COMPLETE_REPEATABLE = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_REPEATABLE or env.CS:GetSharedColor().RGB_PING_QUEST_REPEATABLE
+				local COLOR_QUEST_COMPLETE_IMPORTANT = Config.C_APP_COLOR and Config.C_APP_COLOR_QUEST_COMPLETE_IMPORTANT or env.CS:GetSharedColor().RGB_PING_QUEST_IMPORTANT
+				local COLOR_NEUTRAL = Config.C_APP_COLOR and Config.C_APP_COLOR_NEUTRAL or env.CS:GetSharedColor().RGB_PING_NEUTRAL
 
 				--------------------------------
 
@@ -1155,7 +1154,7 @@ function NS.Script:Load()
 				elseif trackingType == "QUEST_INCOMPLETE" then
 					result = COLOR_QUEST_INCOMPLETE
 				elseif trackingType == "CORPSE" then
-					result = { r = addon.CS:GetSharedColor().RGB_WHITE.r, g = addon.CS:GetSharedColor().RGB_WHITE.g, b = addon.CS:GetSharedColor().RGB_WHITE.b, a = 1 }
+					result = { r = env.CS:GetSharedColor().RGB_WHITE.r, g = env.CS:GetSharedColor().RGB_WHITE.g, b = env.CS:GetSharedColor().RGB_WHITE.b, a = 1 }
 				else
 					result = COLOR_NEUTRAL
 				end
@@ -1255,7 +1254,7 @@ function NS.Script:Load()
 						--------------------------------
 
 						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
-						addon.C.Sound.Script:PlaySound(audioPath)
+						env.C.Sound.Script:PlaySound(audioPath)
 					else
 						Frame_World_Pinpoint:ShowWithAnimation(id, false)
 					end
@@ -1276,7 +1275,7 @@ function NS.Script:Load()
 						--------------------------------
 
 						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
-						addon.C.Sound.Script:PlaySound(audioPath)
+						env.C.Sound.Script:PlaySound(audioPath)
 					else
 						Frame_World_Waypoint:ShowWithAnimation(id, false)
 					end
@@ -1298,7 +1297,7 @@ function NS.Script:Load()
 						--------------------------------
 
 						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_PINPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_CLOSE_MAIN_WINDOW)
-						addon.C.Sound.Script:PlaySound(audioPath)
+						env.C.Sound.Script:PlaySound(audioPath)
 					end
 
 					--------------------------------
@@ -1318,7 +1317,7 @@ function NS.Script:Load()
 						--------------------------------
 
 						local audioPath = (Config.C_AUDIO_CUSTOM and Config.C_AUDIO_CUSTOM_WAYPOINT_SHOW or nil) or (not Config.C_AUDIO_CUSTOM and SOUNDKIT.UI_RUNECARVING_OPEN_MAIN_WINDOW)
-						addon.C.Sound.Script:PlaySound(audioPath)
+						env.C.Sound.Script:PlaySound(audioPath)
 					end
 
 					--------------------------------
@@ -1363,10 +1362,10 @@ function NS.Script:Load()
 					if distanceChanged then
 						Update_Waypoint_Distance_Cache.distance = DISTANCE
 						if Config.C_PREF_METRIC then
-							local km, m = addon.C.API.Util:ConvertYardsToMetric(DISTANCE)
+							local km, m = env.C.API.Util:ConvertYardsToMetric(DISTANCE)
 							Update_Waypoint_Distance_Cache.text = km >= 1 and string.format("%.2fkm", km) or string.format("%.0fm", m)
 						else
-							Update_Waypoint_Distance_Cache.text = addon.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE)) .. " yds"
+							Update_Waypoint_Distance_Cache.text = env.C.API.Util:FormatNumber(string.format("%.0f", DISTANCE)) .. " yds"
 						end
 					end
 
@@ -1374,7 +1373,7 @@ function NS.Script:Load()
 					if arrivalTimeChanged then
 						Update_Waypoint_Distance_Cache.arrivalTime = NS.Variables.ArrivalTime
 						if Update_Waypoint_Distance_Cache.arrivalTime and Update_Waypoint_Distance_Cache.arrivalTime > 0 then
-							local _, _, _, strHr, strMin, strSec = addon.C.API.Util:FormatTime(Update_Waypoint_Distance_Cache.arrivalTime)
+							local _, _, _, strHr, strMin, strSec = env.C.API.Util:FormatTime(Update_Waypoint_Distance_Cache.arrivalTime)
 							Update_Waypoint_Distance_Cache.arrivalTimeText = strHr .. strMin .. strSec
 							if #Update_Waypoint_Distance_Cache.arrivalTimeText == 0 then
 								Update_Waypoint_Distance_Cache.arrivalTimeText = nil
@@ -1515,12 +1514,12 @@ function NS.Script:Load()
 							else
 								if Config.C_WS_PINPOINT_INFO_EXTENDED then
 									if pinInfo.poiInfo and pinInfo.poiInfo.description and #pinInfo.poiInfo.description > 1 then
-										text = addon.C.API.Util:StripColorCodes(pinInfo.pinName) .. " — " .. addon.C.API.Util:StripColorCodes(pinInfo.poiInfo.description)
+										text = env.C.API.Util:StripColorCodes(pinInfo.pinName) .. " — " .. env.C.API.Util:StripColorCodes(pinInfo.poiInfo.description)
 									else
-										text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
+										text = env.C.API.Util:StripColorCodes(pinInfo.pinName)
 									end
 								else
-									text = addon.C.API.Util:StripColorCodes(pinInfo.pinName)
+									text = env.C.API.Util:StripColorCodes(pinInfo.pinName)
 								end
 							end
 						end
@@ -1824,14 +1823,14 @@ function NS.Script:Load()
 
 				do
 					-- Acquire id, and check if its a new state
-					function EventManager.UpdateStateSession(currentState)
+					function EventManager:UpdateStateSession(currentState)
 						local id = nil
 						local isNewState = nil
 
 						--------------------------------
 
 						if NS.Variables.Session.state ~= currentState then
-							id = addon.C.API.Util:gen_hash()
+							id = env.C.API.Util:gen_hash()
 							isNewState = true
 						else
 							id = NS.Variables.Session.id
@@ -1845,17 +1844,17 @@ function NS.Script:Load()
 
 					-- Run checks and determine if its valid to set as active.
 					-- Triggers Callback when active state is changed.
-					function EventManager.UpdateActive()
+					function EventManager:UpdateActive()
 						local isActive = nil
 
-						if C_SuperTrack.IsSuperTrackingAnything() and not IsInInstance() then
-							isActive = true
-						else
+						if not C_SuperTrack.IsSuperTrackingAnything() or IsInInstance() then
 							isActive = false
+						else
+							isActive = true
 						end
 
 						-- Check if active state changed
-						local changed = NS.Variables.IsActive ~= isActive
+						local changed = NS.Variables.IsActive ~= isActive; print(changed)
 						if changed then
 							-- If the new state is active, wait until C_Navigation.GetDistance is valid.
 							if isActive then
@@ -1876,12 +1875,16 @@ function NS.Script:Load()
 					--------------------------------
 
 					-- Utilises the QuestID to check whether the player is in a blob. This is less efficent than event-based.
-					function EventManager.ManualUpdateInQuestBlob()
-						NS.Variables.Session.IsInsideQuestBlob = C_Minimap.IsInsideQuestBlob(C_SuperTrack.GetSuperTrackedQuestID() or 0)
+					function EventManager:ManualUpdateInQuestBlob()
+						local isInsideQuestBlob = C_Minimap.IsInsideQuestBlob(C_SuperTrack.GetSuperTrackedQuestID() or 0)
+						local isNew = NS.Variables.Session.IsInsideQuestBlob ~= isInsideQuestBlob
+						NS.Variables.Session.IsInsideQuestBlob = isInsideQuestBlob
+
+						return isInsideQuestBlob, isNew
 					end
 
 					-- We run this first since add-on initalization takes place after a delay when interface reload, therefore missing the event.
-					EventManager.ManualUpdateInQuestBlob()
+					EventManager:ManualUpdateInQuestBlob()
 
 					--------------------------------
 
@@ -1896,7 +1899,7 @@ function NS.Script:Load()
 
 					function EventManager.Update_State()
 						local state = Callback:GetCurrentState()
-						local id, isNewState = EventManager.UpdateStateSession(state)
+						local id, isNewState = EventManager:UpdateStateSession(state)
 						NS.Variables.Session.state = state
 						NS.Variables.Session.id = id
 
@@ -1954,6 +1957,7 @@ function NS.Script:Load()
 					EventManager.Event:SetScript("OnEvent", function(self, event, ...)
 						if not NS.Variables.IsActive then return end
 
+						-- STATE CHANGE
 						if event == "QUEST_POI_UPDATE" or
 							event == "QUEST_LOG_UPDATE" or
 							event == "ZONE_CHANGED" or
@@ -1963,7 +1967,10 @@ function NS.Script:Load()
 							event == "QUEST_FINISHED" or
 							event == "SUPER_TRACKING_PATH_UPDATED" then
 							CallbackRegistry:Trigger("WaypointSystem.ContextUpdate")
-						elseif event == "PLAYER_STARTED_MOVING" or
+						end
+
+						-- MOVING
+						if event == "PLAYER_STARTED_MOVING" or
 							(event == "PLAYER_IS_GLIDING_CHANGED" and ... == true) then
 							EventManager.Event_Moving:Show()
 						elseif event == "PLAYER_STOPPED_MOVING" or
@@ -1971,17 +1978,17 @@ function NS.Script:Load()
 							EventManager.Event_Moving:Hide()
 						end
 
+						-- QUEST BLOB
 						if event == "PLAYER_INSIDE_QUEST_BLOB_STATE_CHANGED" then
-							if select(1, ...) == C_SuperTrack.GetSuperTrackedQuestID() then
-								NS.Variables.Session.IsInsideQuestBlob = select(2, ...)
-							else
-								NS.Variables.Session.IsInsideQuestBlob = false
-							end
+							local isInsideQuestBlob, isNew = EventManager:ManualUpdateInQuestBlob()
 
-							CallbackRegistry:Trigger("WaypointSystem.StateChanged")
-							CallbackRegistry:Trigger("WaypointSystem.ContextUpdate")
+							if isNew then
+								CallbackRegistry:Trigger("WaypointSystem.StateChanged")
+								CallbackRegistry:Trigger("WaypointSystem.ContextUpdate")
+							end
 						end
 
+						-- SUPER TRACKING
 						if event == "SUPER_TRACKING_CHANGED" then
 							CallbackRegistry:Trigger("WaypointSystem.New")
 							CallbackRegistry:Trigger("WaypointSystem.StateChanged")
@@ -2088,18 +2095,18 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+				local animation = env.C.Animation.Sequencer:CreateAnimation({
 					["stopEvent"] = Frame_World.ShowWithAnimation_StopEvent,
 					["sequences"] = {
 						["playback"] = {
 							[1] = {
 								["wait"] = nil,
 								["animation"] = function()
-									addon.C.Animation:CancelAll(Frame_World)
+									env.C.Animation:CancelAll(Frame_World)
 
 									--------------------------------
 
-									addon.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.ShowWithAnimation_StopEvent })
+									env.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.ShowWithAnimation_StopEvent })
 								end
 							}
 						},
@@ -2136,18 +2143,18 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+				local animation = env.C.Animation.Sequencer:CreateAnimation({
 					["stopEvent"] = Frame_World.HideWithAnimation_StopEvent,
 					["sequences"] = {
 						["playback"] = {
 							[1] = {
 								["wait"] = nil,
 								["animation"] = function()
-									addon.C.Animation:CancelAll(Frame_World)
+									env.C.Animation:CancelAll(Frame_World)
 
 									--------------------------------
 
-									addon.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = Frame_World:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.HideWithAnimation_StopEvent })
+									env.C.Animation:Alpha({ ["frame"] = Frame_World, ["duration"] = .5, ["from"] = Frame_World:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_World.HideWithAnimation_StopEvent })
 								end
 							},
 							[2] = {
@@ -2189,15 +2196,15 @@ function NS.Script:Load()
 					end
 
 					function Wave:Animation_Playback()
-						addon.C.Animation:CancelAll(Wave)
+						env.C.Animation:CancelAll(Wave)
 
 						--------------------------------
 
-						addon.C.Animation:Alpha({ ["frame"] = Wave, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Wave.Animation_Playback_StopEvent })
-						addon.C.Animation:Scale({ ["frame"] = Wave, ["duration"] = 2, ["from"] = .5, ["to"] = 1.5, ["ease"] = "EaseExpo_InOut", ["stopEvent"] = Wave.Animation_Playback_StopEvent })
+						env.C.Animation:Alpha({ ["frame"] = Wave, ["duration"] = 1.5, ["from"] = 1, ["to"] = 0, ["ease"] = nil, ["stopEvent"] = Wave.Animation_Playback_StopEvent })
+						env.C.Animation:Scale({ ["frame"] = Wave, ["duration"] = 2, ["from"] = .5, ["to"] = 1.5, ["ease"] = "EaseExpo_InOut", ["stopEvent"] = Wave.Animation_Playback_StopEvent })
 					end
 
-					Wave.Animation_Playback_Loop = addon.C.Animation.Sequencer:CreateLoop()
+					Wave.Animation_Playback_Loop = env.C.Animation.Sequencer:CreateLoop()
 					Wave.Animation_Playback_Loop:SetInterval(1.75)
 					Wave.Animation_Playback_Loop:SetAnimation(Wave.Animation_Playback)
 					Wave.Animation_Playback_Loop:SetOnStart(function()
@@ -2220,17 +2227,17 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					local animation = env.C.Animation.Sequencer:CreateAnimation({
 						["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
 
 										--------------------------------
 
@@ -2238,18 +2245,18 @@ function NS.Script:Load()
 										Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:SetAlpha(0)
 										Frame.REF_WORLD_WAYPOINT_MARKER:SetAlpha(0)
 										Frame.REF_WORLD_WAYPOINT_MARKER_PULSE:Hide()
-										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 3.25, ["to"] = 1, ["ease"] = "EaseSine_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 3.25, ["to"] = 1, ["ease"] = "EaseSine_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
 									end,
 								},
 								[2] = {
 									["wait"] = .225,
 									["animation"] = function()
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = 1, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = 1, ["from"] = .25, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = 1, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .25, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = 1, ["from"] = .25, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:ShowWithAnimation_StopEvent(id) end })
 
 										--------------------------------
 
@@ -2302,31 +2309,31 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					local chain = addon.C.API.Util:AddMethodChain({ "onFinish" })
+					local chain = env.C.API.Util:AddMethodChain({ "onFinish" })
 
 					--------------------------------
 
-					local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					local animation = env.C.Animation.Sequencer:CreateAnimation({
 						["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_WAYPOINT_MARKER)
 
 										--------------------------------
 
-										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseSine_In", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = .5, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = 0, ["to"] = 5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetScale(), ["to"] = .25, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseSine_In", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX, ["duration"] = .5, ["from"] = Frame.REF_WORLD_WAYPOINT_CONTEXT_VFX:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Translate({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = 0, ["to"] = 5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT, ["duration"] = .25, ["from"] = Frame.REF_WORLD_WAYPOINT_FOOTER_LAYOUT:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_WAYPOINT_MARKER, ["duration"] = .375, ["from"] = Frame.REF_WORLD_WAYPOINT_MARKER:GetScale(), ["to"] = .25, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Waypoint:HideWithAnimation_StopEvent(id) end })
 									end
 								},
 								[2] = {
@@ -2394,19 +2401,19 @@ function NS.Script:Load()
 
 						--------------------------------
 
-						local animation = addon.C.Animation.Sequencer:CreateAnimation({
+						local animation = env.C.Animation.Sequencer:CreateAnimation({
 							["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent,
 							["sequences"] = {
 								["playback"] = {
 									[1] = {
 										["wait"] = nil,
 										["animation"] = function()
-											addon.C.Animation:CancelAll(SubtextFrame)
+											env.C.Animation:CancelAll(SubtextFrame)
 
 											--------------------------------
 
-											addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
-											addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
+											env.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = nil, ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
+											env.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = 1, ["from"] = 15, ["to"] = 0, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.ShowWithAnimation_StopEvent })
 										end
 									}
 								},
@@ -2438,19 +2445,19 @@ function NS.Script:Load()
 
 						--------------------------------
 
-						local animation = addon.C.Animation.Sequencer:CreateAnimation({
+						local animation = env.C.Animation.Sequencer:CreateAnimation({
 							["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent,
 							["sequences"] = {
 								["playback"] = {
 									[1] = {
 										["wait"] = nil,
 										["animation"] = function()
-											addon.C.Animation:CancelAll(SubtextFrame)
+											env.C.Animation:CancelAll(SubtextFrame)
 
 											--------------------------------
 
-											addon.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .25, ["from"] = SubtextFrame:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
-											addon.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = .75, ["from"] = 0, ["to"] = 7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
+											env.C.Animation:Alpha({ ["frame"] = SubtextFrame, ["duration"] = .25, ["from"] = SubtextFrame:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
+											env.C.Animation:Translate({ ["frame"] = Subtext, ["duration"] = .75, ["from"] = 0, ["to"] = 7.5, ["axis"] = "y", ["ease"] = "EaseExpo_Out", ["stopEvent"] = SubtextFrame.HideWithAnimation_StopEvent })
 										end
 									},
 									[2] = {
@@ -2495,21 +2502,21 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					local animation = env.C.Animation.Sequencer:CreateAnimation({
 						["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
 
-										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 3, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 3, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .75, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = 1.5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:ShowWithAnimation_StopEvent(id) end })
 									end
 								},
 								[2] = {
@@ -2554,25 +2561,25 @@ function NS.Script:Load()
 
 					--------------------------------
 
-					local chain = addon.C.API.Util:AddMethodChain({ "onFinish" })
+					local chain = env.C.API.Util:AddMethodChain({ "onFinish" })
 
 					--------------------------------
 
-					local animation = addon.C.Animation.Sequencer:CreateAnimation({
+					local animation = env.C.Animation.Sequencer:CreateAnimation({
 						["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end,
 						["sequences"] = {
 							["playback"] = {
 								[1] = {
 									["wait"] = nil,
 									["animation"] = function()
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
-										addon.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW)
+										env.C.Animation:CancelAll(Frame.REF_WORLD_PINPOINT_FOREGROUND)
 
-										addon.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseQuart_InOut", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
-										addon.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = .125, ["from"] = Frame.REF_WORLD_PINPOINT_FOREGROUND:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Scale({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetScale(), ["to"] = 2, ["ease"] = "EaseQuart_InOut", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_CONTEXT:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW, ["duration"] = .5, ["from"] = Frame.REF_WORLD_PINPOINT_BACKGROUND_ARROW:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
+										env.C.Animation:Alpha({ ["frame"] = Frame.REF_WORLD_PINPOINT_FOREGROUND, ["duration"] = .125, ["from"] = Frame.REF_WORLD_PINPOINT_FOREGROUND:GetAlpha(), ["to"] = 0, ["ease"] = nil, ["stopEvent"] = function() return Frame_World_Pinpoint:HideWithAnimation_StopEvent(id) end })
 									end
 								},
 								[2] = {
@@ -2634,18 +2641,18 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+				local animation = env.C.Animation.Sequencer:CreateAnimation({
 					["stopEvent"] = Frame_Navigator.ShowWithAnimation_StopEvent,
 					["sequences"] = {
 						["playback"] = {
 							[1] = {
 								["wait"] = nil,
 								["animation"] = function()
-									addon.C.Animation:CancelAll(Frame_Navigator)
+									env.C.Animation:CancelAll(Frame_Navigator)
 
 									--------------------------------
 
-									addon.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.ShowWithAnimation_StopEvent })
+									env.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = 0, ["to"] = 1, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.ShowWithAnimation_StopEvent })
 								end
 							}
 						},
@@ -2676,18 +2683,18 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				local animation = addon.C.Animation.Sequencer:CreateAnimation({
+				local animation = env.C.Animation.Sequencer:CreateAnimation({
 					["stopEvent"] = Frame_Navigator.HideWithAnimation_StopEvent,
 					["sequences"] = {
 						["playback"] = {
 							[1] = {
 								["wait"] = nil,
 								["animation"] = function()
-									addon.C.Animation:CancelAll(Frame_Navigator)
+									env.C.Animation:CancelAll(Frame_Navigator)
 
 									--------------------------------
 
-									addon.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = Frame_Navigator:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.HideWithAnimation_StopEvent })
+									env.C.Animation:Alpha({ ["frame"] = Frame_Navigator, ["duration"] = .5, ["from"] = Frame_Navigator:GetAlpha(), ["to"] = 0, ["ease"] = "EaseExpo_Out", ["stopEvent"] = Frame_Navigator.HideWithAnimation_StopEvent })
 								end
 							},
 							[2] = {

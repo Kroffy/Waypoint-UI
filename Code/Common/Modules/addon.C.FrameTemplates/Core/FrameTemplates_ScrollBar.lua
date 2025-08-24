@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -34,27 +34,27 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name or "$parent.ScrollBar", parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name or "$parent.ScrollBar", parent)
 
 		--------------------------------
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 				Frame.Content:SetPoint("CENTER", Frame)
-				addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0, true)
+				env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0, true)
 
 				--------------------------------
 
 				do -- TRACK
-					Frame.Content.Track = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Track", Frame.Content)
+					Frame.Content.Track = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Track", Frame.Content)
 					Frame.Content.Track:SetPoint("CENTER", Frame.Content)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame.Content.Track, Frame.Content, 0, 0, true)
+					env.C.API.FrameUtil:SetDynamicSize(Frame.Content.Track, Frame.Content, 0, 0, true)
 				end
 
 				do -- THUMB
-					Frame.Content.Thumb = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Thumb", Frame.Content)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame.Content.Thumb, Frame.Content, 0, nil, true)
+					Frame.Content.Thumb = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Thumb", Frame.Content)
+					env.C.API.FrameUtil:SetDynamicSize(Frame.Content.Thumb, Frame.Content, 0, nil, true)
 				end
 			end
 		end
@@ -135,7 +135,7 @@ do
 			end
 
 			local function GetMouseOffset(startX, startY)
-				local offsetX, offsetY = addon.C.API.FrameUtil:GetMouseDelta(startX, startY)
+				local offsetX, offsetY = env.C.API.FrameUtil:GetMouseDelta(startX, startY)
 				return offsetX, offsetY
 			end
 

@@ -1,14 +1,14 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
 
 --------------------------------
 
-addon.C.Database.Migration = {}
-local NS = addon.C.Database.Migration; addon.C.Database.Migration = NS
+env.C.Database.Migration = {}
+local NS = env.C.Database.Migration; env.C.Database.Migration = NS
 
 --------------------------------
 

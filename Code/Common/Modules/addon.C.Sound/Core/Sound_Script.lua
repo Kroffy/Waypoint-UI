@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Sound; addon.C.Sound = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Sound; env.C.Sound = NS
 
 --------------------------------
 
@@ -26,7 +26,7 @@ function NS.Script:Load()
 	do
 		function Callback:PlaySoundFile(filePath, bypass)
 			if filePath and filePath ~= "" then
-				if bypass or addon.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
+				if bypass or env.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
 					PlaySoundFile(filePath)
 				end
 			end
@@ -34,7 +34,7 @@ function NS.Script:Load()
 
 		function Callback:PlaySound(soundID, bypass)
 			if soundID and soundID ~= "" then
-				if bypass or addon.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
+				if bypass or env.C.AddonInfo.Variables.Sound.ENABLE_AUDIO() then
 					PlaySound(soundID)
 				end
 			end

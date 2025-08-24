@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.Frame; addon.C.Frame = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.Frame; env.C.Frame = NS
 
 --------------------------------
 
@@ -21,7 +21,7 @@ function NS.Variables:Load()
 
 			do -- FUNCTIONS
 				function NS.Variables:RATIO(level)
-					return NS.Variables.RATIO_REFERENCE / addon.C.Variables:RAW_RATIO(level)
+					return NS.Variables.RATIO_REFERENCE / env.C.Variables:RAW_RATIO(level)
 				end
 			end
 		end

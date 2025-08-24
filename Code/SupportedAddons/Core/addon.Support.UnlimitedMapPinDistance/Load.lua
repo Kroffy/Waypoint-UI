@@ -1,34 +1,15 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
 
---------------------------------
-
-addon.Support.UnlimitedMapPinDistance = {}
-local NS = addon.Support.UnlimitedMapPinDistance; addon.Support.UnlimitedMapPinDistance = NS
-
---------------------------------
+env.Support.UnlimitedMapPinDistance = {}
+local NS = env.Support.UnlimitedMapPinDistance; env.Support.UnlimitedMapPinDistance = NS
 
 function NS:Load()
-	local function Variables()
-		NS.Variables:Load()
-	end
-
-	local function Modules()
-		NS.Script:Load()
-	end
-
-	--------------------------------
-
-	Variables()
-	Modules()
+	NS.Script:Load()
 end
 
-C_Timer.After(addon.C.Variables.INIT_DELAY_LAST, function()
-	if addon.C.WoWClient.Script:IsAddOnLoaded("UnlimitedMapPinDistance") then
+C_Timer.After(env.C.Variables.INIT_DELAY_LAST, function()
+	if env.C.WoWClient.Script:IsAddOnLoaded("UnlimitedMapPinDistance") then
 		NS:Load()
 	end
 end)

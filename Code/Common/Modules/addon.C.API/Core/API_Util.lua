@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.API; addon.C.API = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.API; env.C.API = NS
 
 --------------------------------
 -- VARIABLES
@@ -28,7 +28,7 @@ do
 	do -- STRING
 		do -- MEASUREMENT
 			local MeasurementFrame = CreateFrame("Frame", "MeasurementFrame", nil)
-			MeasurementFrame:SetScale(addon.C.AddonInfo.Variables.General.UI_SCALE)
+			MeasurementFrame:SetScale(env.C.AddonInfo.Variables.General.UI_SCALE)
 			MeasurementFrame:SetAllPoints(UIParent)
 
 			local MeasurementText = MeasurementFrame:CreateFontString("MeasurementText", "OVERLAY")
@@ -483,10 +483,10 @@ do
 
 					--------------------------------
 
-					addon.CS:GetCommonFrame().GameTooltip:SetOwner(frame, location, locationX, locationY)
-					addon.CS:GetCommonFrame().GameTooltip:SetText(frame.tooltipText, 1, 1, 1, 1, (wrapText == nil and true or wrapText))
+					env.CS:GetCommonFrame().GameTooltip:SetOwner(frame, location, locationX, locationY)
+					env.CS:GetCommonFrame().GameTooltip:SetText(frame.tooltipText, 1, 1, 1, 1, (wrapText == nil and true or wrapText))
 
-					addon.CS:GetCommonFrame().GameTooltip:Show()
+					env.CS:GetCommonFrame().GameTooltip:Show()
 				end
 
 				frame.API_HideTooltip = function()
@@ -494,7 +494,7 @@ do
 
 					--------------------------------
 
-					addon.CS:GetCommonFrame().GameTooltip:Clear()
+					env.CS:GetCommonFrame().GameTooltip:Clear()
 				end
 
 				--------------------------------
@@ -515,7 +515,7 @@ do
 					frame:HookScript("OnEnter", Enter)
 					frame:HookScript("OnLeave", Leave)
 				else
-					addon.C.FrameTemplates:CreateMouseResponder(frame, { enterCallback = Enter, leaveCallback = Leave })
+					env.C.FrameTemplates:CreateMouseResponder(frame, { enterCallback = Enter, leaveCallback = Leave })
 				end
 			end
 		end
@@ -1369,7 +1369,7 @@ do
 	end
 
 	function NS.Util:IsAutoAccept()
-		if not addon.C.Variables.IS_WOW_VERSION_CLASSIC_ALL then
+		if not env.C.Variables.IS_WOW_VERSION_CLASSIC_ALL then
 			return QuestGetAutoAccept() and QuestFrameAcceptButton:IsVisible()
 		else
 			return false

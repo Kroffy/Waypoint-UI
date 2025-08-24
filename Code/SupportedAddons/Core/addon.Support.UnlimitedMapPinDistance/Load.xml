@@ -5,5 +5,4 @@
 
 	<!-- Core -->
 	<Script file="Core/UnlimitedMapPinDistance_Script.lua"/>
-	<Script file="Core/UnlimitedMapPinDistance_Variables.lua"/>
 </Ui>

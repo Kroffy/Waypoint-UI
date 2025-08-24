@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.CS = {}
-local NS = addon.CS; addon.CS = NS
+env.CS = {}
+local NS = env.CS; env.CS = NS
 
 --------------------------------
 -- SHARED FUNCTIONS
@@ -13,73 +13,73 @@ local NS = addon.CS; addon.CS = NS
 do
 	do -- Get
 		-- Returns add-on name.
-		function NS:GetAddonName() return addon.C.AddonInfo.Variables.General.NAME end
+		function NS:GetAddonName() return env.C.AddonInfo.Variables.General.NAME end
 
 		-- Returns add-on version string.
-		function NS:GetAddonVersionString() return addon.C.AddonInfo.Variables.General.VERSION_STRING end
+		function NS:GetAddonVersionString() return env.C.AddonInfo.Variables.General.VERSION_STRING end
 
 		-- Returns add-on version number.
-		function NS:GetAddonVersionNumber() return addon.C.AddonInfo.Variables.General.VERSION_NUMBER end
+		function NS:GetAddonVersionNumber() return env.C.AddonInfo.Variables.General.VERSION_NUMBER end
 
 		-- Returns general add-on frame.
-		function NS:GetAddonFrame() return addon.C.AddonInfo.Variables.General.ADDON_FRAME end
+		function NS:GetAddonFrame() return env.C.AddonInfo.Variables.General.ADDON_FRAME end
 
 		-- Returns general Common Framework frame.
-		function NS:GetCommonFrame() return addon.C.AddonInfo.Variables.General.COMMON_FRAME end
+		function NS:GetCommonFrame() return env.C.AddonInfo.Variables.General.COMMON_FRAME end
 
 		-- Returns add-on general path.
-		function NS:GetAddonPath() return addon.C.AddonInfo.Variables.General.ADDON_PATH end
+		function NS:GetAddonPath() return env.C.AddonInfo.Variables.General.ADDON_PATH end
 
 		-- Returns add-on font path.
-		function NS:GetAddonPathFont() return addon.C.AddonInfo.Variables.General.ADDON_PATH_FONT end
+		function NS:GetAddonPathFont() return env.C.AddonInfo.Variables.General.ADDON_PATH_FONT end
 
 		-- Returns add-on element path.
-		function NS:GetAddonPathElement() return addon.C.AddonInfo.Variables.General.ADDON_PATH_ELEMENT end
+		function NS:GetAddonPathElement() return env.C.AddonInfo.Variables.General.ADDON_PATH_ELEMENT end
 
 		-- Returns add-on audio path.
-		function NS:GetAddonPathSound() return addon.C.AddonInfo.Variables.General.ADDON_PATH_SOUND end
+		function NS:GetAddonPathSound() return env.C.AddonInfo.Variables.General.ADDON_PATH_SOUND end
 
 		-- Returns Common Framework path.
-		function NS:GetCommonPath() return addon.C.AddonInfo.Variables.General.COMMON_PATH end
+		function NS:GetCommonPath() return env.C.AddonInfo.Variables.General.COMMON_PATH end
 
 		-- Returns Common Framework art path.
-		function NS:GetCommonPathArt() return addon.C.AddonInfo.Variables.General.COMMON_PATH_ART end
+		function NS:GetCommonPathArt() return env.C.AddonInfo.Variables.General.COMMON_PATH_ART end
 
 		-- Returns Common Framework art -> config path.
-		function NS:GetCommonPathConfig() return addon.C.AddonInfo.Variables.General.COMMON_PATH_ART .. "Config/" end
+		function NS:GetCommonPathConfig() return env.C.AddonInfo.Variables.General.COMMON_PATH_ART .. "Config/" end
 
 		-- Returns Common Framework art -> element path.
-		function NS:GetCommonPathElement() return addon.C.AddonInfo.Variables.General.COMMON_PATH_ART .. "Elements/" end
+		function NS:GetCommonPathElement() return env.C.AddonInfo.Variables.General.COMMON_PATH_ART .. "Elements/" end
 
 		-- Returns shared variable / color.
-		function NS:GetSharedColor() return addon.C.SharedVariables.Color end
+		function NS:GetSharedColor() return env.C.SharedVariables.Color end
 
 		-- Returns shared variable / util.
-		function NS:GetSharedUtil() return addon.C.SharedVariables.Util end
+		function NS:GetSharedUtil() return env.C.SharedVariables.Util end
 	end
 
 	do -- Image / Icon
 		-- Returns icon path using the specified name. File name only - exclude file extension.
 		---@param iconName string
 		---@return string iconPath
-		function NS:NewIcon(iconName) return addon.C.AddonInfo.Variables.General.COMMON_PATH_ART .. "Icons/" .. iconName .. ".png" end
+		function NS:NewIcon(iconName) return env.C.AddonInfo.Variables.General.COMMON_PATH_ART .. "Icons/" .. iconName .. ".png" end
 
 		-- Returns inline icon using the specified name. File name only - exclude file extension.
 		---@param iconName string
 		---@param size number
 		---@return string inlineIconString
-		function NS:GetInlineIcon(iconName, size) return addon.C.API.Util:InlineIcon(addon.CS:GetCommonPathArt() .. "Icons/" .. iconName .. ".png", size, size, 0, 0, "Texture") end
+		function NS:GetInlineIcon(iconName, size) return env.C.API.Util:InlineIcon(env.CS:GetCommonPathArt() .. "Icons/" .. iconName .. ".png", size, size, 0, 0, "Texture") end
 
 		-- Returns chat icon using the specified name. File name only - exclude file extension.
 		---@param iconName string
 		---@param size number
 		---@return string chatIconString
-		function NS:GetChatIcon(iconName, size) return addon.C.API.Util:InlineIcon(addon.CS:GetCommonPathArt() .. "Chat/" .. iconName .. ".png", size, size, 0, 0, "Texture") end
+		function NS:GetChatIcon(iconName, size) return env.C.API.Util:InlineIcon(env.CS:GetCommonPathArt() .. "Chat/" .. iconName .. ".png", size, size, 0, 0, "Texture") end
 
-		-- Returns the addon icon in in-line icon format.
+		-- Returns the a icon in in-line icon format.
 		---@param size number
 		---@return string inlineIconString
-		function NS:GetAddonInlineIcon(size) return addon.C.API.Util:InlineIcon(addon.C.AddonInfo.Variables.General.ADDON_ICON_ALT, size, size, 0, 0, "Texture") end
+		function NS:GetAddonInlineIcon(size) return env.C.API.Util:InlineIcon(env.C.AddonInfo.Variables.General.ADDON_ICON_ALT, size, size, 0, 0, "Texture") end
 	end
 
 	do -- Font
@@ -106,8 +106,8 @@ do
 			end
 
 			-- check if font file path exists in all fonts list
-			if addon.C.Fonts and addon.C.Fonts.Script and addon.C.Fonts.Script.CustomFontUtil then
-				local allFonts = addon.C.Fonts.Script.CustomFontUtil:GetAllFonts()
+			if env.C.Fonts and env.C.Fonts.Script and env.C.Fonts.Script.CustomFontUtil then
+				local allFonts = env.C.Fonts.Script.CustomFontUtil:GetAllFonts()
 				for k, v in pairs(allFonts) do
 					if v.path == fontInfo.path then
 						return true

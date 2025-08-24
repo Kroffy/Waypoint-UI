@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.TagManager; addon.C.TagManager = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.TagManager; env.C.TagManager = NS
 
 --------------------------------
 

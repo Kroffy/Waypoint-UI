@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.MapPin; addon.MapPin = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.MapPin; env.MapPin = NS
 
 --------------------------------
 
@@ -69,13 +69,13 @@ function NS.Script:Load()
 				["x"] = x or nil,
 				["y"] = y or nil,
 			}
-			addon.C.Database.Variables.DB_LOCAL_PERSISTENT.profile.SAVED_WAY = NS.Variables.Way
+			env.C.Database.Variables.DB_LOCAL_PERSISTENT.profile.SAVED_WAY = NS.Variables.Way
 		end
 
 		function WaypointUI_GetWay()
 			-- [@y45853160]: 获取保存的标记数据
 			-- Get saved way
-			local savedWay = addon.C.Database.Variables.DB_LOCAL_PERSISTENT.profile.SAVED_WAY
+			local savedWay = env.C.Database.Variables.DB_LOCAL_PERSISTENT.profile.SAVED_WAY
 
 			-- [@y45853160]: 检查数据是否存在，如果不存在则返回默认值
 			-- Check if the way exists, if not return a default value
@@ -90,7 +90,7 @@ function NS.Script:Load()
 				}
 				-- [@y45853160]: 保存到数据库，确保数据初始化
 				-- Save to the database
-				addon.C.Database.Variables.DB_LOCAL_PERSISTENT.profile.SAVED_WAY = NS.Variables.Way
+				env.C.Database.Variables.DB_LOCAL_PERSISTENT.profile.SAVED_WAY = NS.Variables.Way
 			else
 				NS.Variables.Way = savedWay
 			end
@@ -115,7 +115,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				addon.C.Sound.Script:PlaySound(89712)
+				env.C.Sound.Script:PlaySound(89712)
 			end
 		end
 
@@ -148,7 +148,7 @@ function NS.Script:Load()
 	--------------------------------
 
 	do
-		local Event = addon.C.FrameTemplates:CreateFrame("Frame")
+		local Event = env.C.FrameTemplates:CreateFrame("Frame")
 		Event:RegisterEvent("USER_WAYPOINT_UPDATED")
 		Event:SetScript("OnEvent", function(_, event, ...)
 			if event == "USER_WAYPOINT_UPDATED" then

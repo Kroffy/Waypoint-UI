@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C = {}
-local NS = addon.C; addon.C = NS
+env.C = {}
+local NS = env.C; env.C = NS
 
 --------------------------------
 

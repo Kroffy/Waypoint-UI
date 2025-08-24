@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -32,19 +32,19 @@ do
 
 		--------------------------------
 
-		local ProgressBar = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+		local ProgressBar = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 
 		--------------------------------
 
 		do -- CONTENT
-			ProgressBar.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", ProgressBar)
+			ProgressBar.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", ProgressBar)
 			ProgressBar.Content:SetAllPoints(ProgressBar)
 
 			--------------------------------
 
 			do -- PROGRESS BAR
-				ProgressBar.Content.Bar = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Bar", ProgressBar.Content)
-				addon.C.API.FrameUtil:SetDynamicSize(ProgressBar.Content.Bar, ProgressBar, false, 0, 0)
+				ProgressBar.Content.Bar = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Bar", ProgressBar.Content)
+				env.C.API.FrameUtil:SetDynamicSize(ProgressBar.Content.Bar, ProgressBar, false, 0, 0)
 
 				if direction == "LEFT" then
 					ProgressBar.Content.Bar:SetPoint("LEFT", ProgressBar.Content, 0, 0)

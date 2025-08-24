@@ -1,14 +1,14 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.Locales
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.Locales
 
 --------------------------------
 
-addon.ContextIcon = {}
-local NS = addon.ContextIcon; addon.ContextIcon = NS
+env.ContextIcon = {}
+local NS = env.ContextIcon; env.ContextIcon = NS
 
 --------------------------------
 

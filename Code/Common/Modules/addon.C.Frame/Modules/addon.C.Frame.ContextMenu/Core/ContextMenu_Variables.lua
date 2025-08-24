@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Frame.ContextMenu; addon.C.Frame.ContextMenu = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Frame.ContextMenu; env.C.Frame.ContextMenu = NS
 
 --------------------------------
 
@@ -25,7 +25,7 @@ function NS.Variables:Load()
 
 			do -- FUNCTIONS
 				function NS.Variables:RATIO(level)
-					return NS.Variables.RATIO_REFERENCE / addon.C.Variables:RAW_RATIO(level)
+					return NS.Variables.RATIO_REFERENCE / env.C.Variables:RAW_RATIO(level)
 				end
 			end
 		end

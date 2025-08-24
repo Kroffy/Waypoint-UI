@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -49,7 +49,7 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.MouseResponder", parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.MouseResponder", parent)
 		Frame:SetFrameStrata("FULLSCREEN_DIALOG")
 		Frame:SetFrameLevel(999)
 
@@ -166,7 +166,7 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", "ScrollResponder", parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", "ScrollResponder", parent)
 		Frame:SetFrameStrata("FULLSCREEN_DIALOG")
 		Frame:SetFrameLevel(999)
 

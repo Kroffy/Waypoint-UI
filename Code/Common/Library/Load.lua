@@ -1,21 +1,21 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 -- VARIABLES
 --------------------------------
 
-addon.C.Libraries = {}
+env.C.Libraries = {}
 
 --------------------------------
 -- LIBRARIES
 --------------------------------
 
 do
-    addon.C.Libraries.AceTimer = LibStub("AceTimer-3.0")
-	addon.C.Libraries.AdaptiveTimer = LibStub("AdaptiveTimer-1.0")
-	addon.C.Libraries.LibSerialize = LibStub("LibSerialize")
-	addon.C.Libraries.LibDeflate = LibStub("LibDeflate")
+    env.C.Libraries.AceTimer = LibStub("AceTimer-3.0")
+	env.C.Libraries.AdaptiveTimer = LibStub("AdaptiveTimer-1.0")
+	env.C.Libraries.LibSerialize = LibStub("LibSerialize")
+	env.C.Libraries.LibDeflate = LibStub("LibDeflate")
 end
 
 --------------------------------

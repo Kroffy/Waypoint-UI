@@ -4,5 +4,5 @@
 	<Script file="Load.lua"/>
 
 	<!-- Core -->
-	<Script file="Core/MapPinEnhanced_Script.lua"/>
+	<Script file="Core/WorldQuestsList_Script.lua"/>
 </Ui>

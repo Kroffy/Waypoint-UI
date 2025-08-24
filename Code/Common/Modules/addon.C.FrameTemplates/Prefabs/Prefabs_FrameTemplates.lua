@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 
@@ -17,7 +17,7 @@ NS.Prefabs = {}
 function NS.Prefabs:Load()
 	do -- BLIZZARD
 		local BASELINE = 100
-		local function Ratio(level) return BASELINE / addon.C.Variables:RAW_RATIO(level) end
+		local function Ratio(level) return BASELINE / env.C.Variables:RAW_RATIO(level) end
 		local PADDING = Ratio(5)
 
 		--------------------------------
@@ -32,7 +32,7 @@ function NS.Prefabs:Load()
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateButton(parent, name)
+				local Frame = env.C.FrameTemplates:CreateButton(parent, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -45,19 +45,19 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 75, .125, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 75, .125, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 1)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
 						end
 
 						do -- MAIN
-							Content.Main = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
+							Content.Main = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", Content)
 							Content.Main:SetPoint("CENTER", Content)
 							Content.Main:SetFrameStrata(frameStrata)
 							Content.Main:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Main, Content, PADDING_CONTENT, PADDING_CONTENT)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Main, Content, PADDING_CONTENT, PADDING_CONTENT)
 						end
 					end
 				end
@@ -184,16 +184,16 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- TEXT
-							Main.Text = addon.C.FrameTemplates:CreateText(Main, DEFAULT_CONTENT_COLOR, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+							Main.Text = env.C.FrameTemplates:CreateText(Main, DEFAULT_CONTENT_COLOR, 12.5, "CENTER", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 							Main.Text:SetPoint("CENTER", Main)
 
 							if resize then
 								Main.Text:SetAutoFit(true)
 								Main.Text:SetAutoFit_MaxWidth(10000)
 
-								addon.C.API.FrameUtil:SetDynamicSize(Frame, Main.Text, -PADDING, -PADDING)
+								env.C.API.FrameUtil:SetDynamicSize(Frame, Main.Text, -PADDING, -PADDING)
 							else
-								addon.C.API.FrameUtil:SetDynamicSize(Main.Text, Main, 0, 0)
+								env.C.API.FrameUtil:SetDynamicSize(Main.Text, Main, 0, 0)
 							end
 						end
 					end
@@ -302,12 +302,12 @@ function NS.Prefabs:Load()
 				local Frame = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Button.Text.Template", parent, frameStrata, frameLevel, {
 					["resize"] = data.resize,
 					["PADDING_CONTENT"] = PADDING,
-					["DEFAULT_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-red.png",
-					["DEFAULT_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_YELLOW,
-					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-red-highlighted.png",
-					["HIGHLIGHTED_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_YELLOW,
-					["CLICKED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-red-clicked.png",
-					["CLICKED_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_YELLOW,
+					["DEFAULT_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-red.png",
+					["DEFAULT_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_YELLOW,
+					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-red-highlighted.png",
+					["HIGHLIGHTED_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_YELLOW,
+					["CLICKED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-red-clicked.png",
+					["CLICKED_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_YELLOW,
 				}, name)
 
 				--------------------------------
@@ -319,12 +319,12 @@ function NS.Prefabs:Load()
 				local Frame = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Button.Text.Template", parent, frameStrata, frameLevel, {
 					["resize"] = data.resize,
 					["PADDING_CONTENT"] = PADDING,
-					["DEFAULT_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey.png",
-					["DEFAULT_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
-					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey-highlighted.png",
-					["HIGHLIGHTED_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
-					["CLICKED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey-clicked.png",
-					["CLICKED_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
+					["DEFAULT_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey.png",
+					["DEFAULT_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
+					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey-highlighted.png",
+					["HIGHLIGHTED_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
+					["CLICKED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey-clicked.png",
+					["CLICKED_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
 				}, name)
 
 				--------------------------------
@@ -354,11 +354,11 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- IMAGE
-							Main.Image, Main.ImageTexture = addon.C.FrameTemplates:CreateTexture(Main, frameStrata, DEFAULT_IMAGE_TEXTURE, "$parent.Image")
+							Main.Image, Main.ImageTexture = env.C.FrameTemplates:CreateTexture(Main, frameStrata, DEFAULT_IMAGE_TEXTURE, "$parent.Image")
 							Main.Image:SetPoint("CENTER", Main)
 							Main.Image:SetFrameStrata(frameStrata)
 							Main.Image:SetFrameLevel(frameLevel + 3)
-							addon.C.API.FrameUtil:SetDynamicSize(Main.Image, Main, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Main.Image, Main, 0, 0)
 						end
 					end
 				end
@@ -466,11 +466,11 @@ function NS.Prefabs:Load()
 			PrefabRegistry:Add("C.FrameTemplates.Blizzard.Button.Image.Red", function(parent, frameStrata, frameLevel, data, name)
 				local Frame = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Button.Image.Template", parent, frameStrata, frameLevel, {
 					["PADDING_CONTENT"] = data.PADDING_CONTENT,
-					["DEFAULT_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-red.png",
+					["DEFAULT_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-red.png",
 					["DEFAULT_IMAGE_TEXTURE"] = data.DEFAULT_IMAGE_TEXTURE,
-					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-red-highlighted.png",
+					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-red-highlighted.png",
 					["HIGHLIGHTED_IMAGE_TEXTURE"] = data.HIGHLIGHTED_IMAGE_TEXTURE,
-					["CLICKED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-red-clicked.png",
+					["CLICKED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-red-clicked.png",
 					["CLICKED_IMAGE_TEXTURE"] = data.CLICKED_IMAGE_TEXTURE,
 				}, name)
 
@@ -482,11 +482,11 @@ function NS.Prefabs:Load()
 			PrefabRegistry:Add("C.FrameTemplates.Blizzard.Button.Image.Grey", function(parent, frameStrata, frameLevel, data, name)
 				local Frame = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Button.Image.Template", parent, frameStrata, frameLevel, {
 					["PADDING_CONTENT"] = data.PADDING_CONTENT,
-					["DEFAULT_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey.png",
+					["DEFAULT_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey.png",
 					["DEFAULT_IMAGE_TEXTURE"] = data.DEFAULT_IMAGE_TEXTURE,
-					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey-highlighted.png",
+					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey-highlighted.png",
 					["HIGHLIGHTED_IMAGE_TEXTURE"] = data.HIGHLIGHTED_IMAGE_TEXTURE,
-					["CLICKED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey-clicked.png",
+					["CLICKED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey-clicked.png",
 					["CLICKED_IMAGE_TEXTURE"] = data.CLICKED_IMAGE_TEXTURE,
 				}, name)
 
@@ -522,37 +522,37 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- TEXT FRAME
-							Main.TextFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", Main)
+							Main.TextFrame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", Main)
 							Main.TextFrame:SetPoint("LEFT", Main, PADDING, 0)
 							Main.TextFrame:SetFrameStrata(frameStrata)
 							Main.TextFrame:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Main.TextFrame, Main, function(relativeWidth, relativeHeight) return relativeWidth - relativeHeight - PADDING end, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Main.TextFrame, Main, function(relativeWidth, relativeHeight) return relativeWidth - relativeHeight - PADDING end, 0)
 
 							local TextFrame = Main.TextFrame
 
 							--------------------------------
 
 							do -- TEXT
-								TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, DEFAULT_CONTENT_COLOR, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
+								TextFrame.Text = env.C.FrameTemplates:CreateText(TextFrame, DEFAULT_CONTENT_COLOR, 12.5, "LEFT", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text")
 								TextFrame.Text:SetPoint("CENTER", TextFrame)
 								TextFrame.Text:SetMaxLines(1)
-								addon.C.API.FrameUtil:SetDynamicSize(TextFrame.Text, TextFrame, 0, 0)
+								env.C.API.FrameUtil:SetDynamicSize(TextFrame.Text, TextFrame, 0, 0)
 							end
 						end
 
 						do -- IMAGE FRAME
-							Main.ImageFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", Main)
+							Main.ImageFrame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", Main)
 							Main.ImageFrame:SetPoint("RIGHT", Main)
 							Main.ImageFrame:SetFrameStrata(frameStrata)
 							Main.ImageFrame:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Main.ImageFrame, Main, function(relativeWidth, relativeHeight) return relativeHeight end, function(relativeWidth, relativeHeight) return relativeHeight end)
+							env.C.API.FrameUtil:SetDynamicSize(Main.ImageFrame, Main, function(relativeWidth, relativeHeight) return relativeHeight end, function(relativeWidth, relativeHeight) return relativeHeight end)
 
 							local ImageFrame = Main.ImageFrame
 
 							--------------------------------
 
 							do -- BACKGROUND
-								ImageFrame.Background, ImageFrame.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, DEFAULT_IMAGE_TEXTURE, "$parent.Background")
+								ImageFrame.Background, ImageFrame.BackgroundTexture = env.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, DEFAULT_IMAGE_TEXTURE, "$parent.Background")
 								ImageFrame.Background:SetSize(12.5, 12.5)
 								ImageFrame.Background:SetPoint("CENTER", ImageFrame)
 								ImageFrame.Background:SetFrameStrata(frameStrata)
@@ -693,10 +693,10 @@ function NS.Prefabs:Load()
 
 					do -- EVENTS
 						local function Logic_OnClick()
-							if addon.C.Frame.ContextMenu.Script:Main_IsShown() then
-								addon.C.Frame.ContextMenu.Script:Main_Hide()
+							if env.C.Frame.ContextMenu.Script:Main_IsShown() then
+								env.C.Frame.ContextMenu.Script:Main_Hide()
 							else
-								addon.C.Frame.ContextMenu.Script:Main_Show({
+								env.C.Frame.ContextMenu.Script:Main_Show({
 									["parent"] = Frame,
 									["buttonParent"] = Frame,
 									["point"] = "TOP",
@@ -726,15 +726,15 @@ function NS.Prefabs:Load()
 				local Frame = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Button.Dropdown.Template", parent, frameStrata, frameLevel, {
 					["resizeContextMenu"] = data.resizeContextMenu,
 					["PADDING_CONTENT"] = PADDING,
-					["DEFAULT_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey.png",
-					["DEFAULT_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
-					["DEFAULT_IMAGE_TEXTURE"] = addon.CS:NewIcon("arrow-up-down"),
-					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey-highlighted.png",
-					["HIGHLIGHTED_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
-					["HIGHLIGHTED_IMAGE_TEXTURE"] = addon.CS:NewIcon("arrow-up-down"),
-					["CLICKED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "button-background-grey-clicked.png",
-					["CLICKED_CONTENT_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
-					["CLICKED_IMAGE_TEXTURE"] = addon.CS:NewIcon("arrow-up-down"),
+					["DEFAULT_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey.png",
+					["DEFAULT_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
+					["DEFAULT_IMAGE_TEXTURE"] = env.CS:NewIcon("arrow-up-down"),
+					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey-highlighted.png",
+					["HIGHLIGHTED_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
+					["HIGHLIGHTED_IMAGE_TEXTURE"] = env.CS:NewIcon("arrow-up-down"),
+					["CLICKED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "button-background-grey-clicked.png",
+					["CLICKED_CONTENT_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
+					["CLICKED_IMAGE_TEXTURE"] = env.CS:NewIcon("arrow-up-down"),
 				}, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
@@ -759,7 +759,7 @@ function NS.Prefabs:Load()
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateCheckbox(parent, name)
+				local Frame = env.C.FrameTemplates:CreateCheckbox(parent, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -772,19 +772,19 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .0575, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .0575, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 1)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
 						end
 
 						do -- CHECK
-							Content.Check, Content.CheckTexture = addon.C.FrameTemplates:CreateTexture(Content, frameStrata, DEFAULT_CHECK_TEXTURE, "$parent.Check")
+							Content.Check, Content.CheckTexture = env.C.FrameTemplates:CreateTexture(Content, frameStrata, DEFAULT_CHECK_TEXTURE, "$parent.Check")
 							Content.Check:SetPoint("CENTER", Content)
 							Content.Check:SetFrameStrata(frameStrata)
 							Content.Check:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Check, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Check, Content, 0, 0)
 						end
 					end
 				end
@@ -905,15 +905,15 @@ function NS.Prefabs:Load()
 
 			PrefabRegistry:Add("C.FrameTemplates.Blizzard.Checkbox", function(parent, frameStrata, frameLevel, data, name)
 				local Frame = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Checkbox.Template", parent, frameStrata, frameLevel, {
-					["DEFAULT_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "checkbox-background.png",
-					["DEFAULT_CHECK_TEXTURE"] = addon.CS:GetCommonPathElement() .. "checkbox-tick.png",
-					["DEFAULT_CHECK_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
-					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "checkbox-background-highlighted.png",
-					["HIGHLIGHTED_CHECK_TEXTURE"] = addon.CS:GetCommonPathElement() .. "checkbox-tick.png",
-					["HIGHLIGHTED_CHECK_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
-					["CLICKED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "checkbox-background-highlighted.png",
-					["CLICKED_CHECK_TEXTURE"] = addon.CS:GetCommonPathElement() .. "checkbox-tick.png",
-					["CLICKED_CHECK_COLOR"] = addon.CS:GetSharedColor().RGB_WHITE,
+					["DEFAULT_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "checkbox-background.png",
+					["DEFAULT_CHECK_TEXTURE"] = env.CS:GetCommonPathElement() .. "checkbox-tick.png",
+					["DEFAULT_CHECK_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
+					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "checkbox-background-highlighted.png",
+					["HIGHLIGHTED_CHECK_TEXTURE"] = env.CS:GetCommonPathElement() .. "checkbox-tick.png",
+					["HIGHLIGHTED_CHECK_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
+					["CLICKED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "checkbox-background-highlighted.png",
+					["CLICKED_CHECK_TEXTURE"] = env.CS:GetCommonPathElement() .. "checkbox-tick.png",
+					["CLICKED_CHECK_COLOR"] = env.CS:GetSharedColor().RGB_WHITE,
 				}, name)
 
 				--------------------------------
@@ -933,7 +933,7 @@ function NS.Prefabs:Load()
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateRange(parent, { orientation = "HORIZONTAL", thumbSize = 17.5 }, name)
+				local Frame = env.C.FrameTemplates:CreateRange(parent, { orientation = "HORIZONTAL", thumbSize = 17.5 }, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -946,15 +946,15 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .0375, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .0375, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 1)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -2.5, -2.5)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -2.5, -2.5)
 						end
 
 						do -- THUMB
-							Content.Thumb = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Thumb", Content)
+							Content.Thumb = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Thumb", Content)
 							Content.Thumb:SetSize(17.5, 17.5)
 							Content.Thumb:SetPoint("CENTER", Frame.REF_THUMB_ANCHOR)
 							Content.Thumb:SetFrameStrata(frameStrata)
@@ -965,11 +965,11 @@ function NS.Prefabs:Load()
 							--------------------------------
 
 							do -- BACKGROUND
-								Thumb.Background, Thumb.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Thumb, frameStrata, DEFAULT_THUMB_TEXTURE, "$parent.Background")
+								Thumb.Background, Thumb.BackgroundTexture = env.C.FrameTemplates:CreateTexture(Thumb, frameStrata, DEFAULT_THUMB_TEXTURE, "$parent.Background")
 								Thumb.Background:SetPoint("CENTER", Thumb)
 								Thumb.Background:SetFrameStrata(frameStrata)
 								Thumb.Background:SetFrameLevel(frameLevel + 3)
-								addon.C.API.FrameUtil:SetDynamicSize(Thumb.Background, Thumb, 0, 0)
+								env.C.API.FrameUtil:SetDynamicSize(Thumb.Background, Thumb, 0, 0)
 							end
 						end
 					end
@@ -1096,12 +1096,12 @@ function NS.Prefabs:Load()
 
 			PrefabRegistry:Add("C.FrameTemplates.Blizzard.Range", function(parent, frameStrata, frameLevel, data, name)
 				local Frame = PrefabRegistry:Create("C.FrameTemplates.Blizzard.Range.Template", parent, frameStrata, frameLevel, {
-					["DEFAULT_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "range-background.png",
-					["DEFAULT_THUMB_TEXTURE"] = addon.CS:GetCommonPathElement() .. "range-thumb-flat.png",
-					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "range-background.png",
-					["HIGHLIGHTED_THUMB_TEXTURE"] = addon.CS:GetCommonPathElement() .. "range-thumb-flat-highlighted.png",
-					["CLICKED_BACKGROUND_TEXTURE"] = addon.CS:GetCommonPathElement() .. "range-background.png",
-					["CLICKED_THUMB_TEXTURE"] = addon.CS:GetCommonPathElement() .. "range-thumb-flat-clicked.png",
+					["DEFAULT_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "range-background.png",
+					["DEFAULT_THUMB_TEXTURE"] = env.CS:GetCommonPathElement() .. "range-thumb-flat.png",
+					["HIGHLIGHTED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "range-background.png",
+					["HIGHLIGHTED_THUMB_TEXTURE"] = env.CS:GetCommonPathElement() .. "range-thumb-flat-highlighted.png",
+					["CLICKED_BACKGROUND_TEXTURE"] = env.CS:GetCommonPathElement() .. "range-background.png",
+					["CLICKED_THUMB_TEXTURE"] = env.CS:GetCommonPathElement() .. "range-thumb-flat-clicked.png",
 				}, name)
 
 				--------------------------------
@@ -1114,7 +1114,7 @@ function NS.Prefabs:Load()
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+				local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -1122,22 +1122,22 @@ function NS.Prefabs:Load()
 
 				do -- ELEMENTS
 					do -- CONTENT
-						Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+						Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 						Frame.Content:SetPoint("CENTER", Frame)
 						Frame.Content:SetFrameStrata(frameStrata)
 						Frame.Content:SetFrameLevel(frameLevel + 1)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 						local Content = Frame.Content
 
 						--------------------------------
 
 						do -- LAYOUT GROUP
-							Content.LayoutGroup, Content.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Content, { point = "LEFT", direction = "horizontal", resize = false, padding = PADDING, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+							Content.LayoutGroup, Content.LayoutGroup_Sort = env.C.FrameTemplates:CreateLayoutGroup(Content, { point = "LEFT", direction = "horizontal", resize = false, padding = PADDING, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
 							Content.LayoutGroup:SetPoint("CENTER", Content)
 							Content.LayoutGroup:SetFrameStrata(frameStrata)
 							Content.LayoutGroup:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.LayoutGroup, Content, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Content.LayoutGroup, Content, 0, 0)
 							Frame.LGS_CONTENT = Content.LayoutGroup_Sort
 
 							local LayoutGroup = Content.LayoutGroup
@@ -1146,22 +1146,22 @@ function NS.Prefabs:Load()
 
 							do -- ELEMENTS
 								do -- MAIN
-									LayoutGroup.Main = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", LayoutGroup)
+									LayoutGroup.Main = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Main", LayoutGroup)
 									LayoutGroup.Main:SetWidth(rangeWidth)
 									LayoutGroup.Main:SetFrameStrata(frameStrata)
 									LayoutGroup.Main:SetFrameLevel(frameLevel + 3)
-									addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.Main, LayoutGroup, nil, 0)
+									env.C.API.FrameUtil:SetDynamicSize(LayoutGroup.Main, LayoutGroup, nil, 0)
 
 									local Main = LayoutGroup.Main
 
 									--------------------------------
 
 									do -- CONTENT
-										Main.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Main)
+										Main.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Main)
 										Main.Content:SetPoint("CENTER", Main)
 										Main.Content:SetFrameStrata(frameStrata)
 										Main.Content:SetFrameLevel(frameLevel + 4)
-										addon.C.API.FrameUtil:SetDynamicSize(Main.Content, Main, 0, 0)
+										env.C.API.FrameUtil:SetDynamicSize(Main.Content, Main, 0, 0)
 
 										local Main_Content = Main.Content
 
@@ -1172,21 +1172,21 @@ function NS.Prefabs:Load()
 											Main_Content.Range:SetPoint("CENTER", Main_Content)
 											Main_Content.Range:SetFrameStrata(frameStrata)
 											Main_Content.Range:SetFrameLevel(frameLevel + 6)
-											addon.C.API.FrameUtil:SetDynamicSize(Main_Content.Range, Main_Content, 0, 0)
+											env.C.API.FrameUtil:SetDynamicSize(Main_Content.Range, Main_Content, 0, 0)
 										end
 									end
 								end
 
 								do -- INFO
-									LayoutGroup.Info = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Info", LayoutGroup)
+									LayoutGroup.Info = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Info", LayoutGroup)
 									LayoutGroup.Info:SetFrameStrata(frameStrata)
 									LayoutGroup.Info:SetFrameLevel(frameLevel + 3)
 
 									if resize then
-										addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.Info, LayoutGroup, nil, 0)
-										addon.C.API.FrameUtil:SetDynamicSize(Frame, LayoutGroup.Info, function(relativeWidth, relativeHeight) return relativeWidth + rangeWidth + PADDING end)
+										env.C.API.FrameUtil:SetDynamicSize(LayoutGroup.Info, LayoutGroup, nil, 0)
+										env.C.API.FrameUtil:SetDynamicSize(Frame, LayoutGroup.Info, function(relativeWidth, relativeHeight) return relativeWidth + rangeWidth + PADDING end)
 									else
-										addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.Info, LayoutGroup, function(relativeWidth, relativeHeight) return relativeWidth - rangeWidth - PADDING end, 0)
+										env.C.API.FrameUtil:SetDynamicSize(LayoutGroup.Info, LayoutGroup, function(relativeWidth, relativeHeight) return relativeWidth - rangeWidth - PADDING end, 0)
 									end
 
 									local Info = LayoutGroup.Info
@@ -1194,26 +1194,26 @@ function NS.Prefabs:Load()
 									--------------------------------
 
 									do -- CONTENT
-										Info.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Info)
+										Info.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Info)
 										Info.Content:SetPoint("CENTER", Info)
 										Info.Content:SetFrameStrata(frameStrata)
 										Info.Content:SetFrameLevel(frameLevel + 4)
-										addon.C.API.FrameUtil:SetDynamicSize(Info.Content, Info, 0, 0)
+										env.C.API.FrameUtil:SetDynamicSize(Info.Content, Info, 0, 0)
 
 										local Info_Content = Info.Content
 
 										--------------------------------
 
 										do -- TEXT
-											Info_Content.Text = addon.C.FrameTemplates:CreateText(Info_Content, addon.CS:GetSharedColor().RGB_YELLOW, 12.5, direction == "LEFT" and "RIGHT" or "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+											Info_Content.Text = env.C.FrameTemplates:CreateText(Info_Content, env.CS:GetSharedColor().RGB_YELLOW, 12.5, direction == "LEFT" and "RIGHT" or "LEFT", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 											Info_Content.Text:SetPoint("CENTER", Info_Content)
 
 											if resize then
 												Info_Content.Text:SetAutoFit(true)
 												Info_Content.Text:SetAutoFit_MaxWidth(10000)
-												addon.C.API.FrameUtil:SetDynamicSize(Info, Info_Content.Text, 0, nil)
+												env.C.API.FrameUtil:SetDynamicSize(Info, Info_Content.Text, 0, nil)
 											else
-												addon.C.API.FrameUtil:SetDynamicSize(Info_Content.Text, Info_Content, 0, 0)
+												env.C.API.FrameUtil:SetDynamicSize(Info_Content.Text, Info_Content, 0, 0)
 											end
 										end
 									end
@@ -1277,13 +1277,13 @@ function NS.Prefabs:Load()
 
 		do -- SCROLL BAR
 			PrefabRegistry:Add("C.FrameTemplates.Blizzard.ScrollBar", function(parent, frameStrata, frameLevel, data, name)
-				local DEFAULT_THUMB_TEXTURE = addon.CS:GetCommonPathElement() .. "scrollbar-thumb.png"
-				local HIGHLIGHTED_THUMB_TEXTURE = addon.CS:GetCommonPathElement() .. "scrollbar-thumb-highlighted.png"
-				local CLICKED_THUMB_TEXTURE = addon.CS:GetCommonPathElement() .. "scrollbar-thumb-clicked.png"
+				local DEFAULT_THUMB_TEXTURE = env.CS:GetCommonPathElement() .. "scrollbar-thumb.png"
+				local HIGHLIGHTED_THUMB_TEXTURE = env.CS:GetCommonPathElement() .. "scrollbar-thumb-highlighted.png"
+				local CLICKED_THUMB_TEXTURE = env.CS:GetCommonPathElement() .. "scrollbar-thumb-clicked.png"
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateScrollBar(parent, data, name)
+				local Frame = env.C.FrameTemplates:CreateScrollBar(parent, data, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -1295,11 +1295,11 @@ function NS.Prefabs:Load()
 				do -- ELEMENTS
 					do -- TRACK
 						do -- BACKGROUND
-							Track.Background, Track.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Track, frameStrata, addon.CS:GetCommonPathElement() .. "frame.png", 125, .075, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Track.Background, Track.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Track, frameStrata, env.CS:GetCommonPathElement() .. "frame.png", 125, .075, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Track.Background:SetPoint("CENTER", Track)
 							Track.Background:SetFrameStrata(frameStrata)
 							Track.Background:SetFrameLevel(frameLevel + 1)
-							addon.C.API.FrameUtil:SetDynamicSize(Track.Background, Track, -2.5, -2.5)
+							env.C.API.FrameUtil:SetDynamicSize(Track.Background, Track, -2.5, -2.5)
 
 							Track.BackgroundTexture:SetVertexColor(.575, .575, .575, 1)
 						end
@@ -1307,11 +1307,11 @@ function NS.Prefabs:Load()
 
 					do -- THUMB
 						do -- BACKGROUND
-							Thumb.Background, Thumb.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Thumb, frameStrata, DEFAULT_THUMB_TEXTURE, 90, .125, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Thumb.Background, Thumb.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Thumb, frameStrata, DEFAULT_THUMB_TEXTURE, 90, .125, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Thumb.Background:SetPoint("CENTER", Thumb)
 							Thumb.Background:SetFrameStrata(frameStrata)
 							Thumb.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Thumb.Background, Thumb, -2.5, -2.5)
+							env.C.API.FrameUtil:SetDynamicSize(Thumb.Background, Thumb, -2.5, -2.5)
 						end
 					end
 				end
@@ -1440,16 +1440,16 @@ function NS.Prefabs:Load()
 
 		do -- COLOR INPUT
 			PrefabRegistry:Add("C.FrameTemplates.Blizzard.Color", function(parent, frameStrata, frameLevel, data, name)
-				local DEFAULT_BACKGROUND_TEXTURE = data.DEFAULT_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/color-background.png"
-				local DEFAULT_IMAGE_TEXTURE = data.DEFAULT_IMAGE_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/color-input-background.png"
-				local HIGHLIGHTED_BACKGROUND_TEXTURE = data.HIGHLIGHTED_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/color-background-highlighted.png"
-				local HIGHLIGHTED_IMAGE_TEXTURE = data.HIGHLIGHTED_IMAGE_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/color-input-background-highlighted.png"
-				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/color-background-highlighted.png"
-				local CLICKED_IMAGE_TEXTURE = data.CLICKED_IMAGE_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/color-input-background-clicked.png"
+				local DEFAULT_BACKGROUND_TEXTURE = data.DEFAULT_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/color-background.png"
+				local DEFAULT_IMAGE_TEXTURE = data.DEFAULT_IMAGE_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/color-input-background.png"
+				local HIGHLIGHTED_BACKGROUND_TEXTURE = data.HIGHLIGHTED_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/color-background-highlighted.png"
+				local HIGHLIGHTED_IMAGE_TEXTURE = data.HIGHLIGHTED_IMAGE_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/color-input-background-highlighted.png"
+				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/color-background-highlighted.png"
+				local CLICKED_IMAGE_TEXTURE = data.CLICKED_IMAGE_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/color-input-background-clicked.png"
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateButton(parent, name)
+				local Frame = env.C.FrameTemplates:CreateButton(parent, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -1462,30 +1462,30 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .075, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .075, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
 						end
 
 						do -- COLOR
-							Content.Color = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Color", Content)
+							Content.Color = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Color", Content)
 							Content.Color:SetPoint("CENTER", Content)
 							Content.Color:SetFrameStrata(frameStrata)
 							Content.Color:SetFrameLevel(frameLevel + 3)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Color, Content, 5, 5)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Color, Content, 5, 5)
 
 							local Color = Content.Color
 
 							--------------------------------
 
 							do -- BACKGROUND
-								Color.Background, Color.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Color, frameStrata, DEFAULT_IMAGE_TEXTURE, 125, .0325, "$parent.Background")
+								Color.Background, Color.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Color, frameStrata, DEFAULT_IMAGE_TEXTURE, 125, .0325, "$parent.Background")
 								Color.Background:SetPoint("CENTER", Color)
 								Color.Background:SetFrameStrata(frameStrata)
 								Color.Background:SetFrameLevel(frameLevel + 4)
-								addon.C.API.FrameUtil:SetDynamicSize(Color.Background, Color, 0, 0)
+								env.C.API.FrameUtil:SetDynamicSize(Color.Background, Color, 0, 0)
 							end
 						end
 					end
@@ -1589,7 +1589,7 @@ function NS.Prefabs:Load()
 						do -- LOGIC
 							function Frame:UpdateColor(userInput)
 								local r, g, b = ColorPickerFrame:GetColorRGB()
-								local a = ColorPickerFrame:GetColorAlpha()
+								local env = ColorPickerFrame:GetColorAlpha()
 								local newColor = { r = r, g = g, b = b, a = a }
 
 								Frame:SetColor(newColor)
@@ -1650,12 +1650,12 @@ function NS.Prefabs:Load()
 							end
 
 							function Frame:OpenColorPicker()
-								addon.C.API.Util:Blizzard_ShowColorPicker(Frame.color, Frame.ColorPicker_OnColorChanged, Frame.ColorPicker_OnOpacityChanged, Frame.ColorPicker_OnConfirm, Frame.ColorPicker_OnCancel)
+								env.C.API.Util:Blizzard_ShowColorPicker(Frame.color, Frame.ColorPicker_OnColorChanged, Frame.ColorPicker_OnOpacityChanged, Frame.ColorPicker_OnConfirm, Frame.ColorPicker_OnCancel)
 							end
 
 							function Frame:ToggleColorPicker()
 								if ColorPickerFrame:IsShown() then
-									addon.C.API.Util:Blizzard_HideColorPicker()
+									env.C.API.Util:Blizzard_HideColorPicker()
 								else
 									Frame:OpenColorPicker()
 								end
@@ -1704,23 +1704,23 @@ function NS.Prefabs:Load()
 
 		do -- TEXT BOX
 			PrefabRegistry:Add("C.FrameTemplates.Blizzard.TextBox", function(parent, frameStrata, frameLevel, data, name)
-				local DEFAULT_BACKGROUND_TEXTURE = data.DEFAULT_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/textbox-background.png"
+				local DEFAULT_BACKGROUND_TEXTURE = data.DEFAULT_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/textbox-background.png"
 				local DEFAULT_CONTENT_COLOR = data.DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = .75 }
-				local HIGHLIGHTED_BACKGROUND_TEXTURE = data.HIGHLIGHTED_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/textbox-background.png"
+				local HIGHLIGHTED_BACKGROUND_TEXTURE = data.HIGHLIGHTED_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/textbox-background.png"
 				local HIGHLIGHTED_CONTENT_COLOR = data.DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = .75 }
-				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/textbox-background.png"
+				local CLICKED_BACKGROUND_TEXTURE = data.CLICKED_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/textbox-background.png"
 				local CLICKED_CONTENT_COLOR = data.DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = .75 }
 
-				local ACTIVE_DEFAULT_BACKGROUND_TEXTURE = data.ACTIVE_DEFAULT_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
+				local ACTIVE_DEFAULT_BACKGROUND_TEXTURE = data.ACTIVE_DEFAULT_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
 				local ACTIVE_DEFAULT_CONTENT_COLOR = data.ACTIVE_DEFAULT_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = 1 }
-				local ACTIVE_HIGHLIGHTED_BACKGROUND_TEXTURE = data.ACTIVE_HIGHLIGHTED_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
+				local ACTIVE_HIGHLIGHTED_BACKGROUND_TEXTURE = data.ACTIVE_HIGHLIGHTED_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
 				local ACTIVE_HIGHLIGHTED_CONTENT_COLOR = data.ACTIVE_HIGHLIGHTED_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = 1 }
-				local ACTIVE_CLICKED_BACKGROUND_TEXTURE = data.ACTIVE_CLICKED_BACKGROUND_TEXTURE or addon.CS:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
+				local ACTIVE_CLICKED_BACKGROUND_TEXTURE = data.ACTIVE_CLICKED_BACKGROUND_TEXTURE or env.CS:GetCommonPathArt() .. "Elements/textbox-background-highlighted.png"
 				local ACTIVE_CLICKED_CONTENT_COLOR = data.ACTIVE_CLICKED_CONTENT_COLOR or { r = 1, g = 1, b = 1, a = 1 }
 
 				--------------------------------
 
-				local Frame = addon.C.FrameTemplates:CreateTextBox(parent, frameStrata, frameLevel, data, name)
+				local Frame = env.C.FrameTemplates:CreateTextBox(parent, frameStrata, frameLevel, data, name)
 				Frame:SetFrameStrata(frameStrata)
 				Frame:SetFrameLevel(frameLevel)
 
@@ -1733,11 +1733,11 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- BACKGROUND
-							Content.Background, Content.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .0575, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							Content.Background, Content.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(Content, frameStrata, DEFAULT_BACKGROUND_TEXTURE, 125, .0575, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							Content.Background:SetPoint("CENTER", Content)
 							Content.Background:SetFrameStrata(frameStrata)
 							Content.Background:SetFrameLevel(frameLevel + 1)
-							addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
+							env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, -7.5, -7.5)
 						end
 					end
 
@@ -1748,12 +1748,12 @@ function NS.Prefabs:Load()
 
 						do -- TEXT
 							local RawText = Frame.REF_INPUT_RAWTEXT
-							RawText:SetFont(addon.C.Fonts.CONTENT_DEFAULT.path, 12.5, "")
+							RawText:SetFont(env.C.Fonts.CONTENT_DEFAULT.path, 12.5, "")
 							RawText:Hide()
 
-							Input.Text = addon.C.FrameTemplates:CreateText(Input, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+							Input.Text = env.C.FrameTemplates:CreateText(Input, env.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 							Input.Text:SetPoint("CENTER", Input)
-							addon.C.API.FrameUtil:SetDynamicSize(Input.Text, Input, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Input.Text, Input, 0, 0)
 						end
 					end
 
@@ -1764,9 +1764,9 @@ function NS.Prefabs:Load()
 						--------------------------------
 
 						do -- TEXT
-							Placeholder.Text = addon.C.FrameTemplates:CreateText(Placeholder, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Placeholder", "GameFontNormal")
+							Placeholder.Text = env.C.FrameTemplates:CreateText(Placeholder, env.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Placeholder", "GameFontNormal")
 							Placeholder.Text:SetPoint("CENTER", Placeholder)
-							addon.C.API.FrameUtil:SetDynamicSize(Placeholder.Text, Placeholder, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Placeholder.Text, Placeholder, 0, 0)
 						end
 					end
 				end

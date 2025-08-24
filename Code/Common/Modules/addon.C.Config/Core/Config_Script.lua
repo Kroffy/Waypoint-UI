@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Config; addon.C.Config = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Config; env.C.Config = NS
 
 --------------------------------
 
@@ -32,7 +32,7 @@ function NS.Script:Load()
 		end
 
 		function Frame:SetAddonIcon()
-			Frame.REF_SIDEBAR_HEADER_LOGO_BACKGROUND_TEXTURE:SetTexture(addon.C.AddonInfo.Variables.General.ADDON_ICON)
+			Frame.REF_SIDEBAR_HEADER_LOGO_BACKGROUND_TEXTURE:SetTexture(env.C.AddonInfo.Variables.General.ADDON_ICON)
 		end
 	end
 
@@ -57,7 +57,7 @@ function NS.Script:Load()
 
 			do -- CREATE
 				function Callback.Constructor:Create_Responder(parent)
-					local Frame = addon.C.FrameTemplates:CreateFrame("Frame", nil, parent:GetParent())
+					local Frame = env.C.FrameTemplates:CreateFrame("Frame", nil, parent:GetParent())
 
 					--------------------------------
 
@@ -91,7 +91,7 @@ function NS.Script:Load()
 				function Callback.Constructor:Create_Tab(name)
 					local Frame = PrefabRegistry:Create("C.Config.Main.Tab", Callback.Constructor.FRAME_CONTENT, Callback.Constructor.FRAME_CONTENT_FRAME_STRATA, Callback.Constructor.FRAME_CONTENT_FRAME_LEVEL, name)
 					Frame:SetPoint("CENTER", Callback.Constructor.FRAME_CONTENT)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_CONTENT, 0, 0)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_CONTENT, 0, 0)
 
 					--------------------------------
 
@@ -106,7 +106,7 @@ function NS.Script:Load()
 					if footerTab then
 						local Frame = PrefabRegistry:Create("C.Config.Sidebar.Navigation.Button", Callback.Constructor.FRAME_NAVIGATION_FOOTER, Callback.Constructor.FRAME_NAVIGATION_FOOTER_FRAME_STRATA, Callback.Constructor.FRAME_NAVIGATION_FOOTER_FRAME_LEVEL, name)
 						Frame:SetHeight(NS.Variables.NAVIGATION_BUTTON_HEIGHT)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_NAVIGATION_FOOTER, 0, nil)
+						env.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_NAVIGATION_FOOTER, 0, nil)
 						Frame:SetText(text)
 
 						--------------------------------
@@ -120,7 +120,7 @@ function NS.Script:Load()
 					else
 						local Frame = PrefabRegistry:Create("C.Config.Sidebar.Navigation.Button", Callback.Constructor.FRAME_NAVIGATION, Callback.Constructor.FRAME_NAVIGATION_FRAME_STRATA, Callback.Constructor.FRAME_NAVIGATION_FRAME_LEVEL, name)
 						Frame:SetHeight(NS.Variables.NAVIGATION_BUTTON_HEIGHT)
-						addon.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_NAVIGATION, 0, nil)
+						env.C.API.FrameUtil:SetDynamicSize(Frame, Callback.Constructor.FRAME_NAVIGATION, 0, nil)
 						Frame:SetText(text)
 
 						--------------------------------
@@ -141,7 +141,7 @@ function NS.Script:Load()
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Title", parent, FRAME_STRATA, FRAME_LEVEL + 1, name)
 					Frame:SetHeight(175)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -166,7 +166,7 @@ function NS.Script:Load()
 						Frame = PrefabRegistry:Create("C.Config.Main.Setting.Container", parent, FRAME_STRATA, FRAME_LEVEL + 1, { transparent = transparent, subcontainer = subcontainer }, name)
 					end
 
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -183,7 +183,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Checkbox", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -200,7 +200,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Range", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -217,7 +217,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Button", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -234,7 +234,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Dropdown", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -251,7 +251,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Text", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -268,7 +268,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.Color", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -285,7 +285,7 @@ function NS.Script:Load()
 					--------------------------------
 
 					local Frame = PrefabRegistry:Create("C.Config.Main.Setting.Element.TextBox", parent, FRAME_STRATA, FRAME_LEVEL + 1, data, name)
-					addon.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
+					env.C.API.FrameUtil:SetDynamicSize(Frame, parent, 0, nil)
 
 					--------------------------------
 
@@ -299,7 +299,7 @@ function NS.Script:Load()
 
 			do -- FUNCTIONS (MAIN)
 				function Callback.Constructor:StartConstruction(data)
-					addon.C.AddonInfo.Variables.Config.PRELOAD()
+					env.C.AddonInfo.Variables.Config.PRELOAD()
 
 					--------------------------------
 
@@ -325,7 +325,7 @@ function NS.Script:Load()
 						local newTab = nil
 						local newTabButton = nil
 
-						if type == addon.C.AddonInfo.Variables.Config.TYPE_TAB then
+						if type == env.C.AddonInfo.Variables.Config.TYPE_TAB then
 							local var_tab_footer = v.var_tab_footer
 
 							--------------------------------
@@ -363,7 +363,7 @@ function NS.Script:Load()
 						local function Set(...) return var_set(...) end
 						local function Get() return var_get() end
 
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_TITLE then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_TITLE then
 							local var_title_imageTexture, var_title_text, var_title_subtext = v.var_title_imageTexture, v.var_title_text, v.var_title_subtext
 
 							--------------------------------
@@ -371,7 +371,7 @@ function NS.Script:Load()
 							newFrame = Callback.Constructor:Create_Setting_Title(parent, v_name)
 							newFrame:SetInfo(var_title_imageTexture, var_title_text, var_title_subtext)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
 							local var_subcontainer = v.var_subcontainer
 
 							--------------------------------
@@ -384,7 +384,7 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 							end)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_RANGE then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_RANGE then
 							local var_range_min, var_range_max, var_range_step, var_range_text, var_range_set_lazy = v.var_range_min, v.var_range_max, v.var_range_step, v.var_range_text, v.var_range_set_lazy
 
 							--------------------------------
@@ -430,7 +430,7 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_BUTTON then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_BUTTON then
 							local var_button_text = v.var_button_text
 
 							--------------------------------
@@ -457,7 +457,7 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 							end)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_CHECKBOX then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_CHECKBOX then
 							newFrame = Callback.Constructor:Create_Setting_Element_Checkbox(parent, { indent = v_indent, transparent = var_transparent }, v_name)
 							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
@@ -480,7 +480,7 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_DROPDOWN then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_DROPDOWN then
 							local var_dropdown_info = v.var_dropdown_info
 
 							--------------------------------
@@ -501,7 +501,7 @@ function NS.Script:Load()
 							table.insert(dropdown.onValueChangedCallbacks, function(_, value, userInput)
 								if userInput then
 									if Set(value) then
-										addon.C.Frame.ContextMenu.Script:Main_Hide()
+										env.C.Frame.ContextMenu.Script:Main_Hide()
 									end
 
 									--------------------------------
@@ -512,7 +512,7 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_TEXT then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_TEXT then
 							newFrame = Callback.Constructor:Create_Setting_Element_Text(parent, { indent = v_indent, transparent = var_transparent }, v_name)
 							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
@@ -522,7 +522,7 @@ function NS.Script:Load()
 								newFrame:SetShown(not Check_Hidden())
 							end)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_COLOR then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_COLOR then
 							newFrame = Callback.Constructor:Create_Setting_Element_Color(parent, { indent = v_indent, transparent = var_transparent }, v_name)
 							newFrame:SetTitle(v_name, v_imageInfo, v_description)
 
@@ -546,7 +546,7 @@ function NS.Script:Load()
 								end
 							end)
 						end
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_TEXTBOX then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_TEXTBOX then
 							local var_textbox_placeholder = v.var_textbox_placeholder
 
 							--------------------------------
@@ -573,7 +573,7 @@ function NS.Script:Load()
 
 						--------------------------------
 
-						if v_type == addon.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
+						if v_type == env.C.AddonInfo.Variables.Config.TYPE_CONTAINER then
 							if v_elements then
 								if newFrame.REF_CONTAINER then
 									Callback.Constructor:ScanConstruct_Elements(newFrame.REF_CONTAINER.REF_MAIN_LAYOUT, newFrame.REF_CONTAINER, v_elements)
@@ -622,11 +622,11 @@ function NS.Script:Load()
 					end
 				end
 
-				_G[addon.C.AddonInfo.Variables.General.IDENTIFIER .. "_OpenConfig"] = function()
-					if addon.C.Variables.IS_WOW_VERSION_CLASSIC_ALL then
-						InterfaceOptionsFrame_OpenToCategory(addon.C.AddonInfo.Variables.General.REGISTRY_NAME)
+				_G[env.C.AddonInfo.Variables.General.IDENTIFIER .. "_OpenConfig"] = function()
+					if env.C.Variables.IS_WOW_VERSION_CLASSIC_ALL then
+						InterfaceOptionsFrame_OpenToCategory(env.C.AddonInfo.Variables.General.REGISTRY_NAME)
 					else
-						Settings.OpenToCategory(addon.C.AddonInfo.Variables.General.REGISTRY_NAME)
+						Settings.OpenToCategory(env.C.AddonInfo.Variables.General.REGISTRY_NAME)
 					end
 				end
 			end
@@ -642,7 +642,7 @@ function NS.Script:Load()
 
 		hooksecurefunc(Frame, "Show", function()
 			local SettingsCanvas = SettingsPanel.Container.SettingsCanvas
-			local Offset = addon.C.WoWClient.Script:IsAddOnLoaded("ElvUI") and 0 or 10
+			local Offset = env.C.WoWClient.Script:IsAddOnLoaded("ElvUI") and 0 or 10
 
 			--------------------------------
 
@@ -679,14 +679,14 @@ function NS.Script:Load()
 
 	do
 		C_Timer.After(.1, function()
-			Callback.Constructor:StartConstruction(addon.C.AddonInfo.Variables.Config.TABLE)
+			Callback.Constructor:StartConstruction(env.C.AddonInfo.Variables.Config.TABLE)
 			Frame:SetAddonIcon()
 			Frame:Hide()
 
-			-- addon setting name cannot contain spaces or it can't be located by Settings.OpenToCategory
+			-- a setting name cannot contain spaces or it can't be located by Settings.OpenToCategory
 			-- so using REGISTRY_NAME instead of NAME
-			local Category = Settings.RegisterCanvasLayoutCategory(Frame, addon.C.AddonInfo.Variables.General.REGISTRY_NAME)
-			Category.ID = addon.C.AddonInfo.Variables.General.REGISTRY_NAME
+			local Category = Settings.RegisterCanvasLayoutCategory(Frame, env.C.AddonInfo.Variables.General.REGISTRY_NAME)
+			Category.ID = env.C.AddonInfo.Variables.General.REGISTRY_NAME
 			Settings.RegisterAddOnCategory(Category)
 		end)
 	end

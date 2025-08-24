@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Frame.ContextMenu; addon.C.Frame.ContextMenu = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Frame.ContextMenu; env.C.Frame.ContextMenu = NS
 
 --------------------------------
 
@@ -13,7 +13,7 @@ NS.Elements = {}
 --------------------------------
 
 function NS.Elements:Load()
-	local Frame = addon.CS:GetCommonFrame()
+	local Frame = env.CS:GetCommonFrame()
 
 	--------------------------------
 	-- CREATE ELEMENTS
@@ -21,11 +21,11 @@ function NS.Elements:Load()
 
 	do
 		do -- ELEMENTS
-			Frame.ContextMenu = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.ContextMenu", Frame)
+			Frame.ContextMenu = env.C.FrameTemplates:CreateFrame("Frame", "$parent.ContextMenu", Frame)
 			Frame.ContextMenu:SetPoint("CENTER", Frame)
 			Frame.ContextMenu:SetFrameStrata(NS.Variables.FRAME_STRATA)
 			Frame.ContextMenu:SetFrameLevel(NS.Variables.FRAME_LEVEL)
-			addon.C.API.FrameUtil:SetDynamicSize(Frame.ContextMenu, Frame, 0, 0)
+			env.C.API.FrameUtil:SetDynamicSize(Frame.ContextMenu, Frame, 0, 0)
 
 			local Frame_ContextMenu = Frame.ContextMenu
 

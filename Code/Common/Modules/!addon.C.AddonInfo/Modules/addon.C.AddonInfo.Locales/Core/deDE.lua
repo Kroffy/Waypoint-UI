@@ -1,8 +1,8 @@
 -- ♡ Translation // Larsj02, dabear78
 
----@class addon
-local addon = select(2, ...)
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
+local L = env.C.AddonInfo.Locales
 
 --------------------------------
 
@@ -170,6 +170,8 @@ function NS:Load()
 		L["Contributors - Larsj02 - Description"] = "Übersetzer — Deutsch"
 		L["Contributors - dabear78"] = "dabear78"
 		L["Contributors - dabear78 - Description"] = "Übersetzer — Deutsch"
+		L["Contributors - Gotziko"] = "Gotziko"
+		L["Contributors - Gotziko - Description"] = "Translator - Spanish"
 		L["Contributors - y45853160"] = "y45853160"
 		L["Contributors - y45853160 - Description"] = "Code — Beta-Bugfix"
 		L["Contributors - lemieszek"] = "lemieszek"

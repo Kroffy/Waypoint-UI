@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.ContextIcon; addon.ContextIcon = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.ContextIcon; env.ContextIcon = NS
 
 --------------------------------
 
@@ -21,7 +21,7 @@ local function ReadyForTurnInMakeshiftAPI(questID)
 
 	--------------------------------
 
-	if (addon.C.Variables.IS_WOW_VERSION_RETAIL and C_QuestLog.IsQuestComplete(questID)) or (not addon.C.Variables.IS_WOW_VERSION_RETAIL and IsQuestComplete(questID)) then
+	if (env.C.Variables.IS_WOW_VERSION_RETAIL and C_QuestLog.IsQuestComplete(questID)) or (not env.C.Variables.IS_WOW_VERSION_RETAIL and IsQuestComplete(questID)) then
 		result = true
 	else
 		if QuestFrameCompleteQuestButton:IsVisible() or QuestFrameCompleteButton:IsVisible() and QuestFrameCompleteButton:IsEnabled() then
@@ -36,7 +36,7 @@ end
 
 local IsOnQuest = C_QuestLog.IsOnQuest or MissingAPI
 local IsReadyForTurnIn = C_QuestLog.ReadyForTurnIn or ReadyForTurnInMakeshiftAPI or MissingAPI
-local IsAutoAccept = addon.C.API.Util.IsAutoAccept
+local IsAutoAccept = env.C.API.Util.IsAutoAccept
 
 --------------------------------
 
@@ -55,7 +55,7 @@ function NS.Script:Load()
 		do -- UTILITIES
 			function Callback:ConvertToInlineIcon(name, isTexture)
 				local iconPath = isTexture and name or (NS.Variables.PATH .. name .. ".png")
-				return addon.C.API.Util:InlineIcon(iconPath, 16, 16, 0, 0)
+				return env.C.API.Util:InlineIcon(iconPath, 16, 16, 0, 0)
 			end
 		end
 
@@ -87,7 +87,7 @@ function NS.Script:Load()
 
 				--------------------------------
 
-				if addon.C.Variables.IS_WOW_VERSION_RETAIL then
+				if env.C.Variables.IS_WOW_VERSION_RETAIL then
 					local questClassification = C_QuestInfoSystem.GetQuestClassification(questID)
 					local questType = C_QuestLog.GetQuestType(questID)
 
@@ -143,7 +143,7 @@ function NS.Script:Load()
 						isRaid25 = isRaid25,
 						isScenario = isScenario,
 					}
-				elseif addon.C.Variables.IS_WOW_VERSION_CLASSIC_ALL then
+				elseif env.C.Variables.IS_WOW_VERSION_CLASSIC_ALL then
 					local results = {}
 					local questInfo = {}
 
@@ -356,7 +356,7 @@ function NS.Script:Load()
 				--------------------------------
 
 				do -- RETAIL
-					if addon.C.Variables.IS_WOW_VERSION_RETAIL then
+					if env.C.Variables.IS_WOW_VERSION_RETAIL then
 						local resultPath
 
 						--------------------------------
@@ -430,7 +430,7 @@ function NS.Script:Load()
 				end
 
 				do -- CLASSIC CATA
-					if addon.C.Variables.IS_WOW_VERSION_CLASSIC_PROGRESSION then
+					if env.C.Variables.IS_WOW_VERSION_CLASSIC_PROGRESSION then
 						local resultPath
 
 						--------------------------------
@@ -487,7 +487,7 @@ function NS.Script:Load()
 				end
 
 				do -- CLASSIC ERA
-					if addon.C.Variables.IS_WOW_VERSION_CLASSIC_ERA then
+					if env.C.Variables.IS_WOW_VERSION_CLASSIC_ERA then
 						local resultPath
 
 						--------------------------------

@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -38,28 +38,28 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("ScrollFrame", name, parent, "ScrollFrameTemplate")
+		local Frame = env.C.FrameTemplates:CreateFrame("ScrollFrame", name, parent, "ScrollFrameTemplate")
 
 		--------------------------------
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.API_Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.API_Content", Frame)
+				Frame.API_Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.API_Content", Frame)
 				Frame.API_Content:SetAllPoints(Frame)
 				Frame.API_Content:SetClipsChildren(true)
 			end
 
 			do -- SCROLL CHILD CONTENT
 				if not customContent then
-					Frame.API_Content.ScrollChildContentFrame = addon.C.FrameTemplates:CreateFrame("Frame", contentName .. "ContentFrame", Frame.API_Content)
+					Frame.API_Content.ScrollChildContentFrame = env.C.FrameTemplates:CreateFrame("Frame", contentName .. "ContentFrame", Frame.API_Content)
 					Frame.API_Content.ScrollChildContentFrame:SetPoint("TOP", Frame)
 
 					--------------------------------
 
 					if direction == "horizontal" then
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, nil, 0, true)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, nil, 0, true)
 					else
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, 0, nil, true)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, 0, nil, true)
 					end
 				else
 					Frame.API_Content.ScrollChildContentFrame = customContent
@@ -69,20 +69,20 @@ do
 					--------------------------------
 
 					if direction == "horizontal" then
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, nil, 0, true)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, nil, 0, true)
 					else
-						addon.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, 0, nil, true)
+						env.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildContentFrame, Frame, 0, nil, true)
 					end
 				end
 			end
 
 			do -- SCROLL CHILD
-				Frame.API_Content.ScrollChildFrame = addon.C.FrameTemplates:CreateFrame("Frame", contentName, Frame.API_Content)
+				Frame.API_Content.ScrollChildFrame = env.C.FrameTemplates:CreateFrame("Frame", contentName, Frame.API_Content)
 				Frame.API_Content.ScrollChildFrame:SetPoint("TOP", Frame)
 
 				--------------------------------
 
-				addon.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildFrame, Frame.API_Content.ScrollChildContentFrame, 0, 0)
+				env.C.API.FrameUtil:SetDynamicSize(Frame.API_Content.ScrollChildFrame, Frame.API_Content.ScrollChildContentFrame, 0, 0)
 
 				--------------------------------
 
@@ -400,13 +400,13 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent, "WowScrollBoxList")
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent, "WowScrollBoxList")
 
 		--------------------------------
 
 		do -- ELEMENTS
 			do -- SCROLL BAR
-				Frame.ScrollBar = addon.C.FrameTemplates:CreateFrame("EventFrame", "ScrollBoxScrollBar", parent, "MinimalScrollBar")
+				Frame.ScrollBar = env.C.FrameTemplates:CreateFrame("EventFrame", "ScrollBoxScrollBar", parent, "MinimalScrollBar")
 				Frame.ScrollBar:SetPoint("TOPLEFT", Frame, "TOPRIGHT")
 				Frame.ScrollBar:SetPoint("BOTTOMLEFT", Frame, "BOTTOMRIGHT")
 			end
@@ -540,7 +540,7 @@ do
 				if smoothScrollingRatio then
 					local isDestination = true
 
-					local _ = addon.C.FrameTemplates:CreateFrame("Frame", nil, Frame)
+					local _ = env.C.FrameTemplates:CreateFrame("Frame", nil, Frame)
 					_:SetScript("OnUpdate", function(self, elapsed)
 						local targetOffsetY = Frame.targetScroll
 						local currentOffsetY = Frame:GetVerticalScroll()

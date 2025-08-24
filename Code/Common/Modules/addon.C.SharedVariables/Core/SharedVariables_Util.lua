@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.SharedVariables; addon.C.SharedVariables = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.SharedVariables; env.C.SharedVariables = NS
 
 --------------------------------
 
@@ -24,7 +24,7 @@ end
 
 do
 	function NS.Util:NewTooltipDivider(width)
-		return "\n" .. addon.C.API.Util:InlineIcon(addon.C.AddonInfo.Variables.SharedVariables.PATH_TOOLTIP_DIVIDER, 1, width, 0, 0) .. "\n"
+		return "\n" .. env.C.API.Util:InlineIcon(env.C.AddonInfo.Variables.SharedVariables.PATH_TOOLTIP_DIVIDER, 1, width, 0, 0) .. "\n"
 	end
 end
 

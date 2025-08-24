@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -34,7 +34,7 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 		Frame:SetFrameStrata(frameStrata)
 		Frame:SetFrameLevel(frameLevel)
 
@@ -42,44 +42,44 @@ do
 
 		do -- ELEMENTS
 			do -- CONTENT
-				Frame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
+				Frame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Frame)
 				Frame.Content:SetPoint("CENTER", Frame)
 				Frame.Content:SetFrameStrata(frameStrata)
 				Frame.Content:SetFrameLevel(frameLevel + 1)
-				addon.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
+				env.C.API.FrameUtil:SetDynamicSize(Frame.Content, Frame, 0, 0)
 
 				local Content = Frame.Content
 
 				--------------------------------
 
 				do -- TEXT BOX
-					Content.TextBox = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.TextBox", Content)
+					Content.TextBox = env.C.FrameTemplates:CreateFrame("Frame", "$parent.TextBox", Content)
 					Content.TextBox:SetPoint("CENTER", Content)
 					Content.TextBox:SetFrameStrata(frameStrata)
 					Content.TextBox:SetFrameLevel(frameLevel + 2)
-					addon.C.API.FrameUtil:SetDynamicSize(Content.TextBox, Content, inset, inset)
+					env.C.API.FrameUtil:SetDynamicSize(Content.TextBox, Content, inset, inset)
 
 					local TextBox = Content.TextBox
 
 					--------------------------------
 
 					do -- INPUT
-						TextBox.Input = addon.C.FrameTemplates:CreateFrame("EditBox", "$parent.Input", TextBox)
+						TextBox.Input = env.C.FrameTemplates:CreateFrame("EditBox", "$parent.Input", TextBox)
 						TextBox.Input:SetPoint("CENTER", TextBox)
 						TextBox.Input:SetFrameStrata(frameStrata)
 						TextBox.Input:SetFrameLevel(frameLevel + 3)
-						addon.C.API.FrameUtil:SetDynamicSize(TextBox.Input, TextBox, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(TextBox.Input, TextBox, 0, 0)
 
 						TextBox.Input:SetMultiLine(false)
 						TextBox.Input:SetAutoFocus(false)
 					end
 
 					do -- PLACEHOLDER
-						TextBox.Placeholder = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Placeholder", TextBox)
+						TextBox.Placeholder = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Placeholder", TextBox)
 						TextBox.Placeholder:SetPoint("CENTER", TextBox)
 						TextBox.Placeholder:SetFrameStrata(frameStrata)
 						TextBox.Placeholder:SetFrameLevel(frameLevel + 3)
-						addon.C.API.FrameUtil:SetDynamicSize(TextBox.Placeholder, TextBox, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(TextBox.Placeholder, TextBox, 0, 0)
 					end
 				end
 			end
@@ -274,7 +274,7 @@ do
 					end
 				end
 
-				addon.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.OnEnter, leaveCallback = Frame.OnLeave, mouseDownCallback = Frame.OnMouseDown, mouseUpCallback = Frame.OnMouseUp })
+				env.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.OnEnter, leaveCallback = Frame.OnLeave, mouseDownCallback = Frame.OnMouseDown, mouseUpCallback = Frame.OnMouseUp })
 
 				Frame.REF_INPUT:SetScript("OnEscapePressed", Frame.OnEscapePressed)
 				Frame.REF_INPUT:HookScript("OnTextChanged", Frame.OnTextChanged)
@@ -299,7 +299,7 @@ do
 
 		--------------------------------
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 		Frame:SetFrameStrata(frameStrata)
 		Frame:SetFrameLevel(frameLevel)
 
@@ -307,12 +307,12 @@ do
 
 		do -- ELEMENTS
 			do -- SCROLL FRAME
-				Frame.ScrollFrame, Frame.ScrollChildFrame = addon.C.FrameTemplates:CreateScrollFrame(parent, { direction = "vertical", smoothScrollingRatio = 5 }, "$parent.Name" .. "ScrollFrame", "$parent.Name" .. "ScrollChildFrame")
+				Frame.ScrollFrame, Frame.ScrollChildFrame = env.C.FrameTemplates:CreateScrollFrame(parent, { direction = "vertical", smoothScrollingRatio = 5 }, "$parent.Name" .. "ScrollFrame", "$parent.Name" .. "ScrollChildFrame")
 				Frame.ScrollFrame:SetPoint("CENTER", Frame)
 				Frame.ScrollFrame:SetFrameStrata(frameStrata)
 				Frame.ScrollFrame:SetFrameLevel(frameLevel + 1)
-				addon.C.API.FrameUtil:SetDynamicSize(Frame.ScrollFrame, Frame, inset * 2, inset * 2)
-				addon.C.API.FrameUtil:SetDynamicSize(Frame.ScrollChildFrame, Frame.ScrollFrame, 0, nil)
+				env.C.API.FrameUtil:SetDynamicSize(Frame.ScrollFrame, Frame, inset * 2, inset * 2)
+				env.C.API.FrameUtil:SetDynamicSize(Frame.ScrollChildFrame, Frame.ScrollFrame, 0, nil)
 
 				local ScrollFrame = Frame.ScrollFrame
 				local ScrollChildFrame = Frame.ScrollChildFrame
@@ -324,32 +324,32 @@ do
 				end
 
 				do -- CONTENT
-					ScrollChildFrame.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", ScrollChildFrame)
+					ScrollChildFrame.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", ScrollChildFrame)
 					ScrollChildFrame.Content:SetPoint("TOP", ScrollChildFrame)
 					ScrollChildFrame.Content:SetFrameStrata(frameStrata)
 					ScrollChildFrame.Content:SetFrameLevel(frameLevel + 2)
-					addon.C.API.FrameUtil:SetDynamicSize(ScrollChildFrame.Content, ScrollFrame, 0, 0)
-					addon.C.API.FrameUtil:SetDynamicSize(ScrollChildFrame, ScrollChildFrame.Content, nil, 0)
+					env.C.API.FrameUtil:SetDynamicSize(ScrollChildFrame.Content, ScrollFrame, 0, 0)
+					env.C.API.FrameUtil:SetDynamicSize(ScrollChildFrame, ScrollChildFrame.Content, nil, 0)
 
 					local Content = ScrollChildFrame.Content
 
 					----------------------------------
 
 					do -- CONTENT
-						Content.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
+						Content.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Content)
 						Content.Content:SetPoint("CENTER", Content)
 						Content.Content:SetFrameStrata(frameStrata)
 						Content.Content:SetFrameLevel(frameLevel + 3)
-						addon.C.API.FrameUtil:SetDynamicSize(Content.Content, Content, 0, 0)
+						env.C.API.FrameUtil:SetDynamicSize(Content.Content, Content, 0, 0)
 
 						local Subcontent = Content.Content
 
 						----------------------------------
 
 						do -- LAYOUT GROUP
-							Subcontent.LayoutGroup = addon.C.FrameTemplates:CreateLayoutGroup(Subcontent, { point = "LEFT", direction = "horizontal", resize = false, padding = 0, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+							Subcontent.LayoutGroup = env.C.FrameTemplates:CreateLayoutGroup(Subcontent, { point = "LEFT", direction = "horizontal", resize = false, padding = 0, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
 							Subcontent.LayoutGroup:SetPoint("CENTER", Subcontent)
-							addon.C.API.FrameUtil:SetDynamicSize(Subcontent.LayoutGroup, Subcontent, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Subcontent.LayoutGroup, Subcontent, 0, 0)
 
 							local LayoutGroup = Subcontent.LayoutGroup
 
@@ -359,7 +359,7 @@ do
 							local IMAGE_FRAME_HEIGHT = 20
 
 							do -- IMAGE FRAME
-								LayoutGroup.ImageFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", LayoutGroup)
+								LayoutGroup.ImageFrame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.ImageFrame", LayoutGroup)
 								LayoutGroup.ImageFrame:SetSize(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
 								LayoutGroup:AddElement(LayoutGroup.ImageFrame)
 
@@ -368,17 +368,17 @@ do
 								--------------------------------
 
 								do -- BACKGROUND
-									ImageFrame.Background, ImageFrame.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, nil, "$parent.Background")
+									ImageFrame.Background, ImageFrame.BackgroundTexture = env.C.FrameTemplates:CreateTexture(ImageFrame, frameStrata, nil, "$parent.Background")
 									ImageFrame.Background:SetPoint("CENTER", ImageFrame)
-									addon.C.API.FrameUtil:SetDynamicSize(ImageFrame.Background, ImageFrame, 7.5, 7.5)
+									env.C.API.FrameUtil:SetDynamicSize(ImageFrame.Background, ImageFrame, 7.5, 7.5)
 								end
 							end
 
 							do -- TEXT BOX
-								LayoutGroup.TextBox = addon.C.FrameTemplates:CreateFrame("EditBox", name, LayoutGroup)
+								LayoutGroup.TextBox = env.C.FrameTemplates:CreateFrame("EditBox", name, LayoutGroup)
 								LayoutGroup.TextBox:SetFrameStrata(frameStrata)
 								LayoutGroup.TextBox:SetFrameLevel(frameLevel + 4)
-								addon.C.API.FrameUtil:SetDynamicSize(ScrollChildFrame, LayoutGroup.TextBox, nil, 0)
+								env.C.API.FrameUtil:SetDynamicSize(ScrollChildFrame, LayoutGroup.TextBox, nil, 0)
 								LayoutGroup:AddElement(LayoutGroup.TextBox)
 
 								LayoutGroup.TextBox:SetMultiLine(false)
@@ -394,9 +394,9 @@ do
 								end
 
 								do -- PLACEHOLDER
-									TextBox.Placeholder = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Placeholder", TextBox)
+									TextBox.Placeholder = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Placeholder", TextBox)
 									TextBox.Placeholder:SetPoint("CENTER", TextBox)
-									addon.C.API.FrameUtil:SetDynamicSize(TextBox.Placeholder, TextBox, 0, 0)
+									env.C.API.FrameUtil:SetDynamicSize(TextBox.Placeholder, TextBox, 0, 0)
 									TextBox.Placeholder:SetAlpha(1)
 
 									local Placeholder = TextBox.Placeholder
@@ -404,9 +404,9 @@ do
 									--------------------------------
 
 									do -- TEXT
-										Placeholder.Text = addon.C.FrameTemplates:CreateText(Placeholder, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "TOP", addon.C.Fonts.CONTENT_MEDIUM, "$parent.Text")
+										Placeholder.Text = env.C.FrameTemplates:CreateText(Placeholder, env.CS:GetSharedColor().RGB_WHITE, 12.5, "LEFT", "TOP", env.C.Fonts.CONTENT_MEDIUM, "$parent.Text")
 										Placeholder.Text:SetPoint("CENTER", Placeholder)
-										addon.C.API.FrameUtil:SetDynamicSize(Placeholder.Text, Placeholder, 0, 0)
+										env.C.API.FrameUtil:SetDynamicSize(Placeholder.Text, Placeholder, 0, 0)
 										Placeholder.Text.justifyV = "TOP"
 									end
 								end
@@ -635,7 +635,7 @@ do
 					end
 				end
 
-				addon.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.OnEnter, leaveCallback = Frame.OnLeave, mouseDownCallback = Frame.OnMouseDown, mouseUpCallback = Frame.OnMouseUp })
+				env.C.FrameTemplates:CreateMouseResponder(Frame, { enterCallback = Frame.OnEnter, leaveCallback = Frame.OnLeave, mouseDownCallback = Frame.OnMouseDown, mouseUpCallback = Frame.OnMouseUp })
 				Frame:GetTextBox():SetScript("OnEditFocusGained", Frame.OnEnter)
 				Frame:GetTextBox():SetScript("OnEditFocusLost", Frame.OnLeave)
 				Frame:GetTextBox():SetScript("OnEscapePressed", Frame.OnEscapePressed)

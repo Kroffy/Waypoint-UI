@@ -1,23 +1,23 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
 
 --------------------------------
 
-addon.Main = {}
-local NS = addon.Main; addon.Main = NS
+env.Main = {}
+local NS = env.Main; env.Main = NS
 
 --------------------------------
 
 function NS:Load()
 	local function Modules()
-		addon.ContextIcon:Load()
-		addon.MapPin:Load()
-		addon.Query:Load()
-        addon.WaypointSystem:Load()
+		env.ContextIcon:Load()
+		env.MapPin:Load()
+		env.Query:Load()
+        env.WaypointSystem:Load()
 	end
 
 	--------------------------------

@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.WaypointSystem; addon.WaypointSystem = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.WaypointSystem; env.WaypointSystem = NS
 
 --------------------------------
 
@@ -19,7 +19,7 @@ function NS.Elements:Load()
 
 	do
 		do -- ELEMENTS
-			WaypointFrame.Waypoint = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Waypoint", WaypointFrame)
+			WaypointFrame.Waypoint = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Waypoint", WaypointFrame)
 			WaypointFrame.Waypoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
 			WaypointFrame.Waypoint:SetFrameLevel(NS.Variables.FRAME_LEVEL)
 
@@ -34,7 +34,7 @@ function NS.Elements:Load()
 				--------------------------------
 
 				do -- WORLD
-					Frame.World = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.World", Frame)
+					Frame.World = env.C.FrameTemplates:CreateFrame("Frame", "$parent.World", Frame)
 					Frame.World:SetAllPoints(Frame)
 
 					local World = Frame.World
@@ -42,7 +42,7 @@ function NS.Elements:Load()
 					--------------------------------
 
 					do -- WAYPOINT
-						World.Waypoint = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Waypoint", World)
+						World.Waypoint = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Waypoint", World)
 						World.Waypoint:SetSize(37.5, 37.5)
 						World.Waypoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
 						World.Waypoint:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
@@ -52,21 +52,21 @@ function NS.Elements:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Waypoint.Alpha_MouseOver = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_MouseOver", Waypoint)
-							Waypoint.Alpha_CharacterOverlap = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_CharacterOverlap", Waypoint.Alpha_MouseOver)
-							Waypoint.Alpha_ScreenEdge = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_ScreenEdge", Waypoint.Alpha_CharacterOverlap)
+							Waypoint.Alpha_MouseOver = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_MouseOver", Waypoint)
+							Waypoint.Alpha_CharacterOverlap = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_CharacterOverlap", Waypoint.Alpha_MouseOver)
+							Waypoint.Alpha_ScreenEdge = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_ScreenEdge", Waypoint.Alpha_CharacterOverlap)
 							Waypoint.Alpha_MouseOver:SetPoint("CENTER", Waypoint)
 							Waypoint.Alpha_CharacterOverlap:SetPoint("CENTER", Waypoint)
 							Waypoint.Alpha_ScreenEdge:SetPoint("CENTER", Waypoint)
-							addon.C.API.FrameUtil:SetDynamicSize(Waypoint.Alpha_MouseOver, Waypoint, 0, 0)
-							addon.C.API.FrameUtil:SetDynamicSize(Waypoint.Alpha_CharacterOverlap, Waypoint, 0, 0)
-							addon.C.API.FrameUtil:SetDynamicSize(Waypoint.Alpha_ScreenEdge, Waypoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Waypoint.Alpha_MouseOver, Waypoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Waypoint.Alpha_CharacterOverlap, Waypoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Waypoint.Alpha_ScreenEdge, Waypoint, 0, 0)
 
-							Waypoint.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Waypoint.Alpha_ScreenEdge)
+							Waypoint.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Waypoint.Alpha_ScreenEdge)
 							Waypoint.Content:SetPoint("CENTER", Waypoint)
 							Waypoint.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Waypoint.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Waypoint.Content, Waypoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Waypoint.Content, Waypoint, 0, 0)
 
 							local Content = Waypoint.Content
 
@@ -82,14 +82,14 @@ function NS.Elements:Load()
 									Content.ContextFrame:SetPoint("CENTER", Content)
 									Content.ContextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Content.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 1)
-									addon.C.API.FrameUtil:SetDynamicSize(Content.ContextFrame, Content, 0, 0)
+									env.C.API.FrameUtil:SetDynamicSize(Content.ContextFrame, Content, 0, 0)
 
 									local ContextFrame = Content.ContextFrame
 
 									--------------------------------
 
 									do -- VFX
-										ContextFrame.VFX = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.VFX", ContextFrame)
+										ContextFrame.VFX = env.C.FrameTemplates:CreateFrame("Frame", "$parent.VFX", ContextFrame)
 										ContextFrame.VFX:SetSize(125, 125)
 										ContextFrame.VFX:SetPoint("CENTER", ContextFrame)
 										ContextFrame.VFX:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -100,7 +100,7 @@ function NS.Elements:Load()
 										--------------------------------
 
 										do -- WAVE
-											VFX.Wave = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Wave", VFX)
+											VFX.Wave = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Wave", VFX)
 											VFX.Wave:SetSize(75, 75)
 											VFX.Wave:SetPoint("CENTER", VFX)
 											VFX.Wave:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -111,18 +111,18 @@ function NS.Elements:Load()
 											--------------------------------
 
 											do -- BACKGROUND
-												Wave.Background, Wave.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Wave, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-wave.png", "$parent.Background")
+												Wave.Background, Wave.BackgroundTexture = env.C.FrameTemplates:CreateTexture(Wave, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-wave.png", "$parent.Background")
 												Wave.Background:SetPoint("CENTER", Wave)
 												Wave.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 												Wave.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
-												addon.C.API.FrameUtil:SetDynamicSize(Wave.Background, Wave, 0, 0)
+												env.C.API.FrameUtil:SetDynamicSize(Wave.Background, Wave, 0, 0)
 											end
 										end
 									end
 								end
 
 								do -- FOOTER
-									Content.Footer = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Footer", Content)
+									Content.Footer = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Footer", Content)
 									Content.Footer:SetSize(200, 37.5)
 									Content.Footer:SetPoint("TOP", Content, "BOTTOM", 0, -7.5)
 									Content.Footer:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -135,11 +135,11 @@ function NS.Elements:Load()
 									--------------------------------
 
 									do -- LAYOUT GROUP
-										Footer.LayoutGroup, Footer.LayoutGroup_Sort = addon.C.FrameTemplates:CreateLayoutGroup(Footer, { point = "TOP", direction = "vertical", resize = false, padding = 2.5, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
+										Footer.LayoutGroup, Footer.LayoutGroup_Sort = env.C.FrameTemplates:CreateLayoutGroup(Footer, { point = "TOP", direction = "vertical", resize = false, padding = 2.5, distribute = false, distributeResizeElements = false, excludeHidden = true, autoSort = true, customOffset = nil, customLayoutSort = nil }, "$parent.LayoutGroup")
 										Footer.LayoutGroup:SetPoint("CENTER", Footer)
 										Footer.LayoutGroup:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Footer.LayoutGroup:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-										addon.C.API.FrameUtil:SetDynamicSize(Footer.LayoutGroup, Footer, 0, 0)
+										env.C.API.FrameUtil:SetDynamicSize(Footer.LayoutGroup, Footer, 0, 0)
 										Frame.LGS_FOOTER = Footer.LayoutGroup_Sort
 
 										local LayoutGroup = Footer.LayoutGroup
@@ -148,10 +148,10 @@ function NS.Elements:Load()
 
 										do -- ELEMENTS
 											do -- TEXT FRAME
-												LayoutGroup.TextFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", LayoutGroup)
+												LayoutGroup.TextFrame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", LayoutGroup)
 												LayoutGroup.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 												LayoutGroup.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-												addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.TextFrame, LayoutGroup, 0, nil)
+												env.C.API.FrameUtil:SetDynamicSize(LayoutGroup.TextFrame, LayoutGroup, 0, nil)
 												LayoutGroup:AddElement(LayoutGroup.TextFrame)
 
 												local TextFrame = LayoutGroup.TextFrame
@@ -159,19 +159,19 @@ function NS.Elements:Load()
 												--------------------------------
 
 												do -- TEXT
-													TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+													TextFrame.Text = env.C.FrameTemplates:CreateText(TextFrame, env.CS:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 													TextFrame.Text:SetPoint("CENTER", TextFrame)
 													TextFrame.Text:SetAutoFit(true)
 													TextFrame.Text:SetAutoFit_MaxWidth(10000)
-													addon.C.API.FrameUtil:SetDynamicSize(TextFrame, TextFrame.Text, nil, 0)
+													env.C.API.FrameUtil:SetDynamicSize(TextFrame, TextFrame.Text, nil, 0)
 												end
 											end
 
 											do -- SUBTEXT FRAME
-												LayoutGroup.SubtextFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.SubtextFrame", LayoutGroup)
+												LayoutGroup.SubtextFrame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.SubtextFrame", LayoutGroup)
 												LayoutGroup.SubtextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 												LayoutGroup.SubtextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-												addon.C.API.FrameUtil:SetDynamicSize(LayoutGroup.SubtextFrame, LayoutGroup.TextFrame, 0, nil)
+												env.C.API.FrameUtil:SetDynamicSize(LayoutGroup.SubtextFrame, LayoutGroup.TextFrame, 0, nil)
 												LayoutGroup:AddElement(LayoutGroup.SubtextFrame)
 
 												local SubtextFrame = LayoutGroup.SubtextFrame
@@ -179,11 +179,11 @@ function NS.Elements:Load()
 												--------------------------------
 
 												do -- TEXT
-													SubtextFrame.Text = addon.C.FrameTemplates:CreateText(SubtextFrame, addon.CS:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+													SubtextFrame.Text = env.C.FrameTemplates:CreateText(SubtextFrame, env.CS:GetSharedColor().RGB_WHITE, 12.5, "CENTER", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 													SubtextFrame.Text:SetPoint("CENTER", SubtextFrame)
 													SubtextFrame.Text:SetAutoFit(true)
 													SubtextFrame.Text:SetAutoFit_MaxWidth(10000)
-													addon.C.API.FrameUtil:SetDynamicSize(SubtextFrame, SubtextFrame.Text, nil, 0)
+													env.C.API.FrameUtil:SetDynamicSize(SubtextFrame, SubtextFrame.Text, nil, 0)
 												end
 											end
 										end
@@ -191,7 +191,7 @@ function NS.Elements:Load()
 								end
 
 								do -- MARKER
-									Content.Marker = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Marker", Content)
+									Content.Marker = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Marker", Content)
 									Content.Marker:SetSize(35, MARKER_HEIGHT)
 									Content.Marker:SetPoint("BOTTOM", Content, 0, 25)
 									Content.Marker:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -202,23 +202,23 @@ function NS.Elements:Load()
 									--------------------------------
 
 									do -- CONTENT
-										Marker.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Marker)
+										Marker.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Marker)
 										Marker.Content:SetPoint("CENTER", Marker)
 										Marker.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Marker.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-										addon.C.API.FrameUtil:SetDynamicSize(Marker.Content, Marker, 0, 0)
+										env.C.API.FrameUtil:SetDynamicSize(Marker.Content, Marker, 0, 0)
 
 										local Marker_Content = Marker.Content
 
 										--------------------------------
 
 										do -- BACKGROUND
-											Marker_Content.Background, Marker_Content.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Marker_Content, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line.png", "$parent.Background")
+											Marker_Content.Background, Marker_Content.BackgroundTexture = env.C.FrameTemplates:CreateTexture(Marker_Content, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "waypoint-line.png", "$parent.Background")
 											Marker_Content.Background:SetWidth(125)
 											Marker_Content.Background:SetPoint("CENTER", Marker_Content, 0, -MARKER_HEIGHT / 2)
 											Marker_Content.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 											Marker_Content.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 4)
-											addon.C.API.FrameUtil:SetDynamicSize(Marker_Content.Background, Marker_Content, nil, 0)
+											env.C.API.FrameUtil:SetDynamicSize(Marker_Content.Background, Marker_Content, nil, 0)
 
 											Marker_Content.Background:SetAlpha(.25)
 										end
@@ -228,7 +228,7 @@ function NS.Elements:Load()
 											Marker_Content.Pulse:SetPoint("BOTTOM", Marker_Content)
 											Marker_Content.Pulse:SetFrameStrata(NS.Variables.FRAME_STRATA)
 											Marker_Content.Pulse:SetFrameLevel(NS.Variables.FRAME_LEVEL + 5)
-											addon.C.API.FrameUtil:SetDynamicSize(Marker_Content.Pulse, Marker_Content, 0, function(relativeWidth, relativeHeight) return relativeHeight / 2 end)
+											env.C.API.FrameUtil:SetDynamicSize(Marker_Content.Pulse, Marker_Content, 0, function(relativeWidth, relativeHeight) return relativeHeight / 2 end)
 
 											Marker_Content.Pulse:SetAlpha(.75)
 										end
@@ -239,7 +239,7 @@ function NS.Elements:Load()
 					end
 
 					do -- PINPOINT
-						World.Pinpoint = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Pinpoint", World)
+						World.Pinpoint = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Pinpoint", World)
 						World.Pinpoint:SetFrameStrata(NS.Variables.FRAME_STRATA)
 						World.Pinpoint:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
 
@@ -248,21 +248,21 @@ function NS.Elements:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Pinpoint.Alpha_MouseOver = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_MouseOver", Pinpoint)
-							Pinpoint.Alpha_CharacterOverlap = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_CharacterOverlap", Pinpoint.Alpha_MouseOver)
-							Pinpoint.Alpha_ScreenEdge = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_ScreenEdge", Pinpoint.Alpha_CharacterOverlap)
+							Pinpoint.Alpha_MouseOver = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_MouseOver", Pinpoint)
+							Pinpoint.Alpha_CharacterOverlap = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_CharacterOverlap", Pinpoint.Alpha_MouseOver)
+							Pinpoint.Alpha_ScreenEdge = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_ScreenEdge", Pinpoint.Alpha_CharacterOverlap)
 							Pinpoint.Alpha_MouseOver:SetPoint("CENTER", Pinpoint)
 							Pinpoint.Alpha_CharacterOverlap:SetPoint("CENTER", Pinpoint)
 							Pinpoint.Alpha_ScreenEdge:SetPoint("CENTER", Pinpoint)
-							addon.C.API.FrameUtil:SetDynamicSize(Pinpoint.Alpha_MouseOver, Pinpoint, 0, 0)
-							addon.C.API.FrameUtil:SetDynamicSize(Pinpoint.Alpha_CharacterOverlap, Pinpoint, 0, 0)
-							addon.C.API.FrameUtil:SetDynamicSize(Pinpoint.Alpha_ScreenEdge, Pinpoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Pinpoint.Alpha_MouseOver, Pinpoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Pinpoint.Alpha_CharacterOverlap, Pinpoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Pinpoint.Alpha_ScreenEdge, Pinpoint, 0, 0)
 
-							Pinpoint.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Pinpoint.Alpha_ScreenEdge)
+							Pinpoint.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Pinpoint.Alpha_ScreenEdge)
 							Pinpoint.Content:SetPoint("CENTER", Pinpoint)
 							Pinpoint.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Pinpoint.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
-							addon.C.API.FrameUtil:SetDynamicSize(Pinpoint.Content, Pinpoint, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Pinpoint.Content, Pinpoint, 0, 0)
 							Pinpoint.Content:SetScale(.75)
 
 							local Content = Pinpoint.Content
@@ -276,11 +276,11 @@ function NS.Elements:Load()
 								--------------------------------
 
 								do -- BACKGROUND
-									Content.Background = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Content)
+									Content.Background = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Content)
 									Content.Background:SetPoint("CENTER", Content)
 									Content.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Content.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL)
-									addon.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
+									env.C.API.FrameUtil:SetDynamicSize(Content.Background, Content, 0, 0)
 
 									local Background = Content.Background
 
@@ -308,75 +308,75 @@ function NS.Elements:Load()
 								end
 
 								do -- FOREGROUND
-									Content.Foreground = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Foreground", Content)
+									Content.Foreground = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Foreground", Content)
 									Content.Foreground:SetPoint("CENTER", Content)
 									Content.Foreground:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Content.Foreground:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX)
-									addon.C.API.FrameUtil:SetDynamicSize(Content.Foreground, Content, 0, 0)
+									env.C.API.FrameUtil:SetDynamicSize(Content.Foreground, Content, 0, 0)
 
 									local Foreground = Content.Foreground
 
 									--------------------------------
 
 									do -- BACKGROUND
-										Foreground.Background = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Foreground)
+										Foreground.Background = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Background", Foreground)
 										Foreground.Background:SetPoint("CENTER", Foreground)
 										Foreground.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Foreground.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 1)
-										addon.C.API.FrameUtil:SetDynamicSize(Foreground.Background, Foreground, -25, -25)
+										env.C.API.FrameUtil:SetDynamicSize(Foreground.Background, Foreground, -25, -25)
 
 										local Background = Foreground.Background
 
 										--------------------------------
 
 										do -- CENTER
-											Background.Center, Background.CenterTexture = addon.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-center.png", 37, .125, "$parent.Center", Enum.UITextureSliceMode.Stretched)
+											Background.Center, Background.CenterTexture = env.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-center.png", 37, .125, "$parent.Center", Enum.UITextureSliceMode.Stretched)
 											Background.Center:SetPoint("CENTER", Background)
 											Background.Center:SetFrameStrata(NS.Variables.FRAME_STRATA)
 											Background.Center:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 2)
-											addon.C.API.FrameUtil:SetDynamicSize(Background.Center, Background, 0, 0)
+											env.C.API.FrameUtil:SetDynamicSize(Background.Center, Background, 0, 0)
 
 											Background.CenterTexture:SetVertexColor(0, 0, 0, .375)
 										end
 
 										do -- BORDER
-											Background.Border, Background.BorderTexture = addon.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-border.png", 37, .125, "$parent.Border", Enum.UITextureSliceMode.Stretched)
+											Background.Border, Background.BorderTexture = env.C.FrameTemplates:CreateNineSlice(Background, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "pinpoint-background-border.png", 37, .125, "$parent.Border", Enum.UITextureSliceMode.Stretched)
 											Background.Border:SetPoint("CENTER", Background)
 											Background.Border:SetFrameStrata(NS.Variables.FRAME_STRATA)
 											Background.Border:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 3)
-											addon.C.API.FrameUtil:SetDynamicSize(Background.Border, Background, 0, 0)
+											env.C.API.FrameUtil:SetDynamicSize(Background.Border, Background, 0, 0)
 										end
 									end
 
 									do -- CONTENT
-										Foreground.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Foreground)
+										Foreground.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Foreground)
 										Foreground.Content:SetPoint("CENTER", Foreground)
 										Foreground.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 										Foreground.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 5)
-										addon.C.API.FrameUtil:SetDynamicSize(Foreground.Content, Foreground, 0, 0)
+										env.C.API.FrameUtil:SetDynamicSize(Foreground.Content, Foreground, 0, 0)
 
 										local Content = Foreground.Content
 
 										--------------------------------
 
 										do -- TEXT FRAME
-											Content.TextFrame = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", Content)
+											Content.TextFrame = env.C.FrameTemplates:CreateFrame("Frame", "$parent.TextFrame", Content)
 											Content.TextFrame:SetPoint("CENTER", Content)
 											Content.TextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 											Content.TextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL_MAX + 6)
-											addon.C.API.FrameUtil:SetDynamicSize(Content.TextFrame, Content, 0, 0)
+											env.C.API.FrameUtil:SetDynamicSize(Content.TextFrame, Content, 0, 0)
 
 											local TextFrame = Content.TextFrame
 
 											--------------------------------
 
 											do -- TEXT
-												TextFrame.Text = addon.C.FrameTemplates:CreateText(TextFrame, addon.CS:GetSharedColor().RGB_WHITE, 14, "CENTER", "MIDDLE", addon.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
+												TextFrame.Text = env.C.FrameTemplates:CreateText(TextFrame, env.CS:GetSharedColor().RGB_WHITE, 14, "CENTER", "MIDDLE", env.C.Fonts.CONTENT_DEFAULT, "$parent.Text", "GameFontNormal")
 												TextFrame.Text:SetPoint("CENTER", TextFrame)
 												TextFrame.Text:SetAutoFit(true)
 												TextFrame.Text:SetAutoFit_MaxWidth(TEXT_WIDTH_MAX)
 												TextFrame.Text:SetSpacing(2.75)
-												addon.C.API.FrameUtil:SetDynamicSize(Pinpoint, TextFrame.Text, 0, 0)
+												env.C.API.FrameUtil:SetDynamicSize(Pinpoint, TextFrame.Text, 0, 0)
 											end
 										end
 									end
@@ -387,7 +387,7 @@ function NS.Elements:Load()
 				end
 
 				do -- NAVIGATOR
-					Frame.Navigator = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Navigator", Frame)
+					Frame.Navigator = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Navigator", Frame)
 					Frame.Navigator:SetAllPoints(Frame)
 
 					local Navigator = Frame.Navigator
@@ -395,7 +395,7 @@ function NS.Elements:Load()
 					--------------------------------
 
 					do -- ARROW
-						Navigator.Arrow = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Arrow", Navigator)
+						Navigator.Arrow = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Arrow", Navigator)
 						Navigator.Arrow:SetSize(37.5, 37.5)
 						Navigator.Arrow:SetFrameStrata(NS.Variables.FRAME_STRATA)
 						Navigator.Arrow:SetFrameLevel(NS.Variables.FRAME_LEVEL + 1)
@@ -405,15 +405,15 @@ function NS.Elements:Load()
 						--------------------------------
 
 						do -- CONTENT
-							Arrow.Alpha_MouseOver = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_MouseOver", Arrow)
+							Arrow.Alpha_MouseOver = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Alpha_MouseOver", Arrow)
 							Arrow.Alpha_MouseOver:SetPoint("CENTER", Arrow)
-							addon.C.API.FrameUtil:SetDynamicSize(Arrow.Alpha_MouseOver, Arrow, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Arrow.Alpha_MouseOver, Arrow, 0, 0)
 
-							Arrow.Content = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Arrow.Alpha_MouseOver)
+							Arrow.Content = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Content", Arrow.Alpha_MouseOver)
 							Arrow.Content:SetPoint("CENTER", Arrow)
 							Arrow.Content:SetFrameStrata(NS.Variables.FRAME_STRATA)
 							Arrow.Content:SetFrameLevel(NS.Variables.FRAME_LEVEL + 2)
-							addon.C.API.FrameUtil:SetDynamicSize(Arrow.Content, Arrow, 0, 0)
+							env.C.API.FrameUtil:SetDynamicSize(Arrow.Content, Arrow, 0, 0)
 
 							local Content = Arrow.Content
 
@@ -424,11 +424,11 @@ function NS.Elements:Load()
 								Content.ContextFrame:SetPoint("CENTER", Content)
 								Content.ContextFrame:SetFrameStrata(NS.Variables.FRAME_STRATA)
 								Content.ContextFrame:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
-								addon.C.API.FrameUtil:SetDynamicSize(Content.ContextFrame, Content, 0, 0)
+								env.C.API.FrameUtil:SetDynamicSize(Content.ContextFrame, Content, 0, 0)
 							end
 
 							do -- INDICATOR
-								Content.Indicator = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Indicator", Content)
+								Content.Indicator = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Indicator", Content)
 								Content.Indicator:SetSize(75, 75)
 								Content.Indicator:SetPoint("CENTER", Content)
 								Content.Indicator:SetFrameStrata(NS.Variables.FRAME_STRATA)
@@ -439,11 +439,11 @@ function NS.Elements:Load()
 								--------------------------------
 
 								do -- BACKGROUND
-									Indicator.Background, Indicator.BackgroundTexture = addon.C.FrameTemplates:CreateTexture(Indicator, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "navigator-indicator-background.png", "$parent.Background")
+									Indicator.Background, Indicator.BackgroundTexture = env.C.FrameTemplates:CreateTexture(Indicator, NS.Variables.FRAME_STRATA, NS.Variables.PATH .. "navigator-indicator-background.png", "$parent.Background")
 									Indicator.Background:SetPoint("CENTER", Indicator)
 									Indicator.Background:SetFrameStrata(NS.Variables.FRAME_STRATA)
 									Indicator.Background:SetFrameLevel(NS.Variables.FRAME_LEVEL + 3)
-									addon.C.API.FrameUtil:SetDynamicSize(Indicator.Background, Indicator, 0, 0)
+									env.C.API.FrameUtil:SetDynamicSize(Indicator.Background, Indicator, 0, 0)
 
 									Indicator.Background:SetAlpha(.5)
 								end

@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.SlashCommand; addon.C.SlashCommand = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.SlashCommand; env.C.SlashCommand = NS
 
 --------------------------------
 
@@ -54,6 +54,21 @@ function NS.Script:Load()
 					callback(msg, Callback:GetTokens(msg))
 				end
 			end
+
+			function Callback:RemoveSlashCommand(name)
+				local i = 1
+				while _G["SLASH_" .. name .. i] ~= nil do
+					local slash = _G["SLASH_" .. name .. i]
+
+					_G["SLASH_" .. name .. i] = nil
+					hash_SlashCmdList[slash] = nil
+
+					i = i + 1;
+				end
+
+				SlashCmdList[name] = nil
+				getmetatable(SlashCmdList).__index[name] = nil
+			end
 		end
 	end
 
@@ -68,7 +83,7 @@ function NS.Script:Load()
 	do
 		local slashCommandIndex = {}
 
-		for k, v in ipairs(addon.C.AddonInfo.Variables.SlashCommand.REGISTER) do
+		for k, v in ipairs(env.C.AddonInfo.Variables.SlashCommand.REGISTER) do
 			if v.hook and Callback:GetSlashCommand(v.hook) then
 				Callback:HookSlashCommand(v.hook, v.callback)
 			else

@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.FrameTemplates; addon.C.FrameTemplates = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.FrameTemplates; env.C.FrameTemplates = NS
 
 --------------------------------
 -- VARIABLES
@@ -33,11 +33,11 @@ do
 	---@param name? string
 	function NS:CreateText(parent, textColor, textSize, alignH, alignV, fontFile, name, template)
 		if type(fontFile) == "table" then
-			textSize = addon.CS:NewFontSize(textSize, fontFile.sizeModifier)
+			textSize = env.CS:NewFontSize(textSize, fontFile.sizeModifier)
 			fontFile = fontFile.path
 		end
 
-		local Frame = addon.C.FrameTemplates:CreateFrame("Frame", name, parent)
+		local Frame = env.C.FrameTemplates:CreateFrame("Frame", name, parent)
 
 		--------------------------------
 
@@ -231,7 +231,7 @@ do
 						if type(newFont) == "table" then
 							newFontName = newFont.name
 							newFontPath = newFont.path
-							newFontSize = addon.CS:NewFontSize(textSize, newFont.sizeModifier)
+							newFontSize = env.CS:NewFontSize(textSize, newFont.sizeModifier)
 						else
 							newFontName = newFont
 							newFontPath = newFont

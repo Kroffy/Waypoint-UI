@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
+local L = env.C.AddonInfo.Locales
 
 --------------------------------
 

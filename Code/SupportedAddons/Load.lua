@@ -1,23 +1,5 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
+---@class env
+local env = select(2, ...)
 
---------------------------------
-
-addon.Support = {}
-local NS = addon.Support; addon.Support = NS
-
---------------------------------
-
-function NS:Load()
-	local function Modules()
-
-	end
-
-	--------------------------------
-
-	Modules()
-end
+env.Support = {}
+local NS = env.Support; env.Support = NS

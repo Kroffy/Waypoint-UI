@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.Frame = {}
-local NS = addon.C.Frame; addon.C.Frame = NS
+env.C.Frame = {}
+local NS = env.C.Frame; env.C.Frame = NS
 
 --------------------------------
 

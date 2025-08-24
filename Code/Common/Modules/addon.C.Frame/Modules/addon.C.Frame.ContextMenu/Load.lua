@@ -1,11 +1,11 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
 
 --------------------------------
 
-addon.C.Frame.ContextMenu = {}
-local NS = addon.C.Frame.ContextMenu; addon.C.Frame.ContextMenu = NS
+env.C.Frame.ContextMenu = {}
+local NS = env.C.Frame.ContextMenu; env.C.Frame.ContextMenu = NS
 
 --------------------------------
 

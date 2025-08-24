@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.AddonInfo; env.C.AddonInfo = NS
 
 --------------------------------
 
@@ -68,7 +68,7 @@ do  -- CONSTANTS
 		-- 				{
 		-- 					["name"] = "Placeholder",
 		--  				["type"] = NS.Variables.Config.TYPE_TITLE,
-		-- 					["var_title_imageTexture"] = addon.CS:NewIcon("brush"),
+		-- 					["var_title_imageTexture"] = env.CS:NewIcon("brush"),
 		-- 					["var_title_text"] = "Placeholder",
 		-- 					["var_title_subtext"] = "Placeholder",
 		-- 				},
@@ -158,22 +158,22 @@ do  -- CONSTANTS
 		-- 	}
 
 		C_Timer.After(0, function()
-			local NEW_PREFIX = addon.CS:GetInlineIcon("star", 16) .. " "
+			local NEW_PREFIX = env.CS:GetInlineIcon("star", 16) .. " "
 
 			local function GetDatabase(name)
-				if addon.C.Database and addon.C.Database.Variables then
-					return addon.C.Database.Variables[name].profile
+				if env.C.Database and env.C.Database.Variables then
+					return env.C.Database.Variables[name].profile
 				end
 			end
 
 			local function GetDefault(db, name)
-				if addon.C.Database and addon.C.Database.Variables then
-					return addon.C.AddonInfo.Variables.Database[db].profile[name]
+				if env.C.Database and env.C.Database.Variables then
+					return env.C.AddonInfo.Variables.Database[db].profile[name]
 				end
 			end
 
 			local function ResetEntry(db, db_default, name)
-				if addon.C.Database and addon.C.Database.Variables then
+				if env.C.Database and env.C.Database.Variables then
 					GetDatabase(db)[name] = GetDefault(db_default, name)
 				end
 			end
@@ -181,17 +181,17 @@ do  -- CONSTANTS
 			--------------------------------
 
 			NS.Variables.Config.PRELOAD = function()
-				addon.C.API.Util:Blizzard_AddConfirmPopup(
+				env.C.API.Util:Blizzard_AddConfirmPopup(
 					"WAYPOINTUI_RESET_SETTING",
 					L["Config - General - Reset - Confirm"],
 					L["Config - General - Reset - Confirm - Yes"],
 					L["Config - General - Reset - Confirm - No"],
 					function()
-						addon.C.Database.Script:ResetCache()
+						env.C.Database.Script:ResetCache()
 						ReloadUI()
 					end,
 					function()
-						addon.C.API.Util:Blizzard_HidePopup("WAYPOINTUI_RESET_SETTING")
+						env.C.API.Util:Blizzard_HidePopup("WAYPOINTUI_RESET_SETTING")
 					end,
 					true
 				)
@@ -206,7 +206,7 @@ do  -- CONSTANTS
 						{
 							["name"] = L["Config - General - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
-							["var_title_imageTexture"] = addon.CS:NewIcon("cog"),
+							["var_title_imageTexture"] = env.CS:NewIcon("cog"),
 							["var_title_text"] = L["Config - General - Title"],
 							["var_title_subtext"] = L["Config - General - Title - Subtext"],
 						},
@@ -232,9 +232,9 @@ do  -- CONSTANTS
 								-- 	["type"] = NS.Variables.Config.TYPE_DROPDOWN,
 								-- 	["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Config - General - Preferences - Font - Description"]),
 								-- 	["indent"] = 0,
-								-- 	["var_dropdown_info"] = function() return addon.C.Fonts.Script.DropdownUtil:GetKeys() end,
-								-- 	["var_get"] = function() return addon.C.Fonts.Script.DropdownUtil:Get("CONTENT_DEFAULT") end,
-								-- 	["var_set"] = function(value) addon.C.Fonts.Script.DropdownUtil:Set("CONTENT_DEFAULT", value) end,
+								-- 	["var_dropdown_info"] = function() return env.C.Fonts.Script.DropdownUtil:GetKeys() end,
+								-- 	["var_get"] = function() return env.C.Fonts.Script.DropdownUtil:Get("CONTENT_DEFAULT") end,
+								-- 	["var_set"] = function(value) env.C.Fonts.Script.DropdownUtil:Set("CONTENT_DEFAULT", value) end,
 								-- 	["var_disabled"] = function() return false end,
 								-- 	["var_hidden"] = function() return false end,
 								-- }
@@ -253,7 +253,7 @@ do  -- CONSTANTS
 									["descriptor"] = nil,
 									["indent"] = 0,
 									["var_button_text"] = L["Config - General - Reset - Button"],
-									["var_set"] = function() addon.C.API.Util:Blizzard_ShowPopup("WAYPOINTUI_RESET_SETTING") end,
+									["var_set"] = function() env.C.API.Util:Blizzard_ShowPopup("WAYPOINTUI_RESET_SETTING") end,
 									["var_disabled"] = function() return false end,
 									["var_hidden"] = function() return false end,
 								}
@@ -269,7 +269,7 @@ do  -- CONSTANTS
 						{
 							["name"] = L["Config - WaypointSystem - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
-							["var_title_imageTexture"] = addon.CS:NewIcon("waypoint"),
+							["var_title_imageTexture"] = env.CS:NewIcon("waypoint"),
 							["var_title_text"] = L["Config - WaypointSystem - Title"],
 							["var_title_subtext"] = L["Config - WaypointSystem - Title - Subtext"],
 						},
@@ -436,7 +436,7 @@ do  -- CONSTANTS
 						{
 							["name"] = L["Config - Appearance - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
-							["var_title_imageTexture"] = addon.CS:NewIcon("brush"),
+							["var_title_imageTexture"] = env.CS:NewIcon("brush"),
 							["var_title_text"] = L["Config - Appearance - Title"],
 							["var_title_subtext"] = L["Config - Appearance - Title - Subtext"],
 						},
@@ -917,7 +917,7 @@ do  -- CONSTANTS
 						{
 							["name"] = L["Config - Audio - Title"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
-							["var_title_imageTexture"] = addon.CS:NewIcon("speaker-on"),
+							["var_title_imageTexture"] = env.CS:NewIcon("speaker-on"),
 							["var_title_text"] = L["Config - Audio - Title"],
 							["var_title_subtext"] = L["Config - Audio - Title - Subtext"],
 						},
@@ -983,7 +983,7 @@ do  -- CONSTANTS
 											["descriptor"] = nil,
 											["indent"] = 0,
 											["var_button_text"] = L["Config - Audio - Customize - UseCustomAudio - Preview"],
-											["var_set"] = function() addon.C.Sound.Script:PlaySound(GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_WAYPOINT_SHOW, true) end,
+											["var_set"] = function() env.C.Sound.Script:PlaySound(GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_WAYPOINT_SHOW, true) end,
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return false end,
 										},
@@ -1025,7 +1025,7 @@ do  -- CONSTANTS
 											["descriptor"] = nil,
 											["indent"] = 0,
 											["var_button_text"] = L["Config - Audio - Customize - UseCustomAudio - Preview"],
-											["var_set"] = function() addon.C.Sound.Script:PlaySound(GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_PINPOINT_SHOW, true) end,
+											["var_set"] = function() env.C.Sound.Script:PlaySound(GetDatabase("DB_GLOBAL").AUDIO_CUSTOM_PINPOINT_SHOW, true) end,
 											["var_disabled"] = function() return false end,
 											["var_hidden"] = function() return false end,
 										},
@@ -1053,9 +1053,9 @@ do  -- CONSTANTS
 						{
 							["name"] = L["Config - About"],
 							["type"] = NS.Variables.Config.TYPE_TITLE,
-							["var_title_imageTexture"] = addon.C.AddonInfo.Variables.General.ADDON_ICON_ALT,
-							["var_title_text"] = addon.CS:GetAddonName(),
-							["var_title_subtext"] = addon.CS:GetAddonVersionString(),
+							["var_title_imageTexture"] = env.C.AddonInfo.Variables.General.ADDON_ICON_ALT,
+							["var_title_text"] = env.CS:GetAddonName(),
+							["var_title_subtext"] = env.CS:GetAddonVersionString(),
 						},
 						{
 							["name"] = L["Config - About - Contributors"],
@@ -1132,6 +1132,14 @@ do  -- CONSTANTS
 									["name"] = L["Contributors - dabear78"],
 									["type"] = NS.Variables.Config.TYPE_TEXT,
 									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - dabear78 - Description"]),
+									["indent"] = 0,
+									["var_transparent"] = true,
+									["var_hidden"] = function() return false end,
+								},
+								{
+									["name"] = L["Contributors - Gotziko"],
+									["type"] = NS.Variables.Config.TYPE_TEXT,
+									["descriptor"] = NS.Variables.Config:NewDescriptor(nil, nil, L["Contributors - Gotziko - Description"]),
 									["indent"] = 0,
 									["var_transparent"] = true,
 									["var_hidden"] = function() return false end,

@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Fonts; addon.C.Fonts = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Fonts; env.C.Fonts = NS
 
 --------------------------------
 
@@ -26,7 +26,7 @@ function NS.Script:Load()
 	do
 		function Callback:LoadFonts(loadCustomFonts)
 			if loadCustomFonts then
-				local localeFonts = addon.C.AddonInfo.Variables.Fonts.FONT_TABLE[NS.Variables.LOCALE]
+				local localeFonts = env.C.AddonInfo.Variables.Fonts.FONT_TABLE[NS.Variables.LOCALE]
 				for fontName, localeFontInfo in pairs(localeFonts) do
 					local fontInfo = Callback.CustomFontUtil:GetFont(fontName)
 					NS[fontName] = fontInfo
@@ -36,7 +36,7 @@ function NS.Script:Load()
 					CallbackRegistry:Trigger("C_FONT_OVERRIDE", fontInfo)
 				end
 			else
-				local localeFonts = addon.C.AddonInfo.Variables.Fonts.FONT_TABLE[NS.Variables.LOCALE]
+				local localeFonts = env.C.AddonInfo.Variables.Fonts.FONT_TABLE[NS.Variables.LOCALE]
 				for fontName, fontInfo in pairs(localeFonts) do
 					NS[fontName] = fontInfo
 				end
@@ -76,7 +76,7 @@ function NS.Script:Load()
 					local font = lib:HashTable("font")
 
 					for fontName, fontPath in pairs(font) do
-						local fontInfo = addon.CS:NewFontInfo(fontName, fontPath, 1)
+						local fontInfo = env.CS:NewFontInfo(fontName, fontPath, 1)
 						table.insert(results, fontInfo)
 					end
 
@@ -98,7 +98,7 @@ function NS.Script:Load()
 		--------------------------------
 
 		function Callback.CustomFontUtil:GetDefault(key)
-			return addon.C.AddonInfo.Variables.Fonts.FONT_TABLE[NS.Variables.LOCALE][key]
+			return env.C.AddonInfo.Variables.Fonts.FONT_TABLE[NS.Variables.LOCALE][key]
 		end
 
 		function Callback.CustomFontUtil:GetAllFonts()
@@ -122,7 +122,7 @@ function NS.Script:Load()
 		end
 
 		function Callback.CustomFontUtil:GetDatabase()
-			return addon.C.Database.Variables.DB_GLOBAL.profile.C_FONT_CUSTOM
+			return env.C.Database.Variables.DB_GLOBAL.profile.C_FONT_CUSTOM
 		end
 
 		function Callback.CustomFontUtil:GetFont(key)
@@ -132,7 +132,7 @@ function NS.Script:Load()
 			if not db[key] then db[key] = Callback.CustomFontUtil:GetDefault(key) end
 
 			-- If font doesn't pass integrity check, use default
-			if not addon.CS:CheckFontIntegrity(db[key]) then db[key] = Callback.CustomFontUtil:GetDefault(key) end
+			if not env.CS:CheckFontIntegrity(db[key]) then db[key] = Callback.CustomFontUtil:GetDefault(key) end
 
 			-- Return font
 			if db[key] then return db[key] end

@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.TagManager = {}
-local NS = addon.C.TagManager; addon.C.TagManager = NS
+env.C.TagManager = {}
+local NS = env.C.TagManager; env.C.TagManager = NS
 
 --------------------------------
 

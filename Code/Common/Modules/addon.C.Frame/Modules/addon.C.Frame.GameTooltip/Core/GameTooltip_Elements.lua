@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Frame.GameTooltip; addon.C.Frame.GameTooltip = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Frame.GameTooltip; env.C.Frame.GameTooltip = NS
 
 --------------------------------
 
@@ -13,7 +13,7 @@ NS.Elements = {}
 --------------------------------
 
 function NS.Elements:Load()
-	local Frame = addon.CS:GetCommonFrame()
+	local Frame = env.CS:GetCommonFrame()
 
 	--------------------------------
 	-- CREATE ELEMENTS
@@ -21,9 +21,9 @@ function NS.Elements:Load()
 
 	do
 		do -- ELEMENTS
-			Frame.GameTooltip = addon.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.GameTooltip", Frame, "GameTooltipTemplate")
-			Frame.ShoppingTooltip1 = addon.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.ShoppingTooltip1", Frame, "GameTooltipTemplate")
-			Frame.ShoppingTooltip2 = addon.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.ShoppingTooltip2", Frame, "GameTooltipTemplate")
+			Frame.GameTooltip = env.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.GameTooltip", Frame, "GameTooltipTemplate")
+			Frame.ShoppingTooltip1 = env.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.ShoppingTooltip1", Frame, "GameTooltipTemplate")
+			Frame.ShoppingTooltip2 = env.C.FrameTemplates:CreateFrame("GameTooltip", "$parent.ShoppingTooltip2", Frame, "GameTooltipTemplate")
 
 			--------------------------------
 
@@ -39,7 +39,7 @@ function NS.Elements:Load()
 					end
 
 					do -- CUSTOM
-						tooltip.Custom = addon.C.FrameTemplates:CreateFrame("Frame", "$parent.Custom", tooltip)
+						tooltip.Custom = env.C.FrameTemplates:CreateFrame("Frame", "$parent.Custom", tooltip)
 						tooltip.Custom:SetAllPoints(tooltip)
 						tooltip.Custom:SetFrameStrata(FRAME_STRATA)
 						tooltip.Custom:SetFrameLevel(FRAME_LEVEL)
@@ -47,7 +47,7 @@ function NS.Elements:Load()
 						--------------------------------
 
 						do -- BACKGROUND
-							tooltip.Custom.Background, tooltip.Custom.BackgroundTexture = addon.C.FrameTemplates:CreateNineSlice(tooltip.Custom, FRAME_STRATA, texture, 95, .125, "$parent.Background", Enum.UITextureSliceMode.Stretched)
+							tooltip.Custom.Background, tooltip.Custom.BackgroundTexture = env.C.FrameTemplates:CreateNineSlice(tooltip.Custom, FRAME_STRATA, texture, 95, .125, "$parent.Background", Enum.UITextureSliceMode.Stretched)
 							tooltip.Custom.Background:SetPoint("TOPLEFT", tooltip.Custom, -15, 15)
 							tooltip.Custom.Background:SetPoint("BOTTOMRIGHT", tooltip.Custom, 15, -15)
 							tooltip.Custom.Background:SetFrameStrata(FRAME_STRATA)
@@ -59,9 +59,9 @@ function NS.Elements:Load()
 
 				--------------------------------
 
-				StyleTooltip(Frame.GameTooltip, addon.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["GameTooltip"].texture, addon.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["GameTooltip"].modifier)
-				StyleTooltip(Frame.ShoppingTooltip1, addon.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip1"].texture, addon.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip1"].modifier)
-				StyleTooltip(Frame.ShoppingTooltip2, addon.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip2"].texture, addon.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip2"].modifier)
+				StyleTooltip(Frame.GameTooltip, env.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["GameTooltip"].texture, env.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["GameTooltip"].modifier)
+				StyleTooltip(Frame.ShoppingTooltip1, env.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip1"].texture, env.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip1"].modifier)
+				StyleTooltip(Frame.ShoppingTooltip2, env.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip2"].texture, env.C.AddonInfo.Variables.GameTooltip.TOOLTIP_STYLE["ShoppingTooltip2"].modifier)
 			end
 		end
 	end

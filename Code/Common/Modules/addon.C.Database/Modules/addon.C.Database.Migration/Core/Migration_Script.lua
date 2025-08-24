@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
-local CallbackRegistry = addon.C.CallbackRegistry.Script
-local PrefabRegistry = addon.C.PrefabRegistry.Script
-local TagManager = addon.C.TagManager.Script
-local L = addon.C.AddonInfo.Locales
-local NS = addon.C.Database.Migration; addon.C.Database.Migration = NS
+---@class env
+local env = select(2, ...)
+local CallbackRegistry = env.C.CallbackRegistry.Script
+local PrefabRegistry = env.C.PrefabRegistry.Script
+local TagManager = env.C.TagManager.Script
+local L = env.C.AddonInfo.Locales
+local NS = env.C.Database.Migration; env.C.Database.Migration = NS
 
 --------------------------------
 
@@ -19,10 +19,10 @@ function NS.Script:Load()
 
 	local Callback = NS.Script; NS.Script = Callback
 
-	local MIGRATION_GLOBAL = addon.C.AddonInfo.Variables.Database.MIGRATION_GLOBAL
-	local MIGRATION_LOCAL = addon.C.AddonInfo.Variables.Database.MIGRATION_LOCAL
-	local MIGRATION_GLOBAL_PERSISTENT = addon.C.AddonInfo.Variables.Database.MIGRATION_GLOBAL_PERSISTENT
-	local MIGRATION_LOCAL_PERSISTENT = addon.C.AddonInfo.Variables.Database.MIGRATION_LOCAL_PERSISTENT
+	local MIGRATION_GLOBAL = env.C.AddonInfo.Variables.Database.MIGRATION_GLOBAL
+	local MIGRATION_LOCAL = env.C.AddonInfo.Variables.Database.MIGRATION_LOCAL
+	local MIGRATION_GLOBAL_PERSISTENT = env.C.AddonInfo.Variables.Database.MIGRATION_GLOBAL_PERSISTENT
+	local MIGRATION_LOCAL_PERSISTENT = env.C.AddonInfo.Variables.Database.MIGRATION_LOCAL_PERSISTENT
 
 	--------------------------------
 	-- FUNCTIONS (MAIN)
@@ -40,10 +40,10 @@ function NS.Script:Load()
 		end
 
 		function Callback:Migrate()
-			MigrateDatabase(MIGRATION_GLOBAL, addon.C.Database.Variables.DB_GLOBAL)
-			MigrateDatabase(MIGRATION_LOCAL, addon.C.Database.Variables.DB_LOCAL)
-			MigrateDatabase(MIGRATION_GLOBAL_PERSISTENT, addon.C.Database.Variables.DB_GLOBAL_PERSISTENT)
-			MigrateDatabase(MIGRATION_LOCAL_PERSISTENT, addon.C.Database.Variables.DB_LOCAL_PERSISTENT)
+			MigrateDatabase(MIGRATION_GLOBAL, env.C.Database.Variables.DB_GLOBAL)
+			MigrateDatabase(MIGRATION_LOCAL, env.C.Database.Variables.DB_LOCAL)
+			MigrateDatabase(MIGRATION_GLOBAL_PERSISTENT, env.C.Database.Variables.DB_GLOBAL_PERSISTENT)
+			MigrateDatabase(MIGRATION_LOCAL_PERSISTENT, env.C.Database.Variables.DB_LOCAL_PERSISTENT)
 		end
 	end
 

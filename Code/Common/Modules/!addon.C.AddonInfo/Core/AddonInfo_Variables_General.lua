@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.AddonInfo; env.C.AddonInfo = NS
 
 --------------------------------
 
@@ -17,8 +17,8 @@ end
 
 do -- CONSTANTS
 	do -- VERSION
-		NS.Variables.General.VERSION_STRING = "0.0.5"
-		NS.Variables.General.VERSION_NUMBER = 00000500 -- XX.XX.XX.XX
+		NS.Variables.General.VERSION_STRING = "0.0.6"
+		NS.Variables.General.VERSION_NUMBER = 00000600 -- XX.XX.XX.XX
 	end
 
 	do -- GENERAL

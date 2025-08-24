@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.AddonInfo; addon.C.AddonInfo = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.AddonInfo; env.C.AddonInfo = NS
 
 --------------------------------
 
@@ -18,15 +18,15 @@ end
 do -- CONSTANTS
 	NS.Variables.GameTooltip.TOOLTIP_STYLE = {
 		["GameTooltip"] = {
-			["texture"] = addon.CS:GetCommonPathArt() .. "Tooltip/background-generic.png",
+			["texture"] = env.CS:GetCommonPathArt() .. "Tooltip/background-generic.png",
 			["modifier"] = .275
 		},
 		["ShoppingTooltip1"] = {
-			["texture"] = addon.CS:GetCommonPathArt() .. "Tooltip/background-generic.png",
+			["texture"] = env.CS:GetCommonPathArt() .. "Tooltip/background-generic.png",
 			["modifier"] = .175
 		},
 		["ShoppingTooltip2"] = {
-			["texture"] = addon.CS:GetCommonPathArt() .. "Tooltip/background-generic.png",
+			["texture"] = env.CS:GetCommonPathArt() .. "Tooltip/background-generic.png",
 			["modifier"] = .175
 		}
 	}

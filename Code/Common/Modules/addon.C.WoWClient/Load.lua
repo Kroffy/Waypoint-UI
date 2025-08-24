@@ -1,10 +1,10 @@
----@class addon
-local addon = select(2, ...)
+---@class env
+local env = select(2, ...)
 
 --------------------------------
 
-addon.C.WoWClient = {}
-local NS = addon.C.WoWClient; addon.C.WoWClient = NS
+env.C.WoWClient = {}
+local NS = env.C.WoWClient; env.C.WoWClient = NS
 
 --------------------------------
 

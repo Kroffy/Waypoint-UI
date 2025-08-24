@@ -1,6 +1,6 @@
----@class addon
-local addon = select(2, ...)
-local NS = addon.C.SharedVariables; addon.C.SharedVariables = NS
+---@class env
+local env = select(2, ...)
+local NS = env.C.SharedVariables; env.C.SharedVariables = NS
 
 --------------------------------
 
