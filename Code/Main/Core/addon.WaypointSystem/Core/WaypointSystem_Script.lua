@@ -1960,6 +1960,7 @@ function NS.Script:Load()
 						-- STATE CHANGE
 						if event == "QUEST_POI_UPDATE" or
 							event == "QUEST_LOG_UPDATE" or
+							event == "ZONE_CHANGED_NEW_AREA" or
 							event == "ZONE_CHANGED" or
 							event == "QUEST_ACCEPTED" or
 							event == "QUEST_COMPLETE" or
@@ -1999,6 +2000,7 @@ function NS.Script:Load()
 					-- UPDATE CONTEXT
 					EventManager.Event:RegisterEvent("QUEST_POI_UPDATE")
 					EventManager.Event:RegisterEvent("QUEST_LOG_UPDATE")
+					EventManager.Event:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 					EventManager.Event:RegisterEvent("ZONE_CHANGED")
 					EventManager.Event:RegisterEvent("QUEST_ACCEPTED")
 					EventManager.Event:RegisterEvent("QUEST_COMPLETE")
@@ -2049,7 +2051,7 @@ function NS.Script:Load()
 				--------------------------------
 
 				-- Enable continous updaters on load after a delay to make sure the rest of the script is initalized.
-				C_Timer.After(0, function() EventManager.SetupTimers(true) end)
+				C_Timer.After(0, function() EventManager.SetupTimers(NS.Variables.IsActive) end)
 
 				-- Hook to CallbackRegistry events.
 				CallbackRegistry:Add("WaypointSystem.ActiveChanged", EventManager.SetupTimers)
