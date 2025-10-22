@@ -47,20 +47,20 @@
 ]]
 
 
-local env                = select(2, ...)
-local Config             = env.Config
-local L                  = env.L
+local env              = select(2, ...)
+local Config           = env.Config
+local L                = env.L
 
-local Path               = env.WPM:Import("wpm_modules/path")
-local Utils_Blizzard     = env.WPM:Import("wpm_modules/utils/blizzard")
-local Sound              = env.WPM:Import("wpm_modules/sound")
-local CallbackRegistry   = env.WPM:Import("wpm_modules/callback-registry")
-local UIFont             = env.WPM:Import("wpm_modules/ui-font")
-local LocalUtil          = env.WPM:Import("@/LocalUtil")
-local WaypointEnum       = env.WPM:Import("@/Waypoint/Enum")
-local SettingDefine      = env.WPM:Import("@/Setting/Define")
-local SettingEnum        = env.WPM:Import("@/Setting/Enum")
-local SettingSchema      = env.WPM:New("@/Setting/Schema")
+local Path             = env.WPM:Import("wpm_modules/path")
+local Utils_Blizzard   = env.WPM:Import("wpm_modules/utils/blizzard")
+local Sound            = env.WPM:Import("wpm_modules/sound")
+local CallbackRegistry = env.WPM:Import("wpm_modules/callback-registry")
+local UIFont           = env.WPM:Import("wpm_modules/ui-font")
+local LocalUtil        = env.WPM:Import("@/LocalUtil")
+local WaypointEnum     = env.WPM:Import("@/Waypoint/Enum")
+local SettingDefine    = env.WPM:Import("@/Setting/Define")
+local SettingEnum      = env.WPM:Import("@/Setting/Enum")
+local SettingSchema    = env.WPM:New("@/Setting/Schema")
 
 
 
@@ -110,10 +110,13 @@ SettingSchema.SCHEMA = {
                 widgetType = SettingEnum.WidgetType.Container,
                 children   = {
                     {
-                        widgetName = L["Config - General - Preferences - Font"],
-                        widgetType = SettingEnum.WidgetType.SelectionMenu,
-                        widgetSelectionMenu_data = function() UIFont.CustomFont:RefreshFontList() return UIFont.CustomFont:GetFontNames() end,
-                        key = "PrefFont"
+                        widgetName               = L["Config - General - Preferences - Font"],
+                        widgetType               = SettingEnum.WidgetType.SelectionMenu,
+                        widgetSelectionMenu_data = function()
+                            UIFont.CustomFont:RefreshFontList()
+                            return UIFont.CustomFont:GetFontNames()
+                        end,
+                        key                      = "PrefFont"
                     },
                     {
                         widgetName        = L["Config - General - Preferences - Meter"],
@@ -367,7 +370,7 @@ SettingSchema.SCHEMA = {
             {
                 widgetName = L["Config - Appearance - Navigator"],
                 widgetType = SettingEnum.WidgetType.Container,
-                showWhen   = function() return Config.DBGlobal:GetVariable("navigatorEnable") == true end,
+                showWhen   = function() return Config.DBGlobal:GetVariable("NavigatorShow") == true end,
                 children   = {
                     {
                         widgetName                     = L["Config - Appearance - Navigator - Scale"],
@@ -396,6 +399,12 @@ SettingSchema.SCHEMA = {
                         widgetRange_step               = .1,
                         widgetRange_textFormattingFunc = formatPercentage,
                         key                            = "NavigatorDistance"
+                    },
+                    {
+                        widgetName        = L["Config - Appearance - Navigator - DynamicDistance"],
+                        widgetDescription = SettingDefine.Descriptor{ description = L["Config - Appearance - Navigator - DynamicDistance - Description"] },
+                        widgetType        = SettingEnum.WidgetType.Checkbox,
+                        key               = "NavigatorDynamicDistance"
                     }
                 }
             },

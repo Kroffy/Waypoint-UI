@@ -399,8 +399,8 @@ do
         self.ContextIcon:SetTint(color)
         self.WaveTexture:SetColor(color)
         self.Beam.BackgroundTexture:SetColor(color)
-        self.Footer.Text:SetTextColor(color.r, color.g, color.b, color.a or 1)
-        self.Footer.SubtextFrame.Text:SetTextColor(color.r, color.g, color.b, color.a or 1)
+        self.Footer.Text:SetTextColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
+        self.Footer.SubtextFrame.Text:SetTextColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
     end
 
     function WaypointMixin:Appearance_SetBeam(enable, opacity)
@@ -681,6 +681,7 @@ do
         :parent("WUIFrame")
         :frameStrata(UIKit.Enum.FrameStrata.Background, 1)
         :size(N_SIZE, N_SIZE)
+        :clampedToScreen(true)
         :_updateMode(UIKit.Enum.UpdateMode.None)
         :_Render()
 

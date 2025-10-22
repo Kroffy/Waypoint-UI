@@ -154,19 +154,21 @@ do -- Navigator
         savedAxesMultiplied = major * minor
     end
 
-    local function update()
-        local zoom = math.max(MIN_ZOOM, GetCameraZoom())
-        local NavigatorDistance = Config.DBGlobal:GetVariable("NavigatorDistance")
+    local function updateVariables()
+        local Setting_NavigatorDistance = Config.DBGlobal:GetVariable("NavigatorDistance")
+        local Setting_NavigatorDynamicDistance = Config.DBGlobal:GetVariable("NavigatorDynamicDistance")
 
-        if zoom ~= savedZoom or NavigatorDistance ~= savedDistance then
+        local zoom = Setting_NavigatorDynamicDistance and math.max(MIN_ZOOM, GetCameraZoom()) or 39
+
+        if zoom ~= savedZoom or Setting_NavigatorDistance ~= savedDistance then
             local baseZoom = 35
             local baseMajor, baseMinor = 200, 100
             local major, minor = math.min(baseMajor * (baseZoom / zoom), 500), math.min(baseMinor * (baseZoom / zoom), 500)
-            major = major * (NavigatorDistance or 1)
-            minor = minor * (NavigatorDistance or 1)
+            major = major * (Setting_NavigatorDistance or 1)
+            minor = minor * (Setting_NavigatorDistance or 1)
 
             savedZoom = zoom
-            savedDistance = NavigatorDistance
+            savedDistance = Setting_NavigatorDistance
             setInfo(major, minor)
         end
 
@@ -182,10 +184,20 @@ do -- Navigator
         end
     end
 
+    local function ForceUpdate()
+        updateVariables()
+
+        local needPositionUpdate = updatePosition()
+        local needRotationUpdate = updateArrow()
+        isUpdateNeeded = (needPositionUpdate or needRotationUpdate)
+    end
+    SavedVariables.OnChange("WaypointDB_Global", "NavigatorDistance", ForceUpdate)
+    SavedVariables.OnChange("WaypointDB_Global", "NavigatorDynamicDistance", ForceUpdate)
+
     local function OnUpdate()
         if not cachedNavFrame then return end
 
-        update()
+        updateVariables()
 
         if isUpdateNeeded then
             local needPositionUpdate = updatePosition()
@@ -193,7 +205,6 @@ do -- Navigator
             isUpdateNeeded = (needPositionUpdate or needRotationUpdate)
         end
     end
-
     WUINavigatorFrame:SetScript("OnUpdate", OnUpdate)
 end
 
@@ -202,7 +213,7 @@ end
 -- Appearance
 --------------------------------
 
-do     -- Size
+do -- Size
     do -- Waypoint
         local REFERENCE_DISTANCE = 2000
         local REFERENCE_SCALE = .25
@@ -277,6 +288,12 @@ do     -- Size
 end
 
 do -- Color
+    local function resolveColorIntegrity(color)
+        if not color then return false end
+        if type(color) == "table" and color.r and color.g and color.b then return color end
+        return false
+    end
+
     -- Returns tint color and recolor flag
     ---@param ContextIconTexture? table used to determine whether to apply recolor for specific context icon
     ---@return table|nil color
@@ -286,15 +303,15 @@ do -- Color
 
         local Setting_CustomColor           = (Setting:GetVariable("CustomColor") == true)
 
-        local ColorQuestIncomplete          = (Setting_CustomColor and Setting:GetVariable("CustomColorQuestIncomplete")) or (env.Enum.ColorRGB.QuestIncomplete)
-        local ColorQuestComplete            = (Setting_CustomColor and Setting:GetVariable("CustomColorQuestComplete")) or (env.Enum.ColorRGB.QuestNormal)
-        local ColorQuestCompleteRecurring   = (Setting_CustomColor and Setting:GetVariable("customColorQuestCompleteRecurring")) or (env.Enum.ColorRGB.QuestRepeatable)
-        local ColorQuestCompleteImportant   = (Setting_CustomColor and Setting:GetVariable("CustomColorQuestCompleteImportant")) or (env.Enum.ColorRGB.QuestImportant)
-        local ColorOther                    = (Setting_CustomColor and Setting:GetVariable("CustomColorOther")) or (env.Enum.ColorRGB.Other)
+        local ColorQuestIncomplete          = (Setting_CustomColor and resolveColorIntegrity(Setting:GetVariable("CustomColorQuestIncomplete"))) or (env.Enum.ColorRGB.QuestIncomplete)
+        local ColorQuestComplete            = (Setting_CustomColor and resolveColorIntegrity(Setting:GetVariable("CustomColorQuestComplete"))) or (env.Enum.ColorRGB.QuestNormal)
+        local ColorQuestCompleteRecurring   = (Setting_CustomColor and resolveColorIntegrity(Setting:GetVariable("CustomColorQuestCompleteRepeatable"))) or (env.Enum.ColorRGB.QuestRepeatable)
+        local ColorQuestCompleteImportant   = (Setting_CustomColor and resolveColorIntegrity(Setting:GetVariable("CustomColorQuestCompleteImportant"))) or (env.Enum.ColorRGB.QuestImportant)
+        local ColorOther                    = (Setting_CustomColor and resolveColorIntegrity(Setting:GetVariable("CustomColorOther"))) or (env.Enum.ColorRGB.Other)
 
         local RecolorQuestIncomplete        = (Setting_CustomColor and Setting:GetVariable("CustomColorQuestIncompleteTint")) or (not Setting_CustomColor and false)
         local RecolorQuestComplete          = (Setting_CustomColor and Setting:GetVariable("CustomColorQuestCompleteTint")) or (not Setting_CustomColor and false)
-        local RecolorQuestCompleteRecurring = (Setting_CustomColor and Setting:GetVariable("customColorQuestCompleteRecurringTint")) or (not Setting_CustomColor and false)
+        local RecolorQuestCompleteRecurring = (Setting_CustomColor and Setting:GetVariable("CustomColorQuestCompleteRepeatableTint")) or (not Setting_CustomColor and false)
         local RecolorQuestCompleteImportant = (Setting_CustomColor and Setting:GetVariable("CustomColorQuestCompleteImportantTint")) or (not Setting_CustomColor and false)
         local RecolorOther                  = (Setting_CustomColor and Setting:GetVariable("CustomColorOtherTint")) or (not Setting_CustomColor and false)
 
@@ -355,17 +372,17 @@ do -- Color
     SavedVariables.OnChange("WaypointDB_Global", "CustomColor", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestIncomplete", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestComplete", WaypointLogic.UpdateColor)
-    SavedVariables.OnChange("WaypointDB_Global", "customColorQuestCompleteRecurring", WaypointLogic.UpdateColor)
+    SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestCompleteRepeatable", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestCompleteImportant", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorOther", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestIncompleteTint", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestCompleteTint", WaypointLogic.UpdateColor)
-    SavedVariables.OnChange("WaypointDB_Global", "customColorQuestCompleteRecurringTint", WaypointLogic.UpdateColor)
+    SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestCompleteRepeatableTint", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorQuestCompleteImportantTint", WaypointLogic.UpdateColor)
     SavedVariables.OnChange("WaypointDB_Global", "CustomColorOtherTint", WaypointLogic.UpdateColor)
 end
 
-do     -- Other
+do -- Other
     do -- Waypoint
         local function updateWaypointBeam()
             WUIWaypointFrame_Beam:SetShown(Config.DBGlobal:GetVariable("WaypointBeam"))
@@ -502,7 +519,7 @@ local function setPinpointInfoText()
     local opacity = .5
 
     if Setting_PinpointInfo then
-        if RedirectInfo.valid then                          -- Redirect
+        if RedirectInfo.valid then -- Redirect
             newText = RedirectInfo.text
         elseif PinType == Enum.SuperTrackingType.Quest then -- Quest
             local questComplete = WaypointCache:Get("questComplete")

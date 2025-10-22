@@ -1,55 +1,47 @@
-local env = select(2, ...)
-local package = env.WPM:New("wpm_modules/lazy-timer")
+local env             = select(2, ...)
+local MixinUtil       = env.WPM:Import("wpm_modules/mixin-util")
 
-local SET_SCRIPT_FUNC = getmetatable(CreateFrame("Frame")).__index.SetScript
+local Mixin           = MixinUtil.Mixin
+
+local LazyTimer       = env.WPM:New("wpm_modules/lazy-timer")
 
 
+local dummyFrame = CreateFrame("Frame"); dummyFrame:Hide()
+local SET_SCRIPT_FUNC = getmetatable(dummyFrame).__index.SetScript
 
+
+local TimerMixin = {}
+
+function TimerMixin:OnLoad()
+    self.elapsed = 0
+    self.action = nil
+    self.delay = 0
+end
+
+function TimerMixin.SetAction(self, action)
+    self.action = action
+end
 
 local function handleOnUpdate(self, elapsed)
-    self.__elapsed = self.__elapsed + elapsed
-    if self.__elapsed >= self.__delay then
-        self.__elapsed = 0
+    self.elapsed = self.elapsed + elapsed
+    if self.elapsed >= self.delay then
+        self.elapsed = 0
 
         SET_SCRIPT_FUNC(self, "OnUpdate", nil)
-        self.__action(self)
+        self.action(self)
     end
 end
 
-
-
-
-
-local methods = {}
-
-function methods.SetAction(self, action)
-    self.__action = action
-end
-
-function methods.Start(self, delay)
-    self.__delay = delay
+function TimerMixin.Start(self, delay)
+    self.delay = delay
     SET_SCRIPT_FUNC(self, "OnUpdate", handleOnUpdate)
 end
 
-local meta = {
-    __index = function(tbl, k)
-        if methods[k] then
-            return methods[k]
-        end
-        return rawget(tbl, k)
-    end
-}
 
-
-
-
-
-function package:New()
+function LazyTimer:New()
     local timer = CreateFrame("Frame")
-    setmetatable(timer, meta)
-    timer.__elapsed = 0
-    timer.__action = nil
-    timer.__delay = 0
+    Mixin(timer, TimerMixin)
+    timer:OnLoad()
 
     return timer
 end

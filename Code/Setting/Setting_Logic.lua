@@ -2,6 +2,7 @@ local env                = select(2, ...)
 
 local WUISettingFrame    = WUISettingFrame
 local SettingsCanvas     = SettingsPanel.Container.SettingsCanvas
+local IsAddonLoaded      = C_AddOns.IsAddOnLoaded
 
 local CallbackRegistry   = env.WPM:Import("wpm_modules/callback-registry")
 local SavedVariables     = env.WPM:Import("wpm_modules/saved-variables")
@@ -9,6 +10,13 @@ local SettingConstructor = env.WPM:Await("@/Setting/Constructor")
 local SettingSchema      = env.WPM:Await("@/Setting/Schema")
 local SettingLogic       = env.WPM:New("@/Setting/Logic")
 
+
+
+
+-- Shared
+--------------------------------
+
+local isElvUILoaded = false
 
 
 
@@ -33,19 +41,19 @@ function SettingLogic:OpenTabByIndex(index)
         local tabButton = SettingConstructor.TabButtons[i]
         local isSelected = i == index
 
-        
+
         if isSelected and not tab:IsShown() then tab:PlayIntro() end
         tab:SetShown(isSelected)
         tabButton:SetSelected(isSelected)
 
 
-        -- Dynamic rendering, only RenderElements when tab is selected
+        -- Dynamic rendering, only render elements when tab is selected
         if isSelected and not tab.hasRendered then
             tab:_Render()
             tab.hasRendered = true
         end
 
-        
+
         -- Refresh widgets
         SettingConstructor:Refresh(true)
     end
@@ -85,12 +93,23 @@ end
 
 
 local function OnShow(self)
+    if not isElvUILoaded then isElvUILoaded = IsAddonLoaded("ElvUI") end
+    
+
+
     WUISettingFrameAnchor:ClearAllPoints()
-    WUISettingFrameAnchor:SetPoint("CENTER", SettingsCanvas, -INSET, INSET)
-    WUISettingFrameAnchor:SetSize(math.ceil(SettingsCanvas:GetWidth() + INSET * 2), math.ceil(SettingsCanvas:GetHeight() + INSET / 2))
+    
+    if isElvUILoaded then
+        WUISettingFrameAnchor:SetAllPoints(SettingsCanvas)
+    else
+        WUISettingFrameAnchor:SetPoint("CENTER", SettingsCanvas, -INSET, INSET)
+        WUISettingFrameAnchor:SetSize(math.ceil(SettingsCanvas:GetWidth() + INSET * 2), math.ceil(SettingsCanvas:GetHeight() + INSET / 2))
+    end
 
     WUISettingFrame:Show()
 
+
+    
     if not isSetup then
         setupSettingUI()
         isSetup = true
@@ -104,7 +123,7 @@ end
 local function RenderUI()
     if WUISettingFrame:IsShown() and isSetup then
         WUISettingFrame:_Render()
-        
+
         for i = 1, #SettingConstructor.Tabs do
             SettingConstructor.Tabs[i].hasRendered = false
         end

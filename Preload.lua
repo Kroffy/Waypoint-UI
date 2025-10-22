@@ -13,8 +13,8 @@ local GenericEnum      = env.WPM:Import("wpm_modules/generic-enum")
 env.NAME               = "Waypoint UI"
 env.ICON               = Path.Root .. "/Art/Icon/Icon.png"
 env.ICON_ALT           = Path.Root .. "/Art/Icon/IconAltLight.png"
-env.VERSION_STRING     = "1.0.0"
-env.VERSION_NUMBER     = 010000
+env.VERSION_STRING     = "1.0.1"
+env.VERSION_NUMBER     = 010010
 env.DEBUG_MODE         = false
 
 
@@ -90,6 +90,7 @@ do
         NavigatorScale                         = 1,
         NavigatorAlpha                         = 1,
         NavigatorDistance                      = 1,
+        NavigatorDynamicDistance               = true,
         CustomColor                            = false,
         CustomColorQuestIncomplete             = { r = Enum.ColorRGB.QuestIncomplete.r, g = Enum.ColorRGB.QuestIncomplete.g, b = Enum.ColorRGB.QuestIncomplete.b, a = 1 },
         CustomColorQuestIncompleteTint         = false,
