@@ -834,6 +834,7 @@ do -- Hide SuperTrackedFrame while Waypoint is active
         SuperTrackedFrame:Hide()
     end
 
+    CallbackRegistry:Add("Waypoint.ActiveChanged", hideSuperTrackedFrame)
     hooksecurefunc(SuperTrackedFrame, "SetShown", hideSuperTrackedFrame)
     hooksecurefunc(SuperTrackedFrame, "Show", hideSuperTrackedFrame)
 end

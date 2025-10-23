@@ -1,11 +1,12 @@
 local env             = select(2, ...)
+local SlashCommand    = env.WPM:Import("wpm_modules/slash-command")
 local Support         = env.WPM:Import("@/Support")
 local WorldQuestsList = env.WPM:New("@/Support/WorldQuestsList")
 
 
 
 local function removeWQLSlashCmd()
-    env.C.SlashCommand.Script:RemoveSlashCommand("WQLSlashWay")
+    SlashCommand:RemoveSlashCommand("WQLSlashWay")
 end
 
 

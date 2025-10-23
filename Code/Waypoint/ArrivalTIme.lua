@@ -23,6 +23,7 @@ function WaypointArrivalTime:ResetArrivalTime()
     lastDistance, lastTime, averageSpeed = nil, nil, nil
     seconds = -1
 end
+CallbackRegistry:Add("Waypoint.ActiveChanged", WaypointArrivalTime.ResetArrivalTime)
 CallbackRegistry:Add("Waypoint.SuperTrackingChanged", WaypointArrivalTime.ResetArrivalTime)
 
 

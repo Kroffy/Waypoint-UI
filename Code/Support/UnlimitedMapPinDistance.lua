@@ -5,8 +5,7 @@ local UnlimitedMapPinDistance = env.WPM:New("@/Support/UnlimitedMapPinDistance")
 
 
 local function hideUMPDFrame()
-    assert(SuperTrackedFrame.Time,
-           "Invalid variable `SuperTrackedFrame.Time`")
+    assert(SuperTrackedFrame.Time, "Invalid variable `SuperTrackedFrame.Time`")
 
     SuperTrackedFrame.Time:SetParent(nil)
     SuperTrackedFrame.Time:ClearAllPoints()

@@ -9,9 +9,16 @@ local MPE_DATABASE      = MapPinEnhancedDB
 
 
 
+local function getReferences()
+    if MPE_TRACKER_FRAME and MPE_DATABASE then return end
+
+    MPE_TRACKER_FRAME = MapPinEnhancedSuperTrackedPin
+    MPE_DATABASE      = MapPinEnhancedDB
+end
+
 local function hideMPEFrame()
-    assert(MPE_TRACKER_FRAME,
-           "Invalid variable `MPE_TRACKER_FRAME`")
+    getReferences()
+    if not MPE_TRACKER_FRAME then return end
 
     MPE_TRACKER_FRAME:HookScript("OnShow", function()
         MPE_TRACKER_FRAME:Hide()
