@@ -1,3 +1,3 @@
 # Waypoint UI
 ### World of Warcraft Add-on
-In-world marker with objectives.
+An in-world waypoint and pinpoint to show relevant information directly in world-space.
