@@ -119,10 +119,10 @@ L["Config - ExtraFeature - Title - Subtext"] = "Gestion des fonctionnalités sup
 L["Config - ExtraFeature - Pin"] = "Repère cartographique"
 L["Config - ExtraFeature - Pin - AutoTrackPlacedPin"] = "Suivi automatique"
 L["Config - ExtraFeature - Pin - AutoTrackPlacedPin - Description"] = "Suit automatiquement un repère lorsqu'il est placé sur la carte."
-L["Config - ExtraFeature - Pin - AutoTrackChatLinkPin"] = "Suivi automatique à partir d'un lien"
-L["Config - ExtraFeature - Pin - AutoTrackChatLinkPin - Description"] = "Suit automatiquement un repère lorsqu'il est cliqué d'un lien."
+L["Config - ExtraFeature - Pin - AutoTrackChatLinkPin"] = "Suivi automatique d'un lien"
+L["Config - ExtraFeature - Pin - AutoTrackChatLinkPin - Description"] = "Suit automatiquement un repère lorsqu'il est ajouté d'un lien."
 L["Config - ExtraFeature - Pin - GuidePinAssistant"] = "Track Guide Pin"
-L["Config - ExtraFeature - Pin - GuidePinAssistant - Description"] = "Enable Waypoint UI navigation for city guide pins placed by guard NPCs."
+L["Config - ExtraFeature - Pin - GuidePinAssistant - Description"] = "Active la navigation pour les repères placés par les gardes PNJ."
 
 L["Config - About"] = "À propos"
 L["Config - About - Contributors"] = "Contributeurs"
